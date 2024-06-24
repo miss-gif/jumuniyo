@@ -1,0 +1,128 @@
+@charset "utf-8";
+
+/* 한중일(CJK) 텍스트에서는 줄을 바꿀 때 단어를 끊지 않습니다. */
+:lang(ko) {
+  word-break: keep-all;
+}
+
+/* 모든 요소의 기본 스타일 초기화 */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; /* 테두리와 패딩을 요소의 크기에 포함 */
+}
+
+body {
+  overflow-wrap: break-word;
+  line-height: 1.5;
+  color: #333;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+input,
+textarea,
+button,
+select {
+  font-size: inherit;
+  line-height: inherit;
+}
+
+/* 목록 스타일 제거 */
+ol,
+ul {
+  list-style: none;
+}
+
+/* 링크 스타일 제거 */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* 이미지 스타일 제거 */
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* 기타 요소 스타일 초기화 */
+input,
+textarea,
+select,
+button {
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+}
+
+/* 테이블 스타일 제거 */
+table {
+  width: 100%;
+  border-spacing: 0;
+  border-collapse: collapse;
+}
+
+/* HTML5 요소 초기화 */
+article,
+aside,
+footer,
+header,
+nav,
+section {
+  display: block;
+}
+
+blockquote,
+q {
+  quotes: none;
+}
+blockquote::before,
+blockquote::after,
+q::before,
+q::after {
+  content: "";
+  content: none;
+}
+
+fieldset {
+  border: none;
+}
+
+legend {
+  font-size: 1em;
+}
+
+/* 폼 요소 초기화 */
+button,
+input,
+select,
+textarea {
+  border: none;
+  font: inherit;
+  color: inherit;
+  background: none;
+  box-shadow: none;
+  appearance: none;
+  vertical-align: middle;
+  font-size: 100%;
+}
+
+/* 추가 스타일 */
+button {
+  cursor: pointer;
+}
+
+/* hr 초기화 */
+hr {
+  border: none;
+  border-top: 1px solid #ccc;
+  margin: 1em 0;
+}
