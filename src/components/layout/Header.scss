@@ -4,8 +4,9 @@
   left: 0;
   width: 100%;
   height: 80px;
-  background-color: #fa0050;
-  color: #fff;
+  background-color: #fff;
+  border-bottom: 1px solid #33333345;
+  color: #333;
   .inner {
     justify-content: space-between;
     align-items: center;
@@ -14,6 +15,14 @@
 }
 
 .nav__list {
+  font-weight: 700;
   display: flex;
-  gap: 8px;
+  justify-content: center;
+  gap: 24px;
+}
+
+.nav__item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
