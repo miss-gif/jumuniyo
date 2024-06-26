@@ -1,4 +1,11 @@
 // 리셋 CSS
-@import "./css/common/reset.scss";
+@import "./css/base/reset";
+//  색상, 폰트, 간격 등
+@import "./css/base/typography";
+//  변수
+@import "./css/abstracts/variables";
+//  믹스인
+@import "./css/abstracts/mixins";
+
 // 공용 CSS
 @import "./css/common/common.scss";
