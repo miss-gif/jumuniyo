@@ -1,8 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-import "./Header.scss";
-
 function Header() {
   return (
     <header className="header">
@@ -26,8 +24,11 @@ function Header() {
             <li className="nav__item">
               <Link to="/profile">마이페이지</Link>
             </li>
-            <li className="nav__item btn">
+            <li className="nav__item">
               <Link to="/auth">로그인</Link>
+            </li>
+            <li className="nav__item btn">
+              <Link to="/auth">회원가입</Link>
             </li>
           </ul>
         </nav>

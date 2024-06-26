@@ -1,7 +1,12 @@
 import React from "react";
+import CategoryNavigation from "../components/CategoryNavigation";
 
 const HomePage = () => {
-  return <div>HomePage</div>;
+  return (
+    <>
+      <CategoryNavigation />
+    </>
+  );
 };
 
 export default HomePage;
