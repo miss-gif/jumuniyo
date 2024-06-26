@@ -1,0 +1,30 @@
+.category {
+  width: 100%;
+
+  &__list {
+    display: grid;
+    grid-template-columns: repeat(
+      auto-fill,
+      minmax(200px, 1fr)
+    ); /* 최소 너비 200px, 가득 채우기 */
+    gap: 12px;
+    margin: 10px 0;
+  }
+
+  &__item {
+    height: 220px;
+    > h3 {
+      margin: 10px;
+    }
+  }
+
+  /* 첫 번째 줄 */
+  &__list:first-of-type {
+    justify-content: flex-start; /* 첫 번째 줄의 정렬 방식 */
+  }
+
+  /* 두 번째 줄 이후 */
+  &__list:not(:first-of-type) {
+    justify-content: space-between; /* 나머지 줄의 정렬 방식 */
+  }
+}
