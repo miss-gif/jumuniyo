@@ -1,0 +1,25 @@
+.footer {
+  padding: 40px 0;
+  background-color: orange;
+}
+
+.footer__menu {
+  ul {
+    display: flex;
+    gap: 10px;
+  }
+}
+
+.footer__info {
+  display: flex;
+  gap: 10px;
+}
+
+.company-info__text {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.service-info {
+  display: flex;
+}

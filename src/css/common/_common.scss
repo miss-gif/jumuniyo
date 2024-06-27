@@ -5,12 +5,14 @@ html {
 .inner {
   max-width: $laptop;
   display: flex;
+  flex-direction: column;
   margin: 0 auto;
   padding: 0 20px;
 }
 
 .main {
   margin-top: $header-height;
+  margin-top: 240px;
 }
 
 .btn {
@@ -53,4 +55,8 @@ html {
 .border-set {
   border-radius: $border-radius-2;
   border: 1px solid $black;
+}
+
+.main {
+  min-height: 50vh;
 }
