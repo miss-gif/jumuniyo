@@ -1,12 +1,14 @@
 .footer {
+  margin-bottom: 40px;
 }
 
 .footer__menu {
-  border-top: 1px solid $black;
-  border-bottom: 1px solid $black;
+  border-top: 1px solid rgba($color: #000000, $alpha: 0.2);
+  border-bottom: 1px solid rgba($color: #000000, $alpha: 0.2);
+  margin-bottom: 30px;
 }
 
-.footer__info {
+.footer__wrap {
   display: flex;
   gap: 10px;
 }
@@ -14,10 +16,15 @@
 .company-info__text {
   display: flex;
   flex-wrap: wrap;
+  font-size: 0.8rem;
+  p {
+    margin-right: 10px;
+  }
 }
 
 .service-info {
   display: flex;
+  font-size: 0.8rem;
 }
 
 .footer__menu__list {
@@ -36,7 +43,7 @@
       content: "";
       width: 1px;
       height: 12px;
-      background-color: #555;
+      background-color: rgba($color: #000000, $alpha: 0.2);
       top: 0;
       bottom: 0;
       right: -1px;
@@ -47,4 +54,20 @@
 
 .footer__menu__item:last-child a::before {
   width: 0;
+}
+
+.footer__logo {
+  width: 100px;
+  height: 100%;
+  opacity: 0.5;
+}
+
+.footer__info {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.guide {
+  font-size: 0.8rem;
 }

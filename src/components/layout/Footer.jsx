@@ -29,19 +29,21 @@ const Footer = () => {
         </div>
       </div>
       <div className="inner">
-        <div className="footer__info">
-          <div className="">로고</div>
-          <div className="info 영역">
-            <div className="company-info">
-              <h3>주문이요</h3>
-              <div className="company-info__text">
-                <p>대구 중구 중앙대로 394 제일빌딩 5F 506호</p>
-                <p>FE : 곽도억, 김민기, 권민욱</p>
-                <p>BE : 이민역, 공영빈, 김동현, 이하늘, 정형우</p>
-                <p>개인정보담당자 : yumuniyo@gmail.com</p>
-                <p>제휴문의 : yumuniyo@gmail.com</p>
-                <p>고객만족센터 : yumuniyo@gmail.com</p>
-              </div>
+        <div className="footer__wrap">
+          <img
+            src={process.env.PUBLIC_URL + "/images/logo_1x.png"}
+            alt="Logo"
+            className="footer__logo"
+          />
+          <div className="footer__info">
+            <h3>주문이요</h3>
+            <div className="company-info__text">
+              <p>대구 중구 중앙대로 394 제일빌딩 5F 506호</p>
+              <p>FE : 곽도억, 김민기, 권민욱</p>
+              <p>BE : 이민역, 공영빈, 김동현, 이하늘, 정형우</p>
+              <p>개인정보담당자 : yumuniyo@gmail.com</p>
+              <p>제휴문의 : yumuniyo@gmail.com</p>
+              <p>고객만족센터 : yumuniyo@gmail.com</p>
             </div>
             <div className="service-info">
               <div>주문이요 안심센터</div>
