@@ -34,9 +34,6 @@ const LocationSearch = () => {
 export default LocationSearch;
 
 const StyledLocationSearch = styled.div`
-  position: sticky;
-  top: 0;
-  margin: 0 auto;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -49,6 +46,7 @@ const StyledLocationSearch = styled.div`
     color: #eee;
   }
   p {
+    text-align: center;
     color: #eee;
     margin: 5px 0 15px;
   }

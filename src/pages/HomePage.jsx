@@ -4,13 +4,13 @@ import NewRestaurantListCarousel from "../components/home/NewRestaurantListCarou
 
 const HomePage = () => {
   return (
-    <>
+    <div className="home">
       <CategoryNavigation />
-      <div className="carousel">
-        <h3 className="carousel__title">최근에 주문한 메뉴</h3>
+      <section className="section-carousel">
+        <h3 className="section__title">최근에 주문한 메뉴</h3>
         <NewRestaurantListCarousel />
-      </div>
-    </>
+      </section>
+    </div>
   );
 };
 

@@ -4,16 +4,24 @@ import Footer from "./Footer";
 import { Outlet } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import ToTop from "../ToTop";
+import LocationSearch from "../home/LocationSearch";
 
 function RootLayout() {
   const location = useLocation();
-  // "/auth" 경로에서는 header과 footer가 렌더링 되지 않음
-  const isAuthPath = location.pathname.startsWith("/auth");
+  // "/auth" 또는 "/login" 경로에서는 header와 footer가 렌더링 되지 않음
+  const isAuthPath =
+    location.pathname.startsWith("/auth") ||
+    location.pathname.startsWith("/login");
 
   return (
     <>
       <ToTop />
-      {!isAuthPath && <Header />}
+      {!isAuthPath && (
+        <>
+          <Header />
+          <LocationSearch />
+        </>
+      )}
       <main className="main">
         <div className="inner">
           <Outlet />
