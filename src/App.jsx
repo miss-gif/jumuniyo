@@ -11,6 +11,7 @@ import ProfilePage from "./pages/ProfilePage.jsx";
 import AuthPage from "./pages/AuthPage.jsx";
 import AuthUserPage from "./pages/AuthUserPage.jsx";
 import AuthCeoPage from "./pages/AuthCeoPage.jsx";
+import LoginPage from "./pages/LoginPage.jsx";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           <Route path="/cart" element={<CartPage />} />
           <Route path="/checkout" element={<CheckoutPage />} />
           <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/login" element={<LoginPage />} />
           <Route path="/auth" element={<AuthPage />} />
           <Route path="/auth/user" element={<AuthUserPage />} />
           <Route path="/auth/ceo" element={<AuthCeoPage />} />
