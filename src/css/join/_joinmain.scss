@@ -1,0 +1,66 @@
+.join-wrap {
+  width: 1024px;
+  height: 1094px;
+  display: flex;
+  gap: 50px;
+  align-items: center;
+  flex-shrink: 0;
+  flex-direction: column;
+  padding: 100px 0px;
+
+  & h1 {
+    color: #000;
+    text-align: center;
+    font-family: Pretendard;
+    font-size: 60px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    letter-spacing: 1.2px;
+  }
+}
+
+.join-button {
+  width: 1024px;
+  display: flex;
+  gap: 30px;
+  align-items: center;
+  justify-content: center;
+
+  & a {
+    height: 220px;
+    display: flex;
+    flex: 1 0 0;
+    border: 2px solid #d9d9d9;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    background: #fff;
+    border-radius: 30px;
+    cursor: pointer;
+  }
+
+  & p {
+    display: flex;
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    color: #000;
+    text-align: center;
+    letter-spacing: 0.8px;
+    align-items: center;
+  }
+
+  & div {
+    width: 180px;
+    height: auto;
+  }
+}
+.join-user-img {
+  background-image: url("../../../public/images/pngegg.png");
+  background-size: cover;
+}
+
+.join-ceo-img {
+  background-image: url("../../../public/images/pngwing.com.png");
+  background-size: cover;
+}
