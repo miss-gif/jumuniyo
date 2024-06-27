@@ -1,13 +1,9 @@
 .footer {
-  padding: 40px 0;
-  border-top: 1px solid rgba($color: #333, $alpha: 0.2);
 }
 
 .footer__menu {
-  ul {
-    display: flex;
-    gap: 10px;
-  }
+  border-top: 1px solid $black;
+  border-bottom: 1px solid $black;
 }
 
 .footer__info {
@@ -22,4 +18,33 @@
 
 .service-info {
   display: flex;
+}
+
+.footer__menu__list {
+  font-size: 14px;
+  display: flex;
+  justify-content: center;
+  padding: 12px;
+}
+
+.footer__menu__item {
+  a {
+    position: relative;
+    padding: 15px;
+    &::before {
+      position: absolute;
+      content: "";
+      width: 1px;
+      height: 12px;
+      background-color: #555;
+      top: 0;
+      bottom: 0;
+      right: -1px;
+      margin: auto;
+    }
+  }
+}
+
+.footer__menu__item:last-child a::before {
+  width: 0;
 }

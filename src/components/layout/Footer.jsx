@@ -4,29 +4,31 @@ import { Link } from "react-router-dom";
 const Footer = () => {
   return (
     <footer className="footer">
-      <div className="inner">
-        <div className="footer__menu">
-          <ul>
-            <li>
+      <div className="footer__menu">
+        <div className="inner">
+          <ul className="footer__menu__list">
+            <li className="footer__menu__item">
               <Link to="/">이용약관</Link>
             </li>
-            <li>
+            <li className="footer__menu__item">
               <Link to="/">개인정보처리방침</Link>
             </li>
-            <li>
+            <li className="footer__menu__item">
               <Link to="/">프로젝트 소개</Link>
             </li>
-            <li>
+            <li className="footer__menu__item">
               <Link to="/">주문이요사장님</Link>
             </li>
-            <li>
+            <li className="footer__menu__item">
               <Link to="/">공지사항</Link>
             </li>
-            <li>
+            <li className="footer__menu__item">
               <Link to="/">FAQ</Link>
             </li>
           </ul>
         </div>
+      </div>
+      <div className="inner">
         <div className="footer__info">
           <div className="">로고</div>
           <div className="info 영역">
