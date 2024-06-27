@@ -1,13 +1,24 @@
 import styled from "@emotion/styled";
 import React from "react";
+import { MdMyLocation } from "react-icons/md";
+import { useLocation } from "react-router-dom";
 
 const LocationSearch = () => {
+  const location = useLocation();
+  const isHomePage = location.pathname === "/";
+
   return (
     <StyledLocationSearch className="LocationSearch">
-      <h2>&quot;배달은 역시, 속전속결!&quot;</h2>
-      <p>받으실 동 이름으로 검색해주세요</p>
+      {isHomePage && (
+        <StyledHomeText>
+          <h2>&quot;배달은 역시, 속전속결!&quot;</h2>
+          <p>받으실 동 이름으로 검색해주세요</p>
+        </StyledHomeText>
+      )}
       <div className="locationSearch__group">
-        <button className="LocationSearch__icon">버튼</button>
+        <button className="LocationSearch__icon">
+          <MdMyLocation />
+        </button>
         <div className="locationSearch__input">
           <input
             type="text"
@@ -46,6 +57,9 @@ const StyledLocationSearch = styled.div`
     gap: 10px;
   }
   .LocationSearch__icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     padding: 10px;
     border-radius: 4px;
   }
@@ -69,3 +83,5 @@ const StyledLocationSearch = styled.div`
     color: #fff;
   }
 `;
+
+const StyledHomeText = styled.div``;
