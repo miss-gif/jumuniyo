@@ -3,6 +3,7 @@ import Header from "./Header";
 import Footer from "./Footer";
 import { Outlet } from "react-router-dom";
 import { useLocation } from "react-router-dom";
+import ToTop from "../ToTop";
 
 function RootLayout() {
   const location = useLocation();
@@ -11,6 +12,7 @@ function RootLayout() {
 
   return (
     <>
+      <ToTop />
       {!isAuthPath && <Header />}
       <main className="main">
         <div className="inner">
