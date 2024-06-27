@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import LocationSearch from "../home/LocationSearch";
 
 function Header() {
   return (
@@ -33,6 +34,7 @@ function Header() {
           </ul>
         </nav>
       </div>
+      <LocationSearch />
     </header>
   );
 }
