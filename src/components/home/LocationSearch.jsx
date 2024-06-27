@@ -4,7 +4,7 @@ import React from "react";
 const LocationSearch = () => {
   return (
     <StyledLocationSearch className="LocationSearch">
-      <h2>배달은 역시, 속전속결!</h2>
+      <h2>&quot;배달은 역시, 속전속결!&quot;</h2>
       <p>받으실 동 이름으로 검색해주세요</p>
       <div className="locationSearch__group">
         <button className="LocationSearch__icon">버튼</button>
@@ -30,18 +30,16 @@ const StyledLocationSearch = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 230px;
-  background-color: #fff;
-  background: orange;
+  background-color: #1657bf;
+  padding: 30px 0;
 
   h2 {
     font-size: 36px;
     color: #eee;
   }
   p {
-    font-weight: 700;
     color: #eee;
-    margin: 5px;
+    margin: 5px 0 15px;
   }
   .locationSearch__group {
     display: flex;
