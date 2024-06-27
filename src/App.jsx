@@ -12,6 +12,9 @@ import AuthPage from "./pages/AuthPage.jsx";
 import AuthUserPage from "./pages/AuthUserPage.jsx";
 import AuthCeoPage from "./pages/AuthCeoPage.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
+import MyPage from "./pages/MyPage.jsx";
+import MyPageOrderPage from "./pages/MyPageOrderPage.jsx";
+import PaymentPage from "./pages/PaymentPage.jsx";
 
 function App() {
   return (
@@ -24,10 +27,13 @@ function App() {
           <Route path="/cart" element={<CartPage />} />
           <Route path="/checkout" element={<CheckoutPage />} />
           <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/mypage" element={<MyPage />} />
+          <Route path="/mypage/order" element={<MyPageOrderPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/auth" element={<AuthPage />} />
           <Route path="/auth/user" element={<AuthUserPage />} />
           <Route path="/auth/ceo" element={<AuthCeoPage />} />
+          <Route path="/payment" element={<PaymentPage />} />
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>
