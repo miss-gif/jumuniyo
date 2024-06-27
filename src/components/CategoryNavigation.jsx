@@ -21,9 +21,6 @@ const CategoryNavigation = () => {
           <li className="category__item border-set">
             <h3>일식</h3>
           </li>
-          <li className="category__item border-set">
-            <h3>일식</h3>
-          </li>
         </ul>
       </section>
     </>
