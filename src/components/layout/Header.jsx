@@ -22,6 +22,9 @@ function Header() {
               <Link to="/restaurants">주문하기</Link>
             </li>
             <li className="nav__item">
+              <Link to="/restaurants/:1">음식점 상세(임시)</Link>
+            </li>
+            <li className="nav__item">
               <Link to="/payment">결제하기(임시)</Link>
             </li>
             <li className="nav__item">
