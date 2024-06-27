@@ -25,6 +25,9 @@ function Header() {
               <Link to="/payment">결제하기(임시)</Link>
             </li>
             <li className="nav__item">
+              <Link to="/mypage/order">주문확인(임시)</Link>
+            </li>
+            <li className="nav__item">
               <Link to="/mypage">마이페이지</Link>
             </li>
             <li className="nav__item">

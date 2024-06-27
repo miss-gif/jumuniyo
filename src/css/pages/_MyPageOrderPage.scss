@@ -1,0 +1,73 @@
+.mypage-order {
+  padding: 20px 0;
+  &__title {
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+
+  &__thanks {
+    font-size: 1.2rem;
+    margin-bottom: 5px;
+  }
+
+  &__confirmation {
+    font-size: 1rem;
+    color: #555;
+    margin-bottom: 20px;
+  }
+
+  &__section-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-top: 20px;
+    margin-bottom: 10px;
+  }
+
+  &__detail {
+    margin-bottom: 15px;
+  }
+
+  &__label {
+    font-size: 1rem;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+
+  &__value {
+    font-size: 1rem;
+    color: #333;
+  }
+
+  &__item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+
+  &__item-name {
+    font-size: 1rem;
+  }
+
+  &__item-price {
+    font-size: 1rem;
+  }
+
+  &__total {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    padding-top: 10px;
+    border-top: 1px solid #ccc;
+  }
+
+  &__total-label {
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
+
+  &__total-price {
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
+}
