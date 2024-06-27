@@ -9,6 +9,8 @@ import CartPage from "./pages/CartPage.jsx";
 import CheckoutPage from "./pages/CheckoutPage.jsx";
 import ProfilePage from "./pages/ProfilePage.jsx";
 import AuthPage from "./pages/AuthPage.jsx";
+import AuthUserPage from "./pages/AuthUserPage.jsx";
+import AuthCeoPage from "./pages/AuthCeoPage.jsx";
 
 function App() {
   return (
@@ -22,6 +24,8 @@ function App() {
           <Route path="/checkout" element={<CheckoutPage />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/auth" element={<AuthPage />} />
+          <Route path="/auth/user" element={<AuthUserPage />} />
+          <Route path="/auth/ceo" element={<AuthCeoPage />} />
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>
