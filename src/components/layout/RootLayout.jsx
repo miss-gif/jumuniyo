@@ -12,6 +12,9 @@ function RootLayout() {
   const isAuthPath =
     location.pathname.startsWith("/auth") ||
     location.pathname.startsWith("/login");
+  const isMyPagePath =
+    location.pathname.startsWith("/payment") ||
+    location.pathname.startsWith("/mypage");
 
   return (
     <>
@@ -19,7 +22,7 @@ function RootLayout() {
       {!isAuthPath && (
         <>
           <Header />
-          <LocationSearch />
+          {!isMyPagePath && <LocationSearch />}
         </>
       )}
       <main className="main">
