@@ -25,8 +25,8 @@ const AuthUserPage = () => {
         <input placeholder="비밀번호를 입력해 주세요."></input>
         <h2>비밀번호 확인</h2>
         <input placeholder="비밀번호를 입력해 주세요."></input>
-        <h2>이름</h2>
-        <input placeholder="이름을 입력해 주세요."></input>
+        <h2>닉네임</h2>
+        <input placeholder="닉네임을 입력해 주세요."></input>
         <h2>이메일</h2>
         <input placeholder="이메일을 입력해 주세요."></input>
 
