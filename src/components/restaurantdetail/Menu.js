@@ -40,7 +40,7 @@ const menuItems = [
 ];
 const Menu = () => {
   return (
-    <Body>
+    <MenuWrap className="menu-wrap">
       <Left className="left">
         <RestaurantInfo className="restaurant-info border-set">
           <RestaurantTitle className="restaurant-title">
@@ -113,7 +113,7 @@ const Menu = () => {
         <OrderPrice className="order-price">배달요금 3,000원 별도</OrderPrice>
         <OrderButton className="order-button">주문하기</OrderButton>
       </Right>
-    </Body>
+    </MenuWrap>
   );
 };
 
@@ -171,7 +171,6 @@ const Discount = styled.div`
 const RestaurantLogo = styled.div`
   width: 80px;
   height: 80px;
-  flex-shrink: 0;
 
   border: 1px solid #d9d9d9;
 `;
@@ -182,7 +181,6 @@ const RestaurantContent = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
-  gap: -0.21px;
 `;
 
 const MenuComponent = styled.div`
@@ -192,7 +190,6 @@ const MenuComponent = styled.div`
   padding-top: 1px;
   justify-content: center;
   align-items: center;
-  flex-shrink: 0;
 `;
 
 const MenuList = styled.div`
@@ -202,25 +199,23 @@ const MenuList = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
-  flex-shrink: 0;
 `;
 
 const MenuListOneMenu = styled.div`
-  display: flex;
   width: 658px;
   height: 104px;
   padding: 12px 10px 12px 15px;
   justify-content: flex-end;
   align-items: center;
-  flex-shrink: 0;
   border: 1px solid #d9d9d9;
+  display: flex;
 `;
 
 const MenuListOneMenuTable = styled.div`
   display: flex;
+
   height: 80px;
   justify-content: center;
-  align-items: flex-start;
 `;
 
 const MenuListOneMenuTableData = styled.div`
@@ -238,7 +233,7 @@ const MenuListOneMenuTablePic = styled.div`
   height: 80px;
 `;
 
-const Body = styled.div`
+const MenuWrap = styled.div`
   display: flex;
   height: 1520.53px;
   padding-right: 10px;
@@ -253,7 +248,6 @@ const Left = styled.div`
 const RestaurantInfo = styled.div`
   width: 660px;
   height: 174.25px;
-  flex-shrink: 0;
 
   border: 1px solid #d9d9d9;
   background: #fff;
@@ -283,7 +277,6 @@ const ThreeChoices = styled.div`
   padding: 1px 1.01px 1px 0px;
   justify-content: center;
   align-items: flex-start;
-  flex-shrink: 0;
 
   border-top: 1px solid #d9d9d9;
   border-right: 1px solid #d9d9d9;
@@ -310,7 +303,6 @@ const OrderTab = styled.div`
   height: 42px;
   padding: 9.5px 268.6px 10.5px 15px;
   align-items: center;
-  flex-shrink: 0;
   background: #333;
   color: #fff;
 `;
@@ -321,7 +313,6 @@ const OrderMenu = styled.div`
   padding: 0px 64.89px 0px 65.08px;
   justify-content: center;
   align-items: center;
-  flex-shrink: 0;
   border: 1px solid #d9d9d9;
 
   background: #fff;
@@ -333,7 +324,6 @@ const OrderPrice = styled.div`
   padding: 11px 15.8px 11px 172.25px;
   justify-content: flex-end;
   align-items: center;
-  flex-shrink: 0;
 
   border: 1px solid #ddd;
 
@@ -345,7 +335,6 @@ const OrderButton = styled.div`
   padding: 11px 0px 20px 0px;
   justify-content: center;
   align-items: center;
-  flex-shrink: 0;
 
   border: 1px solid #ccc;
 
