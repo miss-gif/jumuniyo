@@ -13,16 +13,18 @@
 @import "./css/layout/Header.scss";
 @import "./css/layout/Footer.scss";
 
-// 컴포넌트
+// components: 컴포넌트 스타일
 @import "./css/components/CategoryNavigation.scss";
 @import "./css/components/NewRestaurantListCarousel.scss";
 @import "./css/components/ToTop.scss";
 
-// 페이지
+// pages: 페이지 스타일
 @import "./css/pages/HomePage.scss";
 @import "./css/pages/RestaurantsPage.scss";
 @import "./css/pages/PaymentPage.scss";
 @import "./css/pages/MyPageOrderPage.scss";
+@import "./css/pages/CeoPage.scss";
+@import "./css/pages/ProjectInfo.scss";
 
 @import "./css/join/joinmain";
 @import "./css//join/joinuser";

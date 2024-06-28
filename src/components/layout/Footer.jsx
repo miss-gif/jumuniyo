@@ -1,30 +1,24 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import projectInfo from "../../json/footer.json";
 
 const Footer = () => {
+  const [menuItems, setMenuItems] = useState([]);
+
+  useEffect(() => {
+    // JSON 파일로부터 데이터 로드
+    setMenuItems(projectInfo);
+  }, []);
+
   return (
     <footer className="footer">
       <div className="footer__menu">
         <div className="inner">
           <ul className="footer__menu__list">
-            <li className="footer__menu__item">
-              <Link to="/">이용약관</Link>
-            </li>
-            <li className="footer__menu__item">
-              <Link to="/">개인정보처리방침</Link>
-            </li>
-            <li className="footer__menu__item">
-              <Link to="/">프로젝트 소개</Link>
-            </li>
-            <li className="footer__menu__item">
-              <Link to="/">주문이요사장님</Link>
-            </li>
-            <li className="footer__menu__item">
-              <Link to="/">공지사항</Link>
-            </li>
-            <li className="footer__menu__item">
-              <Link to="/">FAQ</Link>
-            </li>
+            {menuItems.map((item, index) => (
+              <li key={index} className="footer__menu__item">
+                <a href={item.path}>{item.title}</a>
+              </li>
+            ))}
           </ul>
         </div>
       </div>
@@ -46,9 +40,19 @@ const Footer = () => {
               <p>고객만족센터 : yumuniyo@gmail.com</p>
             </div>
             <div className="service-info">
-              <div>주문이요 안심센터</div>
-              <div>주문이요100% 클린리뷰</div>
-              <div>고객만족센터 0000-000 (유료)</div>
+              <div>
+                주문이요
+                <br />
+                안심센터
+              </div>
+              <div>
+                주문이요100%
+                <br />
+                클린리뷰
+              </div>
+              <div>
+                <span>고객만족센터 0000-000 (유료)</span>
+              </div>
               <div>24시간, 연중무휴</div>
             </div>
             <p className="guide">

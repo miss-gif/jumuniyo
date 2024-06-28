@@ -1,8 +1,25 @@
-.home {
+.home-page {
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  margin: 20px 0;
+  gap: 80px;
+  margin: 20px 0 40px;
+}
+
+.section-carousel:nth-of-type(2n) {
+  position: relative;
+  padding: 20px 0;
+  border-radius: 8px;
+  &::before {
+    position: absolute;
+    content: "";
+    top: 0;
+    padding: 20px;
+    width: 200%;
+    left: -50%;
+    height: 100%;
+    background-color: $gray-50;
+    z-index: -1;
+  }
 }
 
 .section__title {

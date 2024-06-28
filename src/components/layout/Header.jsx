@@ -14,6 +14,11 @@ function Header() {
           </Link>
         </h1>
         <nav className="nav">
+          <ul className="nav__top">
+            <li>
+              <Link to="/ceopage">주문이요사장님</Link>
+            </li>
+          </ul>
           <ul className="nav__list">
             <li className="nav__item">
               <Link to="/">홈</Link>
