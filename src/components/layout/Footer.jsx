@@ -46,9 +46,19 @@ const Footer = () => {
               <p>고객만족센터 : yumuniyo@gmail.com</p>
             </div>
             <div className="service-info">
-              <div>주문이요 안심센터</div>
-              <div>주문이요100% 클린리뷰</div>
-              <div>고객만족센터 0000-000 (유료)</div>
+              <div>
+                주문이요
+                <br />
+                안심센터
+              </div>
+              <div>
+                주문이요100%
+                <br />
+                클린리뷰
+              </div>
+              <div>
+                <span>고객만족센터 0000-000 (유료)</span>
+              </div>
               <div>24시간, 연중무휴</div>
             </div>
             <p className="guide">

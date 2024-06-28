@@ -10,7 +10,7 @@
 
 .footer__wrap {
   display: flex;
-  gap: 10px;
+  gap: 42px;
 }
 
 .company-info__text {
@@ -65,9 +65,20 @@
 .footer__info {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 12px;
 }
 
 .guide {
   font-size: 0.8rem;
+}
+
+.service-info {
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  span {
+    font-size: 18px;
+    font-weight: 700;
+  }
 }
