@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import projectInfo from "../../json/footer.json";
 
 const Footer = () => {
@@ -17,7 +16,7 @@ const Footer = () => {
           <ul className="footer__menu__list">
             {menuItems.map((item, index) => (
               <li key={index} className="footer__menu__item">
-                <Link to={item.path}>{item.title}</Link>
+                <a href={item.path}>{item.title}</a>
               </li>
             ))}
           </ul>

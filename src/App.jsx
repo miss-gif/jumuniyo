@@ -16,6 +16,7 @@ import MyPage from "./pages/MyPage.jsx";
 import MyPageOrderPage from "./pages/MyPageOrderPage.jsx";
 import PaymentPage from "./pages/PaymentPage.jsx";
 import CeoPage from "./pages/CeoPage.jsx";
+import ProjectInfo from "./pages/ProjectInfo.jsx";
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
           <Route path="/auth/user" element={<AuthUserPage />} />
           <Route path="/auth/ceo" element={<AuthCeoPage />} />
           <Route path="/payment" element={<PaymentPage />} />
+          <Route path="/projectinfo" element={<ProjectInfo />} />
         </Route>
         <Route path="/ceopage/*" element={<CeoPage />} />
         <Route path="*" element={<NotFound />} />

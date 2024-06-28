@@ -1,42 +1,42 @@
 [
   {
     "title": "프로젝트 소개",
-    "path": "/"
+    "path": "/projectinfo"
   },
   {
     "title": "기획의도",
-    "path": "/"
+    "path": "/projectinfo"
   },
   {
     "title": "핵심기능",
-    "path": "/"
+    "path": "/projectinfo"
   },
   {
     "title": "기술스택",
-    "path": "/"
+    "path": "/projectinfo"
   },
   {
     "title": "진행일정",
-    "path": "/"
+    "path": "/projectinfo"
   },
   {
     "title": "IA명세서",
-    "path": "/"
+    "path": "/projectinfo"
   },
   {
     "title": "API명세서",
-    "path": "/"
+    "path": "/projectinfo"
   },
   {
     "title": "문제해결과정",
-    "path": "/"
+    "path": "/projectinfo"
   },
   {
     "title": "성과지표",
-    "path": "/"
+    "path": "/projectinfo"
   },
   {
     "title": "향후개선방향",
-    "path": "/"
+    "path": "/projectinfo"
   }
 ]

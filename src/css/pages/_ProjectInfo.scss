@@ -1,0 +1,42 @@
+.project-page {
+  padding: 30px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
+  margin-bottom: 120px;
+}
+
+.project-hero {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 50vh;
+  // background-color: orange;
+  h2 {
+    font-size: 4rem;
+    margin: 50px 0;
+  }
+  p {
+    text-align: center;
+  }
+}
+
+.project-section {
+  // background-color: orange;
+  line-height: 200%;
+  h2 {
+    font-size: 2rem;
+    margin: 30px 0;
+    padding: 10px 0;
+    border-bottom: 1px solid #333;
+  }
+  h3 {
+    margin: 10px 0;
+  }
+  ul {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+}
