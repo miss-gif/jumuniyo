@@ -1,8 +1,8 @@
 import React from "react";
-import CategoryNavigation from "../components/CategoryNavigation";
 import NewRestaurantListCarousel from "../components/home/NewRestaurantListCarousel";
 import OrderListCarousel from "../components/home/OrderListCarousel";
 import RecommendationCarousel from "../components/home/RecommendationCarousel";
+import CategoryNavigation from "../components/home/CategoryNavigation";
 
 const HomePage = () => {
   return (

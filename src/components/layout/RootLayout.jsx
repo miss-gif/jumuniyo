@@ -3,7 +3,7 @@ import Header from "./Header";
 import Footer from "./Footer";
 import { Outlet } from "react-router-dom";
 import { useLocation } from "react-router-dom";
-import ToTop from "../ToTop";
+import ToTop from "../common/ToTop";
 import LocationSearch from "../home/LocationSearch";
 
 function RootLayout() {
