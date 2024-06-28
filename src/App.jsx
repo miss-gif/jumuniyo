@@ -36,7 +36,7 @@ function App() {
           <Route path="/auth/ceo" element={<AuthCeoPage />} />
           <Route path="/payment" element={<PaymentPage />} />
         </Route>
-        <Route path="/ceopage" element={<CeoPage />} />
+        <Route path="/ceopage/*" element={<CeoPage />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </>
