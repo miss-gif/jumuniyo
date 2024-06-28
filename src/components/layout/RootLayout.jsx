@@ -9,12 +9,13 @@ import LocationSearch from "../home/LocationSearch";
 function RootLayout() {
   const location = useLocation();
   // "/auth" 또는 "/login" 경로에서는 header와 footer가 렌더링 되지 않음
-  const isAuthPath =
-    location.pathname.startsWith("/auth") ||
-    location.pathname.startsWith("/login");
-  const isMyPagePath =
-    location.pathname.startsWith("/payment") ||
-    location.pathname.startsWith("/mypage");
+  const authPaths = ["/auth", "/login", "/ceopage"];
+  const myPagePaths = ["/payment", "/mypage"];
+
+  const isAuthPath = authPaths.some(path => location.pathname.startsWith(path));
+  const isMyPagePath = myPagePaths.some(path =>
+    location.pathname.startsWith(path),
+  );
 
   return (
     <>

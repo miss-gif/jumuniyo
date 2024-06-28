@@ -15,6 +15,7 @@ import LoginPage from "./pages/LoginPage.jsx";
 import MyPage from "./pages/MyPage.jsx";
 import MyPageOrderPage from "./pages/MyPageOrderPage.jsx";
 import PaymentPage from "./pages/PaymentPage.jsx";
+import CeoPage from "./pages/CeoPage.jsx";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/mypage" element={<MyPage />} />
           <Route path="/mypage/order" element={<MyPageOrderPage />} />
+          <Route path="/ceopage" element={<CeoPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/auth" element={<AuthPage />} />
           <Route path="/auth/user" element={<AuthUserPage />} />
