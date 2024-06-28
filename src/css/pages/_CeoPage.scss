@@ -1,0 +1,57 @@
+.ceo-page {
+  &__header {
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+  }
+
+  &__controller {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+  }
+
+  &__button {
+    padding: 8px 12px;
+    background-color: $gray-700;
+    color: white;
+    border-radius: 4px;
+    &:hover {
+      background-color: $gray-500;
+    }
+  }
+
+  &__main {
+    display: flex;
+  }
+
+  &__menu {
+    width: 200px;
+    background-color: #f8f9fa;
+    border-right: 1px solid #dee2e6;
+    padding: 20px 0;
+
+    &-item {
+      padding: 10px 20px;
+
+      &:hover {
+        background-color: #e9ecef;
+      }
+    }
+  }
+
+  &__content-wrap {
+    flex-grow: 1;
+    padding: 20px;
+  }
+
+  &__content {
+    min-height: 50vh;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+  }
+}

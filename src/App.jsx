@@ -30,13 +30,13 @@ function App() {
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/mypage" element={<MyPage />} />
           <Route path="/mypage/order" element={<MyPageOrderPage />} />
-          <Route path="/ceopage" element={<CeoPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/auth" element={<AuthPage />} />
           <Route path="/auth/user" element={<AuthUserPage />} />
           <Route path="/auth/ceo" element={<AuthCeoPage />} />
           <Route path="/payment" element={<PaymentPage />} />
         </Route>
+        <Route path="/ceopage" element={<CeoPage />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </>
