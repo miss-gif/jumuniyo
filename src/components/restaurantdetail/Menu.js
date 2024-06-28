@@ -1,11 +1,44 @@
 import styled from "@emotion/styled";
 import React from "react";
+import pizzaImage from "./pizza.jpg"; // 이미지를 import합니다.
 
+const menuItems = [
+  {
+    name: "더블 엘리콤보세트",
+    content: "두 장의 페티 블라블라블라",
+    price: "14,200원",
+    img: pizzaImage,
+  },
+  {
+    name: "핫크리스피버거세트",
+    content: "두 장의 페티 블라블라블라",
+
+    price: "10,200원",
+    img: pizzaImage,
+  },
+  {
+    name: "패밀리팩-콜라",
+    content: "두 장의 페티 블라블라블라",
+
+    price: "23,200원",
+    img: pizzaImage,
+  },
+  {
+    name: "패밀리팩-사이다",
+    content: "두 장의 페티 블라블라블라",
+
+    price: "23,200원",
+    img: pizzaImage,
+  },
+  {
+    name: "더블 치즈버거 세트",
+    content: "두 장의 페티 블라블라블라",
+
+    price: "15,800원",
+    img: pizzaImage,
+  },
+];
 const Menu = () => {
-  // const [menuTitle, setMenuTitle] = useState("");
-  // const [menuContent, setMenuContent] = useState("");
-  // const [menuPrice, setMenuPrice] = useState(0);
-
   return (
     <Body>
       <Left className="left">
@@ -54,16 +87,20 @@ const Menu = () => {
           </div>
           <MenuComponent>
             <MenuList className="menu-list">
-              <MenuListOneMenu className="menu-list-oneMenu">
-                <MenuListOneMenuTable className="menu-list-oneMenu-table">
-                  <MenuListOneMenuTableData>
-                    <div className="menu-list-name">더블 데리버거 세트</div>
-                    <div className="menu-list-content">두 장의 페티</div>
-                    <div className="menu-list-price">6,700원</div>
-                  </MenuListOneMenuTableData>
-                  <MenuListOneMenuTablePic>/ </MenuListOneMenuTablePic>
-                </MenuListOneMenuTable>
-              </MenuListOneMenu>
+              {menuItems.map((item, index) => (
+                <MenuListOneMenu key={index} className="menu-list-oneMenu">
+                  <MenuListOneMenuTable className="menu-list-oneMenu-table">
+                    <MenuListOneMenuTableData>
+                      <span className="menu-list-name">{item.name}</span>
+                      <span className="menu-list-content">{item.content}</span>
+                      <span className="menu-list-price">{item.price}</span>
+                    </MenuListOneMenuTableData>
+                    <MenuListOneMenuTablePic>
+                      <img src={item.img} alt={item.name} />
+                    </MenuListOneMenuTablePic>
+                  </MenuListOneMenuTable>
+                </MenuListOneMenu>
+              ))}
             </MenuList>
           </MenuComponent>
         </div>
