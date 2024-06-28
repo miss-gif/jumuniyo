@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, Route, Routes, Navigate } from "react-router-dom";
+import { Link, Route, Routes } from "react-router-dom";
 import Footer from "../components/layout/Footer";
 import Home from "../components/ceo/Home";
 import Orders from "../components/ceo/Orders";
@@ -43,7 +43,7 @@ const CeoPage = () => {
         <div className="ceo-page__content-wrap">
           <div className="ceo-page__content">
             <Routes>
-              <Route path="/" element={<Navigate to="home" />} />
+              <Route path="/" element={<Home />} />
               <Route path="home" element={<Home />} />
               <Route path="orders" element={<Orders />} />
               <Route path="menu-management" element={<MenuManagement />} />
