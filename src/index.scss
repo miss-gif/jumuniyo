@@ -1,10 +1,12 @@
-// base: 기본 스타일 (reset, typography)
-@import "./css/base/reset.scss";
-@import "./css/base/typography.scss";
-
 // abstracts: 추상적인 개념 (변수, 믹스인)
 @import "./css/abstracts/variables.scss";
+@import "./css/abstracts/colors.scss";
 @import "./css/abstracts/mixins.scss";
+
+// base: 기본 스타일 (reset, typography)
+@import "./css/base/reset.scss";
+@import "./css/base/breakPoint";
+@import "./css/base/typography.scss";
 
 // common: 공통 스타일
 @import "./css/common/common.scss";

@@ -6,112 +6,43 @@
 
 :root {
   font-size: 16px;
-  @media (max-width: 768px) {
+  @include laptop {
     font-size: 14px;
+  }
+  @include mobile {
+    font-size: 12px;
   }
 }
 
-html {
-  font-family: "Spoqa Han Sans Neo", "sans-serif";
-  font-weight: 400;
-}
-
 body {
+  font-family: "Spoqa Han Sans Neo", "sans-serif";
   font-size: 1rem;
   font-weight: 400;
+  background-color: $gray-50;
 }
 
-// Colors
-$color-primary-100: #c6f7d3;
-$color-primary-200: #90f0b3;
-$color-primary-300: #54d48f;
-$color-primary-400: #2aa971;
-$color-primary-500: #00704a;
-$color-primary-600: #006049;
-$color-primary-700: #005045;
-$color-primary-800: #00403e;
-$color-primary-900: #003235;
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 700;
+}
 
-$color-success-100: #e7f9cd;
-$color-success-200: #caf39d;
-$color-success-300: #9ddc67;
-$color-success-400: #6fba3e;
-$color-success-500: #398c10;
-$color-success-600: #28780b;
-$color-success-700: #1a6408;
-$color-success-800: #0f5105;
-$color-success-900: #074303;
+h2 {
+  font-size: 1.5rem; // 36px
+}
 
-$color-info-100: #cfe7fb;
-$color-info-200: #a0ccf8;
-$color-info-300: #6ea8eb;
-$color-info-400: #4885d8;
-$color-info-500: #1657bf;
-$color-info-600: #1043a4;
-$color-info-700: #0b3189;
-$color-info-800: #07226e;
-$color-info-900: #04185b;
+h3 {
+  font-size: 1.125rem;
+}
 
-$color-warning-100: #fcf2ca;
-$color-warning-200: #fae396;
-$color-warning-300: #f1ca60;
-$color-warning-400: #e3b038;
-$color-warning-500: #d18b00;
-$color-warning-600: #b37100;
-$color-warning-700: #965900;
-$color-warning-800: #794400;
-$color-warning-900: #643400;
+h4,
+h5,
+h6 {
+  font-size: 1rem; // 16px
+}
 
-$color-danger-100: #fcd2d9;
-$color-danger-200: #f9a6bc;
-$color-danger-300: #ee77a3;
-$color-danger-400: #de5394;
-$color-danger-500: #c92280;
-$color-danger-600: #ac187a;
-$color-danger-700: #901172;
-$color-danger-800: #740a66;
-$color-danger-900: #60065d;
-
-$black: #333;
-$white: #fff;
-
-$gray-50: #f8fafc;
-$gray-100: #f1f5f9;
-$gray-200: #e2e8f0;
-$gray-300: #cbd5e1;
-$gray-400: #94a3b8;
-$gray-500: #64748b;
-$gray-600: #475569;
-$gray-700: #334155;
-$gray-800: #1e293b;
-$gray-900: #0f172a;
-
-$black: #333;
-$white: #fff;
-$red-light: #f8d7da;
-$red-dark: #842029;
-$green-light: #d1e7dd;
-$green-dark: #0f5132;
-$smallText: 0.7em;
-
-$backgroundColor: $gray-50;
-$textColor: $gray-900;
-$borderRadius: 0.25rem;
-$letterSpacing: 1px;
-$transition: 0.3s ease-in-out all;
-$max-width: 1120px;
-$fixed-width: 600px;
-$fluid-width: 90vw;
-
-$shadow-1:
-  0 1px 3px 0 rgba(0, 0, 0, 0.1),
-  0 1px 2px 0 rgba(0, 0, 0, 0.06);
-$shadow-2:
-  0 4px 6px -1px rgba(0, 0, 0, 0.1),
-  0 2px 4px -1px rgba(0, 0, 0, 0.06);
-$shadow-3:
-  0 10px 15px -3px rgba(0, 0, 0, 0.1),
-  0 4px 6px -2px rgba(0, 0, 0, 0.05);
-$shadow-4:
-  0 20px 25px -5px rgba(0, 0, 0, 0.1),
-  0 10px 10px -5px rgba(0, 0, 0, 0.04);
+p {
+  font-size: 0.875rem; // 14px
+}
