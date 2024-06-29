@@ -14,11 +14,10 @@
   &__top {
     display: flex;
     padding: 8px 4px;
-    background-color: #f8f8f8;
   }
 
   &__title {
-    font-weight: 700;
+    font-weight: 500;
   }
 
   &__rank-point {
@@ -35,17 +34,15 @@
     display: flex;
     justify-content: space-between;
     width: 100%;
-    padding: 10px;
-    background-color: #f8f8f8;
-    border-top: 1px solid #e0e0e0;
+    padding: 8px 8px;
+    background-color: #eee;
     border-radius: 8px;
 
     p {
-      font-size: 0.9rem;
       color: #777;
 
       span {
-        font-weight: 700;
+        font-weight: 500;
         color: #333;
       }
     }

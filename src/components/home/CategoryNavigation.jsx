@@ -7,19 +7,19 @@ const CategoryNavigation = () => {
       <section className="category">
         <ul className="category__list">
           <li className="category__item border-set">
-            <h3>전체보기</h3>
+            <p>전체보기</p>
           </li>
           <li className="category__item border-set">
-            <h3>한식</h3>
+            <p>한식</p>
           </li>
           <li className="category__item border-set">
-            <h3>중식</h3>
+            <p>중식</p>
           </li>
           <li className="category__item border-set">
-            <h3>양식</h3>
+            <p>양식</p>
           </li>
           <li className="category__item border-set">
-            <h3>일식</h3>
+            <p>일식</p>
           </li>
         </ul>
       </section>

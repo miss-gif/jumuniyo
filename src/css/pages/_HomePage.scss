@@ -1,18 +1,17 @@
 .home-page {
   display: flex;
   flex-direction: column;
-  gap: 80px;
+  gap: 60px;
 }
 
 .section-carousel:nth-of-type(2n) {
   position: relative;
-  padding: 20px 0;
+  padding: 30px 0;
   border-radius: 8px;
   &::before {
     position: absolute;
     content: "";
     top: 0;
-    padding: 20px;
     width: 200%;
     left: -50%;
     height: 100%;

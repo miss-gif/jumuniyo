@@ -13,7 +13,8 @@
   &__item {
     height: 220px;
     background: url("../../../public/images/category/category-01.png.png");
-    > h3 {
+    > p {
+      font-weight: 500;
       margin: 10px;
     }
   }
