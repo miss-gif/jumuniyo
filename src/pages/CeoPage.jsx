@@ -12,7 +12,9 @@ const CeoPage = () => {
   return (
     <div className="ceo-page">
       <div className="ceo-page__header">
-        <h2>주문이요사장님 | 사업장 페이지</h2>
+        <h2>
+          주문이요사장님 | <span>사업장 페이지</span>
+        </h2>
         <div className="ceo-page__controller">
           <div className="ceo-page__user-id">userID</div>
           <button className="ceo-page__button">내정보</button>
@@ -22,7 +24,7 @@ const CeoPage = () => {
       <div className="ceo-page__main">
         <aside className="ceo-page__menu">
           <Link to="home" className="ceo-page__menu-item">
-            사업장페이지 홈
+            홈
           </Link>
           <Link to="orders" className="ceo-page__menu-item">
             주문내역

@@ -18,6 +18,9 @@ function Header() {
             <li>
               <Link to="/ceopage">주문이요사장님</Link>
             </li>
+            <li>
+              <Link to="/">관리자</Link>
+            </li>
           </ul>
           <ul className="nav__list">
             <li className="nav__item">
