@@ -20,6 +20,27 @@ html {
   font-weight: 400;
 }
 
+.btn--active {
+  padding: 8px 12px;
+  background-color: $black;
+  color: white;
+  border-radius: 4px;
+  align-self: center;
+  font-size: 0.875rem;
+  font-weight: 400;
+}
+
+.btn--default {
+  padding: 8px 12px;
+  color: $black;
+  background-color: white;
+  border-radius: 4px;
+  align-self: center;
+  font-size: 0.875rem;
+  font-weight: 400;
+  border: 1px solid $gray-300;
+}
+
 .btn-active {
   font-weight: 700;
 }

@@ -1,20 +1,18 @@
+// 결제하기
 .payment-page {
   display: flex;
-  gap: 10px;
+  gap: 12px;
   &__section {
-    width: 70%;
-    margin-bottom: 20px;
+    width: 65%;
+    border: 1px solid #333;
   }
 
   &__title {
-    font-size: 1.5rem;
-    font-weight: bold;
-    margin-bottom: 10px;
-  }
-
-  &__subtitle {
-    font-size: 1.2rem;
-    margin-bottom: 5px;
+    font-size: 16px;
+    color: $white;
+    background-color: $black;
+    padding: 10px;
+    font-weight: 500;
   }
 
   &__form {
@@ -22,70 +20,91 @@
     flex-direction: column;
   }
 
-  &__delivery-info,
-  &__request,
-  &__payment-method,
-  &__coupon {
-    margin-bottom: 15px;
+  &__input-wrap {
+    display: flex;
+    flex-direction: column;
   }
 
-  &__input,
-  &__textarea {
-    width: 100%;
-    padding: 8px;
-    margin-top: 5px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+  &__subtitle {
+    font-weight: 500;
+    font-size: 0.875rem;
+    background-color: #e6e6e6;
+    padding: 10px;
   }
 
-  &__button {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-
-    &:hover {
-      background-color: #0056b3;
+  &__delivery-info {
+    padding: 20px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    div {
+      display: flex;
+      padding: 0 10px;
+      label {
+        width: 140px;
+        font-weight: 500;
+        font-size: 0.875rem;
+      }
+      input {
+        font-size: 0.875rem;
+        width: 100%;
+        padding: 5px 10px;
+        border: 1px solid #333;
+      }
     }
   }
 
+  &__request {
+    padding: 10px;
+    width: 100%;
+    textarea {
+      width: 100%;
+      max-height: 500px;
+      padding: 10px;
+      border: 1px solid #333;
+      resize: none;
+      font-size: 14px;
+    }
+  }
+  &__payment-method {
+    display: flex;
+    padding: 16px 10px;
+    flex-direction: column;
+    gap: 12px;
+  }
   &__mobile-payment,
   &__onsite-payment {
     display: flex;
-    gap: 10px;
-    margin-bottom: 10px;
+    gap: 12px;
   }
-
-  &__coupon-wrap {
-    display: flex;
-    gap: 10px;
+  &__button {
+    width: 120px;
   }
+}
 
+// 주문내역
+.payment-page {
   &__order-summary {
-    width: 30%;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    width: 35%;
+    border: 1px solid $gray-200;
+    border-radius: 8px;
   }
 
-  &__restaurant-name {
-    font-size: 1.2rem;
-    margin-bottom: 10px;
-  }
+  // &__restaurant-name {
+  //   font-size: 1.2rem;
+  //   margin-bottom: 10px;
+  // }
 
-  &__order-item,
-  &__total-amount {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 10px;
-  }
+  // &__order-item,
+  // &__total-amount {
+  //   display: flex;
+  //   justify-content: space-between;
+  //   margin-bottom: 10px;
+  // }
 
-  &__terms {
-    font-size: 0.9rem;
-    color: #555;
-    margin-bottom: 20px;
-  }
+  // &__terms {
+  //   font-size: 0.9rem;
+  //   color: #555;
+  //   margin-bottom: 20px;
+  // }
 }
