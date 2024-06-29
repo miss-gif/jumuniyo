@@ -50,6 +50,9 @@
       margin: auto;
     }
   }
+  &:nth-child(1) {
+    font-weight: 500;
+  }
 }
 
 .footer__menu__item:last-child a::before {

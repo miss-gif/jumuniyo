@@ -3,7 +3,7 @@ import React from "react";
 const MyPageOrderPage = () => {
   return (
     <div className="mypage-order">
-      <div className="mypage-order__title">주문완료</div>
+      <h2 className="mypage-order__title">주문완료</h2>
       <p className="mypage-order__thanks">주문 감사합니다</p>
       <p className="mypage-order__confirmation">
         주문 요청이 완료되었으며 고객님의 휴대전화 번호로 주문 확인 문자가 곧
