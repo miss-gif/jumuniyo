@@ -5,7 +5,10 @@ const AuthPage = () => {
 
   return (
     <div className="join-wrap">
-      <h1>회원가입</h1>
+      <div className="join-top">
+        도움이 필요하신 서비스 유형을 선택해주세요.
+      </div>
+      <h2>회원가입</h2>
       <div className="join-button">
         <a
           onClick={() => {
@@ -13,6 +16,10 @@ const AuthPage = () => {
           }}
         >
           <div className="join-user-img"></div>
+          <h3>
+            주문이요에서 음식 주문하는
+            <br /> 일반유저 회원가입 입니다.
+          </h3>
           <p>일반 회원가입</p>
         </a>
         <a
@@ -21,6 +28,10 @@ const AuthPage = () => {
           }}
         >
           <div className="join-ceo-img"></div>
+          <h3>
+            주문이요에서 가게 등록하는
+            <br /> 사장님유저 회원가입 입니다.
+          </h3>
           <p>사장님 회원가입</p>
         </a>
       </div>

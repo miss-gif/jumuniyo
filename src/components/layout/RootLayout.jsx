@@ -10,7 +10,7 @@ import RestaurantsFilters from "../common/RestaurantsFilters";
 function RootLayout() {
   const location = useLocation();
   // "/auth" 또는 "/login" 경로에서는 header와 footer가 렌더링 되지 않음
-  const authPaths = ["/auth", "/login", "/ceopage"];
+  const authPaths = ["/ceopage"];
   const myPagePaths = ["/payment", "/mypage", "/projectinfo"];
   // 허용하는 path
   const restaurantsPaths = ["/restaurants"];
