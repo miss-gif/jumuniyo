@@ -9,13 +9,13 @@ import RestaurantsFilters from "../common/RestaurantsFilters";
 
 function RootLayout() {
   const location = useLocation();
-  // "/auth" 또는 "/login" 경로에서는 header와 footer가 렌더링 되지 않음
-  const authPaths = ["/ceopage"];
-  const myPagePaths = ["/payment", "/mypage", "/projectinfo"];
-  // 허용하는 path
+
+  // 위치 검색 사용 시 path 등록
+  const myPagePaths = ["/restaurants"];
+  // 음식점 카테고리 필터 시 사용 path 등록
   const restaurantsPaths = ["/restaurants"];
 
-  const isAuthPath = authPaths.some(path => location.pathname.startsWith(path));
+  const isHomePage = location.pathname === "/";
   const isMyPagePath = myPagePaths.some(path =>
     location.pathname.startsWith(path),
   );
@@ -26,19 +26,20 @@ function RootLayout() {
   return (
     <>
       <ToTop />
-      {!isAuthPath && (
-        <>
-          <Header />
-          {!isMyPagePath && <LocationSearch />}
-          {isRestaurantsPaths && <RestaurantsFilters />}
-        </>
-      )}
+
+      <Header />
+
+      {isHomePage && <LocationSearch />}
+      {isMyPagePath && <LocationSearch />}
+      {isRestaurantsPaths && <RestaurantsFilters />}
+
       <main className="main">
         <div className="inner">
           <Outlet />
         </div>
       </main>
-      {!isAuthPath && <Footer />}
+
+      <Footer />
     </>
   );
 }
