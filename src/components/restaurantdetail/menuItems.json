@@ -1,0 +1,41 @@
+[
+  {
+    "id": 1,
+    "name": "더블 엘리콤보세트",
+    "content": "두 장의 페티 블라블라블라",
+    "price": 14200,
+    "img": "./pizza.jpg"
+  },
+  {
+    "id": 2,
+
+    "name": "핫크리스피버거세트",
+    "content": "두 장의 페티 블라블라블라",
+    "price": 10200,
+    "img": "./pizza.jpg"
+  },
+  {
+    "id": 3,
+
+    "name": "패밀리팩-콜라",
+    "content": "두 장의 페티 블라블라블라",
+    "price": 23200,
+    "img": "./pizza.jpg"
+  },
+  {
+    "id": 4,
+
+    "name": "패밀리팩-사이다",
+    "content": "두 장의 페티 블라블라블라",
+    "price": 23200,
+    "img": "./pizza.jpg"
+  },
+  {
+    "id": 5,
+
+    "name": "더블 치즈버거 세트",
+    "content": "두 장의 페티 블라블라블라",
+    "price": 15800,
+    "img": "./pizza.jpg"
+  }
+]

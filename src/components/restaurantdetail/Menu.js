@@ -1,343 +1,266 @@
-import styled from "@emotion/styled";
-import React from "react";
-import pizzaImage from "./pizza.jpg"; // 이미지를 import합니다.
+import React, { useEffect, useState } from "react";
+import pizzaImage from "./pizza.jpg";
+import testMenu from "./testMenu.jpg";
+import ModalForMenu from "./ModalForMenu"; // 모달 컴포넌트 추가
+import menuItemsData from "./menuItems.json";
+import reviewItemsData from "./review.json";
+import infoData from "./info.json"; // JSON 파일 가져오기
 
-const menuItems = [
-  {
-    name: "더블 엘리콤보세트",
-    content: "두 장의 페티 블라블라블라",
-    price: "14,200원",
-    img: pizzaImage,
-  },
-  {
-    name: "핫크리스피버거세트",
-    content: "두 장의 페티 블라블라블라",
+import "../../css/components/_Menu.scss";
 
-    price: "10,200원",
-    img: pizzaImage,
-  },
+const storeReviewNumber = [
   {
-    name: "패밀리팩-콜라",
-    content: "두 장의 페티 블라블라블라",
-
-    price: "23,200원",
-    img: pizzaImage,
-  },
-  {
-    name: "패밀리팩-사이다",
-    content: "두 장의 페티 블라블라블라",
-
-    price: "23,200원",
-    img: pizzaImage,
-  },
-  {
-    name: "더블 치즈버거 세트",
-    content: "두 장의 페티 블라블라블라",
-
-    price: "15,800원",
-    img: pizzaImage,
+    reviews: 100,
   },
 ];
+
 const Menu = () => {
-  return (
-    <MenuWrap className="menu-wrap">
-      <Left className="left">
-        <RestaurantInfo className="restaurant-info border-set">
-          <RestaurantTitle className="restaurant-title">
-            롯데리아-서성네거리점
-          </RestaurantTitle>
-          <RestaurantLogo className="restaurant-logo"></RestaurantLogo>
-          <RestaurantContent className="restaurant-content">
-            <RestaurantList className="restaurant-list">
-              <ListStar className="list-star">별점</ListStar>
-              <ListDiscount className="list-minimumOrder">
-                12,000원 이상 주문 시 3,000원 할인
-              </ListDiscount>
-              최소주문금액
-              <MinumumOrder className="list-minimumOrder">
-                11,000원
-              </MinumumOrder>
-              결제<PayMethod className="list-payMethod">요기서결제</PayMethod>
-              <Discount className="list-payMethod">3,000원 할인</Discount>
-            </RestaurantList>
-          </RestaurantContent>
-        </RestaurantInfo>
-        <div className="choice">
-          <ThreeChoices className="threeChoices">
-            <ul>
-              <li>
-                <div>메뉴</div>
-              </li>
-              <li>
-                <div>클린리뷰</div>
-              </li>
-              <li>
-                <div>정보</div>
-              </li>
-            </ul>
-          </ThreeChoices>
+  const [selectedTab, setSelectedTab] = useState("menu");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [orderItems, setOrderItems] = useState([]);
+
+  // 더미데이터용
+  const [menuItems, setMenuItems] = useState([]);
+  const [reviewItems, setReviewItems] = useState([]);
+  const [info, setInfo] = useState({});
+
+  // 더미데이터용
+  useEffect(() => {
+    const updatedMenuItems = menuItemsData.map(item => ({
+      ...item,
+      img: pizzaImage,
+    }));
+    setMenuItems(updatedMenuItems);
+
+    const updatedReviewItems = reviewItemsData.map(item => ({
+      ...item,
+      reviewImg: testMenu,
+    }));
+    setReviewItems(updatedReviewItems);
+
+    setInfo(infoData);
+  }, []);
+
+  const handleOpenModal = item => {
+    setSelectedItem(item);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedItem(null);
+  };
+
+  const handleSelectCount = count => {
+    const itemWithCount = { ...selectedItem, count };
+    setOrderItems([...orderItems, itemWithCount]);
+    setIsModalOpen(false);
+    setSelectedItem(null);
+  };
+
+  const renderContent = () => {
+    if (selectedTab === "menu") {
+      return (
+        <div>
           <div className="menu-slide">
             <div className="container">
-              <OneMenu className="oneMenu border-set">
-                <div className="menuPicture"></div>
-                <div className="menuTitle">더블한우</div>
-                <div className="menuPrice">14,200</div>
-              </OneMenu>
+              {menuItems.map((item, index) => (
+                <div
+                  key={index}
+                  className="oneMenu border-set"
+                  onClick={() => handleOpenModal(item)}
+                >
+                  <div className="menuPicture">
+                    <img src={item.img} alt={item.name} />
+                  </div>
+                  <div className="menuTitle">{item.name}</div>
+                  <div className="menuPrice">
+                    {item.price.toLocaleString()}원
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
-          <MenuComponent>
-            <MenuList className="menu-list">
+          <div className="menu-component">
+            <div className="menu-list">
               {menuItems.map((item, index) => (
-                <MenuListOneMenu key={index} className="menu-list-oneMenu">
-                  <MenuListOneMenuTable className="menu-list-oneMenu-table">
-                    <MenuListOneMenuTableData>
+                <div
+                  key={index}
+                  className="menu-list-oneMenu"
+                  onClick={() => handleOpenModal(item)}
+                >
+                  <div className="menu-list-oneMenu-table">
+                    <div className="menu-list-oneMenu-tableData">
                       <span className="menu-list-name">{item.name}</span>
                       <span className="menu-list-content">{item.content}</span>
-                      <span className="menu-list-price">{item.price}</span>
-                    </MenuListOneMenuTableData>
-                    <MenuListOneMenuTablePic>
+                      <span className="menu-list-price">
+                        {item.price.toLocaleString()}원
+                      </span>
+                    </div>
+                    <div className="menu-list-oneMenu-tablePic">
                       <img src={item.img} alt={item.name} />
-                    </MenuListOneMenuTablePic>
-                  </MenuListOneMenuTable>
-                </MenuListOneMenu>
+                    </div>
+                  </div>
+                </div>
               ))}
-            </MenuList>
-          </MenuComponent>
+            </div>
+          </div>
         </div>
-      </Left>
-      <Right className="right">
-        <OrderTab className="order-tab">주문표</OrderTab>
-        <OrderMenu className="order-menu">
-          주문표에 담긴 메뉴가 없습니다.
-        </OrderMenu>
-        <OrderPrice className="order-price">배달요금 3,000원 별도</OrderPrice>
-        <OrderButton className="order-button">주문하기</OrderButton>
-      </Right>
-    </MenuWrap>
+      );
+    } else if (selectedTab === "review") {
+      return (
+        <div className="review-wrap">
+          <div>클린리뷰 {storeReviewNumber[0].reviews}</div>
+          <div className="rating-section">
+            <div className="rating-score">5.0</div>
+            <div className="rating-stars">
+              <span>맛</span> <span>5.0</span>
+              <span>양</span> <span>5.0</span>
+              <span>배달</span> <span>5.0</span>
+            </div>
+          </div>
+          <div className="review-section">
+            <div className="review-count">
+              리뷰 {storeReviewNumber[0].reviews}개
+            </div>
+            <div className="review-switch">
+              <label>
+                <input type="checkbox"></input> 사장님댓글
+              </label>
+            </div>
+          </div>
+          <div className="reviews">
+            {reviewItems.map((item, index) => (
+              <div key={index} className="review">
+                <div className="review-header">
+                  <span className="review-user">{item.userId}</span>
+                  <span className="review-date">{item.writeTime}</span>
+                  <span className="review-rating">{item.score}</span>
+                </div>
+                <div className="review-content">
+                  <img src={item.reviewImg} alt="Review" />
+                  <p>{item.content}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    } else if (selectedTab === "info") {
+      return (
+        <div className="info-section">
+          <h2>업체정보</h2>
+          <p>
+            <strong>영업시간</strong> {info.companyInfo?.businessHours}
+          </p>
+          <p>
+            <strong>전화번호</strong> {info.companyInfo?.phoneNumber}
+          </p>
+          <p>
+            <strong>주소</strong> {info.companyInfo?.address}
+          </p>
+          <h2>결제정보</h2>
+          <p>
+            <strong>최소주문금액</strong> {info.paymentInfo?.minimumOrderAmount}
+          </p>
+          <p>
+            <strong>결제수단</strong> {info.paymentInfo?.paymentMethods}
+          </p>
+          <h2>사업자정보</h2>
+          <p>
+            <strong>상호명</strong> {info.businessInfo?.businessName}
+          </p>
+          <p>
+            <strong>사업자등록번호</strong>{" "}
+            {info.businessInfo?.businessRegistrationNumber}
+          </p>
+        </div>
+      );
+    }
+  };
+
+  const totalOrderPrice = orderItems.reduce(
+    (total, item) => total + item.price * item.count,
+    0,
+  );
+
+  return (
+    <div className="menu-wrap">
+      <div className="left">
+        <div className="restaurant-info border-set">
+          <div className="restaurant-title">롯데리아-서성네거리점</div>
+          <div className="restaurant-logoandcontent">
+            <div className="restaurant-logo">
+              <img src={pizzaImage} />
+            </div>
+            <div className="restaurant-content">
+              <div className="restaurant-list">
+                <div className="list-star">별점</div>
+                <div className="list-item">
+                  <div className="list-minimumOrder">최소주문금액 11,000원</div>
+                </div>
+                <div className="list-item">
+                  <div className="list-payMethod">결제 요기서결제</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="choice">
+          <div className="threeChoices">
+            <ul>
+              <button
+                className={selectedTab === "menu" ? "active" : ""}
+                onClick={() => setSelectedTab("menu")}
+              >
+                메뉴
+              </button>
+              <button
+                className={selectedTab === "review" ? "active" : ""}
+                onClick={() => setSelectedTab("review")}
+              >
+                클린리뷰 {storeReviewNumber[0].reviews || "Loading..."}
+              </button>
+              <button
+                className={selectedTab === "info" ? "active" : ""}
+                onClick={() => setSelectedTab("info")}
+              >
+                정보
+              </button>
+            </ul>
+          </div>
+          {renderContent()}
+        </div>
+      </div>
+      <div className="right">
+        <div className="order-tab">주문표</div>
+        <div className="order-menu">
+          {orderItems.length === 0 ? (
+            "주문표에 담긴 메뉴가 없습니다."
+          ) : (
+            <ul>
+              {orderItems.map((item, index) => (
+                <li key={index}>
+                  {item.name} - {item.count}개 -{" "}
+                  {(item.price * item.count).toLocaleString()}원
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+        <div className="order-price">
+          총 가격: {totalOrderPrice.toLocaleString()}원
+        </div>
+        <div className="order-button">주문하기</div>
+      </div>
+      <ModalForMenu
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        onSelect={handleSelectCount}
+      />
+    </div>
   );
 };
 
 export default Menu;
-
-const ListStar = styled.div`
-  display: flex;
-  width: 94.41px;
-  height: 22.12px;
-  padding-bottom: 0.7px;
-  justify-content: center;
-  align-items: flex-start;
-  gap: 0.8px;
-`;
-const ListDiscount = styled.div`
-  display: flex;
-  width: 178.73px;
-  height: 21.42px;
-  flex-direction: column;
-  justify-content: center;
-
-  color: #fa0050;
-
-  font-family: "Malgun Gothic";
-  font-size: 12.403px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 21.42px; /* 172.698% */
-  letter-spacing: -1px;
-`;
-const MinumumOrder = styled.div`
-  display: flex;
-  width: 178.53px;
-  height: 21.41px;
-  padding-right: 55.24px;
-  align-items: center;
-`;
-const PayMethod = styled.div`
-  display: flex;
-  width: 178.53px;
-  height: 21.41px;
-  padding-right: 90.69px;
-  align-items: center;
-`;
-const Discount = styled.div`
-  display: flex;
-  height: 23.2px;
-  padding: 0px 4.8px 5.88px 5px;
-  justify-content: center;
-  align-items: center;
-
-  border: 1px solid #fa0050;
-`;
-
-const RestaurantLogo = styled.div`
-  width: 80px;
-  height: 80px;
-
-  border: 1px solid #d9d9d9;
-`;
-
-const RestaurantContent = styled.div`
-  display: inline-flex;
-  padding: 0px 0px 2.62px 10px;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-`;
-
-const MenuComponent = styled.div`
-  display: flex;
-  width: 658px;
-  height: 525px;
-  padding-top: 1px;
-  justify-content: center;
-  align-items: center;
-`;
-
-const MenuList = styled.div`
-  display: flex;
-  width: 658px;
-  height: 524px;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-`;
-
-const MenuListOneMenu = styled.div`
-  width: 658px;
-  height: 104px;
-  padding: 12px 10px 12px 15px;
-  justify-content: flex-end;
-  align-items: center;
-  border: 1px solid #d9d9d9;
-  display: flex;
-`;
-
-const MenuListOneMenuTable = styled.div`
-  display: flex;
-
-  height: 80px;
-  justify-content: center;
-`;
-
-const MenuListOneMenuTableData = styled.div`
-  display: flex;
-  width: 521px;
-  padding: 9.94px 10px 5.23px 0px;
-  flex-direction: column;
-  justify-content: flex-end;
-  align-items: flex-start;
-  gap: 0.28px;
-`;
-
-const MenuListOneMenuTablePic = styled.div`
-  width: 112px;
-  height: 80px;
-`;
-
-const MenuWrap = styled.div`
-  display: flex;
-  height: 1520.53px;
-  padding-right: 10px;
-  align-items: flex-start;
-`;
-
-const Left = styled.div`
-  width: 680px;
-  height: 1520.53px;
-`;
-
-const RestaurantInfo = styled.div`
-  width: 660px;
-  height: 174.25px;
-
-  border: 1px solid #d9d9d9;
-  background: #fff;
-`;
-
-const RestaurantTitle = styled.div`
-  display: flex;
-  width: 658px;
-  padding: 9.5px 487.47px 11.5px 10px;
-  align-items: center;
-  border-bottom: 1px solid #d9d9d9;
-`;
-
-const RestaurantList = styled.div`
-  display: inline-flex;
-  padding: 0px 0px 2.62px 10px;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-  gap: -0.21px;
-`;
-
-const ThreeChoices = styled.div`
-  display: flex;
-  width: 660px;
-  height: 49px;
-  padding: 1px 1.01px 1px 0px;
-  justify-content: center;
-  align-items: flex-start;
-
-  border-top: 1px solid #d9d9d9;
-  border-right: 1px solid #d9d9d9;
-  border-bottom: 1px solid #d9d9d9;
-`;
-
-const OneMenu = styled.div`
-  width: 140px;
-  height: 166px;
-`;
-
-const Right = styled.div`
-  display: flex;
-  width: 330px;
-  height: 261px;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-`;
-
-const OrderTab = styled.div`
-  display: flex;
-  width: 330px;
-  height: 42px;
-  padding: 9.5px 268.6px 10.5px 15px;
-  align-items: center;
-  background: #333;
-  color: #fff;
-`;
-const OrderMenu = styled.div`
-  display: flex;
-  width: 330px;
-  height: 122px;
-  padding: 0px 64.89px 0px 65.08px;
-  justify-content: center;
-  align-items: center;
-  border: 1px solid #d9d9d9;
-
-  background: #fff;
-`;
-const OrderPrice = styled.div`
-  display: flex;
-  width: 330px;
-  height: 42px;
-  padding: 11px 15.8px 11px 172.25px;
-  justify-content: flex-end;
-  align-items: center;
-
-  border: 1px solid #ddd;
-
-  background: #fff;
-`;
-const OrderButton = styled.div`
-  display: flex;
-  height: 55px;
-  padding: 11px 0px 20px 0px;
-  justify-content: center;
-  align-items: center;
-
-  border: 1px solid #ccc;
-
-  opacity: 0.65;
-  background: #ccc;
-`;
