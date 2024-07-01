@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom"; // useNavigate 추가
 import pizzaImage from "./pizza.jpg";
 import testMenu from "./testMenu.jpg";
 import ModalForMenu from "./ModalForMenu"; // 모달 컴포넌트 추가
@@ -19,6 +20,8 @@ const Menu = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [orderItems, setOrderItems] = useState([]);
+
+  const navigate = useNavigate(); // useNavigate 훅 사용
 
   // 더미데이터용
   const [menuItems, setMenuItems] = useState([]);
@@ -57,6 +60,29 @@ const Menu = () => {
     setOrderItems([...orderItems, itemWithCount]);
     setIsModalOpen(false);
     setSelectedItem(null);
+  };
+
+  const handleIncreaseCount = index => {
+    const newOrderItems = [...orderItems];
+    newOrderItems[index].count += 1;
+    setOrderItems(newOrderItems);
+  };
+
+  const handleDecreaseCount = index => {
+    const newOrderItems = [...orderItems];
+    if (newOrderItems[index].count > 1) {
+      newOrderItems[index].count -= 1;
+      setOrderItems(newOrderItems);
+    }
+  };
+
+  const handleRemoveItem = index => {
+    const newOrderItems = orderItems.filter((_, i) => i !== index);
+    setOrderItems(newOrderItems);
+  };
+
+  const handleOrder = () => {
+    navigate("/pay", { state: { orderItems, totalOrderPrice } });
   };
 
   const renderContent = () => {
@@ -242,8 +268,12 @@ const Menu = () => {
             <ul>
               {orderItems.map((item, index) => (
                 <li key={index}>
-                  {item.name} - {item.count}개 -{" "}
+                  {item.name} <br />
+                  <button onClick={() => handleRemoveItem(index)}>취소</button>
                   {(item.price * item.count).toLocaleString()}원
+                  <button onClick={() => handleDecreaseCount(index)}>-</button>
+                  {item.count}개
+                  <button onClick={() => handleIncreaseCount(index)}>+</button>
                 </li>
               ))}
             </ul>
@@ -252,7 +282,9 @@ const Menu = () => {
         <div className="order-price">
           총 가격: {totalOrderPrice.toLocaleString()}원
         </div>
-        <div className="order-button">주문하기</div>
+        <div className="order-button" onClick={handleOrder}>
+          주문하기
+        </div>
       </div>
       <ModalForMenu
         isOpen={isModalOpen}
