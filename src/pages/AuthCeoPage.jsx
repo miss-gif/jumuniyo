@@ -98,12 +98,17 @@ const AuthUserPage = () => {
           <input type="password" placeholder="비밀번호를 입력해 주세요." />
           <h3>비밀번호 확인</h3>
           <input type="password" placeholder="비밀번호를 다시 입력해 주세요." />
-          <h3>이메일</h3>
-          <input type="email" placeholder="이메일을 입력해 주세요." />
-          <h3>전화번호</h3>
-          <input type="tel" placeholder="전화번호를 입력해 주세요." />
           <h3>이름</h3>
           <input type="text" placeholder="이름을 입력해 주세요." />
+          <h3>닉네임</h3>
+          <input type="text" placeholder="닉네임을 입력해 주세요." />
+          <h3>오픈시간</h3>
+          <input type="time" />
+          <h3>마감시간</h3>
+          <input type="time" />
+
+          <h3>전화번호</h3>
+          <input type="tel" placeholder="전화번호를 입력해 주세요." />
           <h3>가게이름</h3>
           <input type="text" placeholder="가게이름을 입력해 주세요." />
           <h3>음식 카테고리</h3>
