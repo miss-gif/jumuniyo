@@ -10,51 +10,6 @@ html {
   padding: 0 20px;
 }
 
-.btn {
-  padding: 8px 12px;
-  background-color: $black;
-  color: white;
-  border-radius: 4px;
-  align-self: center;
-  font-size: 0.875rem;
-  font-weight: 400;
-}
-
-.btn--active {
-  padding: 8px 12px;
-  background-color: $black;
-  color: white;
-  border-radius: 4px;
-  align-self: center;
-  font-size: 0.875rem;
-  font-weight: 400;
-}
-
-.btn--default {
-  padding: 8px 12px;
-  color: $black;
-  background-color: white;
-  border-radius: 4px;
-  align-self: center;
-  font-size: 0.875rem;
-  font-weight: 400;
-  border: 1px solid $gray-300;
-}
-
-.btn-active {
-  font-weight: 700;
-}
-
-.btn-normal {
-  padding: 8px 12px;
-  background-color: #fff;
-  color: #333;
-  border: 1px solid var(--gray-400);
-  border-radius: 4px;
-  align-self: center;
-  font-size: 0.875rem;
-}
-
 .border {
   border: 1px solid var(--gray-400);
 }
@@ -72,10 +27,11 @@ html {
   overflow: hidden;
 }
 
-// 박스 테두리 세팅
+// 컨테이너 박스 테두리, 그림자, 라디우스
 .border-set {
   border-radius: $border-radius-2;
-  border: 1px solid $black;
+  border: 1px solid #dbdbdb;
+  box-shadow: $shadow-3;
 }
 
 .main {
