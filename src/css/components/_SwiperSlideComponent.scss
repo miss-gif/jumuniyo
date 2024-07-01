@@ -34,8 +34,9 @@
     justify-content: space-between;
     width: 100%;
     padding: 8px 8px;
-    background-color: #eee;
+    background-color: #fff;
     border-radius: 8px;
+    border: 1px solid $borderColor;
 
     p {
       color: #777;
