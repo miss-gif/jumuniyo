@@ -92,11 +92,11 @@ const Menu = () => {
                 >
                   <div className="menu-list-oneMenu-table">
                     <div className="menu-list-oneMenu-tableData">
-                      <span className="menu-list-name">{item.name}</span>
-                      <span className="menu-list-content">{item.content}</span>
-                      <span className="menu-list-price">
+                      <p className="menu-list-name">{item.name}</p>
+                      <p className="menu-list-content">{item.content}</p>
+                      <p className="menu-list-price">
                         {item.price.toLocaleString()}원
-                      </span>
+                      </p>
                     </div>
                     <div className="menu-list-oneMenu-tablePic">
                       <img src={item.img} alt={item.name} />
@@ -154,19 +154,19 @@ const Menu = () => {
           <p>
             <strong>영업시간</strong> {info.companyInfo?.businessHours}
           </p>
-          <p>
+          {/* <p>
             <strong>전화번호</strong> {info.companyInfo?.phoneNumber}
-          </p>
+          </p> */}
           <p>
             <strong>주소</strong> {info.companyInfo?.address}
           </p>
-          <h2>결제정보</h2>
+          {/* <h2>결제정보</h2>
           <p>
             <strong>최소주문금액</strong> {info.paymentInfo?.minimumOrderAmount}
           </p>
           <p>
             <strong>결제수단</strong> {info.paymentInfo?.paymentMethods}
-          </p>
+          </p> */}
           <h2>사업자정보</h2>
           <p>
             <strong>상호명</strong> {info.businessInfo?.businessName}
@@ -189,7 +189,7 @@ const Menu = () => {
     <div className="menu-wrap">
       <div className="left">
         <div className="restaurant-info border-set">
-          <div className="restaurant-title">롯데리아-서성네거리점</div>
+          <h2 className="restaurant-title">롯데리아-서성네거리점</h2>
           <div className="restaurant-logoandcontent">
             <div className="restaurant-logo">
               <img src={pizzaImage} />
@@ -214,19 +214,19 @@ const Menu = () => {
                 className={selectedTab === "menu" ? "active" : ""}
                 onClick={() => setSelectedTab("menu")}
               >
-                메뉴
+                <h3>메뉴</h3>
               </button>
               <button
                 className={selectedTab === "review" ? "active" : ""}
                 onClick={() => setSelectedTab("review")}
               >
-                클린리뷰 {storeReviewNumber[0].reviews || "Loading..."}
+                <h3>클린리뷰 {storeReviewNumber[0].reviews || "Loading..."}</h3>
               </button>
               <button
                 className={selectedTab === "info" ? "active" : ""}
                 onClick={() => setSelectedTab("info")}
               >
-                정보
+                <h3>정보</h3>
               </button>
             </ul>
           </div>
@@ -234,7 +234,7 @@ const Menu = () => {
         </div>
       </div>
       <div className="right">
-        <div className="order-tab">주문표</div>
+        <h2 className="order-tab">주문표</h2>
         <div className="order-menu">
           {orderItems.length === 0 ? (
             "주문표에 담긴 메뉴가 없습니다."
