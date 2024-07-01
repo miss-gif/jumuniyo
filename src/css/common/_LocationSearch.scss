@@ -1,0 +1,62 @@
+.LocationSearch {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #1657bf;
+  padding: 1.875rem 0;
+
+  h2 {
+    font-size: 2.25rem;
+    color: $white;
+    text-align: center;
+  }
+
+  p {
+    text-align: center;
+    color: $white;
+    margin: 5px 0 15px;
+  }
+
+  .locationSearch__group {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    max-width: 500px;
+    width: 100%;
+    padding: 0 20px;
+  }
+
+  .LocationSearch__icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: $border-radius-1;
+    padding: 10px;
+    width: 44px;
+    height: 44px;
+  }
+
+  .locationSearch__input {
+    display: flex;
+    border-radius: $border-radius-1;
+    overflow: hidden;
+    width: 100%;
+  }
+
+  button,
+  input {
+    padding: 10px;
+    background-color: #fff;
+  }
+
+  input {
+    // width: 500px;
+    width: 100%;
+  }
+
+  .search-btn {
+    background-color: #333;
+    color: #fff;
+  }
+}

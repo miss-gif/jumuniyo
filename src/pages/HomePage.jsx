@@ -1,8 +1,8 @@
 import React from "react";
 import NewRestaurantListCarousel from "../components/home/NewRestaurantListCarousel";
-import OrderListCarousel from "../components/home/OrderListCarousel";
 import RecommendationCarousel from "../components/home/RecommendationCarousel";
 import CategoryNavigation from "../components/home/CategoryNavigation";
+import RecentOrderCarousel from "../components/home/RecentOrderCarousel";
 
 const HomePage = () => {
   return (
@@ -20,7 +20,7 @@ const HomePage = () => {
       </section>
       <section className="section-carousel">
         <h3 className="section__title">최근에 주문한 메뉴</h3>
-        <OrderListCarousel />
+        <RecentOrderCarousel />
       </section>
     </div>
   );

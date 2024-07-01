@@ -1,5 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
+import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
+import MenuIcon from "@mui/icons-material/Menu";
+import PersonIcon from "@mui/icons-material/Person";
 
 function Header() {
   return (
@@ -24,28 +28,41 @@ function Header() {
           </ul>
           <ul className="nav__list">
             <li className="nav__item">
-              <Link to="/">홈</Link>
-            </li>
-            <li className="nav__item">
               <Link to="/restaurants">주문하기</Link>
             </li>
             <li className="nav__item">
-              <Link to="/restaurants/:1">음식점 상세(임시)</Link>
+              <Link to="/restaurants/:1">음식점 상세</Link>
             </li>
             <li className="nav__item">
-              <Link to="/payment">결제하기(임시)</Link>
+              <Link to="/payment">결제하기</Link>
             </li>
             <li className="nav__item">
-              <Link to="/mypage/order">주문확인(임시)</Link>
+              <Link to="/mypage/order">주문확인</Link>
             </li>
             <li className="nav__item">
               <Link to="/mypage">마이페이지</Link>
             </li>
-            <li className="nav__item">
+            <li className="nav__item nav__item--login">
               <Link to="/login">로그인</Link>
             </li>
-            <li className="nav__item btn">
+            <li className="nav__item nav__item--auth btn">
               <Link to="/auth">회원가입</Link>
+            </li>
+          </ul>
+        </nav>
+        <nav className="header-mobile">
+          <ul>
+            <li>
+              <PersonIcon sx={{ fontSize: 32 }} />
+            </li>
+            <li>
+              <LocationOnIcon sx={{ fontSize: 32 }} />
+            </li>
+            <li className="header-mobile__alarm none">
+              <NotificationsActiveIcon sx={{ fontSize: 32 }} />
+            </li>
+            <li>
+              <MenuIcon sx={{ fontSize: 42 }} />
             </li>
           </ul>
         </nav>

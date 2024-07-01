@@ -61,7 +61,7 @@ const Footer = () => {
               판매자의 고의 또는 과실로 소비자에게 발생하는 손해에 대해
               주문이요는 책임을 지지 않습니다. 상품 및 거래에 관하여 보다 정확한
               정보는 해당 판매자에게 직접 확인하여 주시기 바랍니다. Copyright
-              YUMUNIYO. All Rights Reserved.
+              JUMUNIYO. All Rights Reserved.
             </p>
           </div>
         </div>
