@@ -16,6 +16,7 @@ import ProfilePage from "./pages/ProfilePage.jsx";
 import ProjectInfo from "./pages/ProjectInfo.jsx";
 import RestaurantDetailPage from "./pages/RestaurantDetailPage.jsx";
 import RestaurantsPage from "./pages/RestaurantsPage.jsx";
+import Test from "./pages/Test";
 
 function App() {
   return (
@@ -39,6 +40,7 @@ function App() {
         <Route path="/auth/user" element={<AuthUserPage />} />
         <Route path="/auth/ceo" element={<AuthCeoPage />} />
         <Route path="/ceopage/*" element={<CeoPage />} />
+        <Route path="/test" element={<Test />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </>
