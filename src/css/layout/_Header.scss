@@ -28,7 +28,29 @@
 .nav__top {
   display: flex;
   justify-content: flex-end;
-  font-size: 14px;
-  padding: 4px;
+  font-size: 12px;
+  padding: 8px;
   gap: 12px;
+}
+.header-mobile {
+  display: none;
+}
+
+@include tablet {
+  .nav {
+    display: none;
+  }
+  .header-mobile {
+    display: block;
+    ul {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    li {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
 }

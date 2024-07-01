@@ -1,33 +1,78 @@
-import React, { useEffect, useState } from "react";
-import { register } from "swiper/element/bundle";
+import React, { useEffect, useRef, useState } from "react";
 import SwiperSlideComponent from "../common/SwiperSlideComponent";
 import carouselDummy from "../../json/carouselDummy.json";
+import PropTypes from "prop-types";
 
 const NewRestaurantListCarousel = () => {
   const [data, setData] = useState([]);
+  const swiperRef = useRef(null);
 
   useEffect(() => {
-    register();
+    const swiperEl = swiperRef.current;
+
+    if (swiperEl) {
+      initializeSwiper(swiperEl);
+    }
+
     setData(carouselDummy);
   }, []);
 
+  const initializeSwiper = swiperEl => {
+    const swiperParams = {
+      slidesPerView: 5,
+      spaceBetween: 12,
+      breakpoints: {
+        1024: {
+          slidesPerView: 5,
+        },
+        768: {
+          slidesPerView: 4,
+        },
+        480: {
+          slidesPerView: 2,
+        },
+        240: {
+          slidesPerView: 1,
+        },
+      },
+      on: {
+        init() {
+          // ...
+        },
+      },
+    };
+
+    Object.assign(swiperEl, swiperParams);
+    swiperEl.initialize();
+  };
+
   return (
-    <swiper-container
-      className="carousel carousel--new-restaurant"
-      slides-per-view={5}
-      space-between={12}
-    >
-      {data.map(restaurant => (
-        <SwiperSlideComponent
-          key={restaurant.id}
-          image={restaurant.image}
-          title={restaurant.title}
-          rating={restaurant.rating}
-          reviews={restaurant.reviews}
-        />
-      ))}
-    </swiper-container>
+    <div>
+      <swiper-container ref={swiperRef} init="false">
+        {data.map(restaurant => (
+          <SwiperSlideComponent
+            key={restaurant.id}
+            image={restaurant.image}
+            title={restaurant.title}
+            rating={restaurant.rating}
+            reviews={restaurant.reviews}
+          />
+        ))}
+      </swiper-container>
+    </div>
   );
+};
+
+NewRestaurantListCarousel.propTypes = {
+  carouselDummy: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      image: PropTypes.string.isRequired,
+      title: PropTypes.string.isRequired,
+      rating: PropTypes.number.isRequired,
+      reviews: PropTypes.number.isRequired,
+    }),
+  ),
 };
 
 export default NewRestaurantListCarousel;
