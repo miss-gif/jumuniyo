@@ -32,13 +32,13 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  padding: 12px;
 }
 
 .footer__menu__item {
   a {
+    display: block;
     position: relative;
-    padding: 15px;
+    padding: 12px;
     &::before {
       position: absolute;
       content: "";
@@ -86,5 +86,10 @@
 @include tablet {
   .footer__logo {
     display: none;
+  }
+  .footer__menu__item {
+    a {
+      padding: 8px;
+    }
   }
 }
