@@ -115,7 +115,6 @@ const Menu = () => {
               ))}
             </Swiper>
           </div>
-          <br />
           <div className="menu-component">
             <div className="menu-list">
               {menuItems.map((item, index) => (
