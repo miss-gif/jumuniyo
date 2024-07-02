@@ -1,12 +1,10 @@
 .menu-wrap {
   display: flex;
-  height: 1520.53px;
   padding-right: 10px;
   align-items: flex-start;
 
   .left {
     width: 680px;
-    height: 1500px;
     padding-right: 10px;
     .restaurant-info {
       width: 660px;
@@ -17,20 +15,26 @@
       .restaurant-title {
         display: flex;
         width: 658px;
-        padding: 9.5px 487.47px 11.5px 10px;
+        padding: 10px 20px;
         align-items: center;
         border-bottom: 1px solid #d9d9d9;
       }
       .restaurant-logoandcontent {
         display: flex;
+        padding: 10px;
 
         .restaurant-logo {
-          width: 80px;
-          height: 80px;
+          object-fit: cover;
           border: 1px solid #d9d9d9;
+          .restaurant-logo-img {
+            width: 100px;
+            height: 100px;
+          }
         }
 
         .restaurant-content {
+          padding: 10px;
+
           .restaurant-list {
             .list-item {
               display: flex;
@@ -85,7 +89,9 @@
       }
 
       .menu-slide {
-        .container {
+        width: 100%;
+        overflow: hidden;
+        .swiper-container {
           display: flex;
           margin: 0 auto;
           background-color: #fff;
@@ -93,10 +99,17 @@
           border: 1px solid #ddd;
 
           .oneMenu {
-            height: 166px;
             margin-right: 10px;
             border: 1px solid #d9d9d9;
 
+            .menuTitle {
+              padding-left: 14px;
+              padding-top: 8px;
+            }
+            .menuPrice {
+              padding-left: 14px;
+              padding-bottom: 8px;
+            }
             img {
               border-radius: 8px;
             }
@@ -279,7 +292,6 @@
       .review-content {
         img {
           width: 100%;
-          height: auto;
           margin-bottom: 10px;
         }
 

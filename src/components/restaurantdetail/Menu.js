@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom"; // useNavigate 추가
+import { useNavigate } from "react-router-dom";
 import pizzaImage from "./pizza.jpg";
 import testMenu from "./testMenu.jpg";
-import ModalForMenu from "./ModalForMenu"; // 모달 컴포넌트 추가
+import ModalForMenu from "./ModalForMenu";
 import menuItemsData from "./menuItems.json";
 import reviewItemsData from "./review.json";
-import infoData from "./info.json"; // JSON 파일 가져오기
-
+import infoData from "./info.json";
 import "../../css/components/_Menu.scss";
+
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
 
 const storeReviewNumber = [
   {
@@ -21,14 +25,12 @@ const Menu = () => {
   const [selectedItem, setSelectedItem] = useState(null);
   const [orderItems, setOrderItems] = useState([]);
 
-  const navigate = useNavigate(); // useNavigate 훅 사용
+  const navigate = useNavigate();
 
-  // 더미데이터용
   const [menuItems, setMenuItems] = useState([]);
   const [reviewItems, setReviewItems] = useState([]);
   const [info, setInfo] = useState({});
 
-  // 더미데이터용
   useEffect(() => {
     const updatedMenuItems = menuItemsData.map(item => ({
       ...item,
@@ -90,9 +92,14 @@ const Menu = () => {
       return (
         <div>
           <div className="menu-slide">
-            <div className="container">
+            <Swiper
+              className="swiper-container"
+              spaceBetween={10}
+              slidesPerView={4}
+              // navigation
+            >
               {menuItems.map((item, index) => (
-                <div
+                <SwiperSlide
                   key={index}
                   className="oneMenu border-set"
                   onClick={() => handleOpenModal(item)}
@@ -104,10 +111,11 @@ const Menu = () => {
                   <div className="menuPrice">
                     {item.price.toLocaleString()}원
                   </div>
-                </div>
+                </SwiperSlide>
               ))}
-            </div>
+            </Swiper>
           </div>
+          <br />
           <div className="menu-component">
             <div className="menu-list">
               {menuItems.map((item, index) => (
@@ -218,7 +226,7 @@ const Menu = () => {
           <h2 className="restaurant-title">롯데리아-서성네거리점</h2>
           <div className="restaurant-logoandcontent">
             <div className="restaurant-logo">
-              <img src={pizzaImage} />
+              <img className="restaurant-logo-img" src={pizzaImage} />
             </div>
             <div className="restaurant-content">
               <div className="restaurant-list">
@@ -233,6 +241,7 @@ const Menu = () => {
             </div>
           </div>
         </div>
+        <br />
         <div className="choice">
           <div className="threeChoices">
             <ul>
