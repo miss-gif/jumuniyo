@@ -1,35 +1,25 @@
+.btn-base {
+  padding: $padding-2 $padding-3;
+  border-radius: $border-radius-1;
+  font-size: 14px;
+}
+
+// 수정해야하는 코드인데 이미 너무 많이 사용하고 있음
 .btn {
+  @extend .btn-base;
   color: $white;
   background-color: $black;
-  padding: $padding-2 $padding-3;
-  border-radius: $border-radius-1;
-  font-size: 14px;
 }
 
-// 선택된 버튼 : 색이 채워짐
 .btn--active {
+  @extend .btn-base;
   color: $white;
   background-color: $black;
-  padding: $padding-2 $padding-3;
-  border-radius: $border-radius-1;
-  font-size: 14px;
 }
 
-// 선택 안 된 버튼 : 테두리 색만 있음
 .btn--default {
+  @extend .btn-base;
   color: $black;
   background-color: $white;
-  padding: $padding-2 $padding-3;
-  border-radius: $border-radius-1;
   border: 1px solid $borderColor;
-  font-size: 14px;
-}
-
-.btn-normal {
-  padding: $padding-2 $padding-3;
-  background-color: $white;
-  color: $black;
-  border: 1px solid $borderColor;
-  border-radius: $border-radius-1;
-  font-size: 14px;
 }

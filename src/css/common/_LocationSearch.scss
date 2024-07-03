@@ -1,10 +1,7 @@
 .LocationSearch {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  @include flex-column-center;
   background-color: #1657bf;
-  padding: 30px 0;
+  padding: $padding-8 0;
 
   h2 {
     font-size: 2.25rem;
@@ -15,48 +12,41 @@
   p {
     text-align: center;
     color: $white;
-    margin: 5px 0 15px;
+    padding: $padding-2 0 $padding-5;
   }
 
   .locationSearch__group {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    max-width: 700px;
-    width: 95%;
-    padding: 0 20px;
+    @include flex-center;
+    gap: $gap-2;
+    width: 100%;
+    padding: 0 $padding-10;
   }
 
   .LocationSearch__icon {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    @include flex-center;
     border-radius: $border-radius-1;
-    padding: 10px 12px;
+    padding: 14px;
+    background-color: #fff;
   }
 
   .locationSearch__input {
     display: flex;
     border-radius: $border-radius-1;
     overflow: hidden;
+    max-width: 800px;
     width: 100%;
-  }
-
-  button,
-  input {
-    padding: 10px;
+    height: 100%;
     background-color: #fff;
-  }
-
-  input {
-    // width: 500px;
-    width: 100%;
+    input {
+      padding: $padding-3;
+      width: 100%;
+    }
   }
 
   .search-btn {
-    padding: 10px 14px;
-    background-color: #333;
-    color: #fff;
+    padding: $padding-2 $padding-3;
+    color: $white;
+    background-color: $black;
     font-size: 14px;
   }
 }

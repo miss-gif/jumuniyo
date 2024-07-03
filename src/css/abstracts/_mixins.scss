@@ -1,1 +1,14 @@
 // 반복적으로 사용되는 스타일 블록을 믹스인으로 정의하여 재사용성을 높입니다.
+
+// flex-center: 수평 및 수직 정렬을 중앙에 맞춘 flex 컨테이너
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+// flex-column-center: flex-center 믹스인을 확장하고 flex-direction을 column으로 설정
+@mixin flex-column-center {
+  @include flex-center;
+  flex-direction: column;
+}
