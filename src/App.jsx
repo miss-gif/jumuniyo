@@ -18,6 +18,8 @@ import RestaurantDetailPage from "./pages/RestaurantDetailPage.jsx";
 import RestaurantsPage from "./pages/RestaurantsPage.jsx";
 import Test from "./pages/Test";
 import Pay from "./components/restaurantdetail/Pay";
+import MyPageOrderPagee from "./pages/MyPageOrderPagee";
+import MyPageReviewPage from "./pages/MyPageReviewPage";
 
 function App() {
   return (
@@ -33,6 +35,8 @@ function App() {
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/mypage" element={<MyPage />} />
           <Route path="/mypage/order" element={<MyPageOrderPage />} />
+          <Route path="/mypage/ordere" element={<MyPageOrderPagee />} />
+          <Route path="/mypage/review" element={<MyPageReviewPage />} />
           <Route path="/payment" element={<PaymentPage />} />
           <Route path="/projectinfo" element={<ProjectInfo />} />
         </Route>

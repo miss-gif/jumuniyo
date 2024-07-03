@@ -1,25 +1,10 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
+import ImageImport from "../components/layout/ImageImport";
 import JoinFooter from "../components/layout/JoinFooter";
 
 const AuthUserPage = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [selectedImage, setSelectedImage] = useState(null);
-  const [imageUrl, setImageUrl] = useState("");
 
-  const handleImageChange = e => {
-    const imageFile = e.target.files[0];
-    setSelectedImage(imageFile);
-
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setImageUrl(reader.result);
-    };
-
-    if (imageFile) {
-      reader.readAsDataURL(imageFile);
-    }
-  };
   return (
     <>
       <div className="user-join-wrap">
@@ -45,7 +30,9 @@ const AuthUserPage = () => {
           <h3>아이디</h3>
           <div>
             <input placeholder="아이디를 입력해 주세요."></input>
-            <button type="button">중복 확인</button>
+            <button type="button" className="id-check">
+              중복 확인
+            </button>
           </div>
           <h3>비밀번호</h3>
           <input placeholder="비밀번호를 입력해 주세요."></input>
@@ -58,16 +45,7 @@ const AuthUserPage = () => {
           <h3>전화번호</h3>
           <input placeholder="전화번호를 입력해 주세요."></input>
           <h3>프로필 사진</h3>
-          <input
-            type="file"
-            accept=".jpg, .jpeg, .png"
-            onChange={handleImageChange}
-          />
-          {imageUrl && (
-            <div className="image-preview">
-              <img src={imageUrl} alt="이미지 미리보기" />
-            </div>
-          )}
+          <ImageImport />
 
           <button type="button">회원가입</button>
         </form>

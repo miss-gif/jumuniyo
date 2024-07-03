@@ -1,0 +1,34 @@
+.order-list {
+  display: block;
+  padding: 15px 30px;
+  border: 1px solid #d9d9d9;
+  width: 100%;
+  border-radius: 10px;
+}
+
+.order-date {
+  display: flex;
+  color: gray;
+  font-size: 12px;
+  justify-content: space-between;
+}
+
+.order-logo {
+  width: 60px;
+  height: 60px;
+  background-repeat: no-repeat; /* 이 속성은 이미지를 반복하지 않도록 합니다 */
+  background-position: center;
+  background-size: contain;
+  border: 1px solid #d9d9d9;
+  border-radius: 10px;
+}
+
+.order-main {
+  display: flex;
+  gap: 30px;
+  align-items: center;
+
+  & div {
+    font-weight: 700;
+  }
+}
