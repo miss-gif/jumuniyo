@@ -19,10 +19,14 @@
 
         .restaurant-logo {
           object-fit: cover;
-          border: 1px solid #d9d9d9;
+          // border: 1px solid #d9d9d9;
+
           .restaurant-logo-img {
             width: 100px;
             height: 100px;
+          }
+          img {
+            border-radius: 8px;
           }
         }
 
@@ -158,6 +162,15 @@
       border: 1px solid #d9d9d9;
       background: #fff;
       overflow-y: auto;
+
+      .order-menu-lower {
+        display: flex;
+        justify-content: space-between;
+
+        .order-cancel:hover {
+          background-color: red;
+        }
+      }
     }
 
     .order-price {
@@ -180,6 +193,11 @@
       border: 1px solid #ccc;
       opacity: 0.65;
       background: #ccc;
+    }
+    .order-button:hover {
+      background-color: #1657bf;
+      color: #ccc;
+      cursor: pointer;
     }
   }
 }

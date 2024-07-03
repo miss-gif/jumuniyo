@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import reviewItemsData from "../restaurantdetail/review.json";
-import testMenu from "../restaurantdetail/testMenu.jpg";
+import reviewItemsData from "./review.json";
+import testMenu from "./testMenu.jpg";
 
-const Reviews = () => {
+const CeoReview = () => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [reviewItems, setReviewItems] = useState([]);
   const storeReviewNumber = [
     {
@@ -60,4 +61,4 @@ const Reviews = () => {
   );
 };
 
-export default Reviews;
+export default CeoReview;
