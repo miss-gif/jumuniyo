@@ -1,0 +1,27 @@
+.social-login {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+
+  & div {
+    display: flex;
+    padding: 10px 0px;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #000;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+}
+
+.social-login-kakao {
+  background: #fee500;
+}
+
+.social-login-naver {
+  background: #2db400;
+}
+
+.social-login-google {
+  background: #fff;
+}
