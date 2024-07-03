@@ -124,8 +124,6 @@
     display: flex;
     justify-content: space-between;
     padding: 10px;
-    // border-bottom: 1px solid #cbd5e1;
-    // background-color: orange;
     p {
       font-size: 14px;
     }
@@ -159,4 +157,17 @@
   border-bottom: 1px solid #cbd5e1;
   border-left: 1px solid #cbd5e1;
   border-right: 1px solid #cbd5e1;
+}
+
+@include tablet {
+  // 결제하기
+  .payment-page {
+    flex-direction: column;
+  }
+  .payment-page__section {
+    width: 100%;
+  }
+  .payment-page__order-summary {
+    width: 100%;
+  }
 }
