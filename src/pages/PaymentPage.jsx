@@ -71,7 +71,7 @@ const PaymentPage = () => {
           </div>
           <div className="payment-page__input-wrap">
             <h3 className="payment-page__subtitle">할인방법 선택</h3>
-            <div className="payment-page__coupon">
+            <div className="payment-page__coupon ">
               <label htmlFor="coupon">쿠폰</label>
               <div className="payment-page__coupon-wrap">
                 <input
@@ -79,7 +79,9 @@ const PaymentPage = () => {
                   id="coupon"
                   className="payment-page__input"
                 />
-                <button className="payment-page__button">적용</button>
+                <button className="payment-page__coupon-btn btn--default">
+                  적용
+                </button>
               </div>
             </div>
           </div>

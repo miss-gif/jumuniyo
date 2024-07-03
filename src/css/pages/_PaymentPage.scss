@@ -4,7 +4,7 @@
   gap: 12px;
   &__section {
     width: 65%;
-    border: 1px solid #333;
+    border: 1px solid #cbd5e1;
   }
 
   &__title {
@@ -49,7 +49,7 @@
         font-size: 0.875rem;
         width: 100%;
         padding: 5px 10px;
-        border: 1px solid #333;
+        border: 1px solid #cbd5e1;
       }
     }
   }
@@ -61,7 +61,7 @@
       width: 100%;
       max-height: 500px;
       padding: 10px;
-      border: 1px solid #333;
+      border: 1px solid #cbd5e1;
       resize: none;
       font-size: 14px;
     }
@@ -78,7 +78,30 @@
     gap: 12px;
   }
   &__button {
-    width: 120px;
+    width: 50%;
+  }
+
+  &__coupon {
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    label {
+      width: 140px;
+      font-weight: 500;
+      font-size: 14px;
+    }
+  }
+
+  &__coupon-wrap {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+    input {
+      width: 100%;
+      border: 1px solid #cbd5e1;
+    }
   }
 }
 
@@ -86,8 +109,8 @@
 .payment-page {
   &__order-summary {
     width: 35%;
-    border: 1px solid $gray-200;
-    border-radius: 8px;
+    border: 1px solid #cbd5e1;
+    border-radius: 4px;
   }
 
   // &__restaurant-name {
