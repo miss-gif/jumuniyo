@@ -24,31 +24,33 @@ import MyPageReviewPage from "./pages/MyPageReviewPage";
 function App() {
   return (
     <>
-      <Routes>
-        <Route path="/" element={<RootLayout />}>
-          <Route index element={<HomePage />} />
-          <Route path="/restaurants" element={<RestaurantsPage />} />
-          <Route path="/restaurants/:id" element={<RestaurantDetailPage />} />
-          <Route path="/pay" element={<Pay />} />
-          <Route path="/cart" element={<CartPage />} />
-          <Route path="/checkout" element={<CheckoutPage />} />
-          <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/mypage" element={<MyPage />} />
-          <Route path="/mypage/order" element={<MyPageOrderPage />} />
-          <Route path="/mypage/ordere" element={<MyPageOrderPagee />} />
-          <Route path="/mypage/review" element={<MyPageReviewPage />} />
-          <Route path="/payment" element={<PaymentPage />} />
-          <Route path="/projectinfo" element={<ProjectInfo />} />
-        </Route>
+      <div className="root-wrap">
+        <Routes>
+          <Route path="/" element={<RootLayout />}>
+            <Route index element={<HomePage />} />
+            <Route path="/restaurants" element={<RestaurantsPage />} />
+            <Route path="/restaurants/:id" element={<RestaurantDetailPage />} />
+            <Route path="/pay" element={<Pay />} />
+            <Route path="/cart" element={<CartPage />} />
+            <Route path="/checkout" element={<CheckoutPage />} />
+            <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/mypage" element={<MyPage />} />
+            <Route path="/mypage/order" element={<MyPageOrderPage />} />
+            <Route path="/mypage/ordere" element={<MyPageOrderPagee />} />
+            <Route path="/mypage/review" element={<MyPageReviewPage />} />
+            <Route path="/payment" element={<PaymentPage />} />
+            <Route path="/projectinfo" element={<ProjectInfo />} />
+          </Route>
 
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/auth" element={<AuthPage />} />
-        <Route path="/auth/user" element={<AuthUserPage />} />
-        <Route path="/auth/ceo" element={<AuthCeoPage />} />
-        <Route path="/ceopage/*" element={<CeoPage />} />
-        <Route path="/test" element={<Test />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/auth" element={<AuthPage />} />
+          <Route path="/auth/user" element={<AuthUserPage />} />
+          <Route path="/auth/ceo" element={<AuthCeoPage />} />
+          <Route path="/ceopage/*" element={<CeoPage />} />
+          <Route path="/test" element={<Test />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </div>
     </>
   );
 }
