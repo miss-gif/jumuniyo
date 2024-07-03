@@ -15,7 +15,9 @@
     width: 200%;
     left: -50%;
     height: 100%;
-    background-color: rgba($color: $gray-200, $alpha: 0.2);
+
+    background-color: rgba($color: $gray-100, $alpha: 0.5);
+
     z-index: -1;
   }
 }
