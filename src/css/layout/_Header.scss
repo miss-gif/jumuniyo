@@ -18,6 +18,9 @@
   display: flex;
   justify-content: center;
   gap: 28px;
+  .btn {
+    font-weight: 400;
+  }
 }
 
 .nav__item {

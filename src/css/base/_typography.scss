@@ -1,6 +1,4 @@
-// 글꼴, 폰트, 간격 등
-
-// Typography
+// Typography 글꼴, 폰트, 간격 등
 
 @import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css);
 
@@ -17,20 +15,20 @@
 body {
   font-family: "Spoqa Han Sans Neo", "sans-serif";
   font-size: 1rem;
-  font-weight: 400;
-  background-color: $gray-50;
+  font-weight: $regular;
+  background-color: $backgroundColor;
 }
 
 h2 {
-  font-weight: 700;
+  font-weight: $bold;
 }
 
 h3,
 h4,
 h5,
 h6 {
+  font-weight: $medium;
   font-size: 14px;
-  font-weight: 500;
 }
 
 p {
