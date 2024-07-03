@@ -130,20 +130,25 @@ const AuthUserPage = () => {
             </label>
           </div>
           <h3>주소</h3>
-          <input
-            type="text"
-            id="sample4_roadAddress"
-            placeholder="도로명주소"
-            readOnly
-          />
+          <div>
+            <input
+              type="text"
+              id="sample4_roadAddress"
+              placeholder="도로명주소"
+              readOnly
+            />
+            <button
+              type="button"
+              onClick={() => {
+                sample4_execDaumPostcode();
+              }}
+            >
+              우편번호 찾기
+            </button>
+          </div>
+          <h3>상세 주소</h3>
+          <input type="text" placeholder="상세 주소를 입력해 주세요." />
 
-          <input
-            type="button"
-            onClick={() => {
-              sample4_execDaumPostcode();
-            }}
-            value="우편번호 찾기"
-          />
           <h3>사업자 상호명</h3>
           <input type="text" placeholder="사업자 상호명을 입력해 주세요." />
           <h3>사업자 번호</h3>
