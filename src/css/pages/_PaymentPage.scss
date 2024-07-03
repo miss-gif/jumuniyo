@@ -4,7 +4,6 @@
   gap: 12px;
   &__section {
     width: 65%;
-    border: 1px solid #cbd5e1;
   }
 
   &__title {
@@ -109,25 +108,55 @@
 .payment-page {
   &__order-summary {
     width: 35%;
-    border: 1px solid #cbd5e1;
     border-radius: 4px;
+    ul {
+      border-bottom: 1px solid #cbd5e1;
+    }
   }
 
-  // &__restaurant-name {
-  //   font-size: 1.2rem;
-  //   margin-bottom: 10px;
-  // }
+  &__restaurant-name {
+    padding: 10px;
+    font-size: 0.875rem;
+    border-bottom: 1px solid #cbd5e1;
+  }
 
-  // &__order-item,
-  // &__total-amount {
-  //   display: flex;
-  //   justify-content: space-between;
-  //   margin-bottom: 10px;
-  // }
+  &__order-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    // border-bottom: 1px solid #cbd5e1;
+    // background-color: orange;
+    p {
+      font-size: 14px;
+    }
+  }
 
-  // &__terms {
-  //   font-size: 0.9rem;
-  //   color: #555;
-  //   margin-bottom: 20px;
-  // }
+  &__total-amount {
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    p {
+      font-size: 16px;
+      font-weight: 500;
+    }
+  }
+  &__terms {
+    padding: 10px 0;
+    line-height: 1.8;
+    span {
+      text-decoration: underline;
+    }
+  }
+  &__button {
+    width: 100%;
+    padding: 10px;
+
+    border: 1px solid #cbd5e1;
+  }
+}
+
+.payment-page__warp-border {
+  border-bottom: 1px solid #cbd5e1;
+  border-left: 1px solid #cbd5e1;
+  border-right: 1px solid #cbd5e1;
 }
