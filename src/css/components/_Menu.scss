@@ -73,67 +73,6 @@
           }
         }
       }
-
-      .menu-slide {
-        width: 100%;
-        overflow: hidden;
-        .swiper-container {
-          display: flex;
-          margin: 0 auto;
-          background-color: #fff;
-          padding: 20px;
-          border: 1px solid #ddd;
-          border-bottom: 0;
-
-          .oneMenu {
-            // margin-right: 10px;
-            border: 1px solid #d9d9d9;
-
-            .menuTitle {
-              padding-left: 14px;
-              padding-top: 8px;
-            }
-            .menuPrice {
-              padding-left: 14px;
-              padding-bottom: 8px;
-            }
-            img {
-              border-radius: 8px;
-            }
-          }
-        }
-      }
-
-      .menu-component {
-        .menu-list {
-          display: flex;
-          flex-direction: column;
-          border: 1px solid #d9d9d9;
-
-          .menu-list-oneMenu {
-            border-bottom: 1px solid #d9d9d9;
-            padding: 10px;
-            &:last-child {
-              border-bottom: none;
-            }
-
-            .menu-list-oneMenu-table {
-              display: flex;
-              justify-content: space-between;
-
-              .menu-list-oneMenu-tableData {
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-              }
-
-              .menu-list-oneMenu-tablePic {
-                width: 100px;
-              }
-            }
-          }
-        }
-      }
     }
   }
 
@@ -145,9 +84,9 @@
 
     .order-tab {
       display: flex;
+      justify-content: space-between;
       width: 100%;
-      height: 42px;
-      padding: 9.5px 15px;
+      padding: 9px 15px;
       align-items: center;
       background: #333;
       color: #fff;
@@ -202,12 +141,77 @@
   }
 }
 
+.menu-section {
+  .menu-slide {
+    width: 100%;
+    overflow: hidden;
+    .swiper-container {
+      display: flex;
+      margin: 0 auto;
+      background-color: #fff;
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-bottom: 0;
+
+      .oneMenu {
+        // margin-right: 10px;
+        border: 1px solid #d9d9d9;
+
+        .menuTitle {
+          padding-left: 14px;
+          padding-top: 8px;
+        }
+        .menuPrice {
+          padding-left: 14px;
+          padding-bottom: 8px;
+        }
+        img {
+          border-radius: 8px;
+        }
+      }
+    }
+  }
+
+  .menu-component {
+    .menu-list {
+      display: flex;
+      flex-direction: column;
+      border: 1px solid #d9d9d9;
+
+      .menu-list-oneMenu {
+        border-bottom: 1px solid #d9d9d9;
+        padding: 10px;
+        &:last-child {
+          border-bottom: none;
+        }
+
+        .menu-list-oneMenu-table {
+          display: flex;
+          justify-content: space-between;
+
+          .menu-list-oneMenu-tableData {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+          }
+
+          .menu-list-oneMenu-tablePic {
+            width: 100px;
+          }
+        }
+      }
+    }
+  }
+}
+
 //리뷰
 .review-wrap {
   border-left: 1px solid #ddd;
   border-right: 1px solid #ddd;
   padding-left: 10px;
   padding-right: 10px;
+  width: 680px;
+
   .rating-section {
     display: flex;
     justify-content: space-between;
@@ -288,6 +292,8 @@
 
 //정보 part
 .info-section {
+  width: 680px;
+
   padding: 20px;
   background-color: #f9f9f9;
   border: 1px solid #e0e0e0;
