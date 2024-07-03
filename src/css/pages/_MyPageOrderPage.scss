@@ -43,7 +43,8 @@
 
   &__label {
     font-weight: 500;
-    width: 140px;
+    max-width: 8.75rem;
+    width: 100%;
   }
 
   &__value {
@@ -75,5 +76,11 @@
   &__total-price {
     font-size: 1rem;
     font-weight: 500;
+  }
+}
+
+@include mobile {
+  .mypage-order__label {
+    max-width: 6.25rem;
   }
 }
