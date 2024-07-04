@@ -5,41 +5,43 @@
   }
   .filters__select {
     width: 20%;
-    padding: 5px 10px;
+    padding: $padding-1 $padding-3;
     border: 1px solid $borderColor;
-    font-size: 0.875rem;
-  }
-
-  &__title {
-    font-weight: 500;
+    font-size: 14px;
   }
 
   &__list {
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
+    gap: $gap-3;
 
     .restaurant-item {
       display: flex;
       align-items: center;
-      gap: 10px;
-      padding: 10px;
+      gap: $gap-3;
+      padding: $padding-2;
       border: 1px solid $borderColor;
-      border-radius: 4px;
+      border-radius: $border-radius-1;
       width: 100%;
-      max-width: calc(50% - 5px);
+      max-width: calc(50% - ($gap-3/2));
 
       &__image {
         width: 80px;
-        border-radius: 4px;
+        border-radius: $border-radius-1;
       }
       &__title {
-        font-weight: 500;
-        padding: 4px 0;
+        padding: $padding-1 0;
       }
       &__rank-point {
-        span {
-          font-weight: 500;
+        display: flex;
+        p {
+          font-size: 12px;
+          &::after {
+            content: "|";
+            padding: 6px;
+            color: $borderColor;
+          }
         }
       }
     }
@@ -49,25 +51,15 @@
 .rank-point {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: $gap-1;
   svg {
+    font-size: 12px;
     color: #ffcc00; // Adjust color as needed
   }
 }
 
-.restaurant-item__rank-point {
-  display: flex;
-  font-size: 0.8rem;
-  gap: 8px;
-}
-
-.restaurants-page__list {
-  gap: 10px;
-}
-
 .restaurants-page__title {
-  margin: 10px 0;
-  font-size: 0.9rem;
+  padding: $padding-3 0;
 }
 
 @include tablet {

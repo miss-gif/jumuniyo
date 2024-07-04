@@ -1,17 +1,12 @@
 import React from "react";
 import { MdOutlineStarPurple500 } from "react-icons/md";
+import Filters from "../components/restaurants/Filters";
 
 const RestaurantsPage = () => {
   return (
     <>
       <div className="restaurants-page">
-        <div className="filters">
-          <select className="filters__select">
-            <option value="1">기본 정렬순</option>
-            <option value="2">별점순</option>
-            <option value="3">리뷰 많은순</option>
-          </select>
-        </div>
+        <Filters />
         <h2 className="restaurants-page__title">주문이요 등록 음식점</h2>
         <ul className="restaurants-page__list">
           <li className="restaurant-item">

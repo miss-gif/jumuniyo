@@ -1,9 +1,12 @@
 .restaurants-page {
+  $gap: $gap-6;
   &__filters {
     display: flex;
     align-items: center;
-    gap: $gap-2;
+    gap: $gap;
+    padding: $padding-2 0;
     .search-btn {
+      position: relative;
       padding: $padding-1;
       border: 1px solid $borderColor;
       border-radius: $border-radius-2;
@@ -12,20 +15,17 @@
     .filters__list {
       font-size: 14px;
       display: flex;
-      gap: $gap-5;
+      align-items: center;
+      gap: $gap;
     }
     .filters__item {
-      display: flex;
-      padding: 12px;
       position: relative;
-      // background-color: orange;
-      &::after {
+      display: flex;
+      &::before {
         position: absolute;
-        // content: "|";
+        content: "|";
+        left: -($gap/2 + 1);
         color: $borderColor;
-      }
-      &:last-child::after {
-        content: "";
       }
     }
   }

@@ -1,5 +1,8 @@
 .footer {
   margin-bottom: 40px;
+  p {
+    font-size: 12px;
+  }
 }
 
 .footer__menu {
@@ -10,13 +13,12 @@
 
 .footer__wrap {
   display: flex;
-  gap: 42px;
+  gap: $gap-6;
 }
 
 .company-info__text {
   display: flex;
   flex-wrap: wrap;
-  font-size: 0.8rem;
   p {
     margin-right: 10px;
   }
@@ -24,26 +26,25 @@
 
 .service-info {
   display: flex;
-  font-size: 0.8rem;
 }
 
 .footer__menu__list {
-  font-size: 0.875rem;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
 }
 
 .footer__menu__item {
+  font-size: 14px;
   a {
     display: block;
     position: relative;
-    padding: 12px;
+    padding: $padding-3;
     &::before {
       position: absolute;
       content: "";
       width: 1px;
-      height: 12px;
+      height: $padding-3;
       background-color: $borderColor;
       top: 0;
       bottom: 0;
@@ -52,7 +53,7 @@
     }
   }
   &:nth-child(1) {
-    font-weight: 500;
+    font-weight: $medium;
   }
 }
 
@@ -69,17 +70,17 @@
 .footer__info {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: $gap-3;
 }
 
 .service-info {
   font-size: 0.75rem;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: $gap-3;
   span {
     font-size: 1.125rem;
-    font-weight: 700;
+    font-weight: $bold;
   }
 }
 
@@ -89,7 +90,7 @@
   }
   .footer__menu__item {
     a {
-      padding: 8px;
+      padding: $padding-2;
     }
   }
 }

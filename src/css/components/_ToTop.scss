@@ -1,10 +1,10 @@
 .to-top {
   width: 2.625rem;
   height: 2.625rem;
-  background-color: #333;
+  background-color: $black;
   color: #fff;
-  border: 2px solid #fff;
-  border-radius: 8px;
+  border: 2px solid &white;
+  border-radius: $border-radius-2;
   cursor: pointer;
   display: flex;
   justify-content: center;

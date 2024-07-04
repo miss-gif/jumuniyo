@@ -7,16 +7,16 @@
 
   &__image {
     width: 100%;
-    border-radius: 8px;
+    border-radius: $border-radius-2;
   }
 
   &__top {
     display: flex;
-    padding: 8px 4px;
+    padding: $padding-2 $padding-1;
   }
 
   &__title {
-    font-weight: 700;
+    font-weight: $medium;
   }
 
   &__rank-point {
@@ -24,7 +24,7 @@
     align-items: center;
 
     svg {
-      margin-right: 5px;
+      margin-right: 4px;
       color: #ffcc00; // Adjust color as needed
     }
   }
@@ -33,18 +33,13 @@
     display: flex;
     justify-content: space-between;
     width: 100%;
-    padding: 8px 8px;
+    padding: $padding-2;
     background-color: #fff;
-    border-radius: 8px;
+    border-radius: $border-radius-2;
     border: 1px solid $borderColor;
-
+    font-size: 14px;
     p {
-      color: #777;
-
-      span {
-        font-weight: 500;
-        color: #333;
-      }
+      font-size: 12px;
     }
   }
 }
