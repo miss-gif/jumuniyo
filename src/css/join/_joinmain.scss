@@ -87,3 +87,9 @@
   background-position: center;
   background-size: contain;
 }
+
+@media all and (max-width: 768px) {
+  .join-button {
+    flex-direction: column;
+  }
+}

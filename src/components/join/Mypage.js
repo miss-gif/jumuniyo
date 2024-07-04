@@ -1,26 +1,37 @@
-import { useNavigate } from "react-router-dom";
+import React from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const Mypage = () => {
-  const useNav = useNavigate("");
+  const navigate = useNavigate();
+  const location = useLocation();
+
   return (
     <div className="mypage-select">
       <button
-        onClick={() => {
-          useNav("/mypage");
+        onClick={() => navigate("/mypage")}
+        style={{
+          backgroundColor: location.pathname === "/mypage" ? "black" : "white",
+          color: location.pathname === "/mypage" ? "white" : "black",
         }}
       >
         내정보
       </button>
       <button
-        onClick={() => {
-          useNav("/mypage/ordere");
+        onClick={() => navigate("/mypage/ordere")}
+        style={{
+          backgroundColor:
+            location.pathname === "/mypage/ordere" ? "black" : "white",
+          color: location.pathname === "/mypage/ordere" ? "white" : "black",
         }}
       >
         주문내역
       </button>
       <button
-        onClick={() => {
-          useNav("/mypage/review");
+        onClick={() => navigate("/mypage/review")}
+        style={{
+          backgroundColor:
+            location.pathname === "/mypage/review" ? "black" : "white",
+          color: location.pathname === "/mypage/review" ? "white" : "black",
         }}
       >
         리뷰작성

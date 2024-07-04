@@ -104,3 +104,10 @@
   color: #fff;
   border-radius: 5px;
 }
+
+@media all and (max-width: 768px) {
+  .user-join-form {
+    width: 100%;
+    padding: 0 40px;
+  }
+}
