@@ -7,18 +7,12 @@ import MenuManagement from "../components/ceo/MenuManagement";
 import Reviews from "../components/ceo/Reviews";
 import StoreManagement from "../components/ceo/StoreManagement";
 import Statistics from "../components/ceo/Statistics";
+import CeoHeader from "../components/layout/CeoHeader";
 
 const CeoPage = () => {
   return (
     <div className="ceo-page">
-      <div className="ceo-page__header">
-        <h2>주문이요사장님 | 사업장 페이지</h2>
-        <div className="ceo-page__controller">
-          <div className="ceo-page__user-id">userID</div>
-          <button className="ceo-page__button">내정보</button>
-          <div className="ceo-page__notification">알림</div>
-        </div>
-      </div>
+      <CeoHeader />
       <div className="ceo-page__main">
         <aside className="ceo-page__menu">
           <Link to="home" className="ceo-page__menu-item">

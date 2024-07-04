@@ -20,6 +20,8 @@ import Test from "./pages/Test";
 import Pay from "./components/restaurantdetail/Pay";
 import MyPageOrderPagee from "./pages/MyPageOrderPagee";
 import MyPageReviewPage from "./pages/MyPageReviewPage";
+import AdminPage from "./pages/AdminPage";
+import CeoLayout from "./components/layout/CeoLayout";
 
 function App() {
   return (
@@ -46,7 +48,14 @@ function App() {
           <Route path="/auth" element={<AuthPage />} />
           <Route path="/auth/user" element={<AuthUserPage />} />
           <Route path="/auth/ceo" element={<AuthCeoPage />} />
-          <Route path="/ceopage/*" element={<CeoPage />} />
+
+          {/* 사업자 라우터 */}
+          <Route path="/" element={<CeoLayout />}>
+            <Route path="/ceopage/" element={<CeoPage />} />
+          </Route>
+
+          {/* 관리자 라우터 */}
+          <Route path="/admin/*" element={<AdminPage />} />
           <Route path="/test" element={<Test />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
