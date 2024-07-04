@@ -1,20 +1,20 @@
+@import "../abstracts/variables.scss";
+
 .menu-wrap {
   display: flex;
   gap: 12px;
-  @media screen and (max-width: 768px) {
-    display: block;
-  }
+
   .left {
     width: 680px;
     .restaurant-info {
-      border: 1px solid #d9d9d9;
-      background: #fff;
+      border: 1px solid $borderColor;
+      background: $backgroundColor;
 
       .restaurant-title {
         display: flex;
         padding: 10px 20px;
         align-items: center;
-        border-bottom: 1px solid #d9d9d9;
+        border-bottom: 1px solid $borderColor;
       }
       .restaurant-logoandcontent {
         display: flex;
@@ -55,22 +55,22 @@
       .threeChoices {
         display: flex;
         justify-content: center;
-        border-top: 1px solid black;
-        border-bottom: 1px solid black;
+        border-top: 1px solid $black;
+        border-bottom: 1px solid $black;
         ul {
           display: flex;
           width: 100%;
           button {
             flex: 1;
             padding: 10px;
-            border-right: 1px solid black;
+            border-right: 1px solid $black;
 
             &:nth-child(1) {
-              border-left: 1px solid black;
+              border-left: 1px solid $black;
             }
             &.active {
               background-color: #1657bf;
-              color: #fff;
+              color: $white;
             }
           }
         }
@@ -90,8 +90,8 @@
       width: 100%;
       padding: 9px 15px;
       align-items: center;
-      background: #333;
-      color: #fff;
+      background: $black;
+      color: $white;
     }
 
     .order-menu {
@@ -100,8 +100,8 @@
       max-height: 400px;
       padding: 10px;
       flex-direction: column;
-      border: 1px solid #d9d9d9;
-      background: #fff;
+      border: 1px solid $borderColor;
+      background: $white;
       overflow-y: auto;
 
       .order-menu-lower {
@@ -109,7 +109,6 @@
         justify-content: space-between;
 
         .order-cancel:hover {
-          background-color: red;
         }
       }
     }
@@ -132,13 +131,103 @@
       justify-content: center;
       align-items: center;
       border: 1px solid #ccc;
-      opacity: 0.65;
       background: #ccc;
+      color: #fff;
+      opacity: 0.65;
+      cursor: not-allowed;
+
+      &.disabled {
+        background: #ccc;
+        color: #999;
+        cursor: not-allowed;
+        pointer-events: none;
+      }
+
+      &:not(.disabled) {
+        background-color: $black;
+        opacity: 1;
+        cursor: pointer;
+      }
+
+      &:hover:not(.disabled) {
+        cursor: pointer;
+      }
     }
-    .order-button:hover {
-      background-color: #1657bf;
-      color: #ccc;
-      cursor: pointer;
+  }
+
+  @media (min-width: 760px) {
+    .order-buttonforphone {
+      display: none;
+    }
+  }
+
+  @media (max-width: 760px) {
+    flex-direction: column;
+    align-items: stretch;
+
+    .review-wrap {
+      width: 100%;
+    }
+    .info-section {
+      width: 100%;
+    }
+    .menu-slide {
+      display: none;
+    }
+
+    .left,
+    .right {
+      width: 100%;
+    }
+
+    .right {
+      position: fixed;
+      bottom: 10px;
+      background: $white;
+      box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+      width: calc(100% - 20px);
+
+      .order-buttonforphone {
+        width: calc(100% - 20px);
+        display: flex;
+        height: 55px;
+        justify-content: center;
+        align-items: center;
+        border: 1px solid #ccc;
+        color: #fff;
+        opacity: 0.65;
+        cursor: not-allowed;
+
+        &.disabled {
+          background: #ccc;
+          color: #999;
+          cursor: not-allowed;
+          pointer-events: none;
+        }
+
+        &:not(.disabled) {
+          background-color: $black;
+          opacity: 1;
+          cursor: pointer;
+        }
+
+        &:hover:not(.disabled) {
+          cursor: pointer;
+        }
+      }
+
+      .order-tab,
+      .order-menu,
+      .order-price,
+      .order-button {
+        display: none;
+      }
+
+      .order-menu {
+        max-height: 200px;
+        overflow-y: auto;
+      }
     }
   }
 }
@@ -150,14 +239,14 @@
     .swiper-container {
       display: flex;
       margin: 0 auto;
-      background-color: #fff;
+      background-color: $backgroundColor;
       padding: 20px;
-      border: 1px solid #ddd;
+      border: 1px solid $borderColor;
       border-bottom: 0;
 
       .oneMenu {
         // margin-right: 10px;
-        border: 1px solid #d9d9d9;
+        border: 1px solid $borderColor;
 
         .menuTitle {
           padding-left: 14px;
@@ -178,10 +267,10 @@
     .menu-list {
       display: flex;
       flex-direction: column;
-      border: 1px solid #d9d9d9;
+      border: 1px solid $borderColor;
 
       .menu-list-oneMenu {
-        border-bottom: 1px solid #d9d9d9;
+        border-bottom: 1px solid $borderColor;
         padding: 10px;
         &:last-child {
           border-bottom: none;
@@ -195,6 +284,10 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
+
+            .menu-list-content {
+              color: $gray;
+            }
           }
 
           .menu-list-oneMenu-tablePic {
@@ -208,8 +301,8 @@
 
 //리뷰
 .review-wrap {
-  border-left: 1px solid #ddd;
-  border-right: 1px solid #ddd;
+  border-left: 1px solid $borderColor;
+  border-right: 1px solid $borderColor;
   padding-left: 10px;
   padding-right: 10px;
   width: 680px;
@@ -251,11 +344,11 @@
   }
 
   .reviews {
-    border-top: 1px solid #ddd;
+    border-top: 1px solid $borderColor;
     padding-top: 20px;
 
     .review {
-      border-bottom: 1px solid #ddd;
+      border-bottom: 1px solid $borderColor;
       padding-bottom: 20px;
       margin-bottom: 20px;
 
@@ -297,27 +390,27 @@
   width: 680px;
 
   padding: 20px;
-  background-color: #f9f9f9;
-  border: 1px solid #e0e0e0;
+  background-color: $backgroundColor;
+  border: 1px solid $borderColor;
   border-radius: 8px;
   margin-top: 20px;
 
   h2 {
     font-size: 18px;
-    color: #333;
+    color: $black;
     margin-bottom: 10px;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid $borderColor;
     padding-bottom: 5px;
   }
 
   p {
     font-size: 16px;
-    color: #555;
+    color: $black;
     margin-bottom: 8px;
 
     strong {
       font-weight: bold;
-      color: #333;
+      color: $black;
     }
   }
 
