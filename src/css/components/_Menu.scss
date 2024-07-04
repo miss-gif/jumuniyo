@@ -1,7 +1,9 @@
 .menu-wrap {
   display: flex;
   gap: 12px;
-
+  @media screen and (max-width: 768px) {
+    display: block;
+  }
   .left {
     width: 680px;
     .restaurant-info {
