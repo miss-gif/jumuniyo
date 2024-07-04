@@ -90,9 +90,9 @@ const PaymentPage = () => {
         </div>
       </div>
       <div className="payment-page__order-summary">
-        <p className="payment-page__title">주문내역</p>
+        <h2 className="payment-page__title">주문내역</h2>
         <div className="payment-page__warp-border">
-          <p className="payment-page__restaurant-name">음식점 상호명</p>
+          <h3 className="payment-page__restaurant-name">음식점 상호명</h3>
           <ul>
             <li className="payment-page__order-item">
               <p>
