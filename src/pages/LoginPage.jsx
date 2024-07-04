@@ -28,7 +28,7 @@ const AuthUserPage = () => {
         <form className="user-join-form">
           <input placeholder="아이디를 입력해 주세요."></input>
           <input placeholder="비밀번호를 입력해 주세요."></input>
-          <div className="join-button">
+          <div>
             <h6
               onClick={() => {
                 join("/auth");
