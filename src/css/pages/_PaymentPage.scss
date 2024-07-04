@@ -116,12 +116,13 @@
     padding: $padding-2;
     font-size: 14px;
     border-bottom: 1px solid $borderColor;
+    background-color: $gray;
   }
 
   &__order-item {
     display: flex;
     justify-content: space-between;
-    padding: $padding-2;
+    padding: $padding-3 $padding-2;
     p {
       font-size: 14px;
     }

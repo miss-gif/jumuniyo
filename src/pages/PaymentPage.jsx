@@ -92,7 +92,9 @@ const PaymentPage = () => {
       <div className="payment-page__order-summary">
         <h2 className="payment-page__title">주문내역</h2>
         <div className="payment-page__warp-border">
-          <h3 className="payment-page__restaurant-name">음식점 상호명</h3>
+          <h3 className="payment-page__restaurant-name">
+            뉴욕버거앤치킨-대구남산점
+          </h3>
           <ul>
             <li className="payment-page__order-item">
               <p>
