@@ -22,12 +22,29 @@ import MyPageOrderPagee from "./pages/MyPageOrderPagee";
 import MyPageReviewPage from "./pages/MyPageReviewPage";
 import AdminPage from "./pages/AdminPage";
 import CeoLayout from "./components/layout/CeoLayout";
+import { Home, Reviews } from "@mui/icons-material";
+import Orders from "./components/ceo/Orders";
+import MenuManagement from "./components/ceo/MenuManagement";
+import StoreManagement from "./components/ceo/StoreManagement";
+import Statistics from "./components/ceo/Statistics";
+import AdminLayout from "./components/layout/AdminLayout";
+
+// 사업자
 
 function App() {
   return (
     <>
       <div className="root-wrap">
         <Routes>
+          {/* 공통 */}
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/auth" element={<AuthPage />} />
+          <Route path="/auth/user" element={<AuthUserPage />} />
+          <Route path="/auth/ceo" element={<AuthCeoPage />} />
+          <Route path="/test" element={<Test />} />
+          <Route path="*" element={<NotFound />} />
+
+          {/* 유저 */}
           <Route path="/" element={<RootLayout />}>
             <Route index element={<HomePage />} />
             <Route path="/restaurants" element={<RestaurantsPage />} />
@@ -44,20 +61,22 @@ function App() {
             <Route path="/projectinfo" element={<ProjectInfo />} />
           </Route>
 
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/auth" element={<AuthPage />} />
-          <Route path="/auth/user" element={<AuthUserPage />} />
-          <Route path="/auth/ceo" element={<AuthCeoPage />} />
-
           {/* 사업자 라우터 */}
-          <Route path="/" element={<CeoLayout />}>
+          <Route path="/ceopage" element={<CeoLayout />}>
             <Route path="/ceopage/" element={<CeoPage />} />
+            <Route path="/ceopage/" element={<Home />} />
+            <Route path="home" element={<Home />} />
+            <Route path="orders" element={<Orders />} />
+            <Route path="menu-management" element={<MenuManagement />} />
+            <Route path="reviews" element={<Reviews />} />
+            <Route path="store-management" element={<StoreManagement />} />
+            <Route path="statistics" element={<Statistics />} />
           </Route>
 
           {/* 관리자 라우터 */}
-          <Route path="/admin/*" element={<AdminPage />} />
-          <Route path="/test" element={<Test />} />
-          <Route path="*" element={<NotFound />} />
+          <Route path="/admin" element={<AdminLayout />}>
+            <Route path="/admin/" element={<AdminPage />} />
+          </Route>
         </Routes>
       </div>
     </>
