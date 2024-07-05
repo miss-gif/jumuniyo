@@ -28,6 +28,7 @@ import MenuManagement from "./components/ceo/MenuManagement";
 import StoreManagement from "./components/ceo/StoreManagement";
 import Statistics from "./components/ceo/Statistics";
 import AdminLayout from "./components/layout/AdminLayout";
+import MyPageAddress from "./pages/MyPageAddress";
 
 // 사업자
 
@@ -57,6 +58,7 @@ function App() {
             <Route path="/mypage/order" element={<MyPageOrderPage />} />
             <Route path="/mypage/ordere" element={<MyPageOrderPagee />} />
             <Route path="/mypage/review" element={<MyPageReviewPage />} />
+            <Route path="/mypage/address" element={<MyPageAddress />} />
             <Route path="/payment" element={<PaymentPage />} />
             <Route path="/projectinfo" element={<ProjectInfo />} />
           </Route>

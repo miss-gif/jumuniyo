@@ -1,5 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import JoinFooter from "../components/layout/JoinFooter";
+import { Box, TextField } from "@mui/material";
 
 const AuthUserPage = () => {
   const join = useNavigate();
@@ -26,8 +27,28 @@ const AuthUserPage = () => {
           </svg>
         </div>
         <form className="user-join-form">
-          <input placeholder="아이디를 입력해 주세요."></input>
-          <input placeholder="비밀번호를 입력해 주세요."></input>
+          <Box
+            sx={{
+              width: 500,
+              maxWidth: "100%",
+            }}
+          >
+            <TextField fullWidth label="아이디" id="fullWidth" />
+          </Box>
+          <Box
+            sx={{
+              width: 500,
+              maxWidth: "100%",
+            }}
+          >
+            <TextField
+              fullWidth
+              label="비밀번호"
+              id="fullWidth"
+              type="password"
+            />
+          </Box>
+
           <div>
             <h6
               onClick={() => {

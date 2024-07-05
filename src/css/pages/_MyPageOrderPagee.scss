@@ -1,14 +1,14 @@
 .order-list {
   display: block;
-  padding: 15px 30px;
-  border: 1px solid #d9d9d9;
+  padding: 16px 32px;
+  border: 1px solid #dbdbdb;
   width: 100%;
-  border-radius: 10px;
+  border-radius: 12px;
 }
 
 .order-date {
   display: flex;
-  color: gray;
+  color: #333;
   font-size: 12px;
   justify-content: space-between;
 }
@@ -19,13 +19,13 @@
   background-repeat: no-repeat; /* 이 속성은 이미지를 반복하지 않도록 합니다 */
   background-position: center;
   background-size: contain;
-  border: 1px solid #d9d9d9;
-  border-radius: 10px;
+  border: 1px solid #dbdbdb;
+  border-radius: 12px;
 }
 
 .order-main {
   display: flex;
-  gap: 30px;
+  gap: 32px;
   align-items: center;
 
   & div {
