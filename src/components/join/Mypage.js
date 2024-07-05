@@ -17,6 +17,16 @@ const Mypage = () => {
         내정보
       </button>
       <button
+        onClick={() => navigate("/mypage/address")}
+        style={{
+          backgroundColor:
+            location.pathname === "/mypage/address" ? "black" : "white",
+          color: location.pathname === "/mypage/address" ? "white" : "black",
+        }}
+      >
+        내주소
+      </button>
+      <button
         onClick={() => navigate("/mypage/ordere")}
         style={{
           backgroundColor:

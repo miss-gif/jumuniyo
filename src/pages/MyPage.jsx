@@ -18,8 +18,8 @@ const MyPage = () => {
           <div>김민기</div>
         </div>
         <div className="mypage-title">
-          <div className="mypage-title-box">이메일</div>
-          <div>tource20@naver.com</div>
+          <div className="mypage-title-box">닉네임</div>
+          <div>밍밍밍</div>
         </div>
         <div className="mypage-button-box">
           <button type="button">수정</button>
