@@ -53,7 +53,7 @@ function App() {
             <Route path="/checkout" element={<CheckoutPage />} />
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/mypage" element={<MyPage />} />
-            <Route path="/mypage/order" element={<MyPageOrderPage />} />
+            <Route path="/mypage/order/:id" element={<MyPageOrderPage />} />
             <Route path="/mypage/ordere" element={<MyPageOrderPagee />} />
             <Route path="/mypage/review" element={<MyPageReviewPage />} />
             <Route path="/mypage/address" element={<MyPageAddress />} />
