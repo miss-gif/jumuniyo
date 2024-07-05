@@ -3,7 +3,7 @@
   height: 2.625rem;
   background-color: $black;
   color: #fff;
-  border: 2px solid &white;
+  border: 2px solid $white;
   border-radius: $border-radius-2;
   cursor: pointer;
   display: flex;
@@ -14,4 +14,10 @@
   right: 1.875rem;
   z-index: 9;
   box-shadow: $shadow-1;
+}
+
+@include tablet {
+  .to-top {
+    display: none;
+  }
 }
