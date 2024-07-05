@@ -21,8 +21,8 @@ const MenuContent = ({ menuItems, handleOpenModal }) => {
               <div className="menuPicture">
                 <img src={item.img} alt={item.name} />
               </div>
-              <div className="menuTitle">{item.name}</div>
-              <div className="menuPrice">{item.price.toLocaleString()}원</div>
+              <h3 className="menuTitle">{item.name}</h3>
+              <p className="menuPrice">{item.price.toLocaleString()}원</p>
             </SwiperSlide>
           ))}
         </Swiper>
@@ -37,7 +37,7 @@ const MenuContent = ({ menuItems, handleOpenModal }) => {
             >
               <div className="menu-list-oneMenu-table">
                 <div className="menu-list-oneMenu-tableData">
-                  <p className="menu-list-name">{item.name}</p>
+                  <h3 className="menu-list-name">{item.name}</h3>
                   <p className="menu-list-content">{item.content}</p>
                   <p className="menu-list-price">
                     {item.price.toLocaleString()}원

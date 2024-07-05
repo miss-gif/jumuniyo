@@ -5,6 +5,7 @@ import { SwiperSlide } from "swiper/react";
 import pizzaImage from "../restaurantdetail/pizza.jpg";
 import menuItemsData from "../restaurantdetail/menuItems.json";
 import "../../css/components/_MenuManagement.scss";
+import "../../css/components/_Menu.scss";
 
 const MenuManagement = () => {
   const [selectedItem, setSelectedItem] = useState(null);
@@ -35,28 +36,32 @@ const MenuManagement = () => {
               <button>메뉴 추가</button>
             </div>
           </div>
-          <div className="menu-lower">
-            <div className="oneMenu">
-              <div className="oneMenu-body">
-                <div className="oneMenu-image">
-                  <img className="image" src={pizzaImage} />
-                </div>
-                <div className="oneMenu-content">
-                  <div className="oneMenu-content-title">
-                    토마토 베이컨 버거
+        </div>
+      </div>
+      <div className="menu-section">
+        {" "}
+        <div className="menu-component">
+          <div className="menu-list">
+            {menuItems.map((item, index) => (
+              <div
+                key={index}
+                className="menu-list-oneMenu"
+                onClick={() => handleOpenModal(item)}
+              >
+                <div className="menu-list-oneMenu-table">
+                  <div className="menu-list-oneMenu-tableData">
+                    <h3 className="menu-list-name">{item.name}</h3>
+                    <p className="menu-list-content">{item.content}</p>
+                    <p className="menu-list-price">
+                      {item.price.toLocaleString()}원
+                    </p>
                   </div>
-                  <div className="oneMenu-content-explain">
-                    싱싱한 토마토와 짭조롬한 베이컨의 만남
-                  </div>
-                  <div className="oneMenu-content-price">10,000원</div>
-                </div>
-                <div className="oneMenu-status">
-                  <div className="oneMenu-status-box">
-                    <div className="choice">판매중</div>
+                  <div className="menu-list-oneMenu-tablePic">
+                    <img src={item.img} alt={item.name} />
                   </div>
                 </div>
               </div>
-            </div>
+            ))}
           </div>
         </div>
       </div>

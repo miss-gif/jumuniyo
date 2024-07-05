@@ -13,6 +13,10 @@ import MenuContent from "./MenuContent";
 import ReviewContent from "./ReviewContent";
 import InfoContent from "./InfoContent";
 
+import DeleteIcon from "@mui/icons-material/Delete";
+import CancelIcon from "@mui/icons-material/Cancel";
+import AddIcon from "@mui/icons-material/Add";
+import RemoveIcon from "@mui/icons-material/Remove";
 const storeReviewNumber = [
   {
     reviews: 100,
@@ -180,7 +184,7 @@ const Menu = () => {
             className="clear-order btn--default"
             onClick={handleClearOrder}
           >
-            전체취소
+            <DeleteIcon sx={{ fontSize: 20, color: "$black" }} />
           </button>
         </h2>
         <div className="order-menu">
@@ -194,20 +198,20 @@ const Menu = () => {
                   <div className="order-menu-lower">
                     <div className="order-priceAndCancel">
                       <button
-                        className="order-cancel btn--default"
+                        className="order-cancel"
                         onClick={() => handleRemoveItem(index)}
                       >
-                        취소
+                        <CancelIcon />
                       </button>
                       {(item.price * item.count).toLocaleString()}원
                     </div>
                     <div className="order-controlNumber">
                       <button onClick={() => handleDecreaseCount(index)}>
-                        -
+                        <RemoveIcon />
                       </button>
                       {item.count}개
                       <button onClick={() => handleIncreaseCount(index)}>
-                        +
+                        <AddIcon />
                       </button>
                     </div>
                   </div>
@@ -219,10 +223,26 @@ const Menu = () => {
         <div className="order-price">
           총 가격: {totalOrderPrice.toLocaleString()}원
         </div>
-        <div className="order-button" onClick={handleOrder}>
+        <button
+          className={`order-button ${orderItems.length === 0 ? "disabled" : ""}`}
+          onClick={handleOrder}
+          disabled={orderItems.length === 0}
+        >
           주문하기
-        </div>
+        </button>
+
+        {/* width 760px 이하일시 버튼 */}
+        <button
+          className={`order-buttonforphone ${orderItems.length === 0 ? "disabled" : ""}`}
+          onClick={handleOrder}
+          disabled={orderItems.length === 0}
+        >
+          {orderItems.length === 0
+            ? "음식을 선택해주세요!"
+            : totalOrderPrice.toLocaleString() + "원 주문하기"}
+        </button>
       </div>
+
       <ModalForMenu
         isOpen={isModalOpen}
         onClose={handleCloseModal}
