@@ -3,6 +3,7 @@
 
 .menu-wrap {
   display: flex;
+  justify-content: space-between;
   gap: 12px;
 
   .left {
@@ -125,9 +126,6 @@
       .order-menu-lower {
         display: flex;
         justify-content: space-between;
-
-        .order-cancel:hover {
-        }
       }
     }
 
@@ -219,8 +217,6 @@
 }
 
 .menu-section {
-  margin-top: 20px;
-
   .menu-slide {
     width: 100%;
     overflow: hidden;
@@ -256,7 +252,7 @@
 
   .menu-component {
     .menu-tap {
-      border: 1px solid $borderColor;
+      border: -1px solid $borderColor;
       background-color: $black;
       color: $white;
       padding: 12px;
@@ -287,7 +283,7 @@
               font-size: 12px;
             }
             .menu-list-content {
-              color: $gray;
+              color: $textGray;
             }
           }
 
@@ -303,10 +299,7 @@
 //리뷰
 .review-wrap {
   border: 1px solid $borderColor;
-  padding-left: 10px;
-  padding-right: 10px;
   width: 100%;
-  margin-top: 20px;
   padding: 20px;
 
   .rating-section {
@@ -357,8 +350,11 @@
       .review-header {
         display: flex;
         justify-content: space-between;
-        align-items: center;
         margin-bottom: 10px;
+
+        .review-headerUserandDate {
+          justify-content: space-between;
+        }
 
         .review-user {
           font-weight: bold;
@@ -394,7 +390,6 @@
   padding: 20px;
   background-color: $backgroundColor;
   border: 1px solid $borderColor;
-  margin-top: 20px;
 
   h3 {
     color: $black;

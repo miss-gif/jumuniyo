@@ -28,10 +28,11 @@ const ReviewContent = ({ reviewItems, storeReviewNumber }) => {
           {reviewItems.map((item, index) => (
             <div key={index} className="review">
               <div className="review-header">
-                <div className="review-header"></div>
+                <div className="review-headerUserandDate">
+                  <span className="review-user">{item.userId}</span>
+                  <span className="review-date">{item.writeTime}</span>
+                </div>
 
-                <span className="review-user">{item.userId}</span>
-                <span className="review-date">{item.writeTime}</span>
                 <span className="review-rating">{item.score}</span>
               </div>
               <div className="review-content">

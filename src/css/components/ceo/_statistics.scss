@@ -1,0 +1,35 @@
+.tabforsales {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.tabforsalesUl {
+  list-style-type: none;
+  padding: 0;
+  display: flex;
+  gap: 10px;
+}
+
+.tabforsalesUl li {
+  margin: 0;
+}
+
+.btnforYearChart,
+.btnforMonthChart,
+.btnforDayChart {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btnforYearChart:hover,
+.btnforMonthChart:hover,
+.btnforDayChart:hover {
+  background-color: #0056b3;
+}
