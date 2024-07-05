@@ -1,34 +1,19 @@
-import React, { useEffect, useState } from "react";
-import projectInfo from "../../json/footer.json";
+import { Link } from "react-router-dom";
+import FooterMenu from "./FooterMenu";
 
 const Footer = () => {
-  const [menuItems, setMenuItems] = useState([]);
-
-  useEffect(() => {
-    // JSON 파일로부터 데이터 로드
-    setMenuItems(projectInfo);
-  }, []);
-
   return (
     <footer className="footer">
-      <div className="footer__menu">
-        <div className="inner">
-          <ul className="footer__menu__list">
-            {menuItems.map((item, index) => (
-              <li key={index} className="footer__menu__item">
-                <a href={item.path}>{item.title}</a>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
+      <FooterMenu />
       <div className="inner">
         <div className="footer__wrap">
-          <img
-            src={process.env.PUBLIC_URL + "/images/logo_1x.png"}
-            alt="Logo"
-            className="footer__logo"
-          />
+          <Link to="/" className="logo-wrap">
+            <img
+              className="footer__logo"
+              src={process.env.PUBLIC_URL + "/images/logo_1x.png"}
+              alt="Logo"
+            />
+          </Link>
           <div className="footer__info">
             <h3>주문이요</h3>
             <div className="company-info__text">

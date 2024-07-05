@@ -5,15 +5,58 @@
   }
 }
 
+// 프로젝트 info 영역
 .footer__menu {
   border-top: 1px solid $borderColor;
   border-bottom: 1px solid $borderColor;
   margin-bottom: 30px;
+  &__list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  &__item {
+    font-size: 14px;
+    a {
+      display: block;
+      position: relative;
+      padding: $padding-3;
+      &::before {
+        position: absolute;
+        content: "";
+        width: 1px;
+        height: $padding-3;
+        background-color: $borderColor;
+        top: 0;
+        bottom: 0;
+        right: -1px;
+        margin: auto;
+      }
+    }
+    &:nth-child(1) {
+      font-weight: $medium;
+    }
+    &:last-child a::before {
+      width: 0;
+    }
+  }
 }
 
-.footer__wrap {
-  display: flex;
-  gap: $gap-6;
+// 푸터 내용
+.footer {
+  &__wrap {
+    display: flex;
+    gap: $gap-6;
+  }
+
+  &__logo {
+    opacity: 0.5;
+  }
+  &__info {
+    display: flex;
+    flex-direction: column;
+    gap: $gap-3;
+  }
 }
 
 .company-info__text {
@@ -24,53 +67,9 @@
   }
 }
 
-.service-info {
-  display: flex;
-}
-
-.footer__menu__list {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.footer__menu__item {
-  font-size: 14px;
-  a {
-    display: block;
-    position: relative;
-    padding: $padding-3;
-    &::before {
-      position: absolute;
-      content: "";
-      width: 1px;
-      height: $padding-3;
-      background-color: $borderColor;
-      top: 0;
-      bottom: 0;
-      right: -1px;
-      margin: auto;
-    }
-  }
-  &:nth-child(1) {
-    font-weight: $medium;
-  }
-}
-
-.footer__menu__item:last-child a::before {
-  width: 0;
-}
-
-.footer__logo {
-  width: 100px;
+.logo-wrap {
+  min-width: 100px;
   height: 100%;
-  opacity: 0.5;
-}
-
-.footer__info {
-  display: flex;
-  flex-direction: column;
-  gap: $gap-3;
 }
 
 .service-info {
@@ -85,7 +84,7 @@
 }
 
 @include tablet {
-  .footer__logo {
+  .logo-wrap {
     display: none;
   }
   .footer__menu__item {
