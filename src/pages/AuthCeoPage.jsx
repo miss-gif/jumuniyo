@@ -28,7 +28,6 @@ const AuthUserPage = () => {
           </svg>
         </div>
         <form className="user-join-form">
-          <h3>아이디</h3>
           <div>
             <Box style={{ alignItems: "center" }}>
               <TextField fullWidth label="아이디" id="fullWidth" />
@@ -37,7 +36,6 @@ const AuthUserPage = () => {
               중복 확인
             </button>
           </div>
-          <h3>비밀번호</h3>
           <Box>
             <TextField
               fullWidth
@@ -46,7 +44,6 @@ const AuthUserPage = () => {
               type="password"
             />
           </Box>
-          <h3>비밀번호 확인</h3>
           <Box>
             <TextField
               fullWidth
@@ -55,15 +52,12 @@ const AuthUserPage = () => {
               type="password"
             />
           </Box>
-          <h3>이름</h3>
           <Box>
             <TextField fullWidth label="이름" id="fullWidth" />
           </Box>
-          <h3>닉네임</h3>
           <Box>
             <TextField fullWidth label="닉네임" id="fullWidth" />
           </Box>
-          <h3>오픈시간</h3>
           <Box
             sx={{
               maxWidth: "100%",
@@ -71,7 +65,6 @@ const AuthUserPage = () => {
           >
             <TextField fullWidth label="" id="fullWidth" type="time" />
           </Box>
-          <h3>마감시간</h3>
           <Box
             sx={{
               maxWidth: "100%",
@@ -80,11 +73,9 @@ const AuthUserPage = () => {
             <TextField fullWidth label="" id="fullWidth" type="time" />
           </Box>
 
-          <h3>전화번호</h3>
           <Box>
             <TextField fullWidth label="전화번호" id="fullWidth" />
           </Box>
-          <h3>가게이름</h3>
           <Box>
             <TextField fullWidth label="가게이름" id="fullWidth" />
           </Box>
@@ -106,7 +97,6 @@ const AuthUserPage = () => {
               <input type="checkbox" name="options" value="Option 5" /> 족발
             </label>
           </div>
-          <h3>주소</h3>
           <div>
             <Box style={{ alignItems: "center" }}>
               <TextField
@@ -120,16 +110,12 @@ const AuthUserPage = () => {
 
             <AddressButton />
           </div>
-          <h3>상세 주소</h3>
           <Box>
             <TextField fullWidth label="상세 주소" id="fullWidth" />
           </Box>
-
-          <h3>사업자 상호명</h3>
           <Box>
             <TextField fullWidth label="사업자 상호명" id="fullWidth" />
           </Box>
-          <h3>사업자 번호</h3>
           <Box>
             <TextField fullWidth label="사업자 번호" id="fullWidth" />
           </Box>
