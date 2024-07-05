@@ -6,7 +6,6 @@ import ModalForMenu from "./ModalForMenu";
 import menuItemsData from "./menuItems.json";
 import reviewItemsData from "./review.json";
 import infoData from "./info.json";
-import "../../css/components/_Menu.scss";
 import "swiper/css";
 
 import MenuContent from "./MenuContent";

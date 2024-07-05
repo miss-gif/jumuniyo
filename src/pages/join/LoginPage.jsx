@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import JoinFooter from "../components/layout/JoinFooter";
+import JoinFooter from "../../components/layout/JoinFooter";
 
 const AuthUserPage = () => {
   const join = useNavigate();

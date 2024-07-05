@@ -1,5 +1,5 @@
 import React from "react";
-import Menu from "../components/restaurantdetail/Menu";
+import Menu from "../../components/user/home/restaurantdetail/Menu";
 
 const RestaurantDetailPage = () => {
   return (

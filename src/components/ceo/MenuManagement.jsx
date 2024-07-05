@@ -2,8 +2,8 @@
 import React, { useEffect, useState } from "react";
 import Swiper from "swiper";
 import { SwiperSlide } from "swiper/react";
-import pizzaImage from "../restaurantdetail/pizza.jpg";
-import menuItemsData from "../restaurantdetail/menuItems.json";
+import pizzaImage from "../user/home/restaurantdetail/pizza.jpg";
+import menuItemsData from "../user/home/restaurantdetail/menuItems.json";
 import "../../css/components/_MenuManagement.scss";
 import "../../css/components/_Menu.scss";
 

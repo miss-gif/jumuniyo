@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
-import ImageImport from "../components/layout/ImageImport";
-import JoinFooter from "../components/layout/JoinFooter";
+import ImageImport from "../../components/layout/ImageImport";
+import JoinFooter from "../../components/layout/JoinFooter";
 
 const AuthUserPage = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

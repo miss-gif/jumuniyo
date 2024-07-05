@@ -1,35 +1,40 @@
 import { Route, Routes } from "react-router-dom";
 import RootLayout from "./components/layout/RootLayout";
-import AuthCeoPage from "./pages/AuthCeoPage.jsx";
-import AuthPage from "./pages/AuthPage.jsx";
-import AuthUserPage from "./pages/AuthUserPage.jsx";
-import CartPage from "./pages/CartPage.jsx";
-import CeoPage from "./pages/CeoPage.jsx";
-import CheckoutPage from "./pages/CheckoutPage.jsx";
-import HomePage from "./pages/HomePage.jsx";
-import LoginPage from "./pages/LoginPage.jsx";
-import MyPage from "./pages/MyPage.jsx";
-import MyPageOrderPage from "./pages/MyPageOrderPage.jsx";
-import NotFound from "./pages/NotFound.jsx";
-import PaymentPage from "./pages/PaymentPage.jsx";
-import ProfilePage from "./pages/ProfilePage.jsx";
-import ProjectInfo from "./pages/ProjectInfo.jsx";
-import RestaurantDetailPage from "./pages/RestaurantDetailPage.jsx";
-import RestaurantsPage from "./pages/RestaurantsPage.jsx";
-import Test from "./pages/Test";
-import Pay from "./components/restaurantdetail/Pay";
-import MyPageOrderPagee from "./pages/MyPageOrderPagee";
-import MyPageReviewPage from "./pages/MyPageReviewPage";
-import AdminPage from "./pages/AdminPage";
-import CeoLayout from "./components/layout/CeoLayout";
+import NotFound from "./pages/common/NotFound.jsx";
+import ProjectInfo from "./pages/common/ProjectInfo.jsx";
+import Test from "./pages/common/Test";
 import { Home, Reviews } from "@mui/icons-material";
+
+// join
+import AuthCeoPage from "./pages/join/AuthCeoPage.jsx";
+import AuthPage from "./pages/join/AuthPage.jsx";
+import AuthUserPage from "./pages/join/AuthUserPage.jsx";
+import LoginPage from "./pages/join/LoginPage.jsx";
+
+// user
+import HomePage from "./pages/user/HomePage.jsx";
+import CartPage from "./pages/user/CartPage.jsx";
+import CheckoutPage from "./pages/user/CheckoutPage.jsx";
+import MyPage from "./pages/user/MyPage.jsx";
+import MyPageOrderPage from "./pages/user/MyPageOrderPage.jsx";
+import PaymentPage from "./pages/user/PaymentPage.jsx";
+import ProfilePage from "./pages/user/ProfilePage.jsx";
+import RestaurantDetailPage from "./pages/user/RestaurantDetailPage.jsx";
+import RestaurantsPage from "./pages/user/RestaurantsPage.jsx";
+import MyPageOrderPagee from "./pages/user/MyPageOrderPagee";
+import MyPageReviewPage from "./pages/user/MyPageReviewPage";
+
+// ceo
+import CeoPage from "./pages/ceo/CeoPage.jsx";
+import CeoLayout from "./components/layout/CeoLayout";
 import Orders from "./components/ceo/Orders";
 import MenuManagement from "./components/ceo/MenuManagement";
 import StoreManagement from "./components/ceo/StoreManagement";
 import Statistics from "./components/ceo/Statistics";
-import AdminLayout from "./components/layout/AdminLayout";
 
-// 사업자
+// admin
+import AdminPage from "./pages/admin/AdminPage";
+import AdminLayout from "./components/layout/AdminLayout";
 
 function App() {
   return (
@@ -49,7 +54,6 @@ function App() {
             <Route index element={<HomePage />} />
             <Route path="/restaurants" element={<RestaurantsPage />} />
             <Route path="/restaurants/:id" element={<RestaurantDetailPage />} />
-            <Route path="/pay" element={<Pay />} />
             <Route path="/cart" element={<CartPage />} />
             <Route path="/checkout" element={<CheckoutPage />} />
             <Route path="/profile" element={<ProfilePage />} />

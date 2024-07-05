@@ -1,8 +1,8 @@
 import React from "react";
-import NewRestaurantListCarousel from "../components/home/NewRestaurantListCarousel";
-import RecommendationCarousel from "../components/home/RecommendationCarousel";
-import CategoryNavigation from "../components/home/CategoryNavigation";
-import RecentOrderCarousel from "../components/home/RecentOrderCarousel";
+import NewRestaurantListCarousel from "../../components/home/NewRestaurantListCarousel";
+import RecommendationCarousel from "../../components/home/RecommendationCarousel";
+import CategoryNavigation from "../../components/home/CategoryNavigation";
+import RecentOrderCarousel from "../../components/home/RecentOrderCarousel";
 
 const HomePage = () => {
   return (

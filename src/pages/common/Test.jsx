@@ -1,6 +1,6 @@
 // App.jsx
 import React, { useState } from "react";
-import ModalComponent from "../components/common/ModalComponent";
+import ModalComponent from "../../components/common/ModalComponent";
 
 const Test = () => {
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
