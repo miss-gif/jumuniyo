@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import ImageImport from "../components/layout/ImageImport";
 import JoinFooter from "../components/layout/JoinFooter";
+import { Box, TextField } from "@mui/material";
 
 const AuthUserPage = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -27,26 +28,40 @@ const AuthUserPage = () => {
           </svg>
         </div>
         <form className="user-join-form">
-          <h3>아이디</h3>
           <div>
-            <input placeholder="아이디를 입력해 주세요."></input>
+            <Box style={{ alignItems: "center" }}>
+              <TextField fullWidth label="아이디" id="fullWidth" />
+            </Box>
             <button type="button" className="id-check">
               중복 확인
             </button>
           </div>
-          <h3>비밀번호</h3>
-          <input placeholder="비밀번호를 입력해 주세요."></input>
-          <h3>비밀번호 확인</h3>
-          <input placeholder="비밀번호를 입력해 주세요."></input>
-          <h3>이름</h3>
-          <input placeholder="이름을 입력해 주세요."></input>
-          <h3>닉네임</h3>
-          <input placeholder="닉네임을 입력해 주세요."></input>
-          <h3>전화번호</h3>
-          <input placeholder="전화번호를 입력해 주세요."></input>
-          <h3>프로필 사진</h3>
+          <Box>
+            <TextField
+              fullWidth
+              label="비밀번호"
+              id="fullWidth"
+              type="password"
+            />
+          </Box>
+          <Box>
+            <TextField
+              fullWidth
+              label="비밀번호 확인"
+              id="fullWidth"
+              type="password"
+            />
+          </Box>
+          <Box>
+            <TextField fullWidth label="이름" id="fullWidth" />
+          </Box>
+          <Box>
+            <TextField fullWidth label="닉네임" id="fullWidth" />
+          </Box>
+          <Box>
+            <TextField fullWidth label="전화번호" id="fullWidth" />
+          </Box>
           <ImageImport />
-
           <button type="button">회원가입</button>
         </form>
       </div>
