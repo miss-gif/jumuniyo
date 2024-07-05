@@ -69,6 +69,7 @@
     flex-direction: column;
     gap: $gap-2;
   }
+
   &__mobile-payment,
   &__onsite-payment {
     display: flex;
@@ -155,6 +156,17 @@
   border-bottom: 1px solid $borderColor;
   border-left: 1px solid $borderColor;
   border-right: 1px solid $borderColor;
+}
+
+.payment-wrap {
+  h4 {
+    margin-bottom: 4px;
+  }
+  span {
+    color: $textGray;
+    font-size: 12px;
+    padding: 0 $padding-1;
+  }
 }
 
 @include tablet {
