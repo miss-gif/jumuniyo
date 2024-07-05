@@ -28,6 +28,7 @@ const MenuContent = ({ menuItems, handleOpenModal }) => {
         </Swiper>
       </div>
       <div className="menu-component">
+        <div className="menu-tap">메뉴</div>
         <div className="menu-list">
           {menuItems.map((item, index) => (
             <div
