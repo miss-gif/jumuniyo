@@ -3,7 +3,7 @@ import React from "react";
 
 const ReviewContent = ({ reviewItems, storeReviewNumber }) => {
   return (
-    <div>
+    <div className="review-content">
       <div className="review-wrap">
         <div>클린리뷰 {storeReviewNumber[0].reviews}</div>
         <div className="rating-section">
@@ -28,6 +28,8 @@ const ReviewContent = ({ reviewItems, storeReviewNumber }) => {
           {reviewItems.map((item, index) => (
             <div key={index} className="review">
               <div className="review-header">
+                <div className="review-header"></div>
+
                 <span className="review-user">{item.userId}</span>
                 <span className="review-date">{item.writeTime}</span>
                 <span className="review-rating">{item.score}</span>

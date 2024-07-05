@@ -131,7 +131,7 @@ const Menu = () => {
   return (
     <div className="menu-wrap">
       <div className={`left ${selectedTab}`}>
-        <div className="restaurant-info border-set">
+        <div className="restaurant-info">
           <h2 className="restaurant-title">롯데리아-서성네거리점</h2>
           <div className="restaurant-logoandcontent">
             <div className="restaurant-logo">
@@ -178,22 +178,19 @@ const Menu = () => {
         </div>
       </div>
       <div className={`right ${selectedTab}`}>
-        <h2 className="order-tab">
-          <div className="orderList">주문표</div>
-          <button
-            className="clear-order btn--default"
-            onClick={handleClearOrder}
-          >
-            <DeleteIcon sx={{ fontSize: 20, color: "$black" }} />
+        <div className="order-tab">
+          <p className="orderList">주문표</p>
+          <button className="clear-order" onClick={handleClearOrder}>
+            <DeleteIcon sx={{ fontSize: 20, color: "white" }} />
           </button>
-        </h2>
+        </div>
         <div className="order-menu">
           {orderItems.length === 0 ? (
-            "주문표에 담긴 메뉴가 없습니다."
+            <div className="notOrdered"> 주문표에 담긴 메뉴가 없습니다.</div>
           ) : (
             <ul>
               {orderItems.map((item, index) => (
-                <li key={index}>
+                <li className="order-menu-yes" key={index}>
                   <div className="order-menu-name">{item.name}</div>
                   <div className="order-menu-lower">
                     <div className="order-priceAndCancel">
@@ -209,7 +206,7 @@ const Menu = () => {
                       <button onClick={() => handleDecreaseCount(index)}>
                         <RemoveIcon />
                       </button>
-                      {item.count}개
+                      {item.count}
                       <button onClick={() => handleIncreaseCount(index)}>
                         <AddIcon />
                       </button>
@@ -220,9 +217,14 @@ const Menu = () => {
             </ul>
           )}
         </div>
-        <div className="order-price">
-          총 가격: {totalOrderPrice.toLocaleString()}원
-        </div>
+        {orderItems.length === 0 ? (
+          <div className="order-price-none"></div>
+        ) : (
+          <div className="order-price">
+            총 가격: {totalOrderPrice.toLocaleString()}원
+          </div>
+        )}
+
         <button
           className={`order-button ${orderItems.length === 0 ? "disabled" : ""}`}
           onClick={handleOrder}
@@ -230,8 +232,9 @@ const Menu = () => {
         >
           주문하기
         </button>
-
-        {/* width 760px 이하일시 버튼 */}
+      </div>
+      {/* width 760px 이하일시 버튼 */}
+      <div className="order-buttonforphone-border">
         <button
           className={`order-buttonforphone ${orderItems.length === 0 ? "disabled" : ""}`}
           onClick={handleOrder}
