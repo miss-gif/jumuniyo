@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import reviewItemsData from "../user/home/restaurantdetail/review.json";
-import testMenu from "../user/home/restaurantdetail/testMenu.jpg";
+import reviewItemsData from "../user/restaurantdetail/review.json";
+import testMenu from "../user/restaurantdetail/testMenu.jpg";
 
 const Reviews = () => {
   const [reviewItems, setReviewItems] = useState([]);

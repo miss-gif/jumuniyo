@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Mypage from "../../components/join/Mypage";
-import reviewItemsData from "../../components/user/home/restaurantdetail/review.json";
+import reviewItemsData from "../../components/user/restaurantdetail/review.json";
 
 const MyPageReviewPage = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

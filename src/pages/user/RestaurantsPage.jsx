@@ -1,6 +1,6 @@
 import React from "react";
 import { MdOutlineStarPurple500 } from "react-icons/md";
-import Filters from "../../components/user/home/restaurants/Filters";
+import Filters from "../../components/user/restaurants/Filters";
 
 const RestaurantsPage = () => {
   return (

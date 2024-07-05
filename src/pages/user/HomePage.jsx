@@ -1,7 +1,7 @@
 import React from "react";
 import NewRestaurantListCarousel from "../../components/home/NewRestaurantListCarousel";
 import RecommendationCarousel from "../../components/home/RecommendationCarousel";
-import CategoryNavigation from "../../components/home/CategoryNavigation";
+import CategoryNavigation from "../../components/user/home/CategoryNavigation";
 import RecentOrderCarousel from "../../components/home/RecentOrderCarousel";
 
 const HomePage = () => {
