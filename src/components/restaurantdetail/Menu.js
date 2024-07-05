@@ -203,11 +203,17 @@ const Menu = () => {
                       {(item.price * item.count).toLocaleString()}원
                     </div>
                     <div className="order-controlNumber">
-                      <button onClick={() => handleDecreaseCount(index)}>
+                      <button
+                        className="decreaseButton"
+                        onClick={() => handleDecreaseCount(index)}
+                      >
                         <RemoveIcon />
                       </button>
                       {item.count}
-                      <button onClick={() => handleIncreaseCount(index)}>
+                      <button
+                        className="increaseButton"
+                        onClick={() => handleIncreaseCount(index)}
+                      >
                         <AddIcon />
                       </button>
                     </div>

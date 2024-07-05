@@ -17,7 +17,6 @@ import ProjectInfo from "./pages/ProjectInfo.jsx";
 import RestaurantDetailPage from "./pages/RestaurantDetailPage.jsx";
 import RestaurantsPage from "./pages/RestaurantsPage.jsx";
 import Test from "./pages/Test";
-import Pay from "./components/restaurantdetail/Pay";
 import MyPageOrderPagee from "./pages/MyPageOrderPagee";
 import MyPageReviewPage from "./pages/MyPageReviewPage";
 import AdminPage from "./pages/AdminPage";
@@ -50,7 +49,6 @@ function App() {
             <Route index element={<HomePage />} />
             <Route path="/restaurants" element={<RestaurantsPage />} />
             <Route path="/restaurants/:id" element={<RestaurantDetailPage />} />
-            <Route path="/pay" element={<Pay />} />
             <Route path="/cart" element={<CartPage />} />
             <Route path="/checkout" element={<CheckoutPage />} />
             <Route path="/profile" element={<ProfilePage />} />
