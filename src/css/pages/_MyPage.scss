@@ -22,6 +22,7 @@
 }
 
 .mypage-box {
+  position: relative;
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -59,8 +60,35 @@
 
 .mypage-address {
   display: flex;
+  flex-direction: column;
   width: 100%;
   justify-content: center;
+  align-items: center;
+
+  & button {
+    width: fit-content;
+    padding: 8px 12px;
+    background-color: #333;
+    color: white;
+    border-radius: 4px;
+  }
+}
+
+.modify-modal {
+  background: #fff;
+  width: 100%;
+  position: absolute;
+  display: flex;
+  padding: 28px 28px;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  border-radius: 4px;
+
+  & div {
+    display: flex;
+    width: 100%;
+  }
 }
 
 @include tablet {

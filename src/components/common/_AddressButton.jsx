@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 
-const AddressButton = () => {
+// eslint-disable-next-line react/prop-types
+const AddressButton = ({ setAddress }) => {
   useEffect(() => {
     // Daum Postcode API 스크립트 동적 로드
     const script = document.createElement("script");
@@ -42,6 +43,7 @@ const AddressButton = () => {
             guideTextBox.innerHTML = "(예상 도로명 주소 : " + expRoadAddr + ")";
             guideTextBox.style.display = "block";
           }
+          setAddress(roadAddr);
         },
       }).open();
     }
