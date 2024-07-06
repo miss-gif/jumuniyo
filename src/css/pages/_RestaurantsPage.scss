@@ -5,7 +5,7 @@
   }
   .filters__select {
     width: 20%;
-    padding: $padding-1 $padding-3;
+    padding: $padding-1 $padding-2;
     border: 1px solid $borderColor;
     font-size: 14px;
   }
@@ -14,17 +14,17 @@
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
-    gap: $gap-3;
+    gap: $gap-2;
 
     .restaurant-item {
       display: flex;
       align-items: center;
-      gap: $gap-3;
+      gap: $gap-2;
       padding: $padding-2;
       border: 1px solid $borderColor;
       border-radius: $border-radius-1;
       width: 100%;
-      max-width: calc(50% - ($gap-3/2));
+      max-width: calc(50% - ($gap-2/2));
 
       &__image {
         width: 80px;
@@ -59,7 +59,7 @@
 }
 
 .restaurants-page__title {
-  padding: $padding-3 0;
+  padding: $padding-2 0;
 }
 
 @include tablet {

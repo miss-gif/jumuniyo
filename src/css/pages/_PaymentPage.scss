@@ -29,14 +29,16 @@
   }
 
   &__delivery-info {
-    padding: $padding-5 0;
+    padding: $padding-4 0;
     display: flex;
     flex-direction: column;
-    gap: $gap-4;
+    gap: $gap-2;
     div {
       display: flex;
       padding: 0 $padding-2;
       label {
+        display: flex;
+        align-items: center;
         max-width: $width;
         width: 100%;
         font-weight: 500;
@@ -52,7 +54,7 @@
   }
 
   &__request {
-    padding: $padding-3;
+    padding: $padding-4 $padding-2;
     width: 100%;
     textarea {
       width: 100%;
@@ -67,7 +69,7 @@
     display: flex;
     padding: $padding-4 $padding-2;
     flex-direction: column;
-    gap: $gap-2;
+    gap: $gap-4;
   }
 
   &__mobile-payment,
@@ -80,7 +82,7 @@
   }
 
   &__coupon {
-    padding: $padding-3;
+    padding: $padding-4 $padding-2;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -123,7 +125,7 @@
   &__order-item {
     display: flex;
     justify-content: space-between;
-    padding: $padding-3 $padding-2;
+    padding: $padding-4 $padding-2;
     p {
       font-size: 14px;
     }
