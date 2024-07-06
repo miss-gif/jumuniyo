@@ -66,7 +66,7 @@ const PaymentPage = () => {
                   </div>
                 </div>
                 <div className="payment-wrap">
-                  <h4>현장 결제</h4>
+                  <h4>현장결제</h4>
                   <div className="payment-page__onsite-payment">
                     <button className="payment-page__button btn--default">
                       신용카드
