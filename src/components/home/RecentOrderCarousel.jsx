@@ -20,7 +20,7 @@ const RecentOrderCarousel = () => {
   const initializeSwiper = swiperEl => {
     const swiperParams = {
       slidesPerView: 5,
-      spaceBetween: 12,
+      spaceBetween: 8,
       breakpoints: {
         1024: {
           slidesPerView: 5,
