@@ -36,13 +36,13 @@ function App() {
     <>
       <div className="root-wrap">
         <Routes>
-          {/* 공통 */}
+          {/* 로그인 */}
           <Route path="/login" element={<LoginPage />} />
+
+          {/* 회원가입 */}
           <Route path="/auth" element={<AuthPage />} />
           <Route path="/auth/user" element={<AuthUserPage />} />
           <Route path="/auth/ceo" element={<AuthCeoPage />} />
-          <Route path="/test" element={<Test />} />
-          <Route path="*" element={<NotFound />} />
 
           {/* 유저 */}
           <Route path="/" element={<RootLayout />}>
@@ -77,6 +77,10 @@ function App() {
           <Route path="/admin" element={<AdminLayout />}>
             <Route path="/admin/" element={<AdminPage />} />
           </Route>
+
+          {/* 공통 */}
+          <Route path="*" element={<NotFound />} />
+          <Route path="/test" element={<Test />} />
         </Routes>
       </div>
     </>
