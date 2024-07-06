@@ -37,7 +37,7 @@
       display: flex;
       padding: 0 $padding-2;
       label {
-        max-width: 120px;
+        max-width: $width;
         width: 100%;
         font-weight: 500;
         font-size: 14px;
@@ -85,7 +85,7 @@
     justify-content: space-between;
     align-items: center;
     label {
-      max-width: 120px;
+      max-width: $width;
       width: 100%;
       font-weight: 500;
       font-size: 14px;
