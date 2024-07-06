@@ -6,7 +6,7 @@
 
 .section-carousel {
   position: relative;
-  padding: $padding-5 0;
+  padding: $padding-4 0;
   border-radius: $border-radius-2;
   // overflow: hidden;
   &::before {
@@ -27,5 +27,5 @@
 
 .section__title {
   font-weight: $bold;
-  padding-bottom: $padding-3;
+  padding-bottom: $padding-2;
 }
