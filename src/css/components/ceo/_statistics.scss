@@ -2,13 +2,25 @@
   display: flex;
   justify-content: center;
   margin-top: 20px;
+
+  .tabforsalesUl {
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+    gap: 10px;
+  }
 }
 
-.tabforsalesUl {
-  list-style-type: none;
-  padding: 0;
+.tabforchoice {
   display: flex;
-  gap: 10px;
+  justify-content: center;
+
+  .tabforchoiceUl {
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+    gap: 10px;
+  }
 }
 
 .tabforsalesUl li {
@@ -21,7 +33,7 @@
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
-  background-color: #007bff;
+  // background-color: #007bff;
   color: white;
   font-size: 16px;
   cursor: pointer;
@@ -31,5 +43,5 @@
 .btnforYearChart:hover,
 .btnforMonthChart:hover,
 .btnforDayChart:hover {
-  background-color: #0056b3;
+  // background-color: #0056b3;
 }

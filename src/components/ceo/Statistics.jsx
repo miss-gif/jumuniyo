@@ -13,29 +13,37 @@ const Statistics = () => {
   return (
     <div>
       <div>매장통계</div>
-      <ul>
-        <li>주문</li>
-        <li>리뷰</li>
-        <li>별점</li>
-        <li>북마크</li>
-        <li>매출</li>
-      </ul>
+      <div className="tabforchoice">
+        <ul className="tabforchoiceUl">
+          <li>
+            <button className="btn btnforOrder">주문</button>
+          </li>
+          <li>
+            <button className="btn btnforReview">리뷰</button>
+          </li>
+          <li>
+            <button className="btn btnforBookmark">북마크</button>
+          </li>
+          <li>
+            <button className="btn saleChart" onClick={handleCharts}>
+              판매량 보기
+            </button>
+          </li>
+        </ul>
+      </div>
 
-      <button className="saleChart" onClick={handleCharts}>
-        판매량 보기
-      </button>
       {showCharts && (
         <>
           <div className="tabforsales">
             <ul className="tabforsalesUl">
               <li>
-                <button className="btnforYearChart">연별매출</button>
+                <button className="btn btnforYearChart">연별매출</button>
               </li>
               <li>
-                <button className="btnforMonthChart">월별매출</button>
+                <button className="btn btnforMonthChart">월별매출</button>
               </li>
               <li>
-                <button className="btnforDayChart">일별매출</button>
+                <button className="btn btnforDayChart">일별매출</button>
               </li>
             </ul>
           </div>
