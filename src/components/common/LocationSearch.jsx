@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
 import MyLocationIcon from "@mui/icons-material/MyLocation";
+import GoogleMaps from "./GoogleMaps";
 
 const LocationSearch = () => {
   const location = useLocation();
@@ -54,6 +55,7 @@ const LocationSearch = () => {
             }
             readOnly
           />
+          <GoogleMaps />
           <button className="location-search__btn">검색</button>
         </div>
         {errorMessage && (
