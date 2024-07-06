@@ -48,7 +48,12 @@ const NewRestaurantListCarousel = () => {
 
   return (
     <div>
-      <swiper-container ref={swiperRef} init="false">
+      <swiper-container
+        ref={swiperRef}
+        init="false"
+        navigation="true"
+        className="swiper-container"
+      >
         {data.map(restaurant => (
           <SwiperSlideComponent
             key={restaurant.id}
