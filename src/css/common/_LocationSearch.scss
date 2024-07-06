@@ -1,4 +1,4 @@
-.LocationSearch {
+.location-search {
   @include flex-column-center;
   background-color: #1657bf;
   padding: $padding-8 0;
@@ -15,21 +15,21 @@
     padding: $padding-2 0 $padding-5;
   }
 
-  .locationSearch__group {
+  .location-search__group {
     @include flex-center;
     gap: $gap-2;
     width: 100%;
     padding: 0 $padding-10;
   }
 
-  .LocationSearch__icon {
+  .location-search__icon {
     @include flex-center;
     border-radius: $border-radius-1;
     padding: 14px;
     background-color: #fff;
   }
 
-  .locationSearch__input {
+  .location-search__input {
     display: flex;
     border-radius: $border-radius-1;
     overflow: hidden;
@@ -43,7 +43,7 @@
     }
   }
 
-  .search-btn {
+  .location-search__btn {
     padding: $padding-2 $padding-3;
     color: $white;
     background-color: $black;

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import SwiperSlideComponent from "../common/SwiperSlideComponent";
-import carouselDummy from "../../json/carouselDummy.json";
+import carouselDummy from "../../json/user/carouselDummy.json";
 import PropTypes from "prop-types";
 
 const RecentOrderCarousel = () => {

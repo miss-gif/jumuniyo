@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import projectInfo from "../../json/footer.json";
+import projectInfo from "../../json/user/footer.json";
 
 const FooterMenu = () => {
   const [menuItems, setMenuItems] = useState([]);
