@@ -29,6 +29,12 @@ const LocationSearch = () => {
     }
   };
 
+  console.log(
+    locationData.latitude && locationData.longitude
+      ? `위도: ${locationData.latitude}, 경도: ${locationData.longitude}`
+      : "",
+  );
+
   return (
     <div className="location-search">
       {isHomePage && (
