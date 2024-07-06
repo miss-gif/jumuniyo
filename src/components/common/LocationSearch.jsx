@@ -41,7 +41,7 @@ const LocationSearch = () => {
           className="location-search__icon"
           onClick={onClickLocationSearch}
         >
-          <MyLocationIcon sx={{ fontSize: 20 }} />
+          <MyLocationIcon sx={{ fontSize: 24 }} />
         </button>
         <div className="location-search__input">
           <input

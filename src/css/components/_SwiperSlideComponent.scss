@@ -40,8 +40,6 @@ swiper-container::part(button-next) {
 
   &__rank-point {
     display: flex;
-    align-items: center;
-
     svg {
       margin-right: 4px;
       color: #ffcc00; // Adjust color as needed
@@ -51,6 +49,7 @@ swiper-container::part(button-next) {
   &__comment-count {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     width: 100%;
     padding: $padding-2;
     background-color: #fff;
