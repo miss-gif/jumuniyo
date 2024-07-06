@@ -7,7 +7,11 @@
   gap: 12px;
 
   .left {
-    width: 68%;
+    width: 65%;
+
+    &.menu-expanded {
+      width: 64.2%;
+    }
     .restaurant-info {
       border: 1px solid $borderColor;
       background: $backgroundColor;
@@ -292,10 +296,12 @@
 
   .right {
     display: flex;
-    width: 30%;
+    width: 35%;
     flex-direction: column;
     align-items: flex-start;
-
+    &.menu-expanded {
+      width: 35.8%;
+    }
     .order-tab {
       display: flex;
       justify-content: space-between;
@@ -306,6 +312,7 @@
       padding-left: 12px;
 
       .orderList {
+        font-weight: 500;
       }
     }
 
@@ -407,6 +414,12 @@
     .left,
     .right {
       width: 100%;
+    }
+
+    .left {
+      &.menu-expanded {
+        width: 100%;
+      }
     }
 
     .right {

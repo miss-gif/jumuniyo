@@ -130,7 +130,7 @@ const Menu = () => {
 
   return (
     <div className="menu-wrap">
-      <div className={`left ${selectedTab}`}>
+      <div className={`left ${selectedTab === "menu" ? "menu-expanded" : ""}`}>
         <div className="restaurant-info">
           <h2 className="restaurant-title">롯데리아-서성네거리점</h2>
           <div className="restaurant-logoandcontent">
@@ -139,7 +139,7 @@ const Menu = () => {
             </div>
             <div className="restaurant-content">
               <div className="restaurant-list">
-                <div className="list-star">별점</div>
+                <div className="list-star">★5</div>
                 <div className="list-item">
                   <div className="list-minimumOrder">최소주문금액 11,000원</div>
                 </div>
