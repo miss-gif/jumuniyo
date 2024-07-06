@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import reviewItemsData from "../restaurantdetail/review.json";
 import ceoReviewData from "../restaurantdetail/ceoReview.json";
-import "./_reviews.scss";
+import "../../css/components/ceo/_Reviews.scss";
 import testMenu from "../restaurantdetail/testMenu.jpg";
 
 const storeReviewNumber = [

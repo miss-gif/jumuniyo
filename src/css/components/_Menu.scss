@@ -299,7 +299,9 @@
     width: 35%;
     flex-direction: column;
     align-items: flex-start;
-
+    &.menu-expanded {
+      width: 35.8%;
+    }
     .order-tab {
       display: flex;
       justify-content: space-between;
