@@ -98,47 +98,45 @@ const MenuManagement = () => {
         </div>
       </div>
       <div className="menu-section">
-        <div className="menu-component">
-          <div className="menu-list">
-            {menuItems.map((item, index) => (
-              <div key={index} className="menu-list-oneMenu">
-                <div className="menu-list-oneMenu-table">
-                  <div className="menu-list-oneMenu-tableData">
-                    <h3 className="menu-list-name">{item.name}</h3>
-                    <p className="menu-list-content">{item.content}</p>
-                    <p className="menu-list-price">
-                      {item.price.toLocaleString()}원
-                    </p>
-                    <div className="menu-list-status">
-                      <label htmlFor={`status-${index}`}>상태: </label>
-                      <select
-                        id={`status-${index}`}
-                        value={item.status}
-                        onChange={e => handleStatusChange(e, item)}
-                      >
-                        <option value="판매중">판매중</option>
-                        <option value="판매중지">판매중지</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div className="menu-list-oneMenu-tablePic">
-                    <img src={item.img} alt={item.name} />
+        <div className="menu-list">
+          {menuItems.map((item, index) => (
+            <div key={index} className="menu-list-oneMenu">
+              <div className="menu-list-oneMenu-table">
+                <div className="menu-list-oneMenu-tableData">
+                  <h3 className="menu-list-name">{item.name}</h3>
+                  <p className="menu-list-content">{item.content}</p>
+                  <p className="menu-list-price">
+                    {item.price.toLocaleString()}원
+                  </p>
+                  <div className="menu-list-status">
+                    <label htmlFor={`status-${index}`}>상태: </label>
+                    <select
+                      id={`status-${index}`}
+                      value={item.status}
+                      onChange={e => handleStatusChange(e, item)}
+                    >
+                      <option value="판매중">판매중</option>
+                      <option value="판매중지">판매중지</option>
+                    </select>
                   </div>
                 </div>
-                <div className="menu-list-actions">
-                  <button className="btn" onClick={() => handleOpenModal(item)}>
-                    수정
-                  </button>
-                  <button
-                    className="btn"
-                    onClick={() => handleDeleteMenuItem(item)}
-                  >
-                    삭제
-                  </button>
+                <div className="menu-list-oneMenu-tablePic">
+                  <img src={item.img} alt={item.name} />
                 </div>
               </div>
-            ))}
-          </div>
+              <div className="menu-list-actions">
+                <button className="btn" onClick={() => handleOpenModal(item)}>
+                  수정
+                </button>
+                <button
+                  className="btn"
+                  onClick={() => handleDeleteMenuItem(item)}
+                >
+                  삭제
+                </button>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
       {isModalOpen && (

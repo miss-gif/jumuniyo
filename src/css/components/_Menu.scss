@@ -79,6 +79,215 @@
         }
       }
     }
+
+    //메뉴
+    .menu-section {
+      .menu-slide {
+        width: 100%;
+        overflow: hidden;
+        .swiper-container {
+          display: flex;
+          margin: 0 auto;
+          background-color: $backgroundColor;
+          padding: 20px;
+          border: 1px solid $borderColor;
+          margin-bottom: 20px;
+
+          .oneMenu {
+            // margin-right: 10px;
+            border: 1px solid $borderColor;
+
+            .menuTitle {
+              padding-left: 14px;
+              padding-top: 8px;
+            }
+            .menuPrice {
+              padding-left: 14px;
+              padding-bottom: 8px;
+            }
+            p {
+              font-size: 12px;
+            }
+            img {
+              border-radius: 8px;
+            }
+          }
+        }
+      }
+
+      .menu-component {
+        .menu-tap {
+          border: -1px solid $borderColor;
+          background-color: $black;
+          color: $white;
+          padding: 12px;
+        }
+
+        .menu-list {
+          display: flex;
+          flex-direction: column;
+          border: 1px solid $borderColor;
+
+          .menu-list-oneMenu {
+            border-bottom: 1px solid $borderColor;
+            padding: 10px;
+            &:last-child {
+              border-bottom: none;
+              border-radius: 0px 0px 4px 4px;
+            }
+
+            .menu-list-oneMenu-table {
+              display: flex;
+              justify-content: space-between;
+
+              .menu-list-oneMenu-tableData {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                .menu-list-price {
+                  font-size: 12px;
+                }
+                .menu-list-content {
+                  color: $textGray;
+                }
+              }
+
+              .menu-list-oneMenu-tablePic {
+                width: 100px;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    //리뷰
+    .review-wrap {
+      border: 1px solid $borderColor;
+      width: 100%;
+      padding: 20px;
+
+      .rating-section {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+
+        .rating-score {
+          font-size: 2em;
+          font-weight: bold;
+        }
+
+        .rating-stars span {
+          margin-right: 10px;
+        }
+      }
+
+      .review-section {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+
+        .review-count {
+          font-weight: bold;
+        }
+
+        .review-switch label {
+          display: flex;
+          align-items: center;
+
+          input {
+            margin-right: 10px;
+          }
+        }
+      }
+
+      .reviews {
+        border-top: 1px solid $borderColor;
+        padding-top: 20px;
+
+        .review {
+          border-bottom: 1px solid $borderColor;
+          padding-bottom: 20px;
+          margin-bottom: 20px;
+
+          .review-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+
+            .review-headerUserandDate {
+              justify-content: space-between;
+            }
+
+            .review-user {
+              font-weight: bold;
+            }
+
+            .review-date {
+              color: #888;
+            }
+
+            .review-rating {
+              color: #f39c12;
+            }
+          }
+
+          .review-content {
+            img {
+              width: 100%;
+              margin-bottom: 10px;
+            }
+
+            p {
+              margin: 0;
+            }
+          }
+        }
+      }
+    }
+
+    //정보 part
+    .info-section {
+      width: 100%;
+
+      padding: 20px;
+      background-color: $backgroundColor;
+      border: 1px solid $borderColor;
+
+      h3 {
+        color: $black;
+        margin-bottom: 10px;
+        border-bottom: 1px solid $borderColor;
+        padding-bottom: 5px;
+      }
+
+      p {
+        font-size: 12px;
+        color: $black;
+        margin-bottom: 8px;
+
+        h4 {
+          font-weight: bold;
+          color: $black;
+          font-size: 12px;
+        }
+      }
+
+      p {
+        display: flex;
+        justify-content: space-between;
+      }
+
+      h2 {
+        margin-top: 20px;
+
+        &:first-of-type {
+          margin-top: 0;
+        }
+      }
+    }
   }
 
   .right {
@@ -212,214 +421,6 @@
         max-height: 200px;
         overflow-y: auto;
       }
-    }
-  }
-}
-
-.menu-section {
-  .menu-slide {
-    width: 100%;
-    overflow: hidden;
-    .swiper-container {
-      display: flex;
-      margin: 0 auto;
-      background-color: $backgroundColor;
-      padding: 20px;
-      border: 1px solid $borderColor;
-      margin-bottom: 20px;
-
-      .oneMenu {
-        // margin-right: 10px;
-        border: 1px solid $borderColor;
-
-        .menuTitle {
-          padding-left: 14px;
-          padding-top: 8px;
-        }
-        .menuPrice {
-          padding-left: 14px;
-          padding-bottom: 8px;
-        }
-        p {
-          font-size: 12px;
-        }
-        img {
-          border-radius: 8px;
-        }
-      }
-    }
-  }
-
-  .menu-component {
-    .menu-tap {
-      border: -1px solid $borderColor;
-      background-color: $black;
-      color: $white;
-      padding: 12px;
-    }
-
-    .menu-list {
-      display: flex;
-      flex-direction: column;
-      border: 1px solid $borderColor;
-
-      .menu-list-oneMenu {
-        border-bottom: 1px solid $borderColor;
-        padding: 10px;
-        &:last-child {
-          border-bottom: none;
-          border-radius: 0px 0px 4px 4px;
-        }
-
-        .menu-list-oneMenu-table {
-          display: flex;
-          justify-content: space-between;
-
-          .menu-list-oneMenu-tableData {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            .menu-list-price {
-              font-size: 12px;
-            }
-            .menu-list-content {
-              color: $textGray;
-            }
-          }
-
-          .menu-list-oneMenu-tablePic {
-            width: 100px;
-          }
-        }
-      }
-    }
-  }
-}
-
-//리뷰
-.review-wrap {
-  border: 1px solid $borderColor;
-  width: 100%;
-  padding: 20px;
-
-  .rating-section {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-
-    .rating-score {
-      font-size: 2em;
-      font-weight: bold;
-    }
-
-    .rating-stars span {
-      margin-right: 10px;
-    }
-  }
-
-  .review-section {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-
-    .review-count {
-      font-weight: bold;
-    }
-
-    .review-switch label {
-      display: flex;
-      align-items: center;
-
-      input {
-        margin-right: 10px;
-      }
-    }
-  }
-
-  .reviews {
-    border-top: 1px solid $borderColor;
-    padding-top: 20px;
-
-    .review {
-      border-bottom: 1px solid $borderColor;
-      padding-bottom: 20px;
-      margin-bottom: 20px;
-
-      .review-header {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 10px;
-
-        .review-headerUserandDate {
-          justify-content: space-between;
-        }
-
-        .review-user {
-          font-weight: bold;
-        }
-
-        .review-date {
-          color: #888;
-        }
-
-        .review-rating {
-          color: #f39c12;
-        }
-      }
-
-      .review-content {
-        img {
-          width: 100%;
-          margin-bottom: 10px;
-        }
-
-        p {
-          margin: 0;
-        }
-      }
-    }
-  }
-}
-
-//정보 part
-.info-section {
-  width: 100%;
-
-  padding: 20px;
-  background-color: $backgroundColor;
-  border: 1px solid $borderColor;
-
-  h3 {
-    color: $black;
-    margin-bottom: 10px;
-    border-bottom: 1px solid $borderColor;
-    padding-bottom: 5px;
-  }
-
-  p {
-    font-size: 12px;
-    color: $black;
-    margin-bottom: 8px;
-
-    h4 {
-      font-weight: bold;
-      color: $black;
-      font-size: 12px;
-    }
-  }
-
-  p {
-    display: flex;
-    justify-content: space-between;
-  }
-
-  h2 {
-    margin-top: 20px;
-
-    &:first-of-type {
-      margin-top: 0;
     }
   }
 }
