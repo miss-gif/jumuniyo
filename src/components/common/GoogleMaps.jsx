@@ -1,5 +1,5 @@
 import * as React from "react";
-import PropTypes from "prop-types"; // prop-types 패키지 임포트
+import PropTypes from "prop-types";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
@@ -9,10 +9,7 @@ import Typography from "@mui/material/Typography";
 import parse from "autosuggest-highlight/parse";
 import { debounce } from "@mui/material/utils";
 
-// 환경변수에서 API 키를 가져옴
-const api_key = process.env.REACT_APP_API_KEY;
-
-const GOOGLE_MAPS_API_KEY = api_key;
+const GOOGLE_MAPS_API_KEY = "AIzaSyAMR0g0QOUBQiHoZMLjMovMkzjJ7VkUBuU";
 
 // 스크립트를 로드하는 함수
 function loadScript(src, position, id) {
@@ -109,7 +106,7 @@ export default function GoogleMaps() {
       includeInputInList
       filterSelectedOptions
       value={value}
-      noOptionsText="No locations"
+      noOptionsText="현재 위치로 설정합니다."
       onChange={(event, newValue) => {
         setOptions(newValue ? [newValue, ...options] : options);
         setValue(newValue);
@@ -118,10 +115,14 @@ export default function GoogleMaps() {
         setInputValue(newInputValue);
       }}
       renderInput={params => (
-        <TextField {...params} label="Add a location" fullWidth />
+        <TextField
+          {...params}
+          placeholder="건물명, 도로명, 지번으로 검색하세요."
+          fullWidth
+        />
       )}
       renderOption={(props, option) => {
-        const { key, ...optionProps } = props; // props에서 key를 추출
+        const { key, ...optionProps } = props;
         const matches =
           option.structured_formatting.main_text_matched_substrings || [];
 
@@ -129,6 +130,7 @@ export default function GoogleMaps() {
           option.structured_formatting.main_text,
           matches.map(match => [match.offset, match.offset + match.length]),
         );
+
         return (
           <li key={key} {...optionProps}>
             <Grid container sx={{ alignItems: "center" }}>

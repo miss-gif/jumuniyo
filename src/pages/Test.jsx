@@ -1,6 +1,7 @@
 // App.jsx
 import React, { useState } from "react";
 import ModalComponent from "../components/common/ModalComponent";
+import GoogleMaps from "../components/common/GoogleMaps";
 
 const Test = () => {
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
@@ -66,6 +67,9 @@ const Test = () => {
         onCheck={handleCheckboxChange}
         onConfirm={handleCheckboxConfirm}
       />
+      <div>
+        <GoogleMaps />
+      </div>
     </div>
   );
 };

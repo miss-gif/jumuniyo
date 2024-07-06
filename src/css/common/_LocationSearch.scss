@@ -36,22 +36,38 @@
 
   .location-search__input {
     display: flex;
+    justify-content: space-between;
     border-radius: $border-radius-1;
     overflow: hidden;
     max-width: 600px;
     width: 100%;
     height: 100%;
     background-color: #fff;
-    input {
-      padding: $padding-3;
-      width: 100%;
-    }
   }
 
   .location-search__btn {
+    display: block;
     padding: $padding-2 $padding-3;
+    height: 100%;
     color: $white;
     background-color: $black;
     font-size: 14px;
   }
+}
+
+// 랩박스
+.css-1oz3td-MuiAutocomplete-root {
+  width: 100% !important;
+}
+
+.MuiOutlinedInput-root {
+  height: 44px;
+}
+
+.MuiAutocomplete-root {
+}
+.MuiAutocomplete-hasPopupIcon {
+}
+
+.MuiAutocomplete-root.MuiAutocomplete-hasPopupIcon.css-1oz3td-MuiAutocomplete-root {
 }

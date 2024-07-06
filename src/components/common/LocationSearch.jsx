@@ -45,17 +45,10 @@ const LocationSearch = () => {
           <MyLocationIcon sx={{ fontSize: 24 }} />
         </button>
         <div className="location-search__input">
-          <input
-            type="text"
-            placeholder="건물명, 도로명, 지번으로 검색하세요."
-            value={
-              locationData.latitude && locationData.longitude
-                ? `위도: ${locationData.latitude}, 경도: ${locationData.longitude}`
-                : ""
-            }
-            readOnly
+          <GoogleMaps
+            latitude={locationData.latitude}
+            longitude={locationData.longitude}
           />
-          <GoogleMaps />
           <button className="location-search__btn">검색</button>
         </div>
         {errorMessage && (
