@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import SwiperSlideComponent from "../common/SwiperSlideComponent";
-import carouselDummy from "../../json/carouselDummy.json";
+import carouselDummy from "../../json/user/carouselDummy.json";
 import PropTypes from "prop-types";
 
 const RecommendationCarousel = () => {
@@ -20,7 +20,7 @@ const RecommendationCarousel = () => {
   const initializeSwiper = swiperEl => {
     const swiperParams = {
       slidesPerView: 5,
-      spaceBetween: 12,
+      spaceBetween: 8,
       breakpoints: {
         1024: {
           slidesPerView: 5,
@@ -48,7 +48,7 @@ const RecommendationCarousel = () => {
 
   return (
     <div>
-      <swiper-container ref={swiperRef} init="false">
+      <swiper-container ref={swiperRef} init="false" navigation="true">
         {data.map(restaurant => (
           <SwiperSlideComponent
             key={restaurant.id}

@@ -7,7 +7,7 @@
       auto-fill,
       minmax(200px, 1fr)
     ); /* 최소 너비 200px, 가득 채우기 */
-    gap: $gap-3;
+    gap: $gap-2;
   }
 
   &__item {
@@ -15,7 +15,7 @@
     background: url("../../../public/images/category/category-01.png.png");
     > p {
       font-weight: $medium;
-      padding: $padding-3;
+      padding: $padding-2;
     }
   }
 
