@@ -1,19 +1,30 @@
 [
   {
-    "userId": "lestds",
+    "reviewId": 1,
+    "userId": "gkadsf",
     "writeTime": "1시간 전",
     "score": "★ 5",
     "content": "크림이 넉넉함",
     "reviewImg": "./testMenu.jpg"
   },
   {
+    "reviewId": 2,
     "userId": "lesasdf",
     "writeTime": "1시간 전",
     "score": "★ 5",
-    "content": "크림이 넉넉함",
+    "content": "발해이 넉넉함",
     "reviewImg": "./testMenu.jpg"
   },
   {
+    "reviewId": 3,
+    "userId": "lesasdf",
+    "writeTime": "1시간 전",
+    "score": "★ 5",
+    "content": "치즈이 넉넉함",
+    "reviewImg": "./testMenu.jpg"
+  },
+  {
+    "reviewId": 4,
     "userId": "lesasdf",
     "writeTime": "1시간 전",
     "score": "★ 5",
