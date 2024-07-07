@@ -1,4 +1,7 @@
 import React from "react";
+import RestaurantDetailHeader from "../components/user/restaurantdetail/RestaurantDetailHeader";
+import MenuCategory from "../components/user/restaurantdetail/MenuCategory";
+import RestaurantDetailCarousel from "../components/user/restaurantdetail/RestaurantDetailCarousel";
 
 const RestaurantDetailPage = () => {
   return (
@@ -28,60 +31,12 @@ const RestaurantDetailPage = () => {
         </div>
 
         <div className="restaurant-detail-page__menu">
-          <div className="restaurant-detail-page__menu-header">
-            <h3 className="header__item header__menu">메뉴</h3>
-            <h3 className="header__item header__review">클린리뷰</h3>
-            <h3 className="header__item header__info">정보</h3>
-          </div>
+          <RestaurantDetailHeader />
           <div className="restaurant-detail-page__menu-content">
-            <div className="carousel">캐러셀 자리</div>
-            <div className="menu-category">
-              <h4 className="menu-category__title">인기메뉴</h4>
-              <ul className="menu-category__list">
-                <li className="menu-category__item">
-                  <div className="menu-category__text">
-                    <div className="menu-category__name">
-                      한마리 ＋ 순살치킨
-                    </div>
-                    <div className="menu-category__description">
-                      국내산 하림닭 ／ 가심비 두 배 세트!
-                    </div>
-                    <div className="menu-category__price">23,000원</div>
-                  </div>
-                  <div className="menu-category__image">
-                    <img src="https://picsum.photos/100/" alt="" />
-                  </div>
-                </li>
-                <li className="menu-category__item">
-                  <div className="menu-category__text">
-                    <div className="menu-category__name">
-                      한마리 ＋ 순살치킨
-                    </div>
-                    <div className="menu-category__description">
-                      국내산 하림닭 ／ 가심비 두 배 세트!
-                    </div>
-                    <div className="menu-category__price">23,000원</div>
-                  </div>
-                  <div className="menu-category__image">
-                    <img src="https://picsum.photos/100/" alt="" />
-                  </div>
-                </li>
-                <li className="menu-category__item">
-                  <div className="menu-category__text">
-                    <div className="menu-category__name">
-                      한마리 ＋ 순살치킨
-                    </div>
-                    <div className="menu-category__description">
-                      국내산 하림닭 ／ 가심비 두 배 세트!
-                    </div>
-                    <div className="menu-category__price">23,000원</div>
-                  </div>
-                  <div className="menu-category__image">
-                    <img src="https://picsum.photos/100/" alt="" />
-                  </div>
-                </li>
-              </ul>
+            <div className="carousel">
+              <RestaurantDetailCarousel />
             </div>
+            <MenuCategory />
           </div>
         </div>
       </div>

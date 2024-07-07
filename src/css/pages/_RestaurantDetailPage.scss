@@ -26,10 +26,10 @@
       border: 1px solid $borderColor;
     }
     &-details {
-      // border: 1px solid $borderColor;
     }
     &-rating {
       // 별점 스타일
+      font-size: 14px;
     }
     &-payment {
       // 결제수단 스타일
@@ -65,10 +65,31 @@
   }
 }
 
-.carousel {
-  // 케러셀 스타일
-  height: 80px;
-  border-bottom: 1px solid $borderColor;
+.restaurant-detail-page {
+  .carousel {
+    // 케러셀 스타일
+    padding: 16px;
+    border-bottom: 1px solid $borderColor;
+    &__item {
+      background-color: #fff;
+      border: 1px solid $borderColor;
+    }
+    &__image {
+      height: 140px;
+      border-radius: 0;
+    }
+    &__top {
+      padding: 0;
+    }
+    &__title {
+    }
+    &__price {
+      // padding: 4px 8px;
+    }
+    &__text {
+      padding: 8px;
+    }
+  }
 }
 
 .menu-category__title {
@@ -222,5 +243,17 @@
     height: 20px;
     padding: 8px;
     border: 1px solid $borderColor;
+  }
+}
+
+@include tablet {
+  .restaurant-detail-page {
+    flex-direction: column;
+    &__left {
+      width: 100%;
+    }
+    &__right {
+      width: 100%;
+    }
   }
 }
