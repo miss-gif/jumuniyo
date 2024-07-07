@@ -1,11 +1,11 @@
 .mypage-review-wrap {
-  padding: 32px 0;
   width: 100%;
+  padding: 32px 0;
 
   .rating-section {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
     margin-bottom: 20px;
 
     .rating-score {
@@ -20,8 +20,8 @@
 
   .review-section {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
     margin-bottom: 20px;
 
     .review-count {
@@ -39,18 +39,18 @@
   }
 
   .reviews {
-    border-top: 1px solid #dbdbdb;
     padding: 20px 20px;
+    border-top: 1px solid #dbdbdb;
 
     .review {
-      border-bottom: 1px solid #dbdbdb;
-      padding-bottom: 20px;
       margin-bottom: 20px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #dbdbdb;
 
       .review-header {
         display: flex;
-        justify-content: space-between;
         align-items: center;
+        justify-content: space-between;
         margin-bottom: 12px;
 
         .review-user {
@@ -78,4 +78,11 @@
       }
     }
   }
+}
+
+.order-detail-box {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }

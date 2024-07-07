@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Mypage from "../components/join/Mypage";
 import reviewItemsData from "../components/restaurantdetail/review.json";
 
