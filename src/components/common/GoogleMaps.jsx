@@ -106,7 +106,7 @@ export default function GoogleMaps() {
       includeInputInList
       filterSelectedOptions
       value={value}
-      noOptionsText="현재 위치로 설정합니다."
+      noOptionsText="건물명, 도로명, 지번으로 검색하세요."
       onChange={(event, newValue) => {
         setOptions(newValue ? [newValue, ...options] : options);
         setValue(newValue);

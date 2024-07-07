@@ -1,6 +1,6 @@
-.location-search {
-  $height: 44px;
+$height: 44px;
 
+.location-search {
   @include flex-column-center;
   background-color: #1657bf;
   padding: $padding-8 0;
@@ -61,13 +61,9 @@
 }
 
 .MuiOutlinedInput-root {
-  height: 44px;
+  height: $height;
 }
 
-.MuiAutocomplete-root {
-}
-.MuiAutocomplete-hasPopupIcon {
-}
-
-.MuiAutocomplete-root.MuiAutocomplete-hasPopupIcon.css-1oz3td-MuiAutocomplete-root {
+.css-154xyx0-MuiInputBase-root-MuiOutlinedInput-root {
+  border-radius: 0 !important;
 }
