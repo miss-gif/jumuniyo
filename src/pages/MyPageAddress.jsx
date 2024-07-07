@@ -56,7 +56,6 @@ const MyPageAddress = () => {
           >
             수정
           </button>
-          <button type="button">삭제</button>
         </div>
         {isModalOpen ? (
           <MypageModal

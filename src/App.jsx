@@ -29,6 +29,7 @@ import StoreManagement from "./components/ceo/StoreManagement";
 import Statistics from "./components/ceo/Statistics";
 import AdminLayout from "./components/layout/AdminLayout";
 import MyPageAddress from "./pages/MyPageAddress";
+import MypageUserWithdrawal from "./pages/MypageUserWithdrawal";
 
 // 사업자
 
@@ -60,6 +61,10 @@ function App() {
             <Route path="/mypage/address" element={<MyPageAddress />} />
             <Route path="/payment" element={<PaymentPage />} />
             <Route path="/projectinfo" element={<ProjectInfo />} />
+            <Route
+              path="/mypage/withdrawal"
+              element={<MypageUserWithdrawal />}
+            />
           </Route>
 
           {/* 사업자 라우터 */}

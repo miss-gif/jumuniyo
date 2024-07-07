@@ -1,5 +1,5 @@
 import { useState } from "react";
-import MypageModifyModal from "../components/common/mypage/MypageModifyModal";
+// import MypageModifyModal from "../components/common/mypage/MypageModifyModal";
 import Mypage from "../components/join/Mypage";
 
 const MyPage = () => {
@@ -17,7 +17,7 @@ const MyPage = () => {
             <h3>프로필 사진</h3>
             <img
               src={process.env.PUBLIC_URL + "/images/logo_1x.png"}
-              alt="Logo"
+              alt="profile-img"
             ></img>
           </div>
         </div>
@@ -51,9 +51,8 @@ const MyPage = () => {
           >
             수정
           </button>
-          <button type="button">삭제</button>
         </div>
-        {isModalOpen ? <MypageModifyModal /> : null}
+        {/* {isModalOpen ? <MypageModifyModal /> : null} */}
       </div>
     </div>
   );

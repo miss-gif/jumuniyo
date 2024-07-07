@@ -61,6 +61,7 @@ const AuthUserPage = () => {
           <Box>
             <TextField fullWidth label="전화번호" id="fullWidth" />
           </Box>
+          <h2>프로필 사진</h2>
           <ImageImport />
           <button type="button">회원가입</button>
         </form>
