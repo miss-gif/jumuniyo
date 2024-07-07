@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
 import MyLocationIcon from "@mui/icons-material/MyLocation";
+import GoogleMaps from "./GoogleMaps";
 
 const LocationSearch = () => {
   const location = useLocation();
@@ -28,6 +29,12 @@ const LocationSearch = () => {
     }
   };
 
+  console.log(
+    locationData.latitude && locationData.longitude
+      ? `위도: ${locationData.latitude}, 경도: ${locationData.longitude}`
+      : "",
+  );
+
   return (
     <div className="location-search">
       {isHomePage && (
@@ -41,18 +48,12 @@ const LocationSearch = () => {
           className="location-search__icon"
           onClick={onClickLocationSearch}
         >
-          <MyLocationIcon sx={{ fontSize: 20 }} />
+          <MyLocationIcon sx={{ fontSize: 24 }} />
         </button>
         <div className="location-search__input">
-          <input
-            type="text"
-            placeholder="건물명, 도로명, 지번으로 검색하세요."
-            value={
-              locationData.latitude && locationData.longitude
-                ? `위도: ${locationData.latitude}, 경도: ${locationData.longitude}`
-                : ""
-            }
-            readOnly
+          <GoogleMaps
+            latitude={locationData.latitude}
+            longitude={locationData.longitude}
           />
           <button className="location-search__btn">검색</button>
         </div>
