@@ -1,0 +1,226 @@
+.restaurant-detail-page {
+  display: flex;
+  gap: $gap-3;
+  &__left {
+    display: flex;
+    flex-direction: column;
+    gap: $gap-3;
+    width: 65%;
+  }
+
+  &__info {
+    border: 1px solid $borderColor;
+    &-name {
+      padding: 8px;
+    }
+    &-content {
+      display: flex;
+      align-items: center;
+      padding: 8px;
+      gap: 8px;
+      border-top: 1px solid $borderColor;
+      border-bottom: 1px solid $borderColor;
+    }
+    &-image {
+      width: 80px;
+      border: 1px solid $borderColor;
+    }
+    &-details {
+      // border: 1px solid $borderColor;
+    }
+    &-rating {
+      // 별점 스타일
+    }
+    &-payment {
+      // 결제수단 스타일
+    }
+    &-notice {
+      font-size: 12px;
+      padding: 8px;
+    }
+  }
+}
+
+.restaurant-detail-page {
+  &__menu {
+    border: 1px solid $borderColor;
+  }
+  &__menu-header {
+    display: flex;
+    align-items: center;
+  }
+}
+
+.header {
+  &__item {
+    display: flex;
+    justify-content: center;
+    flex-grow: 1;
+    padding: $padding-3 0;
+    border-right: 1px solid $borderColor;
+    border-bottom: 1px solid $borderColor;
+    &:last-child {
+      border-right: 0;
+    }
+  }
+}
+
+.carousel {
+  // 케러셀 스타일
+  height: 80px;
+  border-bottom: 1px solid $borderColor;
+}
+
+.menu-category__title {
+  padding: 8px;
+  background-color: $gray;
+  border-bottom: 1px solid $borderColor;
+}
+
+.menu-category {
+  &__item {
+    // 메뉴카테고리 아이템 스타일
+    padding: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid $borderColor;
+    &:last-child {
+      border-bottom: 0;
+    }
+  }
+
+  &__text {
+    // 메뉴텍스트 스타일
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  &__name {
+    // 메뉴이름 스타일
+    font-weight: 500;
+  }
+
+  &__description {
+    // 메뉴설명 스타일
+    color: #999;
+    font-size: 14px;
+  }
+
+  &__price {
+    // 메뉴가격 스타일
+  }
+
+  &__image {
+    // 메뉴이미지 스타일
+  }
+}
+
+.restaurant-detail-page__right {
+  width: 35%;
+}
+
+.order-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  &-content {
+    border: 1px solid $borderColor;
+  }
+
+  &__header {
+    // 주문표헤더 스타일
+    padding: 8px;
+    background-color: #333;
+    color: #fff;
+  }
+
+  &__content-wrapper {
+    // 주문내용랩 스타일
+  }
+
+  &__content {
+    // 주문내용 스타일
+    padding: 16px 8px;
+  }
+
+  &__price-quantity {
+    // 가격 및 수량 스타일
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    // background-color: orange;
+    padding: 8px;
+  }
+  &__wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+  }
+
+  &__delete-button {
+    // 삭제버튼 스타일
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 20px;
+    height: 20px;
+    padding: 8px;
+    border: 1px solid $borderColor;
+  }
+
+  &__price {
+    // 가격 스타일
+  }
+
+  &__total-price {
+    // 금액합계 스타일
+    border-top: 1px solid $borderColor;
+    padding: 8px;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  &__submit-button {
+    // 주문하기버튼 스타일
+    padding: 12px;
+    text-align: center;
+    border: 1px solid $borderColor;
+  }
+}
+
+.quantity-count {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  &__decrease-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 20px;
+    height: 20px;
+    padding: 8px;
+    border: 1px solid $borderColor;
+  }
+  &__current-quantity {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 20px;
+    height: 20px;
+    padding: 8px;
+    // border: 1px solid $borderColor;
+  }
+  &__increase-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 20px;
+    height: 20px;
+    padding: 8px;
+    border: 1px solid $borderColor;
+  }
+}
