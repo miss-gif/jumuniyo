@@ -1,6 +1,7 @@
 .restaurants-page {
   $gap: $gap-6;
   &__filters {
+    position: relative;
     display: flex;
     align-items: center;
     gap: $gap;
@@ -9,7 +10,7 @@
       position: relative;
       padding: $padding-1;
       border: 1px solid $borderColor;
-      border-radius: $border-radius-2;
+      border-radius: $border-radius-1;
       @include flex-center;
     }
     .filters__list {
@@ -36,4 +37,37 @@
   border-bottom: 1px solid $borderColor;
   box-shadow: $shadow-2;
   z-index: -1;
+}
+
+// 메뉴검색 버튼 css
+.modal-menuSearch {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  top: 2.875rem;
+  left: 1rem;
+  width: 18.75rem;
+  z-index: 9;
+  border: 1px solid $borderColor;
+  padding: $padding-1;
+  background: #fff;
+  font-size: 14px;
+  .wrap {
+    width: 100%;
+    display: flex;
+  }
+  input {
+    background-color: #fff;
+    border: 1px solid $borderColor;
+    border-right: 0;
+    width: 100%;
+    padding: $padding-1 $padding-2;
+    font-size: 12px;
+  }
+  &__btn {
+    @include flex-center;
+    padding: $padding-2;
+    background-color: #999;
+    color: #fff;
+  }
 }

@@ -66,25 +66,27 @@ const modalStyles = {
     transform: "translate(-50%, -50%)",
     borderRadius: "10px",
     padding: "20px",
-    width: "400px",
+    width: "300px",
     boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
     backgroundColor: "#fff", // 추가
   },
 };
 
 const Title = styled.h2`
+  text-align: center;
   margin-bottom: 20px;
   color: #333;
 `;
 
 const Content = styled.div`
+  text-align: center;
   margin-bottom: 20px;
   color: #555;
 `;
 
 const ButtonGroup = styled.div`
   display: flex;
-  justify-content: space-between;
+  /* justify-content: space-between; */
 `;
 
 const Button = styled.button`
@@ -93,6 +95,7 @@ const Button = styled.button`
   border: none;
   border-radius: 5px;
   padding: 10px 20px;
+  width: 50%;
   cursor: pointer;
   &:hover {
     background: #0056b3;
