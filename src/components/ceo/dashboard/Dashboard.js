@@ -1,6 +1,6 @@
 import React from "react";
-import MyLineChart from "./Charts/LineChart";
-import MyBarChart from "./Charts/BarChart";
+import MyLineChart from "./Charts/LineSaleChart";
+import MyBarChart from "./Charts/BarSaleChart";
 import "./dashboard.css";
 
 const Dashboard = () => {

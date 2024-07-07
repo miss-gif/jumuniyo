@@ -457,6 +457,7 @@
     color: #fff;
     opacity: 0.95;
     cursor: not-allowed;
+    z-index: 9999999;
 
     &.disabled {
       background: #ccc;
@@ -475,4 +476,8 @@
       cursor: pointer;
     }
   }
+}
+
+.list-star {
+  color: #f39c12;
 }

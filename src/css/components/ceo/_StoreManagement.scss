@@ -1,0 +1,75 @@
+$primary-color: #4caf50;
+$secondary-color: #f9f9f9;
+$text-color: #333;
+$border-radius: 5px;
+
+.store-management {
+  background-color: $secondary-color;
+  border-radius: $border-radius;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  .store-management-tab {
+    font-size: 2em;
+    color: #333;
+    padding: 40px 80px;
+  }
+  .statusandInfo {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin: 0px 80px;
+    padding: 20px;
+
+    .status-section {
+      display: flex;
+      margin-bottom: 20px;
+      align-items: center;
+
+      .status-title {
+        padding-right: 20px;
+      }
+
+      div {
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom: 10px;
+      }
+
+      select {
+        padding: 8px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: $border-radius;
+      }
+
+      option {
+        font-size: 16px;
+      }
+    }
+    .info-section {
+      h3 {
+        color: #1657bf;
+        border-bottom: 2px solid #1657bf;
+        padding-bottom: 5px;
+        margin-bottom: 10px;
+      }
+
+      p {
+        margin: 10px 0;
+
+        h4 {
+          display: inline-block;
+          color: $text-color;
+          font-weight: bold;
+          margin-right: 5px;
+        }
+
+        &:last-of-type {
+          margin-bottom: 0;
+        }
+      }
+    }
+  }
+}
+
+.statusborder {
+  padding: 0px 0px 100px 0px;
+}

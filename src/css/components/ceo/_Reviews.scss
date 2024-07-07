@@ -1,60 +1,52 @@
-@import "../../../css/abstracts/mixins";
-@import "../../../css/abstracts/variables";
-.review-reply {
-  margin-top: 10px;
-}
-
-.review-reply textarea {
-  width: 100%;
-  height: 80px;
-  resize: none;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
-
-.review-reply button {
-  margin-top: 5px;
-  padding: 10px 15px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.review-reply button:hover {
-  background-color: #0056b3;
-}
-
 .ceo-review-wrap {
+  @media (max-width: 760px) {
+  }
   .review-tap {
-    display: flex;
-    justify-content: center;
-    background-color: orange;
+    font-size: 2em;
+    color: #333;
+    padding: 40px 80px;
+  }
+  .review-content {
+    border: 1px solid #ccc;
+    margin: 0px 80px 80px;
+    border-radius: 5px;
     padding: 20px;
-    border: 1px solid $black;
-  }
-  .rating-section {
-    display: flex;
-    justify-content: center;
-    background-color: black;
-  }
-  .review-section {
-    display: flex;
-    justify-content: center;
-    background-color: blue;
-    .filter-buttons {
+    .rating-section {
       display: flex;
-
-      gap: 10px;
-      padding: 20px 20px;
+      justify-content: center;
     }
-  }
-  .reviews {
-    display: flex;
-    justify-content: center;
-    background-color: yellow;
+    .review-section {
+      display: flex;
+      justify-content: center;
+      .rating-section {
+        display: flex;
+        justify-content: center;
+      }
+      .filter-buttons {
+        display: flex;
+
+        gap: 10px;
+        padding: 20px 20px;
+      }
+    }
+    .reviews {
+      display: flex;
+      justify-content: center;
+      .reviews-wrap {
+        img {
+          width: 40%;
+        }
+        .review {
+          display: flex;
+          padding: 20px;
+          .review-header {
+            display: flex;
+            flex-direction: column;
+            padding-right: 20px;
+          }
+        }
+      }
+    }
   }
 }
 
@@ -64,10 +56,11 @@
   border: 1px solid #ccc;
   border-radius: 5px;
   font-size: 14px;
-  resize: none; // 사용자가 세로 크기를 조절할 수 있도록 허용합니다.
-  min-height: 100px; // 최소 높이 설정
-  max-height: 300px; // 최대 높이 설정
+  resize: none;
+  min-height: 100px;
+  max-height: 300px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 10px;
   transition:
     border-color 0.3s,
     box-shadow 0.3s;
@@ -76,21 +69,6 @@
     border-color: #007bff;
     box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
     outline: none;
-  }
-}
-
-.button-custom {
-  padding: 8px 16px;
-  border: none;
-  border-radius: 5px;
-  background-color: #007bff;
-  color: white;
-  font-size: 14px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-
-  &:hover {
-    background-color: #0056b3;
   }
 }
 
@@ -105,5 +83,18 @@
 
   textarea {
     margin-bottom: 10px;
+  }
+}
+
+@media (max-width: 760px) {
+  .review-tap {
+    font-size: 2em;
+    color: #333;
+    padding: 40px 80px;
+    display: flex;
+    justify-content: center;
+  }
+  .review-content {
+    margin: 0px 0px 100px !important;
   }
 }

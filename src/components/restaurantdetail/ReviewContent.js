@@ -8,11 +8,6 @@ const ReviewContent = ({ reviewItems, storeReviewNumber }) => {
         <div>클린리뷰 {storeReviewNumber[0].reviews}</div>
         <div className="rating-section">
           <div className="rating-score">5.0</div>
-          <div className="rating-stars">
-            <span>맛</span> <span>5.0</span>
-            <span>양</span> <span>5.0</span>
-            <span>배달</span> <span>5.0</span>
-          </div>
         </div>
         <div className="review-section">
           <div className="review-count">
