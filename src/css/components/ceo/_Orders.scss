@@ -1,0 +1,63 @@
+.Ceo-Orders {
+  h1 {
+    font-size: 2em;
+    color: #333;
+    padding: 40px 80px;
+  }
+
+  .order-lists {
+    margin: 0px 80px;
+
+    .order {
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      padding: 20px;
+      margin-bottom: 20px;
+      background-color: #f9f9f9;
+
+      h2 {
+        margin-top: 0;
+        font-size: 1.5em;
+        color: #0056b3;
+      }
+
+      p {
+        margin: 10px 0;
+        font-size: 1em;
+        color: #555;
+      }
+
+      h3 {
+        font-size: 1.2em;
+        color: #333;
+        margin-top: 20px;
+      }
+
+      ul {
+        padding-left: 20px;
+        list-style-type: disc;
+
+        li {
+          margin-bottom: 10px;
+          font-size: 1em;
+          color: #444;
+        }
+      }
+    }
+  }
+
+  @media (max-width: 760px) {
+    h1 {
+      font-size: 2em;
+      color: #333;
+      padding: 40px 80px;
+      display: flex;
+      justify-content: center;
+    }
+    .order-lists {
+      margin: 0px 0px;
+      .order {
+      }
+    }
+  }
+}

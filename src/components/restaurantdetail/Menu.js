@@ -6,7 +6,6 @@ import ModalForMenu from "./ModalForMenu";
 import menuItemsData from "./menuItems.json";
 import reviewItemsData from "./review.json";
 import infoData from "./info.json";
-import "../../css/components/_Menu.scss";
 import "swiper/css";
 
 import MenuContent from "./MenuContent";
@@ -17,6 +16,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import CancelIcon from "@mui/icons-material/Cancel";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
+import { MdOutlineStarPurple500 } from "react-icons/md";
 const storeReviewNumber = [
   {
     reviews: 100,
@@ -139,7 +139,9 @@ const Menu = () => {
             </div>
             <div className="restaurant-content">
               <div className="restaurant-list">
-                <div className="list-star">★5</div>
+                <div className="list-star">
+                  <MdOutlineStarPurple500 />5
+                </div>
                 <div className="list-item">
                   <div className="list-minimumOrder">최소주문금액 11,000원</div>
                 </div>

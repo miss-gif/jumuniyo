@@ -1,0 +1,26 @@
+.ceo-page__menu-item {
+  color: #333;
+  text-decoration: none;
+  padding: 10px 15px;
+  display: block;
+
+  &.active {
+    color: $black;
+    font-weight: bold;
+    background-color: $backgroundColor;
+  }
+
+  &:hover {
+    background-color: $gray;
+  }
+}
+
+.ceo-page__content-wrap {
+  padding: 0px;
+}
+
+@media (max-width: 760px) {
+  .ceo-page__menu {
+    display: none;
+  }
+}

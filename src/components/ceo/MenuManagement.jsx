@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import pizzaImage from "../restaurantdetail/pizza.jpg";
 import menuItemsData from "../restaurantdetail/menuItems.json";
-import "../../css/components/ceo/_MenuManagement.scss";
-import "../../css/components/ceo/_AddMenuModal.scss";
 
 const MenuManagement = () => {
   const [selectedItem, setSelectedItem] = useState(null);
@@ -37,7 +35,7 @@ const MenuManagement = () => {
         content: "",
         price: "",
         img: pizzaImage,
-        status: "판매중", // 새로운 항목의 기본 상태
+        status: "판매중",
       });
     }
   };
@@ -86,30 +84,39 @@ const MenuManagement = () => {
   return (
     <div className="menu-management">
       <div className="menu-settings">
-        <div className="settings-header">메뉴설정</div>
+        <h1 className="settings-header">메뉴설정</h1>
         <div className="settings-body">
           <div className="menu-upper">
-            <div className="menu-search">메뉴를 검색하세요</div>
-            <div className="menu-orderChange">메뉴 순서변경</div>
             <div className="menu-add">
-              <button onClick={() => handleOpenModal(null)}>메뉴 추가</button>
+              <button className="btn" onClick={() => handleOpenModal(null)}>
+                메뉴 추가
+              </button>
             </div>
           </div>
         </div>
       </div>
       <div className="menu-section">
+        <div className="menu-tap">메뉴</div>
+
         <div className="menu-list">
           {menuItems.map((item, index) => (
             <div key={index} className="menu-list-oneMenu">
               <div className="menu-list-oneMenu-table">
-                <div className="menu-list-oneMenu-tableData">
-                  <h3 className="menu-list-name">{item.name}</h3>
-                  <p className="menu-list-content">{item.content}</p>
-                  <p className="menu-list-price">
-                    {item.price.toLocaleString()}원
-                  </p>
+                <div className="picanddata">
+                  <div className="menu-list-oneMenu-tablePic">
+                    <img src={item.img} alt={item.name} />
+                  </div>
+                  <div className="menu-list-oneMenu-tableData">
+                    <h3 className="menu-list-name">{item.name}</h3>
+                    <p className="menu-list-content">{item.content}</p>
+                    <p className="menu-list-price">
+                      {item.price.toLocaleString()}원
+                    </p>
+                  </div>
+                </div>
+
+                <div className="status-action">
                   <div className="menu-list-status">
-                    <label htmlFor={`status-${index}`}>상태: </label>
                     <select
                       id={`status-${index}`}
                       value={item.status}
@@ -119,21 +126,21 @@ const MenuManagement = () => {
                       <option value="판매중지">판매중지</option>
                     </select>
                   </div>
+                  <div className="menu-list-actions">
+                    <button
+                      className="btn"
+                      onClick={() => handleOpenModal(item)}
+                    >
+                      수정
+                    </button>
+                    <button
+                      className="btn"
+                      onClick={() => handleDeleteMenuItem(item)}
+                    >
+                      삭제
+                    </button>
+                  </div>
                 </div>
-                <div className="menu-list-oneMenu-tablePic">
-                  <img src={item.img} alt={item.name} />
-                </div>
-              </div>
-              <div className="menu-list-actions">
-                <button className="btn" onClick={() => handleOpenModal(item)}>
-                  수정
-                </button>
-                <button
-                  className="btn"
-                  onClick={() => handleDeleteMenuItem(item)}
-                >
-                  삭제
-                </button>
               </div>
             </div>
           ))}
@@ -189,6 +196,7 @@ const MenuManagement = () => {
                 />
               </div>
               <button
+                className="btn"
                 type="button"
                 onClick={isEditMode ? handleEditMenuItem : handleAddMenuItem}
               >

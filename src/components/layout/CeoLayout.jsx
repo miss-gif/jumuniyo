@@ -1,8 +1,7 @@
 import React from "react";
 import CeoHeader from "./CeoHeader";
-import { Outlet } from "react-router-dom";
+import { Outlet, NavLink } from "react-router-dom";
 import Footer from "./Footer";
-import { Link } from "react-router-dom";
 
 const CeoLayout = () => {
   return (
@@ -11,24 +10,54 @@ const CeoLayout = () => {
       <div className="ceo-page">
         <div className="ceo-page__main">
           <aside className="ceo-page__menu">
-            <Link to="home" className="ceo-page__menu-item">
+            <NavLink
+              to="home"
+              className={({ isActive }) =>
+                isActive ? "ceo-page__menu-item active" : "ceo-page__menu-item"
+              }
+            >
               홈
-            </Link>
-            <Link to="orders" className="ceo-page__menu-item">
+            </NavLink>
+            <NavLink
+              to="orders"
+              className={({ isActive }) =>
+                isActive ? "ceo-page__menu-item active" : "ceo-page__menu-item"
+              }
+            >
               주문내역
-            </Link>
-            <Link to="menu-management" className="ceo-page__menu-item">
+            </NavLink>
+            <NavLink
+              to="menu-management"
+              className={({ isActive }) =>
+                isActive ? "ceo-page__menu-item active" : "ceo-page__menu-item"
+              }
+            >
               메뉴관리
-            </Link>
-            <Link to="reviews" className="ceo-page__menu-item">
+            </NavLink>
+            <NavLink
+              to="reviews"
+              className={({ isActive }) =>
+                isActive ? "ceo-page__menu-item active" : "ceo-page__menu-item"
+              }
+            >
               리뷰관리
-            </Link>
-            <Link to="store-management" className="ceo-page__menu-item">
+            </NavLink>
+            <NavLink
+              to="store-management"
+              className={({ isActive }) =>
+                isActive ? "ceo-page__menu-item active" : "ceo-page__menu-item"
+              }
+            >
               매장관리
-            </Link>
-            <Link to="statistics" className="ceo-page__menu-item">
+            </NavLink>
+            <NavLink
+              to="statistics"
+              className={({ isActive }) =>
+                isActive ? "ceo-page__menu-item active" : "ceo-page__menu-item"
+              }
+            >
               통계
-            </Link>
+            </NavLink>
           </aside>
           <div className="ceo-page__content-wrap">
             <div className="ceo-page__content">
