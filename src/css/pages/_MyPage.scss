@@ -122,10 +122,14 @@
   display: flex;
   justify-content: center;
   align-items: center;
+
   & div {
     display: flex;
+    width: 100%;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
+    gap: 24px;
   }
 
   & h3 {
@@ -135,8 +139,8 @@
   }
 
   & img {
-    width: 25vw;
-    height: 25vh;
+    width: 16vw;
+    height: auto;
     object-fit: contain;
   }
 }

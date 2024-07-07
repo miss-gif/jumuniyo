@@ -46,6 +46,16 @@ const Mypage = () => {
       >
         리뷰내역
       </button>
+      <button
+        onClick={() => navigate("/mypage/withdrawal")}
+        style={{
+          backgroundColor:
+            location.pathname === "/mypage/withdrawal" ? "black" : "white",
+          color: location.pathname === "/mypage/withdrawal" ? "white" : "black",
+        }}
+      >
+        회원탈퇴
+      </button>
     </div>
   );
 };

@@ -1,5 +1,5 @@
 import { Rating, TextField } from "@mui/material";
-import React, { useState } from "react";
+import { useState } from "react";
 
 // eslint-disable-next-line react/prop-types
 const MypageReviewWrite = ({ reviewYes, reviewNo }) => {
@@ -10,7 +10,7 @@ const MypageReviewWrite = ({ reviewYes, reviewNo }) => {
       <h3>리뷰 쓰기</h3>
       <Rating
         name="half-rating"
-        defaultValue={2.5}
+        defaultValue={0}
         precision={0.5}
         onChange={e => {
           setTest(e.target.value);
