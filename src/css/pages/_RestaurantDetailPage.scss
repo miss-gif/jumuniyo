@@ -65,33 +65,6 @@
   }
 }
 
-.restaurant-detail-page {
-  .carousel {
-    // 케러셀 스타일
-    padding: 16px;
-    border-bottom: 1px solid $borderColor;
-    &__item {
-      background-color: #fff;
-      border: 1px solid $borderColor;
-    }
-    &__image {
-      height: 140px;
-      border-radius: 0;
-    }
-    &__top {
-      padding: 0;
-    }
-    &__title {
-    }
-    &__price {
-      // padding: 4px 8px;
-    }
-    &__text {
-      padding: 8px;
-    }
-  }
-}
-
 .menu-category__title {
   padding: 8px;
   background-color: $gray;

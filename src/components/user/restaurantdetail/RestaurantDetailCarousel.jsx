@@ -19,20 +19,20 @@ const RestaurantDetailCarousel = () => {
 
   const initializeSwiper = swiperEl => {
     const swiperParams = {
-      slidesPerView: 4,
+      slidesPerView: 3.5,
       spaceBetween: 8,
       breakpoints: {
         1024: {
-          slidesPerView: 4,
+          slidesPerView: 3.5,
         },
         768: {
-          slidesPerView: 4,
+          slidesPerView: 3.5,
         },
         480: {
-          slidesPerView: 3,
+          slidesPerView: 3.5,
         },
         240: {
-          slidesPerView: 2,
+          slidesPerView: 2.2,
         },
       },
       on: {
