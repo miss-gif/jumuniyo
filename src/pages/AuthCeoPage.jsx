@@ -58,6 +58,7 @@ const AuthUserPage = () => {
           <Box>
             <TextField fullWidth label="닉네임" id="fullWidth" />
           </Box>
+          <h3>오픈시간</h3>
           <Box
             sx={{
               maxWidth: "100%",
@@ -65,6 +66,7 @@ const AuthUserPage = () => {
           >
             <TextField fullWidth label="" id="fullWidth" type="time" />
           </Box>
+          <h3>마감시간</h3>
           <Box
             sx={{
               maxWidth: "100%",

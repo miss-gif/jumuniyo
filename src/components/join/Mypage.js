@@ -44,7 +44,7 @@ const Mypage = () => {
           color: location.pathname === "/mypage/review" ? "white" : "black",
         }}
       >
-        리뷰작성
+        리뷰내역
       </button>
     </div>
   );

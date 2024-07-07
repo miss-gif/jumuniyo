@@ -43,6 +43,7 @@
 .mypage-title-box {
   width: 70px;
   border-right: 1px solid #dbdbdb;
+  text-align: center;
 }
 
 .mypage-button-box {
@@ -89,6 +90,10 @@
     display: flex;
     width: 100%;
   }
+
+  & h3 {
+    font-size: 16px;
+  }
 }
 
 @include tablet {
@@ -102,5 +107,36 @@
     & button {
       width: 100%;
     }
+  }
+}
+
+.button-sit {
+  width: fit-content;
+  padding: 8px 12px;
+  background-color: #333;
+  color: white;
+  border-radius: 4px;
+}
+
+.mypage-img {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  & div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  & h3 {
+    display: flex;
+    font-size: 24px;
+    justify-content: center;
+  }
+
+  & img {
+    width: 25vw;
+    height: 25vh;
+    object-fit: contain;
   }
 }
