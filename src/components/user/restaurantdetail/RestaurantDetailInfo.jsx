@@ -11,15 +11,17 @@ const RestaurantDetailInfo = () => {
           <img src="https://picsum.photos/100/" alt="" />
         </div>
         <div className="restaurant-detail-page__info-details">
-          <div className="restaurant-detail-page__info-rating">★★★★★ 4.9</div>
+          <div className="restaurant-detail-page__info-rating">
+            <span>★★★★★</span> <p>4.9</p>
+          </div>
           <p className="restaurant-detail-page__info-payment">
-            <span className="gray">결제</span> 신용카드 , 현금 , 요기서결제
+            <span className="gray">결제</span> 신용카드 , 현금 , 웹 결제
           </p>
         </div>
       </div>
       <p className="restaurant-detail-page__info-notice">
-        <span className="bold">사장님알림</span> 💜💙💛❤언제나 즐거운 리뷰
-        이벤트💜💙💛❤ 🖤호식이두마리치킨대명1호점
+        <span>사장님알림</span> 💜💙💛❤언제나 즐거운 리뷰 이벤트💜💙💛❤
+        🖤호식이두마리치킨대명1호점
       </p>
     </div>
   );

@@ -1,0 +1,31 @@
+.restaurant-detail-tab-info {
+  padding-bottom: 40px;
+  &__wrap {
+    margin: 8px;
+  }
+
+  &__title {
+    font-weight: 500;
+    border-bottom: 1px solid $textGray;
+    padding: 8px 0;
+    margin: 16px 0;
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  &__info {
+    display: flex;
+  }
+
+  &__info-title {
+    width: 100px;
+    color: $textGray;
+  }
+
+  &__info-detail {
+  }
+}

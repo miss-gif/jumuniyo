@@ -1,0 +1,30 @@
+.restaurant-detail-page {
+  &__menu {
+    border: 1px solid $borderColor;
+  }
+  &__menu-header {
+    display: flex;
+    align-items: center;
+  }
+}
+
+.header {
+  &__item {
+    display: flex;
+    justify-content: center;
+    flex-grow: 1;
+    padding: $padding-3 0;
+    border-right: 1px solid $borderColor;
+    border-bottom: 1px solid $borderColor;
+    &:last-child {
+      border-right: 0;
+    }
+    span {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 12px;
+      padding: 0 4px;
+    }
+  }
+}

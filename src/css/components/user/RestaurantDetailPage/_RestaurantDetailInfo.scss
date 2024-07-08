@@ -1,0 +1,43 @@
+.restaurant-detail-page {
+  &__info {
+    border: 1px solid $borderColor;
+  }
+  &__info-name {
+    padding: 8px;
+  }
+  &__info-content {
+    display: flex;
+    padding: 8px;
+    gap: 8px;
+    border-top: 1px solid $borderColor;
+    border-bottom: 1px solid $borderColor;
+  }
+  &__info-image {
+    width: 80px;
+    border: 1px solid $borderColor;
+  }
+  &__info-details {
+    padding: 4px 0;
+    p,
+    span {
+      font-size: 12px;
+    }
+  }
+  &__info-notice {
+    font-size: 12px;
+    padding: 8px;
+    span {
+      font-weight: 700;
+    }
+  }
+}
+
+.restaurant-detail-page__info-rating {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 14px;
+  span {
+    color: orange;
+  }
+}

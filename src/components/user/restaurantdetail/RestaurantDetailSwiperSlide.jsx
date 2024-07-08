@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 
 const RestaurantDetailSwiperSlide = ({ image, title, price }) => {
   return (
-    <swiper-slide className="carousel__slide">
+    <swiper-slide>
       <div className="carousel__item">
         <img src={image} alt={title} className="carousel__image" />
         <div className="carousel__text">

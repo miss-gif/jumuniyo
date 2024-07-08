@@ -1,0 +1,118 @@
+.order-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  &-content {
+  }
+
+  &__header {
+    // 주문표헤더 스타일
+    padding: 8px;
+    background-color: #333;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .header__title {
+      font-weight: 500;
+    }
+    .header__icon {
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  &__content-wrapper {
+    border: 1px solid $borderColor;
+    border-top: 0;
+  }
+
+  &__content {
+    // 주문내용 스타일
+    padding: 16px 8px;
+  }
+
+  &__price-quantity {
+    // 가격 및 수량 스타일
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px;
+  }
+  &__wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+  }
+
+  &__delete-button {
+    // 삭제버튼 스타일
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 20px;
+    height: 20px;
+    padding: 8px;
+    border: 1px solid $borderColor;
+  }
+
+  &__price {
+    // 가격 스타일
+    font-size: 14px;
+  }
+
+  &__total-amount {
+    // 금액합계 스타일
+    border-top: 1px solid $borderColor;
+    padding: 8px;
+    display: flex;
+    // justify-content: flex-end;
+    justify-content: space-between;
+    p {
+      font-size: 16px;
+      font-weight: 500;
+    }
+  }
+
+  &__submit-button {
+    // 주문하기버튼 스타일
+    padding: 12px;
+    text-align: center;
+    border: 1px solid $borderColor;
+  }
+}
+
+.quantity-count {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  &__decrease-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 20px;
+    height: 20px;
+    padding: 8px;
+    border: 1px solid $borderColor;
+  }
+  &__current-quantity {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 20px;
+    height: 20px;
+    padding: 8px;
+    font-size: 14px;
+  }
+  &__increase-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 20px;
+    height: 20px;
+    padding: 8px;
+    border: 1px solid $borderColor;
+  }
+}

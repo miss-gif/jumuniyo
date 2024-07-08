@@ -13,6 +13,8 @@
 @import "./css/common/button.scss";
 @import "./css/common/LocationSearch.scss";
 @import "./css/common/RestaurantsFilters.scss";
+@import "./css/common/Review.scss";
+@import "./css/common/OwnerComment.scss";
 
 // layout: 레이아웃 관련 스타일
 @import "./css/layout/Header.scss";
@@ -23,9 +25,6 @@
 @import "./css/components/ToTop.scss";
 @import "./css/components/NewRestaurantListCarousel.scss";
 @import "./css/components/SwiperSlideComponent.scss";
-@import "./css/components/user/RestaurantDetailCarousel.scss";
-@import "./css/components/user/RestaurantDetailCleanReview.scss";
-@import "./css/components/user/RestaurantDetailTabInfo.scss";
 
 // pages: 페이지 스타일
 @import "./css/pages/HomePage.scss";
@@ -34,7 +33,17 @@
 @import "./css/pages/MyPageOrderPage.scss";
 @import "./css/pages/CeoPage.scss";
 @import "./css/pages/ProjectInfo.scss";
+
+// RestaurantDetailPage CSS
 @import "./css/pages/RestaurantDetailPage.scss";
+@import "./css/components/user/RestaurantDetailPage/RestaurantDetailInfo.scss";
+@import "./css/components/user/RestaurantDetailPage/RestaurantDetailHeader.scss";
+@import "./css/components/user/RestaurantDetailPage/RestaurantDetailMenuContent.scss";
+@import "./css/components/user/RestaurantDetailPage/RestaurantDetailCarousel.scss";
+
+@import "./css/components/user/RestaurantDetailPage/RestaurantDetailCleanReview.scss";
+@import "./css/components/user/RestaurantDetailPage/RestaurantDetailTabInfo.scss";
+@import "./css/components/user/RestaurantDetailPage/OrderSummary.scss";
 
 // 김민기 작업 css
 @import "./css/join/joinmain";
