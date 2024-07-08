@@ -25,11 +25,11 @@ const AuthPage = () => {
             }}
           >
             <div className="join-user-img"></div>
+            <p>일반 회원가입</p>
             <h3>
               주문이요에서 음식 주문하는
               <br /> 일반유저 회원가입 입니다.
             </h3>
-            <p>일반 회원가입</p>
           </a>
           <a
             onClick={() => {
@@ -37,11 +37,11 @@ const AuthPage = () => {
             }}
           >
             <div className="join-ceo-img"></div>
+            <p>사장님 회원가입</p>
             <h3>
               주문이요에서 가게 등록하는
               <br /> 사장님유저 회원가입 입니다.
             </h3>
-            <p>사장님 회원가입</p>
           </a>
         </div>
       </div>

@@ -16,17 +16,7 @@ const AuthUserPage = () => {
           />
         </Link>
         <h2>일반 회원가입</h2>
-        <div className="line">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="576"
-            height="1"
-            viewBox="0 0 576 1"
-            fill="none"
-          >
-            <path d="M0.5 0.5H575.5" stroke="black" />
-          </svg>
-        </div>
+        <div className="line"></div>
         <form className="user-join-form">
           <div>
             <Box style={{ alignItems: "center" }}>
@@ -61,7 +51,7 @@ const AuthUserPage = () => {
           <Box>
             <TextField fullWidth label="전화번호" id="fullWidth" />
           </Box>
-          <h2>프로필 사진</h2>
+          <h3>프로필 사진</h3>
           <ImageImport />
           <button type="button">회원가입</button>
         </form>
