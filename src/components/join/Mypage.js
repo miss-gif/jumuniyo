@@ -10,8 +10,8 @@ const Mypage = () => {
       <button
         onClick={() => navigate("/mypage")}
         style={{
-          backgroundColor: location.pathname === "/mypage" ? "black" : "white",
-          color: location.pathname === "/mypage" ? "white" : "black",
+          backgroundColor: location.pathname === "/mypage" ? "#333" : "white",
+          color: location.pathname === "/mypage" ? "white" : "#333",
         }}
       >
         내정보
@@ -20,8 +20,8 @@ const Mypage = () => {
         onClick={() => navigate("/mypage/address")}
         style={{
           backgroundColor:
-            location.pathname === "/mypage/address" ? "black" : "white",
-          color: location.pathname === "/mypage/address" ? "white" : "black",
+            location.pathname === "/mypage/address" ? "#333" : "white",
+          color: location.pathname === "/mypage/address" ? "white" : "#333",
         }}
       >
         내주소
@@ -30,8 +30,8 @@ const Mypage = () => {
         onClick={() => navigate("/mypage/ordere")}
         style={{
           backgroundColor:
-            location.pathname === "/mypage/ordere" ? "black" : "white",
-          color: location.pathname === "/mypage/ordere" ? "white" : "black",
+            location.pathname === "/mypage/ordere" ? "#333" : "white",
+          color: location.pathname === "/mypage/ordere" ? "white" : "#333",
         }}
       >
         주문내역
@@ -40,8 +40,8 @@ const Mypage = () => {
         onClick={() => navigate("/mypage/review")}
         style={{
           backgroundColor:
-            location.pathname === "/mypage/review" ? "black" : "white",
-          color: location.pathname === "/mypage/review" ? "white" : "black",
+            location.pathname === "/mypage/review" ? "#333" : "white",
+          color: location.pathname === "/mypage/review" ? "white" : "#333",
         }}
       >
         리뷰내역
@@ -50,8 +50,8 @@ const Mypage = () => {
         onClick={() => navigate("/mypage/withdrawal")}
         style={{
           backgroundColor:
-            location.pathname === "/mypage/withdrawal" ? "black" : "white",
-          color: location.pathname === "/mypage/withdrawal" ? "white" : "black",
+            location.pathname === "/mypage/withdrawal" ? "#333" : "white",
+          color: location.pathname === "/mypage/withdrawal" ? "white" : "#333",
         }}
       >
         회원탈퇴

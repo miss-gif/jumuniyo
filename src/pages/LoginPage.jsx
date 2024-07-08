@@ -15,17 +15,7 @@ const AuthUserPage = () => {
           />
         </Link>
         <h2>일반 로그인</h2>
-        <div className="line">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="576"
-            height="1"
-            viewBox="0 0 576 1"
-            fill="none"
-          >
-            <path d="M0.5 0.5H575.5" stroke="black" />
-          </svg>
-        </div>
+        <div className="line"></div>
         <form className="user-join-form">
           <Box
             sx={{
