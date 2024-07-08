@@ -4,7 +4,7 @@ const OrderSummary = () => {
   return (
     <div className="order-summary">
       <div className="order-summary-content">
-        <div className="order-summary__header">주문표</div>
+        <h2 className="order-summary__header">주문표</h2>
         <div className="order-summary__content-wrapper">
           <div className="order-summary__content">
             한마리 ＋ 순살치킨: New）수라깐풍, 크리스피 골드(국내산 순살), 콜라
@@ -21,7 +21,10 @@ const OrderSummary = () => {
               <div className="quantity-count__increase-button">+</div>
             </div>
           </div>
-          <div className="order-summary__total-price">27,000원</div>
+          <div className="order-summary__total-amount">
+            <p>총 결제 금액</p>
+            <p>23,000원</p>
+          </div>
         </div>
       </div>
       <div className="order-summary__submit-button">주문하기</div>

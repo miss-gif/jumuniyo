@@ -11,7 +11,9 @@ const RestaurantDetailInfo = () => {
           <img src="https://picsum.photos/100/" alt="" />
         </div>
         <div className="restaurant-detail-page__info-details">
-          <div className="restaurant-detail-page__info-rating">★★★★★ 4.9</div>
+          <div className="restaurant-detail-page__info-rating">
+            <span>★★★★★</span> <p>4.9</p>
+          </div>
           <p className="restaurant-detail-page__info-payment">
             <span className="gray">결제</span> 신용카드 , 현금 , 웹 결제
           </p>

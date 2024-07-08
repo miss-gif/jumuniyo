@@ -31,3 +31,13 @@
     }
   }
 }
+
+.restaurant-detail-page__info-rating {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 14px;
+  span {
+    color: orange;
+  }
+}
