@@ -10,6 +10,16 @@
     padding: 8px;
     background-color: #333;
     color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .header__title {
+      font-weight: 500;
+    }
+    .header__icon {
+      display: flex;
+      align-items: center;
+    }
   }
 
   &__content-wrapper {
