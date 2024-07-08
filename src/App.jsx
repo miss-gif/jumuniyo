@@ -30,7 +30,8 @@ import Statistics from "./components/ceo/Statistics";
 import AdminLayout from "./components/layout/AdminLayout";
 import MyPageAddress from "./pages/MyPageAddress";
 import MypageUserWithdrawal from "./pages/MypageUserWithdrawal";
-import RestaurantDetailPage2 from "./pages/RestaurantDetailPage2";
+// user
+import RestaurantDetailPage2 from "./pages/user/RestaurantDetailPage2";
 
 // 사업자
 

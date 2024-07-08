@@ -1,0 +1,157 @@
+.restaurant-detail {
+  display: flex;
+  flex-direction: column;
+  &__overall-score {
+    padding: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    border-bottom: 1px solid $borderColor;
+
+    .overall-score {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      &__value {
+        font-size: 42px;
+        line-height: 1;
+      }
+
+      &__icon {
+        color: gold;
+      }
+    }
+
+    .score-items {
+      display: flex;
+      justify-content: space-between;
+      flex-direction: column;
+      padding: 0 16px;
+      border-left: 1px solid $borderColor;
+      font-size: 12px;
+
+      .score-item {
+        display: flex;
+        gap: 8px;
+        &__title {
+          width: 30px;
+        }
+
+        &__icon {
+          color: gold;
+        }
+
+        &__value {
+        }
+      }
+    }
+  }
+}
+
+.restaurant-detail {
+  .review-list {
+    &__filter {
+      padding: 8px;
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px solid $borderColor;
+
+      p {
+        font-size: 12px;
+      }
+
+      .filter__text {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+
+        span {
+          font-weight: bold;
+        }
+      }
+
+      .filter__photo-reviews {
+        display: flex;
+      }
+    }
+
+    .reviews {
+      .review {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        padding: 16px 8px 8px;
+        &__header {
+          display: flex;
+          justify-content: space-between;
+
+          .review__user-info {
+            display: flex;
+            gap: 8px;
+          }
+
+          .review__report {
+            font-size: 12px;
+            color: red;
+          }
+        }
+
+        &__rating {
+          display: flex;
+          gap: 8px;
+
+          .rating__stars {
+            color: gold;
+          }
+
+          .rating__details {
+            font-size: 14px;
+          }
+        }
+
+        &__order {
+        }
+
+        &__content {
+        }
+
+        &__owner-comment {
+          margin-top: 8px;
+          background-color: $gray;
+          padding: 8px;
+
+          .owner-comment__header {
+            display: flex;
+            justify-content: space-between;
+
+            .owner-comment-info {
+              display: flex;
+              gap: 8px;
+            }
+
+            .owner-comment__owner {
+              font-weight: bold;
+            }
+
+            .owner-comment__time {
+              font-size: 12px;
+            }
+
+            .owner-comment__report {
+              font-size: 12px;
+              color: red;
+              cursor: pointer;
+            }
+          }
+
+          .owner-comment__content {
+            font-size: 14px;
+          }
+        }
+      }
+    }
+  }
+}

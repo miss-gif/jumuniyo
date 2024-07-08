@@ -1,14 +1,18 @@
-.restaurant-detail-page {
+// RestaurantDetail 캐러셀
+
+.restaurant-detail-page__menu-content {
   .carousel {
     // 케러셀 스타일
     padding: 8px 16px;
     border-bottom: 1px solid $borderColor;
+
+    // RestaurantDetailCarousel 스타일
     &__item {
       background-color: #fff;
       border: 1px solid $borderColor;
     }
     &__image {
-      height: 140px;
+      height: 120px;
       border-radius: 0;
     }
     &__top {
@@ -18,7 +22,6 @@
     }
     &__price {
       font-size: 12px;
-      // padding: 4px 8px;
     }
     &__text {
       padding: 8px;
