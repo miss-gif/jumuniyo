@@ -30,6 +30,7 @@ import Statistics from "./components/ceo/Statistics";
 import AdminLayout from "./components/layout/AdminLayout";
 import MyPageAddress from "./pages/MyPageAddress";
 import MypageUserWithdrawal from "./pages/MypageUserWithdrawal";
+import RestaurantDetailPage2 from "./pages/RestaurantDetailPage2";
 
 // 사업자
 
@@ -51,6 +52,7 @@ function App() {
             <Route index element={<HomePage />} />
             <Route path="/restaurants" element={<RestaurantsPage />} />
             <Route path="/restaurants/:id" element={<RestaurantDetailPage />} />
+            <Route path="/restaurants/re" element={<RestaurantDetailPage2 />} />
             <Route path="/cart" element={<CartPage />} />
             <Route path="/checkout" element={<CheckoutPage />} />
             <Route path="/profile" element={<ProfilePage />} />

@@ -1,0 +1,30 @@
+.restaurant-detail {
+  &__wrap {
+    padding: 16px;
+    border-bottom: 1px solid #eee;
+  }
+
+  &__title {
+    font-weight: bold;
+    margin-bottom: 8px;
+  }
+
+  &__content {
+    margin-bottom: 16px;
+    line-height: 1.5;
+  }
+
+  &__info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+  }
+
+  &__info-title {
+    font-weight: bold;
+  }
+
+  &__info-detail {
+    text-align: right;
+  }
+}
