@@ -1,30 +1,31 @@
-.restaurant-detail {
+.restaurant-detail-tab-info {
+  padding-bottom: 40px;
   &__wrap {
-    padding: 16px;
-    border-bottom: 1px solid #eee;
+    margin: 8px;
   }
 
   &__title {
-    font-weight: bold;
-    margin-bottom: 8px;
+    font-weight: 500;
+    border-bottom: 1px solid $textGray;
+    padding: 8px 0;
+    margin: 16px 0;
   }
 
   &__content {
-    margin-bottom: 16px;
-    line-height: 1.5;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
   }
 
   &__info {
     display: flex;
-    justify-content: space-between;
-    margin-bottom: 8px;
   }
 
   &__info-title {
-    font-weight: bold;
+    width: 100px;
+    color: $textGray;
   }
 
   &__info-detail {
-    text-align: right;
   }
 }
