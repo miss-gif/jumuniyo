@@ -7,7 +7,6 @@
     justify-content: center;
     align-items: center;
     gap: 16px;
-
     border-bottom: 1px solid $borderColor;
 
     .overall-score {
@@ -17,7 +16,8 @@
       align-items: center;
 
       &__value {
-        font-size: 24px;
+        font-size: 42px;
+        line-height: 1;
       }
 
       &__icon {
@@ -31,6 +31,7 @@
       flex-direction: column;
       padding: 0 16px;
       border-left: 1px solid $borderColor;
+      font-size: 12px;
 
       .score-item {
         display: flex;
@@ -58,8 +59,13 @@
       justify-content: space-between;
       border-bottom: 1px solid $borderColor;
 
+      p {
+        font-size: 12px;
+      }
+
       .filter__text {
         display: flex;
+        align-items: center;
         gap: 8px;
 
         span {

@@ -6,24 +6,24 @@ const RestaurantDetailCleanReview = () => {
     <div className="restaurant-detail">
       <div className="restaurant-detail__overall-score">
         <div className="overall-score">
-          <div className="overall-score__value">4.8</div>
-          <div className="overall-score__icon">★★★★★</div>
+          <p className="overall-score__value">4.8</p>
+          <span className="overall-score__icon">★★★★★</span>
         </div>
         <div className="score-items">
           <div className="score-item score-item--taste">
-            <div className="score-item__title">맛</div>
-            <div className="score-item__icon">★★★★★</div>
-            <div className="score-item__value">4.8</div>
+            <p className="score-item__title">맛</p>
+            <span className="score-item__icon">★★★★★</span>
+            <p className="score-item__value">4.8</p>
           </div>
           <div className="score-item score-item--quantity">
-            <div className="score-item__title">양</div>
-            <div className="score-item__icon">★★★★★</div>
-            <div className="score-item__value">4.8</div>
+            <p className="score-item__title">양</p>
+            <span className="score-item__icon">★★★★★</span>
+            <p className="score-item__value">4.8</p>
           </div>
           <div className="score-item score-item--delivery">
-            <div className="score-item__title">배달</div>
-            <div className="score-item__icon">★★★★★</div>
-            <div className="score-item__value">4.8</div>
+            <p className="score-item__title">배달</p>
+            <span className="score-item__icon">★★★★★</span>
+            <p className="score-item__value">4.8</p>
           </div>
         </div>
       </div>
@@ -38,14 +38,14 @@ const RestaurantDetailCleanReview = () => {
               사장님댓글 <span>10861개</span>
             </p>
           </div>
-          <div className="filter__photo-reviews">사진리뷰만</div>
+          <p className="filter__photo-reviews">사진리뷰만</p>
         </div>
         <ul className="reviews">
           <li className="review">
             <div className="review__header">
               <div className="review__user-info">
-                <div className="user-info__id">hy**님</div>
-                <div className="user-info__time">9시간 전</div>
+                <p className="user-info__id">hy**님</p>
+                <p className="user-info__time">9시간 전</p>
               </div>
               <div className="review__report">신고</div>
             </div>
