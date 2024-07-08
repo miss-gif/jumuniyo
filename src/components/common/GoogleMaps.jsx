@@ -11,7 +11,6 @@ import { debounce } from "@mui/material/utils";
 
 const GOOGLE_MAPS_API_KEY = "AIzaSyAMR0g0QOUBQiHoZMLjMovMkzjJ7VkUBuU";
 
-// 스크립트를 로드하는 함수
 function loadScript(src, position, id) {
   if (!position) {
     return;
@@ -25,15 +24,14 @@ function loadScript(src, position, id) {
 }
 
 const autocompleteService = { current: null };
+const placesService = { current: null };
 
-// GoogleMaps 컴포넌트 정의
 export default function GoogleMaps() {
   const [value, setValue] = React.useState(null);
   const [inputValue, setInputValue] = React.useState("");
   const [options, setOptions] = React.useState([]);
   const loaded = React.useRef(false);
 
-  // Google Maps API 스크립트 로드
   if (typeof window !== "undefined" && !loaded.current) {
     if (!document.querySelector("#google-maps")) {
       loadScript(
@@ -46,7 +44,6 @@ export default function GoogleMaps() {
     loaded.current = true;
   }
 
-  // 자동완성 기능을 위한 fetch 함수
   const fetch = React.useMemo(
     () =>
       debounce((request, callback) => {
@@ -55,7 +52,6 @@ export default function GoogleMaps() {
     [],
   );
 
-  // inputValue가 변경될 때마다 자동완성 옵션을 업데이트
   React.useEffect(() => {
     let active = true;
 
@@ -63,7 +59,14 @@ export default function GoogleMaps() {
       autocompleteService.current =
         new window.google.maps.places.AutocompleteService();
     }
-    if (!autocompleteService.current) {
+
+    if (!placesService.current && window.google) {
+      placesService.current = new window.google.maps.places.PlacesService(
+        document.createElement("div"),
+      );
+    }
+
+    if (!autocompleteService.current || !placesService.current) {
       return undefined;
     }
 
@@ -93,6 +96,23 @@ export default function GoogleMaps() {
     };
   }, [value, inputValue, fetch]);
 
+  const handlePlaceSelect = (event, newValue) => {
+    setOptions(newValue ? [newValue, ...options] : options);
+    setValue(newValue);
+
+    if (newValue && newValue.place_id && placesService.current) {
+      placesService.current.getDetails(
+        { placeId: newValue.place_id },
+        (place, status) => {
+          if (status === window.google.maps.places.PlacesServiceStatus.OK) {
+            console.log("Latitude:", place.geometry.location.lat());
+            console.log("Longitude:", place.geometry.location.lng());
+          }
+        },
+      );
+    }
+  };
+
   return (
     <Autocomplete
       id="google-map-demo"
@@ -107,10 +127,7 @@ export default function GoogleMaps() {
       filterSelectedOptions
       value={value}
       noOptionsText="건물명, 도로명, 지번으로 검색하세요."
-      onChange={(event, newValue) => {
-        setOptions(newValue ? [newValue, ...options] : options);
-        setValue(newValue);
-      }}
+      onChange={handlePlaceSelect}
       onInputChange={(event, newInputValue) => {
         setInputValue(newInputValue);
       }}
@@ -162,7 +179,6 @@ export default function GoogleMaps() {
   );
 }
 
-// prop-types를 이용한 props 검증 추가
 GoogleMaps.propTypes = {
   key: PropTypes.string.isRequired,
 };
