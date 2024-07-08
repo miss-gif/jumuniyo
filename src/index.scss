@@ -21,29 +21,40 @@
 @import "./css/layout/Footer.scss";
 
 // components: 컴포넌트 스타일
-@import "./css/components/CategoryNavigation.scss";
 @import "./css/components/ToTop.scss";
 @import "./css/components/NewRestaurantListCarousel.scss";
-@import "./css/components/SwiperSlideComponent.scss";
 
 // pages: 페이지 스타일
-@import "./css/pages/HomePage.scss";
-@import "./css/pages/RestaurantsPage.scss";
-@import "./css/pages/PaymentPage.scss";
-@import "./css/pages/MyPageOrderPage.scss";
 @import "./css/pages/CeoPage.scss";
 @import "./css/pages/ProjectInfo.scss";
 
-// RestaurantDetailPage CSS
+/**
+  페이지 및 컴포넌트 구분
+*/
+
+// HomePage CSS miss-gif
+@import "./css/pages/HomePage.scss";
+@import "./css/components/CategoryNavigation.scss";
+@import "./css/components/SwiperSlideComponent.scss";
+
+// RestaurantsPage CSS CSS miss-gif
+@import "./css/pages/RestaurantsPage.scss";
+
+// RestaurantDetailPage CSS miss-gif
 @import "./css/pages/RestaurantDetailPage.scss";
 @import "./css/components/user/RestaurantDetailPage/RestaurantDetailInfo.scss";
 @import "./css/components/user/RestaurantDetailPage/RestaurantDetailHeader.scss";
 @import "./css/components/user/RestaurantDetailPage/RestaurantDetailMenuContent.scss";
 @import "./css/components/user/RestaurantDetailPage/RestaurantDetailCarousel.scss";
-
 @import "./css/components/user/RestaurantDetailPage/RestaurantDetailCleanReview.scss";
 @import "./css/components/user/RestaurantDetailPage/RestaurantDetailTabInfo.scss";
 @import "./css/components/user/RestaurantDetailPage/OrderSummary.scss";
+
+// PaymentPage CSS miss-gif
+@import "./css/pages/PaymentPage.scss";
+
+// MyPageOrderPage CSS miss-gif
+@import "./css/pages/MyPageOrderPage.scss";
 
 // 김민기 작업 css
 @import "./css/join/joinmain";
