@@ -6,7 +6,7 @@ import MenuCategory from "./MenuCategory";
 const RestaurantDetailMenuContent = () => {
   return (
     <div className="restaurant-detail-page__menu-content">
-      <div className="carousel ">
+      <div className="carousel hidden">
         <RestaurantDetailCarousel />
       </div>
       <MenuCategory />

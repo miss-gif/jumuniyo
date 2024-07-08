@@ -1,0 +1,38 @@
+.review {
+  &__owner-comment {
+    margin-top: 4px;
+    background-color: $gray;
+    padding: 12px;
+
+    .owner-comment__header {
+      display: flex;
+      justify-content: space-between;
+
+      .owner-comment-info {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .owner-comment__owner {
+        font-weight: 500;
+      }
+
+      .owner-comment__time {
+        color: $textGray;
+        font-size: 12px;
+      }
+
+      .owner-comment__report {
+        font-size: 12px;
+        color: $textGray;
+        font-weight: 500;
+      }
+    }
+
+    .owner-comment__content {
+      margin-top: 4px;
+      font-size: 14px;
+    }
+  }
+}

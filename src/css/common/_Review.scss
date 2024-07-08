@@ -1,0 +1,76 @@
+// 리뷰영역
+.reviews {
+  display: flex;
+  flex-direction: column;
+  .review {
+    border-bottom: 1px solid $borderColor;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 8px;
+    &__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .review__user-info {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .review__report {
+        font-size: 12px;
+        color: $textGray;
+        font-weight: 500;
+      }
+    }
+
+    &__rating {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+
+      .rating__stars {
+        color: orange;
+        display: flex;
+        &::after {
+          color: $borderColor;
+          content: "|";
+          padding: 0 4px;
+        }
+      }
+
+      span {
+        color: orange;
+      }
+
+      .rating__details {
+        font-size: 12px;
+      }
+    }
+
+    &__image {
+      height: 200px;
+      object-fit: cover;
+      margin-bottom: 8px;
+    }
+
+    &__order {
+      font-size: 12px;
+      color: #d1bca4;
+    }
+
+    &__content {
+    }
+  }
+}
+
+.user-info__id {
+  font-weight: 500;
+}
+
+.user-info__time {
+  font-size: 12px;
+  color: $textGray;
+}
