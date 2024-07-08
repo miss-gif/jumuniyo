@@ -21,7 +21,6 @@ import MyPageOrderPagee from "./pages/MyPageOrderPagee";
 import MyPageReviewPage from "./pages/MyPageReviewPage";
 import AdminPage from "./pages/AdminPage";
 import CeoLayout from "./components/layout/CeoLayout";
-import { Home } from "@mui/icons-material";
 import Reviews from "./components/ceo/Reviews";
 import Orders from "./components/ceo/Orders";
 import MenuManagement from "./components/ceo/MenuManagement";
@@ -31,6 +30,7 @@ import AdminLayout from "./components/layout/AdminLayout";
 import MyPageAddress from "./pages/MyPageAddress";
 import MypageUserWithdrawal from "./pages/MypageUserWithdrawal";
 import RestaurantDetailPage2 from "./pages/RestaurantDetailPage2";
+import Home from "./components/ceo/Home";
 
 // 사업자
 

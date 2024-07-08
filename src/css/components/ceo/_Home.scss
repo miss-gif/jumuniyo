@@ -1,0 +1,92 @@
+.ceo-home {
+  .home-tab {
+    border: 1px solid black;
+  }
+  .order-body {
+    display: flex;
+    justify-content: space-between;
+    padding: 100px 100px 100px 100px;
+
+    .confirmedList {
+      width: 30vw;
+      .confirmedList-tab {
+        border: 1px solid $borderColor;
+      }
+      .oneOrder {
+        border: 1px solid #ccc;
+        display: flex;
+        justify-content: space-between;
+        .orderedTime {
+        }
+        .orderInfo {
+          .orderAmount {
+            display: flex;
+            .orderNumber {
+            }
+            .orderPrice {
+            }
+            .payMethod {
+            }
+          }
+          .orderedMenu {
+            display: flex;
+
+            .menu-name {
+            }
+            .menu-amount {
+            }
+          }
+          .orderedAddress {
+          }
+          .requested {
+          }
+        }
+        .orderStatus {
+          .orderLeftTime {
+          }
+          .orderProcess {
+          }
+        }
+      }
+    }
+
+    .orderedList {
+      .oneOrder {
+        .AnOrderHead {
+          padding: 10px;
+        }
+        .AnOrderBody {
+          display: flex;
+          .AnOrderLeft {
+            .requested {
+              margin: 10px;
+              border: 1px solid #ccc;
+              .requestedtoStore {
+              }
+              .requestedtoRider {
+              }
+            }
+            .orderedMenu {
+              border: 1px solid #ccc;
+              margin: 10px;
+              .menuName {
+              }
+              .menuAmount {
+              }
+              .menuPrice {
+              }
+            }
+          }
+          .AnOrderRight {
+            .AnOrderInf {
+              border: 1px solid black;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .todaySale {
+  }
+}
