@@ -12,7 +12,7 @@
   &__item {
     display: flex;
     justify-content: center;
-    flex-grow: 1;
+    flex: 1;
     padding: $padding-3 0;
     border-right: 1px solid $borderColor;
     border-bottom: 1px solid $borderColor;
