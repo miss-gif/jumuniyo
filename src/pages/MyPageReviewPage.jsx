@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import Mypage from "../components/join/Mypage";
 import reviewItemsData from "../components/restaurantdetail/review.json";
 
 const MyPageReviewPage = () => {
@@ -15,25 +14,21 @@ const MyPageReviewPage = () => {
 
   console.log(reviewItems);
   return (
-    <div className="mypage-wrap">
-      <Mypage />
-
-      <div className="mypage-review-wrap">
-        <div className="reviews">
-          {reviewItems.map((item, index) => (
-            <div key={index} className="review">
-              <div className="review-header">
-                <span className="review-user">{item.userId}</span>
-                <span className="review-date">{item.writeTime}</span>
-                <span className="review-rating">{item.score}</span>
-              </div>
-              <div className="review-content">
-                <img src={item.reviewImg} alt="Review" />
-                <p>{item.content}</p>
-              </div>
+    <div className="mypage-review-wrap">
+      <div className="reviews">
+        {reviewItems.map((item, index) => (
+          <div key={index} className="review">
+            <div className="review-header">
+              <span className="review-user">{item.userId}</span>
+              <span className="review-date">{item.writeTime}</span>
+              <span className="review-rating">{item.score}</span>
             </div>
-          ))}
-        </div>
+            <div className="review-content">
+              <img src={item.reviewImg} alt="Review" />
+              <p>{item.content}</p>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );

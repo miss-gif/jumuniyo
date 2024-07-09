@@ -1,6 +1,5 @@
 import { useState } from "react";
 import MyPageOrderList from "../components/common/MyPageOrderList";
-import Mypage from "../components/join/Mypage";
 import MypageReviewWrite from "../components/common/mypage/MypageReviewWrite";
 
 const MyPageOrderListPage = () => {
@@ -19,14 +18,11 @@ const MyPageOrderListPage = () => {
   };
 
   return (
-    <div className="mypage-wrap">
-      <Mypage />
-      <div className="mypage-box">
-        <MyPageOrderList reviewOpenModal={reviewOpenModal} />
-        {reviewOpen ? (
-          <MypageReviewWrite reviewYes={reviewYes} reviewNo={reviewNo} />
-        ) : null}
-      </div>
+    <div className="mypage-box">
+      <MyPageOrderList reviewOpenModal={reviewOpenModal} />
+      {reviewOpen ? (
+        <MypageReviewWrite reviewYes={reviewYes} reviewNo={reviewNo} />
+      ) : null}
     </div>
   );
 };

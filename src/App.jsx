@@ -55,11 +55,12 @@ function App() {
             <Route path="/restaurants/re" element={<RestaurantDetailPage2 />} />
             <Route path="/payment" element={<PaymentPage />} />
             <Route path="/projectinfo" element={<ProjectInfo />} />
+            <Route path="/orderview" element={<MyPageOrderPage />} />
             {/* 마이페이지 */}
-            <Route path="/mypage/order/:id" element={<MyPageOrderPage />} />
             <Route path="/" element={<MyPageLayout />}>
               <Route path="/mypage" element={<MyPage />} />
               <Route path="/mypage/order" element={<MyPageOrderListPage />} />
+              <Route path="/mypage/order/:id" element={<MyPageOrderPage />} />
               <Route path="/mypage/review" element={<MyPageReviewPage />} />
               <Route path="/mypage/address" element={<MyPageAddress />} />
               <Route
