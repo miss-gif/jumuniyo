@@ -1,61 +1,50 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { useNavigate, useLocation } from "react-router-dom";
 
-const Mypage = () => {
+const NavButton = ({ path, currentPath, label }) => {
   const navigate = useNavigate();
+
+  const buttonStyle = {
+    backgroundColor: currentPath === path ? "#333" : "white",
+    color: currentPath === path ? "white" : "#333",
+  };
+
+  return (
+    <button onClick={() => navigate(path)} style={buttonStyle}>
+      {label}
+    </button>
+  );
+};
+
+NavButton.propTypes = {
+  path: PropTypes.string.isRequired,
+  currentPath: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
+};
+
+const Mypage = () => {
   const location = useLocation();
+  const currentPath = location.pathname;
+
+  const navItems = [
+    { path: "/mypage", label: "내정보" },
+    { path: "/mypage/address", label: "내주소" },
+    { path: "/mypage/ordere", label: "주문내역" },
+    { path: "/mypage/review", label: "리뷰내역" },
+    { path: "/mypage/withdrawal", label: "회원탈퇴" },
+  ];
 
   return (
     <div className="mypage-select">
-      <button
-        onClick={() => navigate("/mypage")}
-        style={{
-          backgroundColor: location.pathname === "/mypage" ? "#333" : "white",
-          color: location.pathname === "/mypage" ? "white" : "#333",
-        }}
-      >
-        내정보
-      </button>
-      <button
-        onClick={() => navigate("/mypage/address")}
-        style={{
-          backgroundColor:
-            location.pathname === "/mypage/address" ? "#333" : "white",
-          color: location.pathname === "/mypage/address" ? "white" : "#333",
-        }}
-      >
-        내주소
-      </button>
-      <button
-        onClick={() => navigate("/mypage/ordere")}
-        style={{
-          backgroundColor:
-            location.pathname === "/mypage/ordere" ? "#333" : "white",
-          color: location.pathname === "/mypage/ordere" ? "white" : "#333",
-        }}
-      >
-        주문내역
-      </button>
-      <button
-        onClick={() => navigate("/mypage/review")}
-        style={{
-          backgroundColor:
-            location.pathname === "/mypage/review" ? "#333" : "white",
-          color: location.pathname === "/mypage/review" ? "white" : "#333",
-        }}
-      >
-        리뷰내역
-      </button>
-      <button
-        onClick={() => navigate("/mypage/withdrawal")}
-        style={{
-          backgroundColor:
-            location.pathname === "/mypage/withdrawal" ? "#333" : "white",
-          color: location.pathname === "/mypage/withdrawal" ? "white" : "#333",
-        }}
-      >
-        회원탈퇴
-      </button>
+      {navItems.map(({ path, label }) => (
+        <NavButton
+          key={path}
+          path={path}
+          currentPath={currentPath}
+          label={label}
+        />
+      ))}
     </div>
   );
 };

@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import ModalComponent from "../components/common/ModalComponent";
 import GoogleMaps from "../components/common/GoogleMaps";
+import MenuOrderModal from "../components/user/restaurantdetail/MenuOrderModal";
 
 const Test = () => {
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
@@ -69,6 +70,9 @@ const Test = () => {
       />
       <div>
         <GoogleMaps />
+      </div>
+      <div>
+        <MenuOrderModal />
       </div>
     </div>
   );
