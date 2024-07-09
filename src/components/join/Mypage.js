@@ -37,14 +37,16 @@ const Mypage = () => {
 
   return (
     <div className="mypage-select">
-      {navItems.map(({ path, label }) => (
-        <NavButton
-          key={path}
-          path={path}
-          currentPath={currentPath}
-          label={label}
-        />
-      ))}
+      <div className="mypage-select-list">
+        {navItems.map(({ path, label }) => (
+          <NavButton
+            key={path}
+            path={path}
+            currentPath={currentPath}
+            label={label}
+          />
+        ))}
+      </div>
     </div>
   );
 };

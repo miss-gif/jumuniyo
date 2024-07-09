@@ -1,146 +1,67 @@
-.mypage-wrap {
+.mypage {
   display: flex;
-  gap: 20px;
-}
-
-.mypage-select {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-top: 32px;
-
-  & button {
-    text-align: center;
-    padding: 16px 32px;
-    border: 1px solid #dbdbdb;
-    cursor: pointer;
-    border-radius: 4px;
-    transition:
-      background-color 0.3s,
-      color 0.3s;
-  }
-}
-
-.mypage-box {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  padding: 32px 0;
-  gap: 16px;
-}
-
-.mypage-title {
-  display: flex;
-  height: 62px;
-  align-items: center;
-  gap: 52px;
-  border-top: 1px solid #dbdbdb;
-  border-bottom: 1px solid #dbdbdb;
-  padding: 0 20px;
-}
-
-.mypage-title-box {
-  width: 70px;
-  border-right: 1px solid #dbdbdb;
-  text-align: center;
-}
-
-.mypage-button-box {
-  display: flex;
-  justify-content: end;
-  gap: 16px;
-
-  & button {
-    padding: 8px 12px;
-    background-color: #333;
-    color: white;
-    border-radius: 4px;
-  }
-}
-
-.mypage-address {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  justify-content: center;
-  align-items: center;
-
-  & button {
-    width: fit-content;
-    padding: 8px 12px;
-    background-color: #333;
-    color: white;
-    border-radius: 4px;
-  }
-}
-
-.modify-modal {
-  background: #fff;
-  width: 100%;
-  position: absolute;
-  display: flex;
-  padding: 28px 28px;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
-  border-radius: 4px;
+  gap: 8px;
+  padding: 8px;
+  &-inner {
+    width: 80%;
+  }
+  &__profile {
+    margin-bottom: 16px;
+    &-header {
+      gap: 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    &-title {
+    }
+    &-image {
+      max-height: 500px;
+      height: 50%;
+    }
+  }
 
-  & div {
+  &__info {
     display: flex;
-    width: 100%;
-  }
-
-  & h3 {
-    font-size: 16px;
-  }
-}
-
-@include tablet {
-  .mypage-wrap {
-    display: block;
-  }
-
-  .mypage-select {
-    flex-direction: row;
-
-    & button {
+    flex-direction: column;
+    gap: 16px;
+    &-item {
+      display: flex;
+      align-items: center;
+    }
+    &-label {
+      max-width: 120px;
       width: 100%;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    &-value {
+      font-size: 16px;
+      padding: 8px;
+      // padding: 8px;
+    }
+  }
+
+  &__actions {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  &__button {
+    background-color: #333;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 4px;
+    &:hover {
+      background-color: #666;
     }
   }
 }
 
-.button-sit {
-  width: fit-content;
-  padding: 8px 12px;
-  background-color: #333;
-  color: white;
+.mypage__info-input {
+  border: 1px solid $borderColor;
   border-radius: 4px;
-}
-
-.mypage-img {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  & div {
-    display: flex;
-    width: 100%;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 24px;
-  }
-
-  & h3 {
-    display: flex;
-    font-size: 24px;
-    justify-content: center;
-  }
-
-  & img {
-    width: 16vw;
-    height: auto;
-    object-fit: contain;
-  }
+  padding: 8px;
 }

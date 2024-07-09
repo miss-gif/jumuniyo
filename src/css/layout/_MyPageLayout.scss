@@ -1,0 +1,47 @@
+.mypage-wrap {
+  display: flex;
+  gap: 12px;
+}
+
+.mypage-select-list {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #dbdbdb;
+}
+
+.mypage-select {
+  & button {
+    border-bottom: 1px solid #dbdbdb;
+    padding: 16px 20px;
+    transition: all 0.3s;
+    &:last-child {
+      border-bottom: 0;
+    }
+  }
+}
+
+.mypage-content {
+  width: 100%;
+  border: 1px solid #dbdbdb;
+  padding: 8px;
+}
+
+@include tablet {
+  .mypage-wrap {
+    flex-direction: column;
+  }
+
+  .mypage-select-list {
+    flex-direction: row;
+    border-bottom: 0;
+
+    & button {
+      border-right: 1px solid #dbdbdb;
+      width: 100%;
+      &:last-child {
+        border-bottom: 1px solid #dbdbdb;
+        border-right: 0;
+      }
+    }
+  }
+}

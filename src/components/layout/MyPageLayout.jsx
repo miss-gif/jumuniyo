@@ -7,7 +7,7 @@ const MyPageLayout = () => {
     <>
       <div className="mypage-wrap">
         <Mypage />
-        <div className="mypage-box">
+        <div className="mypage-content">
           <Outlet />
         </div>
       </div>
