@@ -114,57 +114,75 @@ const Orders = () => {
     //   </div>
     // </div>
     <>
-      {orders.map(order => (
-        <div key={order.order_id} className="mypage-order">
-          <h2 className="mypage-order__title">{order.order_status}</h2>
-          <div className="mypage-order__contents">
-            <p className="mypage-order__thanks">{order.order_notes}</p>
-            <p className="mypage-order__confirmation">{order.order_notes}</p>
-            <div className="mypage-order__section-title">배달정보</div>
-            <div className="배달정보-콘텐츠">
-              <div className="mypage-order__detail">
-                <p className="mypage-order__label">주문식당</p>
-                <p className="mypage-order__value">후라이드참잘하는집</p>
-              </div>
-              <div className="mypage-order__detail">
-                <p className="mypage-order__label">결제수단</p>
-                <p className="mypage-order__value">현장결제 - 신용카드 결제</p>
-              </div>
-              <div className="mypage-order__detail">
-                <p className="mypage-order__label">주문자정보</p>
-                <p className="mypage-order__value">
-                  서울특별시 강남구 삼성동 143-10 위워크 타워
-                </p>
-              </div>
-              <div className="mypage-order__detail">
-                <p className="mypage-order__label">연락처</p>
-                <p className="mypage-order__value">01012345551</p>
-              </div>
-            </div>
-            <div className="mypage-order__section-title">주문내역</div>
-            <div className="주문내역-콘텐츠">
-              <ul className="mypage-order__item">
-                <li>
-                  <p className="mypage-order__item-name">
-                    순살 후라이드 <span>x 1개</span>
-                  </p>
-                  <p className="mypage-order__item-price">16,000원</p>
-                </li>
-                <li>
-                  <p className="mypage-order__item-name">
-                    순살 후라이드 <span>x 1개</span>
-                  </p>
-                  <p className="mypage-order__item-price">16,000원</p>
-                </li>
-              </ul>
-            </div>
-            <div className="mypage-order__total">
-              <p className="mypage-order__total-label">총 결제금액</p>
-              <p className="mypage-order__total-price">16,000원</p>
-            </div>
-          </div>
+      <div className="ceo-order-list">
+        <h1>주문내역</h1>
+        <div className="orderListing">
+          <ul className="tabforchoiceUl">
+            <li>
+              <button className="btn">전체 보기</button>
+              <button className="btn">접수 주문</button>
+              <button className="btn">거절 주문</button>
+            </li>
+          </ul>
         </div>
-      ))}
+        <div className="ceo-orders">
+          {orders.map(order => (
+            <div key={order.order_id} className="mypage-order">
+              <h2 className="mypage-order__title">{order.order_status}</h2>
+              <div className="mypage-order__contents">
+                <p className="mypage-order__thanks">{order.order_notes}</p>
+                <p className="mypage-order__confirmation">
+                  {order.order_notes}
+                </p>
+                <div className="mypage-order__section-title">배달정보</div>
+                <div className="배달정보-콘텐츠">
+                  <div className="mypage-order__detail">
+                    <p className="mypage-order__label">주문식당</p>
+                    <p className="mypage-order__value">후라이드참잘하는집</p>
+                  </div>
+                  <div className="mypage-order__detail">
+                    <p className="mypage-order__label">결제수단</p>
+                    <p className="mypage-order__value">
+                      현장결제 - 신용카드 결제
+                    </p>
+                  </div>
+                  <div className="mypage-order__detail">
+                    <p className="mypage-order__label">주문자정보</p>
+                    <p className="mypage-order__value">
+                      서울특별시 강남구 삼성동 143-10 위워크 타워
+                    </p>
+                  </div>
+                  <div className="mypage-order__detail">
+                    <p className="mypage-order__label">연락처</p>
+                    <p className="mypage-order__value">01012345551</p>
+                  </div>
+                </div>
+                <div className="mypage-order__section-title">주문내역</div>
+                <div className="주문내역-콘텐츠">
+                  <ul className="mypage-order__item">
+                    <li>
+                      <p className="mypage-order__item-name">
+                        순살 후라이드 <span>x 1개</span>
+                      </p>
+                      <p className="mypage-order__item-price">16,000원</p>
+                    </li>
+                    <li>
+                      <p className="mypage-order__item-name">
+                        순살 후라이드 <span>x 1개</span>
+                      </p>
+                      <p className="mypage-order__item-price">16,000원</p>
+                    </li>
+                  </ul>
+                </div>
+                <div className="mypage-order__total">
+                  <p className="mypage-order__total-label">총 결제금액</p>
+                  <p className="mypage-order__total-price">16,000원</p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
     </>
   );
 };

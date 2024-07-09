@@ -3,7 +3,6 @@ import RootLayout from "./components/layout/RootLayout";
 import AuthCeoPage from "./pages/AuthCeoPage.jsx";
 import AuthPage from "./pages/AuthPage.jsx";
 import AuthUserPage from "./pages/AuthUserPage.jsx";
-import CeoPage from "./pages/CeoPage.jsx";
 import HomePage from "./pages/HomePage.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
 import MyPage from "./pages/MyPage.jsx";
@@ -72,7 +71,6 @@ function App() {
 
           {/* 사업자 라우터 */}
           <Route path="/ceopage" element={<CeoLayout />}>
-            <Route path="/ceopage/" element={<CeoPage />} />
             <Route path="/ceopage/" element={<Home />} />
             <Route path="home" element={<Home />} />
             <Route path="orders" element={<Orders />} />
