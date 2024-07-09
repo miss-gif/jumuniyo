@@ -1,13 +1,22 @@
-.Ceo-Orders {
-  h1 {
-    font-size: 2em;
-    color: #333;
-    padding: 40px 80px;
+h1 {
+  font-size: 2em;
+  color: #333;
+  padding: 40px 80px;
+}
+.orderListing {
+  margin: 0px 80px;
+  padding-bottom: 20px;
+  .tabforchoiceUl {
+    li {
+      display: flex;
+      justify-content: space-between;
+    }
   }
+}
 
+.ceo-orders {
+  margin: 0px 80px;
   .order-lists {
-    margin: 0px 80px;
-
     .order {
       border: 1px solid #ccc;
       border-radius: 5px;
@@ -46,7 +55,7 @@
     }
   }
 
-  @media (max-width: 760px) {
+  @media (max-width: 768px) {
     h1 {
       font-size: 2em;
       color: #333;
