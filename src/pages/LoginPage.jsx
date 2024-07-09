@@ -1,9 +1,27 @@
 import { Link, useNavigate } from "react-router-dom";
 import JoinFooter from "../components/layout/JoinFooter";
 import { Box, TextField } from "@mui/material";
+import { useState } from "react";
+import axios from "axios";
 
 const AuthUserPage = () => {
+  const [userId, setUserId] = useState("");
+  const [userPw, setUserPw] = useState("");
+
   const join = useNavigate();
+
+  const logIn = async () => {
+    const data = {
+      userId: userId,
+      userPw: userPw,
+    };
+    try {
+      const res = await axios.post(`/api/user/sign-in`, data);
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <>
@@ -23,7 +41,14 @@ const AuthUserPage = () => {
               maxWidth: "100%",
             }}
           >
-            <TextField fullWidth label="아이디" id="fullWidth" />
+            <TextField
+              fullWidth
+              label="아이디"
+              id="fullWidth"
+              onChange={e => {
+                setUserId(e.target.value);
+              }}
+            />
           </Box>
           <Box
             sx={{
@@ -36,6 +61,9 @@ const AuthUserPage = () => {
               label="비밀번호"
               id="fullWidth"
               type="password"
+              onChange={e => {
+                setUserPw(e.target.value);
+              }}
             />
           </Box>
 
@@ -48,7 +76,14 @@ const AuthUserPage = () => {
               회원가입
             </h6>
           </div>
-          <button type="button">로그인</button>
+          <button
+            type="button"
+            onClick={() => {
+              logIn();
+            }}
+          >
+            로그인
+          </button>
           <div className="social-login">
             <div className="social-login-kakao">
               <svg
