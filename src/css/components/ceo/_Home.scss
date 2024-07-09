@@ -5,7 +5,7 @@
   .order-body {
     display: flex;
     justify-content: space-between;
-    padding: 100px 100px 100px 100px;
+    padding: 100px 30px 100px 30px;
 
     .confirmedList {
       width: 30vw;
@@ -53,33 +53,62 @@
     .orderedList {
       .oneOrder {
         .AnOrderHead {
-          padding: 10px;
+          background-color: $black;
+          color: $white;
+          padding: $padding-2;
         }
         .AnOrderBody {
           display: flex;
+
           .AnOrderLeft {
             .requested {
-              margin: 10px;
+              padding: $padding-2;
+              margin: 8px 8px 8px 0px;
               border: 1px solid #ccc;
-              .requestedtoStore {
-              }
-              .requestedtoRider {
+              .requestedabout {
+                display: flex;
+                .requestedto {
+                  padding-right: 50px;
+                }
               }
             }
             .orderedMenu {
               border: 1px solid #ccc;
-              margin: 10px;
-              .menuName {
+              padding: $padding-2;
+              margin: 8px 8px 0px 0px;
+              .orderedMenuInf {
+                display: flex;
+                justify-content: space-between;
+                padding-bottom: 10px;
+                margin-bottom: 10px;
+                .menuName {
+                }
+                .menuAmount {
+                }
+                .menuPrice {
+                }
               }
-              .menuAmount {
-              }
-              .menuPrice {
+
+              .allOrderedMenuInf {
+                display: flex;
+                justify-content: space-between;
+                border-top: 2px solid #ccc;
               }
             }
           }
           .AnOrderRight {
             .AnOrderInf {
-              border: 1px solid black;
+              padding: $padding-2;
+              border: 1px solid #ccc;
+              margin: 8px 0px 0px 0px;
+              display: block;
+            }
+            .AnOrderInf > div {
+              margin-bottom: 16px;
+            }
+
+            .AnOrderInf > div:last-child {
+              margin-bottom: 0;
             }
           }
         }
@@ -89,4 +118,33 @@
 
   .todaySale {
   }
+}
+
+// 주문내역과 배달주소 컬럼 높이 통일
+.AnOrderBody {
+  display: flex;
+}
+
+.AnOrderLeft,
+.AnOrderRight {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.orderedMenu {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.AnOrderInf {
+  flex: 1;
+  display: flex;
+}
+.acceptOrRefuse {
+  display: flex;
+  justify-content: space-between !important;
+  padding-top: 10px;
 }
