@@ -3,7 +3,7 @@ import MyPageOrderList from "../components/common/MyPageOrderList";
 import Mypage from "../components/join/Mypage";
 import MypageReviewWrite from "../components/common/mypage/MypageReviewWrite";
 
-const MyPageOrderPagee = () => {
+const MyPageOrderListPage = () => {
   const [reviewOpen, setReviewOpen] = useState(false);
 
   const reviewOpenModal = () => {
@@ -31,4 +31,4 @@ const MyPageOrderPagee = () => {
   );
 };
 
-export default MyPageOrderPagee;
+export default MyPageOrderListPage;

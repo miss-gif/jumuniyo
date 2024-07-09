@@ -17,7 +17,7 @@ import ProjectInfo from "./pages/ProjectInfo.jsx";
 import RestaurantDetailPage from "./pages/RestaurantDetailPage.jsx";
 import RestaurantsPage from "./pages/RestaurantsPage.jsx";
 import Test from "./pages/Test";
-import MyPageOrderPagee from "./pages/MyPageOrderPagee";
+import MyPageOrderListPage from "./pages/MyPageOrderListPage";
 import MyPageReviewPage from "./pages/MyPageReviewPage";
 import AdminPage from "./pages/AdminPage";
 import CeoLayout from "./components/layout/CeoLayout";
@@ -60,7 +60,7 @@ function App() {
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/mypage" element={<MyPage />} />
             <Route path="/mypage/order/:id" element={<MyPageOrderPage />} />
-            <Route path="/mypage/ordere" element={<MyPageOrderPagee />} />
+            <Route path="/mypage/ordere" element={<MyPageOrderListPage />} />
             <Route path="/mypage/review" element={<MyPageReviewPage />} />
             <Route path="/mypage/address" element={<MyPageAddress />} />
             <Route path="/payment" element={<PaymentPage />} />
