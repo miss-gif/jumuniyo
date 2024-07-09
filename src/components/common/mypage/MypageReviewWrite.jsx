@@ -18,10 +18,9 @@ const MypageReviewWrite = ({ reviewYes, reviewNo }) => {
       />
       <TextField
         id="outlined-multiline-static"
-        label="나의 리뷰"
         multiline
         rows={4}
-        defaultValue=""
+        placeholder="리뷰를 작성해주세요."
       />
       <div className="mypage-button-box">
         <button
