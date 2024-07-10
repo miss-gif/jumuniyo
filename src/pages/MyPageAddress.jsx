@@ -1,18 +1,13 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import MypageModal from "../components/common/mypage/MypageModal";
 import Mypage from "../components/join/Mypage";
-
+//
 const MyPageAddress = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [address, setAddress] = useState("");
   const [addressDetail, setAddressDetail] = useState("");
-  const aaa = "";
-  useEffect(() => {
-    if (address || addressDetail == "") {
-      setAddress("주소를 입력해주세요");
-      setAddressDetail("상세 주소를 입력해주세요");
-    }
-  }, []);
+  const [xValue, setXValue] = useState("");
+  const [yValue, setYValue] = useState("");
 
   const onModify = () => {
     setIsModalOpen(true);
@@ -22,16 +17,16 @@ const MyPageAddress = () => {
     setIsModalOpen(false);
     setAddress(address);
     setAddressDetail(addressDetail);
+    setXValue(xValue);
+    setYValue(yValue);
   };
 
   const onModifyNo = () => {
     setIsModalOpen(false);
-    setAddress(aaa);
-    setAddressDetail(aaa);
-    if (address || addressDetail == "") {
-      setAddress("주소를 입력해주세요");
-      setAddressDetail("상세 주소를 입력해주세요");
-    }
+    setAddress("");
+    setAddressDetail("");
+    setYValue("");
+    setXValue("");
   };
 
   return (
@@ -58,12 +53,19 @@ const MyPageAddress = () => {
           </button>
         </div>
         {isModalOpen ? (
-          <MypageModal
-            onModifyYes={onModifyYes}
-            onModifyNo={onModifyNo}
-            setAddress={setAddress}
-            setAddressDetail={setAddressDetail}
-          />
+          <>
+            <MypageModal
+              onModifyYes={onModifyYes}
+              onModifyNo={onModifyNo}
+              setAddress={setAddress}
+              setAddressDetail={setAddressDetail}
+              setYValue={setYValue}
+              setXValue={setXValue}
+              xValue={xValue}
+              yValue={yValue}
+              addressDetail={addressDetail}
+            ></MypageModal>
+          </>
         ) : null}
       </div>
     </div>

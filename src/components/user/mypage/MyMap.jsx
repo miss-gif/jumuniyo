@@ -27,7 +27,7 @@ const autocompleteService = { current: null };
 const placesService = { current: null };
 
 // eslint-disable-next-line react/prop-types
-export default function GoogleMaps({ setYValue, setXValue }) {
+export default function MyMap({ setYValue, setXValue, setAddress }) {
   const [value, setValue] = React.useState(null);
   const [inputValue, setInputValue] = React.useState("");
   const [options, setOptions] = React.useState([]);
@@ -116,6 +116,8 @@ export default function GoogleMaps({ setYValue, setXValue }) {
     }
   };
 
+  setAddress(inputValue);
+
   return (
     <Autocomplete
       id="google-map-demo"
@@ -182,6 +184,6 @@ export default function GoogleMaps({ setYValue, setXValue }) {
   );
 }
 
-GoogleMaps.propTypes = {
+MyMap.propTypes = {
   key: PropTypes.string.isRequired,
 };

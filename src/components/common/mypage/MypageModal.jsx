@@ -1,21 +1,23 @@
 /* eslint-disable react/prop-types */
 import { Box, TextField } from "@mui/material";
 import AddressButton from "../_AddressButton";
+import MyMap from "../../user/mypage/MyMap";
 
 const MypageModal = ({
   onModifyYes,
   setAddressDetail,
   setAddress,
   onModifyNo,
+  setXValue,
+  setYValue,
 }) => {
   return (
     <div className="modify-modal">
       <Box style={{ alignItems: "center" }}>
-        <TextField
-          disabled
-          type="text"
-          id="sample4_roadAddress"
-          placeholder="도로명주소"
+        <MyMap
+          setXValue={setXValue}
+          setYValue={setYValue}
+          setAddress={setAddress}
         />
       </Box>
       <Box>

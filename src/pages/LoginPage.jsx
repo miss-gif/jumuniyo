@@ -10,16 +10,17 @@ const AuthUserPage = () => {
 
   const join = useNavigate();
 
-  const logIn = async () => {
-    const data = {
-      userId: userId,
-      userPw: userPw,
-    };
+  const login = async () => {
     try {
-      const res = await axios.post(`/api/user/sign-in`, data);
-      console.log(res);
+      const response = await axios.post("/api/user/sign-in", {
+        user_id: userId,
+        user_pw: userPw,
+        user_login_type: 1,
+      });
+      return response.data;
     } catch (error) {
       console.log(error);
+      return error;
     }
   };
 
@@ -79,7 +80,7 @@ const AuthUserPage = () => {
           <button
             type="button"
             onClick={() => {
-              logIn();
+              login();
             }}
           >
             로그인
