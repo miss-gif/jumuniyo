@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 // import MypageModifyModal from "../components/common/mypage/MypageModifyModal";
 import Mypage from "../components/join/Mypage";
-import PhoneNumberInput from "../components/user/mypage/PhoneNumberInput";
 import ImageImport from "../components/layout/ImageImport";
+import PhoneNumberInput from "../components/user/mypage/PhoneNumberInput";
+import jwtAxios from "../api/user/jwtUtil";
 
 const MyPage = () => {
   const [isEditNickname, setIsEditNickname] = useState(false);
@@ -14,6 +15,21 @@ const MyPage = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [passWord, setPassWord] = useState("");
   const [nickName, setNickName] = useState("");
+  const getUserInfo = async () => {
+    try {
+      const res = await jwtAxios.get("/api/user");
+      setImgUrl(res.data.resultData.userPic);
+      setPhoneNumber(res.data.resultData.userPhone);
+      setPassWord(res.data.resultData.userPhone);
+      setNickName(res.data.resultData.userNickname);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getUserInfo();
+  }, []);
 
   const editMode = mode => {
     setIsEditNickname(mode === "nickname");
@@ -27,11 +43,6 @@ const MyPage = () => {
     setIsEditPassword(false);
     setIsEditImg(false);
     setIsEditPhoneNumber(false);
-    setPhoneNumber("");
-    setPassWord("");
-    setImgFile(null);
-    setImgUrl("");
-    setNickName("");
   };
 
   const editNickname = () => {
@@ -53,8 +64,6 @@ const MyPage = () => {
     setIsEditPhoneNumber(false);
     setPhoneNumber(phoneNumber);
   };
-
-  console.log(imgFile);
 
   return (
     <div className="mypage-wrap">
