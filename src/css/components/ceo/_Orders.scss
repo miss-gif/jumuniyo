@@ -1,8 +1,3 @@
-h1 {
-  font-size: 2em;
-  color: #333;
-  padding: 40px 80px;
-}
 .orderListing {
   margin: 0px 80px;
   padding-bottom: 20px;
@@ -11,6 +6,14 @@ h1 {
       display: flex;
       justify-content: space-between;
     }
+  }
+}
+
+.ceo-order-list {
+  .ceo-order-tab {
+    font-size: 2em;
+    color: #333;
+    padding: 40px 80px;
   }
 }
 

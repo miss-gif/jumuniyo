@@ -84,21 +84,20 @@ const MenuManagement = () => {
   return (
     <div className="menu-management">
       <div className="menu-settings">
-        <h1 className="settings-header">메뉴설정</h1>
-        <div className="settings-body">
+        <h2 className="settings-header">메뉴설정</h2>
+      </div>
+      <div className="menu-section">
+        <div className="menu-tap">메뉴</div>
+
+        <div className="menu-list">
           <div className="menu-upper">
+            <div className="menu-amount">10개</div>
             <div className="menu-add">
               <button className="btn" onClick={() => handleOpenModal(null)}>
                 메뉴 추가
               </button>
             </div>
           </div>
-        </div>
-      </div>
-      <div className="menu-section">
-        <div className="menu-tap">메뉴</div>
-
-        <div className="menu-list">
           {menuItems.map((item, index) => (
             <div key={index} className="menu-list-oneMenu">
               <div className="menu-list-oneMenu-table">
@@ -118,6 +117,7 @@ const MenuManagement = () => {
                 <div className="status-action">
                   <div className="menu-list-status">
                     <select
+                      className="menu-list-select"
                       id={`status-${index}`}
                       value={item.status}
                       onChange={e => handleStatusChange(e, item)}

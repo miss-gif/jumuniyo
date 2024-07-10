@@ -10,7 +10,7 @@ const Statistics = () => {
 
   return (
     <div className="statistics">
-      <h1 className="statistics-title">매장통계</h1>
+      <h2 className="statistics-title">매장통계</h2>
       <div className="tabforchoice">
         <ul className="tabforchoiceUl">
           <li>

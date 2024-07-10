@@ -1,17 +1,18 @@
 .ceo-home {
-  .home-tab {
-    border: 1px solid black;
+  .ceo-home-tab {
+    font-size: 2em;
+    color: #333;
+    padding: 40px 80px;
   }
   .order-body {
     display: flex;
-    gap: 15px;
-    padding: 100px 30px 100px 30px;
+    justify-content: space-between;
+    padding: 0px 80px 100px 80px;
     .left {
       display: flex;
       flex-direction: column;
       gap: 15px;
       .confirmedList {
-        width: 30vw;
         .confirmedList-tab {
           background-color: $black;
           color: $white;
@@ -20,7 +21,6 @@
         .oneOrder {
           border: 1px solid #ccc;
           display: flex;
-          justify-content: space-between;
           .orderedTime {
             display: flex;
             margin: 0 auto;

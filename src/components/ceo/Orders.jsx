@@ -115,7 +115,7 @@ const Orders = () => {
     // </div>
     <>
       <div className="ceo-order-list">
-        <h1>주문내역</h1>
+        <h2 className="ceo-order-tab">주문내역</h2>
         <div className="orderListing">
           <ul className="tabforchoiceUl">
             <li>

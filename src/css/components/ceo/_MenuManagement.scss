@@ -5,25 +5,25 @@
       padding: 40px 80px;
     }
 
-    .settings-body {
-      margin: 0px 80px;
-      .menu-upper {
-        .menu-add {
-          display: flex;
-          justify-content: center;
-          padding: 8px; // 내부 여백
-          cursor: pointer;
-        }
+    .menu-upper {
+      display: flex;
+
+      .menu-amount {
+      }
+      .menu-add {
+        display: flex;
+        justify-content: center;
+        padding: 8px; // 내부 여백
+        cursor: pointer;
       }
     }
   }
   .menu-section {
-    margin: 40px 80px;
+    margin: 0px 80px 80px;
     .menu-tap {
-      border: -1px solid $borderColor;
       background-color: $black;
       color: $white;
-      padding: 12px;
+      padding: $padding-2;
     }
     .menu-list {
       display: flex;
@@ -31,8 +31,8 @@
       border: 1px solid $borderColor;
 
       .menu-list-oneMenu {
-        border-bottom: 1px solid $borderColor;
-        padding: 10px;
+        border-top: 1px solid $borderColor;
+        padding: 20px;
         &:last-child {
           border-bottom: none;
           border-radius: 0px 0px 4px 4px;
@@ -47,6 +47,7 @@
 
             .menu-list-status {
               display: flex;
+              margin: 0 auto;
             }
 
             .menu-list-oneMenu-tableData {
