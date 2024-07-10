@@ -5,7 +5,7 @@ import Footer from "./Footer";
 
 const CeoLayout = () => {
   return (
-    <>
+    <div className="inner">
       <CeoHeader />
       <div className="ceo-page">
         <div className="ceo-page__main">
@@ -67,7 +67,7 @@ const CeoLayout = () => {
         </div>
       </div>
       <Footer />
-    </>
+    </div>
   );
 };
 
