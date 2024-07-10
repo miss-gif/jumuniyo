@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
-const ImageImport = () => {
+// eslint-disable-next-line react/prop-types
+const ImageImport = ({ setImgFile, setImgUrl }) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [selectedImage, setSelectedImage] = useState(null);
   const [imageUrl, setImageUrl] = useState("");
@@ -8,10 +9,12 @@ const ImageImport = () => {
   const handleImageChange = e => {
     const imageFile = e.target.files[0];
     setSelectedImage(imageFile);
+    setImgFile(imageFile);
 
     const reader = new FileReader();
     reader.onloadend = () => {
       setImageUrl(reader.result);
+      setImgUrl(reader.result);
     };
 
     if (imageFile) {

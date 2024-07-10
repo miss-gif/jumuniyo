@@ -1,11 +1,40 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import {
+  Box,
+  Checkbox,
+  FormControl,
+  FormControlLabel,
+  FormGroup,
+  FormHelperText,
+  FormLabel,
+  TextField,
+} from "@mui/material";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import ImageImport from "../components/layout/ImageImport";
 import JoinFooter from "../components/layout/JoinFooter";
-import AddressButton from "../components/common/_AddressButton";
-import { Box, TextField } from "@mui/material";
-import GoogleMaps from "../components/common/GoogleMaps";
+import MyMap from "../components/user/mypage/MyMap";
 
 const AuthUserPage = () => {
+  const [address, setAddress] = useState("");
+  const [xValue, setXValue] = useState("");
+  const [yValue, setYValue] = useState("");
+  const [state, setState] = useState({
+    gilad: false,
+    jason: false,
+    antoine: false,
+  });
+
+  const { gilad, jason, antoine } = state;
+  const error = [gilad, jason, antoine].filter(v => v).length >= 1;
+
+  const handleChange = event => {
+    setState({
+      ...state,
+      [event.target.name]: event.target.checked,
+    });
+  };
+
   return (
     <>
       <div className="user-join-wrap">
@@ -51,18 +80,13 @@ const AuthUserPage = () => {
           </Box>
           <div>
             <Box style={{ alignItems: "center" }}>
-              <TextField
-                disabled
-                type="text"
-                id="sample4_roadAddress"
-                placeholder="도로명주소"
-                readOnly
+              <MyMap
+                setXValue={setXValue}
+                setYValue={setYValue}
+                setAddress={setAddress}
               />
             </Box>
-
-            <AddressButton />
           </div>
-          <GoogleMaps />
           <Box>
             <TextField fullWidth label="상세 주소" id="fullWidth" />
           </Box>
@@ -96,25 +120,51 @@ const AuthUserPage = () => {
           </Box>
 
           <h3>음식 카테고리</h3>
-          <div className="checkbox-group">
-            <label>
-              <input type="checkbox" name="options" value="Option 1" /> 치킨
-            </label>
-            <label>
-              <input type="checkbox" name="options" value="Option 2" /> 햄버거
-            </label>
-            <label>
-              <input type="checkbox" name="options" value="Option 3" /> 카페
-            </label>
-            <label>
-              <input type="checkbox" name="options" value="Option 4" /> 죽
-            </label>
-            <label>
-              <input type="checkbox" name="options" value="Option 5" /> 족발
-            </label>
-          </div>
+          <FormControl
+            required
+            error={error}
+            component="fieldset"
+            sx={{ m: 3 }}
+            variant="standard"
+          >
+            <FormLabel component="legend">3개 이하로 골라주세요</FormLabel>
+            <FormGroup>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={gilad}
+                    onChange={handleChange}
+                    name="gilad"
+                  />
+                }
+                label="Gilad Gray"
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={jason}
+                    onChange={handleChange}
+                    name="jason"
+                  />
+                }
+                label="Jason Killian"
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={antoine}
+                    onChange={handleChange}
+                    name="antoine"
+                  />
+                }
+                label="Antoine Llorca"
+              />
+            </FormGroup>
+            <FormHelperText>3개 오버 됐습니다</FormHelperText>
+          </FormControl>
 
           <h3>브랜드 로고</h3>
+
           <ImageImport />
           <button type="button">회원가입</button>
         </form>

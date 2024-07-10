@@ -2,13 +2,18 @@ import { useState } from "react";
 // import MypageModifyModal from "../components/common/mypage/MypageModifyModal";
 import Mypage from "../components/join/Mypage";
 import PhoneNumberInput from "../components/user/mypage/PhoneNumberInput";
+import ImageImport from "../components/layout/ImageImport";
 
 const MyPage = () => {
   const [isEditNickname, setIsEditNickname] = useState(false);
   const [isEditPassword, setIsEditPassword] = useState(false);
   const [isEditImg, setIsEditImg] = useState(false);
   const [isEditPhoneNumber, setIsEditPhoneNumber] = useState(false);
+  const [imgFile, setImgFile] = useState(null);
+  const [imgUrl, setImgUrl] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [passWord, setPassWord] = useState("");
+  const [nickName, setNickName] = useState("");
 
   const editMode = mode => {
     setIsEditNickname(mode === "nickname");
@@ -22,24 +27,34 @@ const MyPage = () => {
     setIsEditPassword(false);
     setIsEditImg(false);
     setIsEditPhoneNumber(false);
+    setPhoneNumber("");
+    setPassWord("");
+    setImgFile(null);
+    setImgUrl("");
+    setNickName("");
   };
 
   const editNickname = () => {
     setIsEditNickname(false);
+    setNickName(nickName);
   };
 
   const editPassword = () => {
     setIsEditPassword(false);
+    setPassWord(passWord);
   };
 
   const editImg = () => {
     setIsEditImg(false);
+    setImgFile(imgFile);
   };
 
   const editPhoneNumber = () => {
     setIsEditPhoneNumber(false);
     setPhoneNumber(phoneNumber);
   };
+
+  console.log(imgFile);
 
   return (
     <div className="mypage-wrap">
@@ -48,22 +63,32 @@ const MyPage = () => {
         <div className="mypage-img">
           <div>
             <h3>프로필 사진</h3>
-            <img
-              src={process.env.PUBLIC_URL + "/images/logo_1x.png"}
-              alt="profile-img"
-            />
+
             {!isEditImg ? (
-              <button className="btn" onClick={() => editMode("img")}>
-                변경
-              </button>
+              <>
+                <img src={imgUrl} alt="profile-img" />
+                <button className="btn" onClick={() => editMode("img")}>
+                  변경
+                </button>
+              </>
             ) : (
               <>
-                <input type="file" />
-                <div>
-                  <button className="btn" onClick={editImg}>
+                <ImageImport setImgFile={setImgFile} setImgUrl={setImgUrl} />
+                <div className="mypage-button-box-flex">
+                  <button
+                    className="btn"
+                    onClick={() => {
+                      editImg();
+                    }}
+                  >
                     저장
                   </button>
-                  <button className="btn" onClick={editCancel}>
+                  <button
+                    className="btn"
+                    onClick={() => {
+                      editCancel();
+                    }}
+                  >
                     취소
                   </button>
                 </div>
@@ -88,11 +113,7 @@ const MyPage = () => {
           <div className="mypage-title-box-right">
             {!isEditPassword ? (
               <>
-                <input
-                  type="password"
-                  value={"ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ"}
-                  disabled
-                />
+                <input type="password" value={passWord} disabled />
                 <button
                   className="btn"
                   onClick={() => {
@@ -104,7 +125,14 @@ const MyPage = () => {
               </>
             ) : (
               <>
-                <input type="password" placeholder="비밀번호를 입력해주세요." />
+                <input
+                  type="password"
+                  value={passWord}
+                  onChange={e => {
+                    setPassWord(e.target.value);
+                  }}
+                  placeholder="비밀번호를 입력해주세요."
+                />
                 <div>
                   <button className="btn" onClick={editPassword}>
                     저장
@@ -122,14 +150,21 @@ const MyPage = () => {
           <div className="mypage-title-box-right">
             {!isEditNickname ? (
               <>
-                <div>밍밍밍</div>
+                <div>{nickName}</div>
                 <button className="btn" onClick={() => editMode("nickname")}>
                   변경
                 </button>
               </>
             ) : (
               <>
-                <input type="text" placeholder="새 닉네임을 입력해주세요." />
+                <input
+                  type="text"
+                  placeholder="새 닉네임을 입력해주세요."
+                  value={nickName}
+                  onChange={e => {
+                    setNickName(e.target.value);
+                  }}
+                />
                 <div>
                   <button className="btn" onClick={editNickname}>
                     저장
