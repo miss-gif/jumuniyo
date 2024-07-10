@@ -12,11 +12,17 @@ $border-radius: 5px;
     color: #333;
     padding: 40px 80px;
   }
+  .status-taps {
+    border: -1px solid $borderColor;
+    background-color: $black;
+    color: $white;
+    padding: 8px;
+    margin: 0px 80px;
+  }
   .statusandInfo {
     border: 1px solid #ccc;
-    border-radius: 5px;
     margin: 0px 80px;
-    padding: 20px;
+    padding: 40px;
 
     .status-section {
       display: flex;

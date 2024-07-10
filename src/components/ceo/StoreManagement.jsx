@@ -10,8 +10,10 @@ const StoreManagement = () => {
 
   return (
     <div className="store-management">
-      <h1 className="store-management-tab">매장관리</h1>
+      <h2 className="store-management-tab">매장관리</h2>
       <div className="statusborder">
+        <div className="status-taps">매장 설정</div>
+
         <div className="statusandInfo">
           <div className="status-section">
             <h2 className="status-title">영업 상태</h2>

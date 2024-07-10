@@ -6,6 +6,7 @@ const Home = () => {
   return (
     <>
       <div className="ceo-home">
+        <h2 className="ceo-home-tab">주문요 사장님</h2>
         <div className="order-body">
           <div className="left">
             <div className="confirmedList">
@@ -63,19 +64,19 @@ const Home = () => {
               </div>
             </div>
             <div className="allSalesOntheDay">
-              <h2 className="title">총매출</h2>
+              <h3 className="title">총매출</h3>
               <div className="allSalesBody">
-                <h2>
+                <h3>
                   {today.getMonth() + 1}월 {today.getDate()}일
-                </h2>
+                </h3>
                 <div className="tabAndValue">
                   <div className="allSalesTab">
-                    <h2 className="sales">판매 금액</h2>
-                    <h2 className="salesNumber">판매 수</h2>
+                    <h4 className="sales">판매 금액</h4>
+                    <h4 className="salesNumber">판매 수</h4>
                   </div>
                   <div className="allSalesValue">
-                    <h2 className="sales">123,000</h2>
-                    <h2 className="salesNumber">7건</h2>
+                    <p className="sales">123,000</p>
+                    <p className="salesNumber">7건</p>
                   </div>
                 </div>
               </div>
