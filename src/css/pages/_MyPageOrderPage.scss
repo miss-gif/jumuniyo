@@ -1,4 +1,8 @@
 .mypage-order {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
   &__title {
     color: $white;
     background-color: $black;
@@ -31,10 +35,7 @@
     font-weight: $medium;
     background-color: $gray;
     padding: $padding-2;
-  }
-
-  .배달정보-콘텐츠 {
-    padding: $padding-5 0;
+    margin: 8px 0;
   }
 
   &__detail {
@@ -50,12 +51,9 @@
   }
 
   &__value {
-    font-size: 16px;
+    font-size: 14px;
   }
 
-  .주문내역-콘텐츠 {
-    padding: $padding-3 0;
-  }
   &__item {
     padding: 0 $padding-2;
     display: flex;
@@ -78,6 +76,12 @@
     font-size: 1rem;
     font-weight: $medium;
   }
+}
+
+.mypage-order-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
 }
 
 @include mobile {
