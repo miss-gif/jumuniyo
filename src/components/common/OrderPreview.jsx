@@ -5,7 +5,7 @@ const OrderPreview = () => {
   return (
     <div className="mypage-order-header">
       <div className="order-header-left">
-        <div className="mypage-order-header-title">
+        <div className="order-header-title">
           7월 7일 - <span>배달완료</span>
         </div>
         <div className="order-header-left-wrap">
