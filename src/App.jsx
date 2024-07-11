@@ -54,8 +54,10 @@ function App() {
           <Route path="/" element={<RootLayout />}>
             <Route index element={<HomePage />} />
             <Route path="/restaurants" element={<RestaurantsPage />} />
-            <Route path="/restaurants/:id" element={<RestaurantDetailPage />} />
-            <Route path="/restaurants/re" element={<RestaurantDetailPage2 />} />
+            <Route
+              path="/restaurants/:id"
+              element={<RestaurantDetailPage2 />}
+            />
             <Route path="/cart" element={<CartPage />} />
             <Route path="/checkout" element={<CheckoutPage />} />
             <Route path="/profile" element={<ProfilePage />} />

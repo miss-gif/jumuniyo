@@ -42,38 +42,40 @@ const Orders = () => {
     <div className="ceo-order-wrap">
       <h2 className="ceo-order-tab">주문내역</h2>
       <div className="ceo-order-tag">주문</div>
-      <div className="orderListing">
-        <ul className="tabforchoiceUl">
-          <li>
-            <button className="btn">전체 보기</button>
-            <button className="btn">접수 주문</button>
-            <button className="btn">거절 주문</button>
-          </li>
-        </ul>
-      </div>
-      <div className="ceo-orderList">
-        <div className="ceo-order-header">
-          <div className="order-header-left">
-            <div className="order-header-title">
-              7월 7일 - <span>배달완료</span>
-            </div>
-            <div className="order-header-left-wrap">
-              <div className="order-header-left-content">
-                <div className="order-header-left-content-title">
-                  롯데리아 대구칠곡구암점
-                </div>
-                <div className="order-header-left-content-text">
-                  <span>T REX세트</span>
-                  <span>9999원</span>
-                  <span>1개</span>
+      <div className="ceo-order-content">
+        <div className="orderListing">
+          <ul className="tabforchoiceUl">
+            <li>
+              <button className="btn">전체 보기</button>
+              <button className="btn">접수 주문</button>
+              <button className="btn">거절 주문</button>
+            </li>
+          </ul>
+        </div>
+        <div className="ceo-orderList">
+          <div className="ceo-order-header">
+            <div className="order-header-left">
+              <div className="order-header-title">
+                7월 7일 - <span>배달완료</span>
+              </div>
+              <div className="order-header-left-wrap">
+                <div className="order-header-left-content">
+                  <div className="order-header-left-content-title">
+                    롯데리아 대구칠곡구암점
+                  </div>
+                  <div className="order-header-left-content-text">
+                    <span>T REX세트</span>
+                    <span>9999원</span>
+                    <span>1개</span>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div className="order-header-right">
-            <Link to="details" className="btn">
-              주문상세
-            </Link>
+            <div className="order-header-right">
+              <Link to="details" className="btn">
+                주문상세
+              </Link>
+            </div>
           </div>
         </div>
       </div>
