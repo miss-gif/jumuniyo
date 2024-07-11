@@ -4,6 +4,9 @@ import Mypage from "../components/join/Mypage";
 import ImageImport from "../components/layout/ImageImport";
 import PhoneNumberInput from "../components/user/mypage/PhoneNumberInput";
 import jwtAxios from "../api/user/jwtUtil";
+import ModifyPass from "../components/common/mypage/ModifyPass";
+import ModifyNickName from "../components/common/mypage/ModifyNickName";
+import ModifyPhone from "../components/common/mypage/ModifyPhone";
 
 const MyPage = () => {
   const [isEditNickname, setIsEditNickname] = useState(false);
@@ -11,10 +14,17 @@ const MyPage = () => {
   const [isEditImg, setIsEditImg] = useState(false);
   const [isEditPhoneNumber, setIsEditPhoneNumber] = useState(false);
   const [imgFile, setImgFile] = useState(null);
+  const [name, setName] = useState("");
+  const [userId, setUserId] = useState("");
   const [imgUrl, setImgUrl] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [passWord, setPassWord] = useState("");
+
+  // 기존 닉네임
   const [nickName, setNickName] = useState("");
+  // 기존 비밀번호
+  const [passWord, setPassWord] = useState("");
+
+  // 유저정보 불러오기
   const getUserInfo = async () => {
     try {
       const res = await jwtAxios.get("/api/user");
@@ -22,6 +32,9 @@ const MyPage = () => {
       setPhoneNumber(res.data.resultData.userPhone);
       setPassWord(res.data.resultData.userPhone);
       setNickName(res.data.resultData.userNickname);
+      setName(res.data.resultData.userName);
+      setName(res.data.resultData.userName);
+      setUserId(res.data.resultData.userId);
     } catch (error) {
       console.log(error);
     }
@@ -43,27 +56,14 @@ const MyPage = () => {
     setIsEditPassword(false);
     setIsEditImg(false);
     setIsEditPhoneNumber(false);
-  };
-
-  const editNickname = () => {
-    setIsEditNickname(false);
-    setNickName(nickName);
-  };
-
-  const editPassword = () => {
-    setIsEditPassword(false);
-    setPassWord(passWord);
+    getUserInfo();
   };
 
   const editImg = () => {
     setIsEditImg(false);
     setImgFile(imgFile);
   };
-
-  const editPhoneNumber = () => {
-    setIsEditPhoneNumber(false);
-    setPhoneNumber(phoneNumber);
-  };
+  console.log(imgFile);
 
   return (
     <div className="mypage-wrap">
@@ -108,13 +108,13 @@ const MyPage = () => {
         <div className="mypage-title">
           <div className="mypage-title-box">아이디</div>
           <div className="mypage-title-box-right">
-            <div>tource</div>
+            <div>{userId}</div>
           </div>
         </div>
         <div className="mypage-title">
           <div className="mypage-title-box">이름</div>
           <div className="mypage-title-box-right">
-            <div>김민기</div>
+            <div>{name}</div>
           </div>
         </div>
         <div className="mypage-title">
@@ -133,87 +133,33 @@ const MyPage = () => {
                 </button>
               </>
             ) : (
-              <>
-                <input
-                  type="password"
-                  value={passWord}
-                  onChange={e => {
-                    setPassWord(e.target.value);
-                  }}
-                  placeholder="비밀번호를 입력해주세요."
-                />
-                <div>
-                  <button className="btn" onClick={editPassword}>
-                    저장
-                  </button>
-                  <button className="btn" onClick={editCancel}>
-                    취소
-                  </button>
-                </div>
-              </>
+              <ModifyPass
+                setPassWord={setPassWord}
+                passWord={passWord}
+                setIsEditPassword={setIsEditPassword}
+                editCancel={editCancel}
+              />
             )}
           </div>
         </div>
-        <div className="mypage-title">
-          <div className="mypage-title-box">닉네임</div>
-          <div className="mypage-title-box-right">
-            {!isEditNickname ? (
-              <>
-                <div>{nickName}</div>
-                <button className="btn" onClick={() => editMode("nickname")}>
-                  변경
-                </button>
-              </>
-            ) : (
-              <>
-                <input
-                  type="text"
-                  placeholder="새 닉네임을 입력해주세요."
-                  value={nickName}
-                  onChange={e => {
-                    setNickName(e.target.value);
-                  }}
-                />
-                <div>
-                  <button className="btn" onClick={editNickname}>
-                    저장
-                  </button>
-                  <button className="btn" onClick={editCancel}>
-                    취소
-                  </button>
-                </div>
-              </>
-            )}
-          </div>
-        </div>
-        <div className="mypage-title">
-          <div className="mypage-title-box">전화번호</div>
-          <div className="mypage-title-box-right">
-            {!isEditPhoneNumber ? (
-              <>
-                <div>{phoneNumber}</div>
-                <button className="btn" onClick={() => editMode("PhoneNumber")}>
-                  변경
-                </button>
-              </>
-            ) : (
-              <>
-                <PhoneNumberInput
-                  value={phoneNumber}
-                  onChange={setPhoneNumber}
-                />
-                <div>
-                  <button className="btn" onClick={editPhoneNumber}>
-                    저장
-                  </button>
-                  <button className="btn" onClick={editCancel}>
-                    취소
-                  </button>
-                </div>
-              </>
-            )}
-          </div>
-        </div>
+
+        <ModifyNickName
+          setNickName={setNickName}
+          nickName={nickName}
+          setIsEditNickname={setIsEditNickname}
+          isEditNickname={isEditNickname}
+          editMode={editMode}
+          editCancel={editCancel}
+        />
+
+        <ModifyPhone
+          isEditPhoneNumber={isEditPhoneNumber}
+          phoneNumber={phoneNumber}
+          editMode={editMode}
+          setPhoneNumber={setPhoneNumber}
+          editCancel={editCancel}
+          setIsEditPhoneNumber={setIsEditPhoneNumber}
+        />
       </div>
     </div>
   );

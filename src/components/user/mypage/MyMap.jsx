@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import * as React from "react";
 import PropTypes from "prop-types";
 import Box from "@mui/material/Box";
@@ -26,8 +27,7 @@ function loadScript(src, position, id) {
 const autocompleteService = { current: null };
 const placesService = { current: null };
 
-// eslint-disable-next-line react/prop-types
-export default function MyMap({ setYValue, setXValue, setAddress }) {
+export default function MyMap({ setNewYValue, setNewXValue, setNewAddress }) {
   const [value, setValue] = React.useState(null);
   const [inputValue, setInputValue] = React.useState("");
   const [options, setOptions] = React.useState([]);
@@ -108,15 +108,15 @@ export default function MyMap({ setYValue, setXValue, setAddress }) {
           if (status === window.google.maps.places.PlacesServiceStatus.OK) {
             console.log("Latitude:", place.geometry.location.lat());
             console.log("Longitude:", place.geometry.location.lng());
-            setXValue(place.geometry.location.lat());
-            setYValue(place.geometry.location.lng());
+            setNewXValue(place.geometry.location.lat());
+            setNewYValue(place.geometry.location.lng());
           }
         },
       );
     }
   };
 
-  setAddress(inputValue);
+  setNewAddress(inputValue);
 
   return (
     <Autocomplete

@@ -5,19 +5,20 @@ import MyMap from "../../user/mypage/MyMap";
 
 const MypageModal = ({
   onModifyYes,
-  setAddressDetail,
-  setAddress,
   onModifyNo,
-  setXValue,
-  setYValue,
+  setAddress,
+  setNewAddress,
+  setNewAddressDetail,
+  setNewXValue,
+  setNewYValue,
 }) => {
   return (
     <div className="modify-modal">
       <Box style={{ alignItems: "center" }}>
         <MyMap
-          setXValue={setXValue}
-          setYValue={setYValue}
-          setAddress={setAddress}
+          setNewXValue={setNewXValue}
+          setNewYValue={setNewYValue}
+          setNewAddress={setNewAddress}
         />
       </Box>
       <Box>
@@ -26,7 +27,7 @@ const MypageModal = ({
           label="상세 주소"
           id="fullWidth"
           onChange={e => {
-            setAddressDetail(e.target.value);
+            setNewAddressDetail(e.target.value);
           }}
         />
       </Box>
