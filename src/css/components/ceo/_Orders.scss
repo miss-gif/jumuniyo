@@ -12,37 +12,43 @@
     color: $white;
     padding: 8px;
   }
-  .orderListing {
-    padding-bottom: 20px;
-    .tabforchoiceUl {
-      li {
-        display: flex;
-        justify-content: space-between;
+  .ceo-order-content {
+    border: 1px solid $borderColor;
+
+    .orderListing {
+      padding-bottom: 20px;
+      .tabforchoiceUl {
+        li {
+          display: flex;
+          justify-content: center;
+          .btn {
+            margin: 20px;
+          }
+        }
       }
     }
-  }
-  .ceo-orderList {
-    .ceo-order-header {
-      display: flex;
-      justify-content: space-between;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      .order-header-left {
-        .order-header-title {
-        }
-        .order-header-left-wrap {
-          .order-header-left-image {
+    .ceo-orderList {
+      .ceo-order-header {
+        display: flex;
+        justify-content: space-between;
+        border-top: 1px solid #ccc;
+        .order-header-left {
+          .order-header-title {
           }
-          .order-header-left-content {
-            .order-header-left-content-title {
+          .order-header-left-wrap {
+            .order-header-left-image {
             }
-            .order-header-left-content-text {
+            .order-header-left-content {
+              .order-header-left-content-title {
+              }
+              .order-header-left-content-text {
+              }
             }
           }
         }
-      }
-      .order-header-right {
-        justify-content: center;
+        .order-header-right {
+          justify-content: center;
+        }
       }
     }
   }

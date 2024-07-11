@@ -91,7 +91,6 @@ const MenuManagement = () => {
 
         <div className="menu-list">
           <div className="menu-upper">
-            <div className="menu-amount">10개</div>
             <div className="menu-add">
               <button className="btn" onClick={() => handleOpenModal(null)}>
                 메뉴 추가
