@@ -1,74 +1,48 @@
-.orderListing {
+.ceo-order-wrap {
   margin: 0px 80px;
-  padding-bottom: 20px;
-  .tabforchoiceUl {
-    li {
-      display: flex;
-      justify-content: space-between;
-    }
-  }
-}
 
-.ceo-order-list {
   .ceo-order-tab {
     font-size: 2em;
     color: #333;
-    padding: 40px 80px;
+    padding: 40px 0px;
   }
-}
-
-.ceo-orders {
-  margin: 0px 80px;
-  .order-lists {
-    .order {
+  .ceo-order-tag {
+    border: -1px solid $borderColor;
+    background-color: $black;
+    color: $white;
+    padding: 8px;
+  }
+  .orderListing {
+    padding-bottom: 20px;
+    .tabforchoiceUl {
+      li {
+        display: flex;
+        justify-content: space-between;
+      }
+    }
+  }
+  .ceo-orderList {
+    .ceo-order-header {
+      display: flex;
+      justify-content: space-between;
       border: 1px solid #ccc;
-      border-radius: 5px;
-      padding: 20px;
-      margin-bottom: 20px;
-      background-color: #f9f9f9;
-
-      h2 {
-        margin-top: 0;
-        font-size: 1.5em;
-        color: #0056b3;
-      }
-
-      p {
-        margin: 10px 0;
-        font-size: 1em;
-        color: #555;
-      }
-
-      h3 {
-        font-size: 1.2em;
-        color: #333;
-        margin-top: 20px;
-      }
-
-      ul {
-        padding-left: 20px;
-        list-style-type: disc;
-
-        li {
-          margin-bottom: 10px;
-          font-size: 1em;
-          color: #444;
+      border-radius: 4px;
+      .order-header-left {
+        .order-header-title {
+        }
+        .order-header-left-wrap {
+          .order-header-left-image {
+          }
+          .order-header-left-content {
+            .order-header-left-content-title {
+            }
+            .order-header-left-content-text {
+            }
+          }
         }
       }
-    }
-  }
-
-  @media (max-width: 768px) {
-    h1 {
-      font-size: 2em;
-      color: #333;
-      padding: 40px 80px;
-      display: flex;
-      justify-content: center;
-    }
-    .order-lists {
-      margin: 0px 0px;
-      .order {
+      .order-header-right {
+        justify-content: center;
       }
     }
   }
