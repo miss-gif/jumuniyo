@@ -3,6 +3,7 @@ import JoinFooter from "../components/layout/JoinFooter";
 import { Box, TextField } from "@mui/material";
 import { useState } from "react";
 import axios from "axios";
+import { setCookie } from "../utils/cookie";
 
 const AuthUserPage = () => {
   const [userId, setUserId] = useState("");
@@ -17,6 +18,7 @@ const AuthUserPage = () => {
         user_pw: userPw,
         user_login_type: 1,
       });
+      setCookie("accessToken", response.data.resultData.accessToken);
       return response.data;
     } catch (error) {
       console.log(error);
