@@ -33,6 +33,7 @@ import MypageUserWithdrawal from "./pages/MypageUserWithdrawal";
 import RestaurantDetailPage2 from "./pages/user/RestaurantDetailPage2";
 
 import Home from "./components/ceo/Home";
+import OrdersDetail from "./components/ceo/OrdersDetail";
 
 // 사업자
 
@@ -77,6 +78,7 @@ function App() {
             <Route path="/ceopage/" element={<Home />} />
             <Route path="home" element={<Home />} />
             <Route path="orders" element={<Orders />} />
+            <Route path="orders/details" element={<OrdersDetail />} />
             <Route path="menu-management" element={<MenuManagement />} />
             <Route path="reviews" element={<Reviews />} />
             <Route path="store-management" element={<StoreManagement />} />
