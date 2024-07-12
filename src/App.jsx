@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import RootLayout from "./components/layout/RootLayout";
 import AuthCeoPage from "./pages/AuthCeoPage.jsx";
 import AuthPage from "./pages/AuthPage.jsx";
@@ -34,10 +34,14 @@ import RestaurantDetailPage2 from "./pages/user/RestaurantDetailPage2";
 
 import Home from "./components/ceo/Home";
 import OrdersDetail from "./components/ceo/OrdersDetail";
+import LoginPageforCEO from "./components/ceo/LogintestforCeo";
 
 // 사업자
 
 function App() {
+  // gmu 테스트
+  const accessToken = localStorage.getItem("accessToken");
+
   return (
     <>
       <div className="root-wrap">
@@ -78,10 +82,21 @@ function App() {
           <Route path="/ceopage" element={<CeoLayout />}>
             <Route path="/ceopage/" element={<CeoPage />} />
             <Route path="/ceopage/" element={<Home />} />
+            <Route path="login" element={<LoginPageforCEO />} />
             <Route path="home" element={<Home />} />
             <Route path="orders" element={<Orders />} />
             <Route path="orders/details" element={<OrdersDetail />} />
-            <Route path="menu-management" element={<MenuManagement />} />
+            <Route
+              path="menu-management"
+              element={
+                accessToken ? (
+                  <MenuManagement accessToken={accessToken} />
+                ) : (
+                  <Navigate to="/login" />
+                )
+              }
+            />
+            {/* <Route path="menu-management" element={<MenuManagement />} /> */}
             <Route path="reviews" element={<Reviews />} />
             <Route path="store-management" element={<StoreManagement />} />
             <Route path="statistics" element={<Statistics />} />
