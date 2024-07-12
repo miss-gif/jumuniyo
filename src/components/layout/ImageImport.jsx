@@ -1,7 +1,13 @@
+/* eslint-disable react/prop-types */
 import React, { useState } from "react";
 
-// eslint-disable-next-line react/prop-types
-const ImageImport = ({ setImgFile, setImgUrl, newImgFile, setNewImgFile }) => {
+const ImageImport = ({
+  setImgFile,
+  setImgUrl,
+  newImgFile,
+  setNewImgFile,
+  setUserImgFile,
+}) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [selectedImage, setSelectedImage] = useState(null);
   const [imageUrl, setImageUrl] = useState("");
@@ -23,7 +29,11 @@ const ImageImport = ({ setImgFile, setImgUrl, newImgFile, setNewImgFile }) => {
   };
   return (
     <>
-      <input type="file" accept=".jpg, .jpeg, .png" onChange={setNewImgFile} />
+      <input
+        type="file"
+        accept=".jpg, .jpeg, .png"
+        onChange={(setNewImgFile, setUserImgFile)}
+      />
       {imageUrl && (
         <div className="image-preview">
           <img src={imageUrl} alt="이미지 미리보기" />
