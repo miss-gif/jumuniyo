@@ -19,6 +19,7 @@ const AuthUserPage = () => {
   const [address, setAddress] = useState("");
   const [xValue, setXValue] = useState("");
   const [yValue, setYValue] = useState("");
+  const [newAddress, setNewAddress] = useState("");
   const [state, setState] = useState({
     gilad: false,
     jason: false,
@@ -83,7 +84,7 @@ const AuthUserPage = () => {
               <MyMap
                 setXValue={setXValue}
                 setYValue={setYValue}
-                setAddress={setAddress}
+                setNewAddress={setNewAddress}
               />
             </Box>
           </div>
