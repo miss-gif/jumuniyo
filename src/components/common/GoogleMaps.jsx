@@ -27,7 +27,7 @@ const autocompleteService = { current: null };
 const placesService = { current: null };
 
 // eslint-disable-next-line react/prop-types
-export default function GoogleMaps({ setYValue, setXValue }) {
+export default function GoogleMaps() {
   const [value, setValue] = React.useState(null);
   const [inputValue, setInputValue] = React.useState("");
   const [options, setOptions] = React.useState([]);
@@ -108,8 +108,8 @@ export default function GoogleMaps({ setYValue, setXValue }) {
           if (status === window.google.maps.places.PlacesServiceStatus.OK) {
             console.log("Latitude:", place.geometry.location.lat());
             console.log("Longitude:", place.geometry.location.lng());
-            setXValue(place.geometry.location.lat());
-            setYValue(place.geometry.location.lng());
+            console.log(place.geometry.location.lat());
+            console.log(place.geometry.location.lng());
           }
         },
       );

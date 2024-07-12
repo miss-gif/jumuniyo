@@ -18,7 +18,7 @@ const ModifyPhone = ({
       user_phone: newPhoneNumber,
     };
     try {
-      const res = await jwtAxios.patch("/api/user/update-phone", data);
+      const res = await jwtAxios.patch("/api/update-phone", data);
       return res;
     } catch (error) {
       console.log(error);

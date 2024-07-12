@@ -18,6 +18,7 @@ const MyPage = () => {
   const [userId, setUserId] = useState("");
   const [imgUrl, setImgUrl] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [newImgFile, setNewImgFile] = useState(null);
 
   // 기존 닉네임
   const [nickName, setNickName] = useState("");
@@ -27,7 +28,7 @@ const MyPage = () => {
   // 유저정보 불러오기
   const getUserInfo = async () => {
     try {
-      const res = await jwtAxios.get("/api/user");
+      const res = await jwtAxios.get("/api/user-info");
       setImgUrl(res.data.resultData.userPic);
       setPhoneNumber(res.data.resultData.userPhone);
       setPassWord(res.data.resultData.userPhone);
@@ -59,9 +60,13 @@ const MyPage = () => {
     getUserInfo();
   };
 
-  const editImg = () => {
+  const editImg = async () => {
+    const data = {
+      pic: newImgFile,
+    };
     setIsEditImg(false);
-    setImgFile(imgFile);
+    const res = await jwtAxios.patch("/api/update-pic", data);
+    return res;
   };
   console.log(imgFile);
 
@@ -82,7 +87,12 @@ const MyPage = () => {
               </>
             ) : (
               <>
-                <ImageImport setImgFile={setImgFile} setImgUrl={setImgUrl} />
+                <ImageImport
+                  setImgFile={setImgFile}
+                  setImgUrl={setImgUrl}
+                  newImgFile={newImgFile}
+                  setNewImgFile={setNewImgFile}
+                />
                 <div className="mypage-button-box-flex">
                   <button
                     className="btn"
