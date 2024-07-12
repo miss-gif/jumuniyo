@@ -6,7 +6,6 @@ import MyMap from "../../user/mypage/MyMap";
 const MypageModal = ({
   onModifyYes,
   onModifyNo,
-  setAddress,
   setNewAddress,
   setNewAddressDetail,
   setNewXValue,
@@ -14,6 +13,7 @@ const MypageModal = ({
 }) => {
   return (
     <div className="modify-modal">
+      <h2>주소 수정</h2>
       <Box style={{ alignItems: "center" }}>
         <MyMap
           setNewXValue={setNewXValue}
@@ -31,7 +31,7 @@ const MypageModal = ({
           }}
         />
       </Box>
-      <AddressButton setAddress={setAddress} />
+      {/* <AddressButton setAddress={setAddress} /> */}
       <div className="mypage-button-box">
         <button
           type="button"

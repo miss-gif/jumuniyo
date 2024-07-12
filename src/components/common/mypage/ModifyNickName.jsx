@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import React, { useState } from "react";
 import jwtAxios from "../../../api/user/jwtUtil";
+import { Box, TextField } from "@mui/material";
 
 const ModifyNickName = ({
   nickName,
@@ -17,7 +18,7 @@ const ModifyNickName = ({
       user_nickname: newNickName,
     };
     try {
-      const res = await jwtAxios.patch("/api/user/update-nickname", data);
+      const res = await jwtAxios.patch("/api/update-nickname", data);
       return res;
     } catch (error) {
       console.log(error);
@@ -44,13 +45,17 @@ const ModifyNickName = ({
         ) : (
           <>
             <div className="input-box">
-              <input
-                type="text"
-                placeholder="새 닉네임을 입력해주세요."
-                onChange={e => {
-                  setNewNickName(e.target.value);
-                }}
-              />
+              <h2>닉네임 변경</h2>
+              <Box>
+                <TextField
+                  fullWidth
+                  label="변경할 닉네임"
+                  id="fullWidth"
+                  onChange={e => {
+                    setNewNickName(e.target.value);
+                  }}
+                />
+              </Box>
             </div>
             <div>
               <button className="btn" onClick={editNickname}>

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 // eslint-disable-next-line react/prop-types
-const ImageImport = ({ setImgFile, setImgUrl }) => {
+const ImageImport = ({ setImgFile, setImgUrl, newImgFile, setNewImgFile }) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [selectedImage, setSelectedImage] = useState(null);
   const [imageUrl, setImageUrl] = useState("");
@@ -23,11 +23,7 @@ const ImageImport = ({ setImgFile, setImgUrl }) => {
   };
   return (
     <>
-      <input
-        type="file"
-        accept=".jpg, .jpeg, .png"
-        onChange={handleImageChange}
-      />
+      <input type="file" accept=".jpg, .jpeg, .png" onChange={setNewImgFile} />
       {imageUrl && (
         <div className="image-preview">
           <img src={imageUrl} alt="이미지 미리보기" />

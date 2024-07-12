@@ -1,3 +1,4 @@
+import { Box, TextField } from "@mui/material";
 import React, { useState } from "react";
 
 // eslint-disable-next-line react/prop-types
@@ -27,12 +28,19 @@ const PhoneNumberInput = ({ value, onChange }) => {
   };
 
   return (
-    <input
-      type="text"
-      value={phone}
-      onChange={handleInputChange}
-      placeholder="새 전화번호를 입력해주세요."
-    />
+    <div className="input-box">
+      <h2>닉네임 변경</h2>
+      <Box>
+        <TextField
+          fullWidth
+          type="text"
+          value={phone}
+          onChange={handleInputChange}
+          label="변경할 전화번호"
+          placeholder="새 전화번호를 입력해주세요."
+        />
+      </Box>
+    </div>
   );
 };
 

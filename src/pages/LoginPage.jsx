@@ -9,16 +9,21 @@ const AuthUserPage = () => {
   const [userId, setUserId] = useState("");
   const [userPw, setUserPw] = useState("");
 
-  const join = useNavigate();
+  const navigate = useNavigate();
 
-  const login = async () => {
+  const login = async e => {
+    e.preventDefault();
     try {
-      const response = await axios.post("/api/user/sign-in", {
+      const response = await axios.post("/api/sign-in", {
         user_id: userId,
         user_pw: userPw,
         user_login_type: 1,
       });
       setCookie("accessToken", response.data.resultData.accessToken);
+      console.log(response.data.resultData.userRole);
+      if (response.data.resultData.userRole === "ROLE_USER") {
+        navigate("/");
+      }
       return response.data;
     } catch (error) {
       console.log(error);
@@ -73,16 +78,16 @@ const AuthUserPage = () => {
           <div>
             <h6
               onClick={() => {
-                join("/auth");
+                navigate("/auth");
               }}
             >
               회원가입
             </h6>
           </div>
           <button
-            type="button"
-            onClick={() => {
-              login();
+            type="submit"
+            onClick={e => {
+              login(e);
             }}
           >
             로그인

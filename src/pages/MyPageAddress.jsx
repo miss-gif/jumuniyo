@@ -16,7 +16,7 @@ const MyPageAddress = () => {
 
   const getUserAddress = async () => {
     try {
-      const res = await jwtAxios.get("/api/address");
+      const res = await jwtAxios.get("/api/address/list");
       setAddress(res.data.resultData[0].addr1);
       setAddressDetail(res.data.resultData[0].addr2);
       setXValue(res.data.resultData[0].addrCoorX);
