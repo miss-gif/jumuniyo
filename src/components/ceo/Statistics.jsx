@@ -21,12 +21,12 @@ const Statistics = () => {
           <li>
             <button className="btn btnforOrder">주문수</button>
           </li>
-          <li>
+          {/* <li>
             <button className="btn btnforReview">리뷰</button>
-          </li>
-          <li>
+          </li> */}
+          {/* <li>
             <button className="btn btnforBookmark">북마크</button>
-          </li>
+          </li> */}
         </ul>
       </div>
 

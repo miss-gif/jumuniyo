@@ -63,7 +63,7 @@ const Home = () => {
                 </div>
               </div>
             </div>
-            <div className="allSalesOntheDay">
+            {/* <div className="allSalesOntheDay">
               <h3 className="title">총매출</h3>
               <div className="allSalesBody">
                 <h3>
@@ -81,7 +81,7 @@ const Home = () => {
                 </div>
               </div>
             </div>
-            <button className="btn">기준시간 정하기</button>
+            <button className="btn">기준시간 정하기</button> */}
           </div>
           <div className="orderedList">
             {/* 반복 */}

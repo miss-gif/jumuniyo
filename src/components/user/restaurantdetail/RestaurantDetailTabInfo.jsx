@@ -16,7 +16,7 @@ const RestaurantDetailTabInfo = ({ restaurantData }) => {
           <div className="restaurant-detail-tab-info__info">
             <p className="restaurant-detail-tab-info__info-title">영업시간</p>
             <p className="restaurant-detail-tab-info__info-detail">
-              09:00 - 08:59 (백엔드에 가져와달라고하기)
+              {restaurantData.openTime} - {restaurantData.closeTime}
             </p>
           </div>
           <div className="restaurant-detail-tab-info__info">
@@ -35,7 +35,7 @@ const RestaurantDetailTabInfo = ({ restaurantData }) => {
           <div className="restaurant-detail-tab-info__info">
             <p className="restaurant-detail-tab-info__info-title">부가정보</p>
             <p className="restaurant-detail-tab-info__info-detail">
-              세스코멤버스 사업장(3차)
+              세스코멤버스 사업장
             </p>
           </div>
         </div>
@@ -46,7 +46,7 @@ const RestaurantDetailTabInfo = ({ restaurantData }) => {
           <div className="restaurant-detail-tab-info__info">
             <p className="restaurant-detail-tab-info__info-title">결제수단</p>
             <p className="restaurant-detail-tab-info__info-detail">
-              신용카드, 현금, 요기서결제 (3차)
+              신용카드, 현금, 요기서결제
             </p>
           </div>
         </div>
