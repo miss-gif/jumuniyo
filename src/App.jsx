@@ -35,13 +35,35 @@ import RestaurantDetailPage2 from "./pages/user/RestaurantDetailPage2";
 import Home from "./components/ceo/Home";
 import OrdersDetail from "./components/ceo/OrdersDetail";
 import LoginPageforCEO from "./components/ceo/LogintestforCeo";
+import { jwtDecode } from "jwt-decode";
+
+// gmu 테스트
+const getCookie = name => {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop().split(";").shift();
+  return null;
+};
 
 // 사업자
 
 function App() {
   // gmu 테스트
-  const accessToken = localStorage.getItem("accessToken");
+  const accessToken = getCookie("accessToken");
+  console.log(accessToken);
 
+  let userPk = null;
+  if (accessToken) {
+    const decodedToken = jwtDecode(accessToken);
+    console.log("Decoded Token:", decodedToken);
+    const signedUser = JSON.parse(decodedToken.signedUser);
+    userPk = signedUser.userPk; // 토큰에서 userPk 추출
+  }
+
+  // localStorage에서 menuResPk 가져오기
+  const menuResPk = localStorage.getItem("menuResPk");
+  console.log(menuResPk);
+  //
   return (
     <>
       <div className="root-wrap">
@@ -87,12 +109,12 @@ function App() {
             <Route path="orders" element={<Orders />} />
             <Route path="orders/details" element={<OrdersDetail />} />
             <Route
-              path="menu-management"
+              path="/ceopage/menu-management/:menuResPk"
               element={
                 accessToken ? (
                   <MenuManagement accessToken={accessToken} />
                 ) : (
-                  <Navigate to="/login" />
+                  <Navigate to="/ceopage/login" />
                 )
               }
             />
