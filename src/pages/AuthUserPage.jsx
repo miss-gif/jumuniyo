@@ -13,8 +13,19 @@ const AuthUserPage = () => {
   const [userNickName, setUserNickName] = useState("");
   const [userPhone, setUserPhone] = useState("");
   const [userImgFile, setUserImgFile] = useState(null);
+  const [userEmail, setUserEmail] = useState("");
 
   const idTest = async () => {
+    try {
+      const res = await axios.get(`/api/is-duplicated?user_id=${userId}`);
+      console.log(res);
+      return res;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const emailTest = async () => {
     try {
       const res = await axios.get(`/api/is-duplicated?user_id=${userId}`);
       console.log(res);
@@ -34,13 +45,12 @@ const AuthUserPage = () => {
       user_name: userName,
       user_nickname: userNickName,
       user_phone: userPhone,
+      user_email: userEmail,
     };
 
     // JSON 객체를 문자열로 변환하지 않고 바로 FormData에 추가
     pic.append("pic", userImgFile); // 파일(binary) 추가
     pic.append("p", JSON.stringify(p)); // JSON 객체 추가
-
-    console.log(pic);
 
     try {
       const header = { headers: { "Content-Type": "multipart/form-data" } };
@@ -69,6 +79,7 @@ const AuthUserPage = () => {
                 fullWidth
                 label="아이디"
                 id="fullWidth"
+                placeholder="아이디를 입력해주세요."
                 onChange={e => {
                   setUserId(e.target.value);
                 }}
@@ -84,11 +95,34 @@ const AuthUserPage = () => {
               중복 확인
             </button>
           </div>
+          <div>
+            <Box style={{ alignItems: "center" }}>
+              <TextField
+                fullWidth
+                label="이메일"
+                id="fullWidth"
+                placeholder="이메일을 입력해주세요."
+                onChange={e => {
+                  setUserEmail(e.target.value);
+                }}
+              />
+            </Box>
+            <button
+              type="button"
+              className="id-check"
+              onClick={() => {
+                emailTest();
+              }}
+            >
+              이메일 인증
+            </button>
+          </div>
           <Box>
             <TextField
               fullWidth
               label="비밀번호"
               type="password"
+              placeholder="비밀번호를 입력해주세요."
               onChange={e => {
                 setUserPw(e.target.value);
               }}
@@ -100,6 +134,7 @@ const AuthUserPage = () => {
               label="비밀번호 확인"
               id="fullWidth"
               type="password"
+              placeholder="비밀번호를 한번 더 입력해주세요."
               onChange={e => {
                 setUserPwCheck(e.target.value);
               }}
@@ -110,6 +145,7 @@ const AuthUserPage = () => {
               fullWidth
               label="이름"
               id="fullWidth"
+              placeholder="이름을 입력해주세요."
               onChange={e => {
                 setUserName(e.target.value);
               }}
@@ -120,6 +156,7 @@ const AuthUserPage = () => {
               fullWidth
               label="닉네임"
               id="fullWidth"
+              placeholder="닉네임을 입력해주세요."
               onChange={e => {
                 setUserNickName(e.target.value);
               }}
@@ -130,6 +167,7 @@ const AuthUserPage = () => {
               fullWidth
               label="전화번호"
               id="fullWidth"
+              placeholder="전화번호를 입력해주세요."
               onChange={e => {
                 setUserPhone(e.target.value);
               }}
