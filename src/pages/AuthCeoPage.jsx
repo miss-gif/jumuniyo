@@ -9,9 +9,10 @@ import {
   FormLabel,
   TextField,
 } from "@mui/material";
+import axios from "axios";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import ImageImport from "../components/layout/ImageImport";
+import AuthImageImport from "../components/layout/AuthImageImport";
 import JoinFooter from "../components/layout/JoinFooter";
 import MyMap from "../components/user/mypage/MyMap";
 
@@ -23,11 +24,14 @@ const AuthUserPage = () => {
   const [userName, setUserName] = useState("");
   const [userNickName, setUserNickName] = useState("");
   const [userPhone, setUserPhone] = useState("");
-  const [userCEOName, setUserCEOName] = useState("");
   const [userRestaurantName, setUserRestaurantName] = useState("");
   const [userCEONumber, setUserCEONumber] = useState("");
   const [userOpenTime, setUserOpenTime] = useState("");
   const [userCloseTime, setUserCloseTime] = useState("");
+  const [userImgFile, setUserImgFile] = useState(null);
+  const [userEmail, setUserEmail] = useState("");
+  const [userCEOTip, setUserCEOTip] = useState("");
+  const [userCEOEvent, setUserCEOEvent] = useState("");
 
   // 주소 관련 State
   const [newXValue, setNewXValue] = useState("");
@@ -39,6 +43,51 @@ const AuthUserPage = () => {
     jason: false,
     antoine: false,
   });
+
+  const emailTest = async () => {
+    try {
+      const res = await axios.get(`/api/is-duplicated?user_id=${userId}`);
+      console.log(res);
+      return res;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const ceoSignUp = async () => {
+    const pic = new FormData();
+
+    const p = {
+      desc1: userCEOTip,
+      desc2: userCEOEvent,
+      user_nickname: userNickName,
+      open_time: userOpenTime,
+      user_email: userEmail,
+      coor_x: newXValue,
+      coor_y: newYValue,
+      restaurant_name: userRestaurantName,
+      user_id: userId,
+      addr: newAddress,
+      close_time: userCloseTime,
+      user_phone: userPhone,
+      user_pw: userPw,
+      user_pw_confirm: userPwCheck,
+      regi_num: userCEONumber,
+      user_name: userName,
+    };
+
+    // JSON 객체를 문자열로 변환하지 않고 바로 FormData에 추가
+    pic.append("pic", userImgFile); // 파일(binary) 추가
+    pic.append("p", JSON.stringify(p)); // JSON 객체 추가
+
+    try {
+      const header = { headers: { "Content-Type": "multipart/form-data" } };
+      const res = await axios.post("/api/owner/sign-up", pic, header); // FormData 객체를 직접 전송
+      return res;
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const { gilad, jason, antoine } = state;
   const error = [gilad, jason, antoine].filter(v => v).length >= 2;
@@ -77,6 +126,28 @@ const AuthUserPage = () => {
             </Box>
             <button type="button" className="id-check">
               중복 확인
+            </button>
+          </div>
+          <div>
+            <Box style={{ alignItems: "center" }}>
+              <TextField
+                fullWidth
+                label="이메일"
+                id="fullWidth"
+                placeholder="이메일을 입력해주세요."
+                onChange={e => {
+                  setUserEmail(e.target.value);
+                }}
+              />
+            </Box>
+            <button
+              type="button"
+              className="id-check"
+              onClick={() => {
+                emailTest();
+              }}
+            >
+              이메일 인증
             </button>
           </div>
           <Box>
@@ -140,14 +211,22 @@ const AuthUserPage = () => {
           <Box>
             <TextField
               fullWidth
-              label="사업자 상호명"
+              label="가게 한줄 설명"
               id="fullWidth"
-              placeholder="사업자 상호명을 입력해 주세요."
+              placeholder="간단한 가게 한줄 설명을 입력해주세요."
               onChange={e => {
-                setUserCEOName(e.target.value);
+                setUserCEOTip(e.target.value);
               }}
             />
           </Box>
+          <TextField
+            id="outlined-multiline-static"
+            label="리뷰 이벤트 입력"
+            placeholder="리뷰 이벤트에 쓸 내용을 입력해주세요."
+            multiline
+            rows={4}
+            defaultValue=""
+          />
           <Box>
             <TextField
               fullWidth
@@ -269,9 +348,16 @@ const AuthUserPage = () => {
           </FormControl>
 
           <h3>브랜드 로고</h3>
+          <AuthImageImport setUserImgFile={setUserImgFile} />
 
-          <ImageImport />
-          <button type="button">회원가입</button>
+          <button
+            type="button"
+            onClick={() => {
+              ceoSignUp();
+            }}
+          >
+            회원가입
+          </button>
         </form>
       </div>
       <JoinFooter />
