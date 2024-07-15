@@ -1,4 +1,5 @@
-import * as React from "react";
+/* eslint-disable react/prop-types */
+import React, { useEffect, useState, useMemo, useRef } from "react";
 import PropTypes from "prop-types";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
@@ -25,27 +26,66 @@ function loadScript(src, position, id) {
 
 const autocompleteService = { current: null };
 const placesService = { current: null };
+const geocoderService = { current: null };
 
-// eslint-disable-next-line react/prop-types
-export default function GoogleMaps() {
-  const [value, setValue] = React.useState(null);
-  const [inputValue, setInputValue] = React.useState("");
-  const [options, setOptions] = React.useState([]);
-  const loaded = React.useRef(false);
+const GoogleMaps = ({ latitude, longitude }) => {
+  const [value, setValue] = useState(null);
+  const [inputValue, setInputValue] = useState("");
+  const [options, setOptions] = useState([]);
+  const loaded = useRef(false);
 
-  if (typeof window !== "undefined" && !loaded.current) {
-    if (!document.querySelector("#google-maps")) {
-      loadScript(
-        `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&libraries=places`,
-        document.querySelector("head"),
-        "google-maps",
-      );
+  useEffect(() => {
+    if (typeof window !== "undefined" && !loaded.current) {
+      if (!document.querySelector("#google-maps")) {
+        loadScript(
+          `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&libraries=places`,
+          document.querySelector("head"),
+          "google-maps",
+        );
+      }
+      loaded.current = true;
     }
+  }, []);
 
-    loaded.current = true;
-  }
+  useEffect(() => {
+    if (latitude && longitude) {
+      const initializeGeocoder = () => {
+        if (!geocoderService.current && window.google) {
+          geocoderService.current = new window.google.maps.Geocoder();
+        }
 
-  const fetch = React.useMemo(
+        const latlng = {
+          lat: parseFloat(latitude),
+          lng: parseFloat(longitude),
+        };
+
+        if (geocoderService.current) {
+          geocoderService.current.geocode(
+            { location: latlng },
+            (results, status) => {
+              if (status === "OK" && results[0]) {
+                setValue(results[0]);
+                setInputValue(results[0].formatted_address);
+              } else {
+                console.error("지오코딩에 실패했습니다.");
+              }
+            },
+          );
+        } else {
+          console.error("Geocoder 서비스가 초기화되지 않았습니다.");
+        }
+      };
+
+      // 구글 맵 스크립트가 로드되었는지 확인
+      if (window.google) {
+        initializeGeocoder();
+      } else {
+        console.error("Google Maps API가 아직 로드되지 않았습니다.");
+      }
+    }
+  }, [latitude, longitude]);
+
+  const fetch = useMemo(
     () =>
       debounce((request, callback) => {
         autocompleteService.current.getPlacePredictions(request, callback);
@@ -53,7 +93,7 @@ export default function GoogleMaps() {
     [],
   );
 
-  React.useEffect(() => {
+  useEffect(() => {
     let active = true;
 
     if (!autocompleteService.current && window.google) {
@@ -106,10 +146,16 @@ export default function GoogleMaps() {
         { placeId: newValue.place_id },
         (place, status) => {
           if (status === window.google.maps.places.PlacesServiceStatus.OK) {
-            console.log("Latitude:", place.geometry.location.lat());
-            console.log("Longitude:", place.geometry.location.lng());
-            console.log(place.geometry.location.lat());
-            console.log(place.geometry.location.lng());
+            const latitude = place.geometry.location.lat();
+            const longitude = place.geometry.location.lng();
+            console.log("Latitude:", latitude);
+            console.log("Longitude:", longitude);
+
+            // 세션에 위치 데이터 저장
+            localStorage.setItem(
+              "locationData",
+              JSON.stringify({ latitude, longitude }),
+            );
           }
         },
       );
@@ -118,10 +164,11 @@ export default function GoogleMaps() {
 
   return (
     <Autocomplete
-      id="google-map-demo"
-      sx={{ width: 300 }}
+      sx={{ width: "100%" }}
       getOptionLabel={option =>
-        typeof option === "string" ? option : option.description
+        typeof option === "string"
+          ? option
+          : option.description || option.formatted_address
       }
       filterOptions={x => x}
       options={options}
@@ -139,15 +186,19 @@ export default function GoogleMaps() {
           {...params}
           placeholder="건물명, 도로명, 지번으로 검색하세요."
           fullWidth
+          sx={{
+            "& .MuiOutlinedInput-notchedOutline": {
+              borderRadius: "0",
+            },
+          }}
         />
       )}
       renderOption={(props, option) => {
         const { key, ...optionProps } = props;
         const matches =
-          option.structured_formatting.main_text_matched_substrings || [];
-
+          option.structured_formatting?.main_text_matched_substrings || [];
         const parts = parse(
-          option.structured_formatting.main_text,
+          option.structured_formatting?.main_text || "",
           matches.map(match => [match.offset, match.offset + match.length]),
         );
 
@@ -171,7 +222,7 @@ export default function GoogleMaps() {
                   </Box>
                 ))}
                 <Typography variant="body2" color="text.secondary">
-                  {option.structured_formatting.secondary_text}
+                  {option.structured_formatting?.secondary_text}
                 </Typography>
               </Grid>
             </Grid>
@@ -180,8 +231,11 @@ export default function GoogleMaps() {
       }}
     />
   );
-}
+};
 
 GoogleMaps.propTypes = {
-  key: PropTypes.string.isRequired,
+  latitude: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  longitude: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 };
+
+export default GoogleMaps;
