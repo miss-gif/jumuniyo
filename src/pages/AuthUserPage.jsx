@@ -1,9 +1,9 @@
-import { Link } from "react-router-dom";
-import ImageImport from "../components/layout/ImageImport";
-import JoinFooter from "../components/layout/JoinFooter";
 import { Box, TextField } from "@mui/material";
+import axios from "axios";
 import { useState } from "react";
-import jwtAxios from "../api/user/jwtUtil";
+import { Link } from "react-router-dom";
+import AuthImageImport from "../components/layout/AuthImageImport";
+import JoinFooter from "../components/layout/JoinFooter";
 
 const AuthUserPage = () => {
   const [userId, setUserId] = useState("");
@@ -16,7 +16,7 @@ const AuthUserPage = () => {
 
   const idTest = async () => {
     try {
-      const res = await jwtAxios.get(`/api/is-duplicated?user_id=${userId}`);
+      const res = await axios.get(`/api/is-duplicated?user_id=${userId}`);
       console.log(res);
       return res;
     } catch (error) {
@@ -25,22 +25,26 @@ const AuthUserPage = () => {
   };
 
   const signUp = async () => {
-    const data = {
-      pic: userImgFile,
-      p: {
-        user_id: userId,
-        user_pw: userPw,
-        user_pw_confirm: userPwCheck,
-        user_name: userName,
-        user_nickname: userNickName,
-        user_phone: userPhone,
-      },
+    const pic = new FormData();
+
+    const p = {
+      user_id: userId,
+      user_pw: userPw,
+      user_pw_confirm: userPwCheck,
+      user_name: userName,
+      user_nickname: userNickName,
+      user_phone: userPhone,
     };
 
+    // JSON 객체를 문자열로 변환하지 않고 바로 FormData에 추가
+    pic.append("pic", userImgFile); // 파일(binary) 추가
+    pic.append("p", JSON.stringify(p)); // JSON 객체 추가
+
+    console.log(pic);
+
     try {
-      const header = { headers: { "Content-Type": "application/json" } };
-      console.log(data, header);
-      const res = await jwtAxios.post("sign-up", data.p, header);
+      const header = { headers: { "Content-Type": "multipart/form-data" } };
+      const res = await axios.post("../api/sign-up", pic, header); // FormData 객체를 직접 전송
       return res;
     } catch (error) {
       console.log(error);
@@ -132,7 +136,7 @@ const AuthUserPage = () => {
             />
           </Box>
           <h3>프로필 사진</h3>
-          <ImageImport setUserImgFile={setUserImgFile} />
+          <AuthImageImport setUserImgFile={setUserImgFile} />
           <button
             type="button"
             onClick={() => {

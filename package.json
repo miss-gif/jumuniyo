@@ -70,5 +70,7 @@
     "eslint-plugin-react": "^7.34.3",
     "prettier": "^3.3.2"
   },
+
   "proxy": "https://34.64.187.188"
+
 }
