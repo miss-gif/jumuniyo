@@ -79,6 +79,7 @@ function App() {
           {/* 유저 */}
           <Route path="/" element={<RootLayout />}>
             <Route index element={<HomePage />} />
+            <Route path="/restaurants" element={<RestaurantsPage />} />
             <Route
               path="/restaurants/:id"
               element={<RestaurantDetailPage2 />}
