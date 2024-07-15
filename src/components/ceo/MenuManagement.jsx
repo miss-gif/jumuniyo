@@ -42,7 +42,13 @@ const MenuManagement = () => {
         console.log("Response data:", response.data); // 응답 데이터를 확인합니다
 
         if (response.data.statusCode === 1) {
-          setMenuData(response.data.resultData);
+          const updatedMenuData = response.data.resultData.map(menu => ({
+            ...menu,
+            menu_pic: menu.menu_pic
+              ? `/uploads/${menu.menu_pic}`
+              : "default_image_url",
+          }));
+          setMenuData(updatedMenuData);
         } else {
           throw new Error(response.data.resultMsg || "Unknown error");
         }
@@ -121,7 +127,10 @@ const MenuManagement = () => {
       if (response.data.statusCode === 1) {
         setMenuData(prevMenuData => [
           ...prevMenuData,
-          response.data.resultData,
+          {
+            ...response.data.resultData,
+            menu_pic: `/uploads/${response.data.resultData.menu_pic}`,
+          },
         ]);
         handleCloseModal();
       } else {
@@ -162,7 +171,11 @@ const MenuManagement = () => {
         setMenuData(prevMenuData =>
           prevMenuData.map(menu =>
             menu.menu_pk === editMenuItem.menu_pk
-              ? { ...menu, ...response.data.resultData }
+              ? {
+                  ...menu,
+                  ...response.data.resultData,
+                  menu_pic: `/uploads/${response.data.resultData.menu_pic}`,
+                }
               : menu,
           ),
         );
@@ -211,17 +224,17 @@ const MenuManagement = () => {
         </div>
         <div className="menu-section">
           <div className="menu-tap">메뉴</div>
+          <div className="menu-upper">
+            <div className="menu-add">
+              <button className="btn" onClick={handleOpenModal}>
+                메뉴 추가
+              </button>
+            </div>
+          </div>
           {menuData.length === 0 ? (
-            <p>No menus available. Please add a menu.</p>
+            <p>메뉴를 추가해주세요.</p>
           ) : (
             <div className="menu-list">
-              <div className="menu-upper">
-                <div className="menu-add">
-                  <button className="btn" onClick={handleOpenModal}>
-                    메뉴 추가
-                  </button>
-                </div>
-              </div>
               {menuData.map(menu => (
                 <div key={menu.menu_pk} className="menu-list-oneMenu">
                   <div className="menu-list-oneMenu-table">
@@ -229,9 +242,7 @@ const MenuManagement = () => {
                       <div className="menu-list-oneMenu-tablePic">
                         <img
                           src={
-                            menu.menu_pic
-                              ? `/uploads/${menu.menu_pic}`
-                              : "default_image_url"
+                            menu.menu_pic ? menu.menu_pic : "default_image_url"
                           }
                           alt={menu.menu_name}
                         />{" "}
