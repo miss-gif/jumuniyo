@@ -13,7 +13,7 @@ const {
 } = locationData;
 
 // API URL 생성 (위도, 경도 포함)
-const API_URL = `/api/restaurant?category_id=1&page=1&order_type=1&addrX=${latitude}&addrY=${longitude}`;
+const API_URL = `/api/restaurant?category_id=0&page=1&order_type=1&addrX=${latitude}&addrY=${longitude}`;
 
 export const fetchRestaurantlist = async () => {
   try {
