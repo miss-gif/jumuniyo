@@ -16,22 +16,22 @@ const RestaurantDetailPage = () => {
   const { id } = useParams();
   const [restaurantData, setRestaurantData] = useState(null);
   const [menuData, setMenuData] = useState([]);
-  const [selectedMenuItems, setSelectedMenuItems] = useState([]); // 선택된 메뉴 아이템 배열 상태
+  const [selectedMenuItems, setSelectedMenuItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     const getData = async () => {
       try {
-        const [restaurant, menu] = await Promise.all([
-          fetchRestaurantData(id),
-          fetchMenuData(id),
-        ]);
+        const restaurant = await fetchRestaurantData(id);
+        const menu = restaurant.menuList;
+        console.log("가게: ", restaurant);
+        console.log("메뉴: ", menu);
         setRestaurantData(restaurant);
         setMenuData(menu);
         setLoading(false);
       } catch (err) {
-        console.error("error : ", err);
+        console.error("에러: ", err);
         setError(err);
         setLoading(false);
       }

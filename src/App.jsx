@@ -79,7 +79,6 @@ function App() {
           {/* 유저 */}
           <Route path="/" element={<RootLayout />}>
             <Route index element={<HomePage />} />
-            <Route path="/restaurants" element={<RestaurantsPage />} />
             <Route
               path="/restaurants/:id"
               element={<RestaurantDetailPage2 />}
@@ -108,17 +107,7 @@ function App() {
             <Route path="home" element={<Home />} />
             <Route path="orders" element={<Orders />} />
             <Route path="orders/details" element={<OrdersDetail />} />
-            <Route
-              path="/ceopage/menu-management/:menuResPk"
-              element={
-                accessToken ? (
-                  <MenuManagement accessToken={accessToken} />
-                ) : (
-                  <Navigate to="/ceopage/login" />
-                )
-              }
-            />
-            {/* <Route path="menu-management" element={<MenuManagement />} /> */}
+            <Route path="menu-management" element={<MenuManagement />} />
             <Route path="reviews" element={<Reviews />} />
             <Route path="store-management" element={<StoreManagement />} />
             <Route path="statistics" element={<Statistics />} />

@@ -11,8 +11,9 @@ export const fetchRestaurantData = async id => {
 
 export const fetchMenuData = async id => {
   try {
-    const response = await axios.get(`/api/menu?menu_res_pk=${id}`);
-    return response.data.resultData;
+    const response = await axios.get(`/api/restaurantdetail/${id}/menu`);
+    console.log("fetchMenuData response: ", response.data);
+    return response.data.resultData.menuList || [];
   } catch (error) {
     console.log(error);
   }
