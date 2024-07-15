@@ -51,7 +51,7 @@ const StoreManagement = () => {
         setStatus(currentStatus);
 
         // 서버에서 매장 정보 데이터 요청
-        const response = await axios.get("/api/restaurant/manage", {
+        const response = await axios.get("/api/owner/restaurant", {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
@@ -84,7 +84,7 @@ const StoreManagement = () => {
       const accessToken = getCookie("accessToken");
 
       // 서버로 상태 변경 요청
-      await axios.get("/api/restaurant/manage/state", {
+      await axios.get("/api/owner/restaurant/state", {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
@@ -118,7 +118,7 @@ const StoreManagement = () => {
       const accessToken = getCookie("accessToken");
 
       // 서버로 데이터 저장 요청
-      await axios.put("/api/restaurant/manage", info, {
+      await axios.put("/api/owner/restaurant", info, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
