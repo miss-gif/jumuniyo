@@ -1,17 +1,31 @@
-import React, { useState } from "react";
-import { useLocation } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import MyLocationIcon from "@mui/icons-material/MyLocation";
 import GoogleMaps from "./GoogleMaps";
 
 const LocationSearch = () => {
   const location = useLocation();
   const isHomePage = location.pathname === "/";
+  const navigate = useNavigate();
 
   const [locationData, setLocationData] = useState({
     latitude: "",
     longitude: "",
   });
   const [errorMessage, setErrorMessage] = useState("");
+
+  // localStorage에서 저장된 위치 값 불러오기
+  useEffect(() => {
+    const storedLocationData = JSON.parse(localStorage.getItem("locationData"));
+    if (storedLocationData) {
+      setLocationData(storedLocationData);
+    }
+  }, []);
+
+  // 위치 값이 변경될 때 localStorage에 저장
+  useEffect(() => {
+    localStorage.setItem("locationData", JSON.stringify(locationData));
+  }, [locationData]);
 
   const onClickLocationSearch = () => {
     if (navigator.geolocation) {
@@ -35,6 +49,10 @@ const LocationSearch = () => {
       : "",
   );
 
+  const onClickSearch = () => {
+    navigate("/restaurants");
+  };
+
   return (
     <div className="location-search">
       {isHomePage && (
@@ -55,7 +73,9 @@ const LocationSearch = () => {
             latitude={locationData.latitude}
             longitude={locationData.longitude}
           />
-          <button className="location-search__btn">검색</button>
+          <button className="location-search__btn" onClick={onClickSearch}>
+            검색
+          </button>
         </div>
         {errorMessage && (
           <p className="location-search__error">{errorMessage}</p>
