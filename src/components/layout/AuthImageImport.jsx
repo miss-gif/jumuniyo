@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
 
-const ImageImport = ({ setImgFile, setImgUrl, setNewImgFile }) => {
+const AuthImageImport = ({ setUserImgFile }) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [selectedImage, setSelectedImage] = useState(null);
   const [imageUrl, setImageUrl] = useState("");
@@ -9,12 +9,10 @@ const ImageImport = ({ setImgFile, setImgUrl, setNewImgFile }) => {
   const handleImageChange = e => {
     const imageFile = e.target.files[0];
     setSelectedImage(imageFile);
-    setImgFile(imageFile);
 
     const reader = new FileReader();
     reader.onloadend = () => {
       setImageUrl(reader.result);
-      setImgUrl(reader.result);
     };
 
     if (imageFile) {
@@ -29,7 +27,7 @@ const ImageImport = ({ setImgFile, setImgUrl, setNewImgFile }) => {
         accept=".jpg, .jpeg, .png"
         onChange={e => {
           handleImageChange(e);
-          setNewImgFile(e.target.files[0]);
+          setUserImgFile(e.target.files[0]);
         }}
       />
       {imageUrl && (
@@ -41,4 +39,4 @@ const ImageImport = ({ setImgFile, setImgUrl, setNewImgFile }) => {
   );
 };
 
-export default ImageImport;
+export default AuthImageImport;
