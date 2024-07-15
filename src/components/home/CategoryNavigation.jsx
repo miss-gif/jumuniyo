@@ -1,6 +1,6 @@
 // CategoryNavigation.js
 import React from "react";
-import useCategories from "../hooks/useCategories";
+import useCategories from "../../hooks/useCategories";
 
 const CategoryNavigation = () => {
   const { categories, loading, error } = useCategories();
