@@ -1,44 +1,63 @@
+import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
+const getCookie = name => {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop().split(";").shift();
+};
+
 const Orders = () => {
+  const [selectedTab, setSelectedTab] = useState("accepted");
+  const [acceptedOrders, setAcceptedOrders] = useState([]);
+  const [refusedOrders, setRefusedOrders] = useState([]);
+
+  useEffect(() => {
+    if (selectedTab === "accepted") {
+      getAcceptedOrders();
+    } else if (selectedTab === "refused") {
+      getRefusedOrders();
+    }
+  }, [selectedTab]);
+
+  const getAcceptedOrders = async () => {
+    try {
+      const accessToken = getCookie("accessToken");
+      const response = await axios.get("/api/done/owner/done/list", {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      const data = response.data;
+      console.log("완료 API 응답:", data);
+      if (data.statusCode === 2) {
+        setAcceptedOrders(data.resultData);
+      }
+    } catch (error) {
+      console.log("완료주문 에러: ", error);
+    }
+  };
+
+  const getRefusedOrders = async () => {
+    try {
+      const accessToken = getCookie("accessToken");
+      const response = await axios.get("/api/done/owner/cancel/list", {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      const data = response.data;
+      console.log("거절 API 응답:", data);
+      if (data.statusCode === 2) {
+        setRefusedOrders(data.resultData);
+      }
+    } catch (error) {
+      console.error("거절 주문 에러", error);
+    }
+  };
+
   return (
-    // <div className="Ceo-Orders">
-    //   <h1>주문 내역</h1>
-    //   <div className="order-lists">
-    //     {orders.map(order => (
-    //       <div key={order.order_id} className="order">
-    //         <h2>주문 번호: {order.order_id}</h2>
-    //         <p>주문 날짜: {new Date(order.order_date).toLocaleString()}</p>
-    //         <h3>고객 정보</h3>
-    //         <p>이름: {order.customer_info.name}</p>
-    //         <p>연락처: {order.customer_info.contact}</p>
-    //         <h3>상품 목록</h3>
-    //         <ul>
-    //           {order.order_list.map((product, index) => (
-    //             <li key={index}>
-    //               {product.menu_name} - {product.quantity}개 - {product.price}원
-    //             </li>
-    //           ))}
-    //         </ul>
-    //         <p>총 주문 금액: {order.total_order_amount}원</p>
-    //         <p>결제 상태: {order.payment_status}</p>
-    //         <p>배송 상태: {order.shipping_status}</p>
-    //         <p>배송지: {order.shipping_address}</p>
-    //         <p>주문 메모: {order.order_notes}</p>
-    //         <p>주문 상태: {order.order_status}</p>
-    //         <h3>고객 서비스 이력</h3>
-    //         <ul>
-    //           {order.customer_service_history.map((history, index) => (
-    //             <li key={index}>
-    //               {history.date} - {history.issue} - {history.resolution}
-    //             </li>
-    //           ))}
-    //         </ul>
-    //       </div>
-    //     ))}
-    //   </div>
-    // </div>
     <div className="ceo-order-wrap">
       <h2 className="ceo-order-tab">주문내역</h2>
       <div className="ceo-order-tag">주문</div>
@@ -46,38 +65,101 @@ const Orders = () => {
         <div className="orderListing">
           <ul className="tabforchoiceUl">
             <li>
-              <button className="btn">전체 보기</button>
-              <button className="btn">접수 주문</button>
-              <button className="btn">거절 주문</button>
+              <button
+                className="btn"
+                onClick={() => setSelectedTab("accepted")}
+              >
+                접수 주문
+              </button>
+              <button className="btn" onClick={() => setSelectedTab("refused")}>
+                거절 주문
+              </button>
             </li>
           </ul>
         </div>
-        <div className="ceo-orderList">
-          <div className="ceo-order-header">
-            <div className="order-header-left">
-              <div className="order-header-title">
-                7월 7일 - <span>배달완료</span>
-              </div>
-              <div className="order-header-left-wrap">
-                <div className="order-header-left-content">
-                  <div className="order-header-left-content-title">
-                    롯데리아 대구칠곡구암점
-                  </div>
-                  <div className="order-header-left-content-text">
-                    <span>T REX세트</span>
-                    <span>9999원</span>
-                    <span>1개</span>
+        {selectedTab === "accepted" && (
+          <div className="accepted">
+            {acceptedOrders.length > 0 ? (
+              acceptedOrders.map(order => (
+                <div className="ceo-orderList" key={order.doneOrderPk}>
+                  <div className="ceo-order-header">
+                    <div className="order-header-left">
+                      <div className="order-header-title">
+                        {new Date(order.createdAt).toLocaleDateString()} -{" "}
+                        <span>배달완료</span>
+                      </div>
+                      <div className="order-header-left-wrap">
+                        <div className="order-header-left-content">
+                          <div className="order-header-left-content-title">
+                            {order.resPk}번 가게
+                          </div>
+                          <div className="order-header-left-content-text">
+                            {order.menuInfoDtos.map((menu, index) => (
+                              <span key={index}>
+                                {menu.menuName} {menu.menuPrice}원
+                              </span>
+                            ))}
+                            <span>총 {order.orderPrice}원</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="order-header-right">
+                      <Link
+                        to={`/orders/details/${order.doneOrderPk}`}
+                        className="btn"
+                      >
+                        주문상세
+                      </Link>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </div>
-            <div className="order-header-right">
-              <Link to="details" className="btn">
-                주문상세
-              </Link>
-            </div>
+              ))
+            ) : (
+              <div>완료된 주문이 없습니다.</div>
+            )}
           </div>
-        </div>
+        )}
+        {selectedTab === "refused" && (
+          <div className="refused">
+            {refusedOrders.length > 0 ? (
+              refusedOrders.map(order => (
+                <div className="ceo-orderList" key={order.doneOrderPk}>
+                  <div className="ceo-order-header">
+                    <div className="order-header-left">
+                      <div className="order-header-title">
+                        {new Date(order.createdAt).toLocaleDateString()} -{" "}
+                        <span>배달완료</span>
+                      </div>
+                      <div className="order-header-left-wrap">
+                        <div className="order-header-left-content">
+                          <div className="order-header-left-content-title">
+                            {order.resPk}번 가게
+                          </div>
+                          <div className="order-header-left-content-text">
+                            {order.menuInfoDtos.map((menu, index) => (
+                              <span key={index}>
+                                {menu.menuName} {menu.menuPrice}원
+                              </span>
+                            ))}
+                            <span>총 {order.orderPrice}원</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="order-header-right">
+                      <Link to={`details/${order.doneOrderPk}`} className="btn">
+                        주문상세
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <div>거절된 주문이 없습니다.</div>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

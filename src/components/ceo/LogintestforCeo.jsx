@@ -55,7 +55,7 @@ const LoginPageforCEO = () => {
       localStorage.setItem("userPk", userPk);
       localStorage.setItem("menuResPk", menuResPk);
 
-      navigate(`/ceopage/menu-management/${menuResPk}`);
+      navigate(`/ceopage/menu-management`);
     } catch (error) {
       setError("로그인 중 에러가 발생했습니다. 다시 시도해 주세요.");
       console.error("로그인 중 에러 발생: ", error);

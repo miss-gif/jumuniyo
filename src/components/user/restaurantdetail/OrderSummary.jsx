@@ -9,6 +9,7 @@ const OrderSummary = ({
   onDecreaseQuantity,
   onRemoveItem,
   onClearAll,
+  onOrder,
 }) => {
   const totalAmount = selectedMenuItems.reduce(
     (sum, item) => sum + item.menu_price * item.quantity,
@@ -85,7 +86,14 @@ const OrderSummary = ({
           )}
         </div>
       </div>
-      <div className="order-summary__submit-button" style={submitButtonStyle}>
+      <div
+        className="order-summary__submit-button"
+        style={submitButtonStyle}
+        onClick={() => {
+          onOrder();
+          console.log("주문함");
+        }}
+      >
         주문하기
       </div>
     </div>

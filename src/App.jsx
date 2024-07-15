@@ -36,6 +36,8 @@ import Home from "./components/ceo/Home";
 import OrdersDetail from "./components/ceo/OrdersDetail";
 import LoginPageforCEO from "./components/ceo/LogintestforCeo";
 import { jwtDecode } from "jwt-decode";
+import { OrderProvider } from "./pages/user/OrderContext";
+import Pay from "./components/restaurantdetail/Pay";
 
 // gmu 테스트
 const getCookie = name => {
@@ -57,72 +59,75 @@ function App() {
     const decodedToken = jwtDecode(accessToken);
     console.log("Decoded Token:", decodedToken);
     const signedUser = JSON.parse(decodedToken.signedUser);
-    userPk = signedUser.userPk; // 토큰에서 userPk 추출
+    userPk = signedUser.userPk; // userPk 추출
   }
 
-  // localStorage에서 menuResPk 가져오기
-  const menuResPk = localStorage.getItem("menuResPk");
-  console.log(menuResPk);
-  //
   return (
     <>
       <div className="root-wrap">
-        <Routes>
-          {/* 로그인 */}
-          <Route path="/login" element={<LoginPage />} />
+        <OrderProvider>
+          <Routes>
+            {/* 로그인 */}
+            <Route path="/login" element={<LoginPage />} />
 
-          {/* 회원가입 */}
-          <Route path="/auth" element={<AuthPage />} />
-          <Route path="/auth/user" element={<AuthUserPage />} />
-          <Route path="/auth/ceo" element={<AuthCeoPage />} />
+            {/* 회원가입 */}
+            <Route path="/auth" element={<AuthPage />} />
+            <Route path="/auth/user" element={<AuthUserPage />} />
+            <Route path="/auth/ceo" element={<AuthCeoPage />} />
 
-          {/* 유저 */}
-          <Route path="/" element={<RootLayout />}>
-            <Route index element={<HomePage />} />
-            <Route path="/restaurants" element={<RestaurantsPage />} />
-            <Route
-              path="/restaurants/:id"
-              element={<RestaurantDetailPage2 />}
-            />
-            <Route path="/cart" element={<CartPage />} />
-            <Route path="/checkout" element={<CheckoutPage />} />
-            <Route path="/profile" element={<ProfilePage />} />
-            <Route path="/mypage" element={<MyPage />} />
-            <Route path="/mypage/order/:id" element={<MyPageOrderPage />} />
-            <Route path="/mypage/ordere" element={<MyPageOrderPagee />} />
-            <Route path="/mypage/review" element={<MyPageReviewPage />} />
-            <Route path="/mypage/address" element={<MyPageAddress />} />
-            <Route path="/payment" element={<PaymentPage />} />
-            <Route path="/projectinfo" element={<ProjectInfo />} />
-            <Route
-              path="/mypage/withdrawal"
-              element={<MypageUserWithdrawal />}
-            />
-          </Route>
+            {/* 유저 */}
+            <Route path="/" element={<RootLayout />}>
+              <Route index element={<HomePage />} />
+              <Route path="/restaurants" element={<RestaurantsPage />} />
+              <Route
+                path="/restaurants/:id"
+                element={<RestaurantDetailPage2 />}
+              />
+              <Route path="/pay" element={<Pay />} />
 
-          {/* 사업자 라우터 */}
-          <Route path="/ceopage" element={<CeoLayout />}>
-            <Route path="/ceopage/" element={<CeoPage />} />
-            <Route path="/ceopage/" element={<Home />} />
-            <Route path="login" element={<LoginPageforCEO />} />
-            <Route path="home" element={<Home />} />
-            <Route path="orders" element={<Orders />} />
-            <Route path="orders/details" element={<OrdersDetail />} />
-            <Route path="menu-management" element={<MenuManagement />} />
-            <Route path="reviews" element={<Reviews />} />
-            <Route path="store-management" element={<StoreManagement />} />
-            <Route path="statistics" element={<Statistics />} />
-          </Route>
+              <Route path="/cart" element={<CartPage />} />
+              <Route path="/checkout" element={<CheckoutPage />} />
+              <Route path="/profile" element={<ProfilePage />} />
+              <Route path="/mypage" element={<MyPage />} />
+              <Route path="/mypage/order/:id" element={<MyPageOrderPage />} />
+              <Route path="/mypage/ordere" element={<MyPageOrderPagee />} />
+              <Route path="/mypage/review" element={<MyPageReviewPage />} />
+              <Route path="/mypage/address" element={<MyPageAddress />} />
+              <Route path="/payment" element={<PaymentPage />} />
+              <Route path="/projectinfo" element={<ProjectInfo />} />
+              <Route
+                path="/mypage/withdrawal"
+                element={<MypageUserWithdrawal />}
+              />
+            </Route>
 
-          {/* 관리자 라우터 */}
-          <Route path="/admin" element={<AdminLayout />}>
-            <Route path="/admin/" element={<AdminPage />} />
-          </Route>
+            {/* 사업자 라우터 */}
+            <Route path="/ceopage" element={<CeoLayout />}>
+              <Route path="/ceopage/" element={<CeoPage />} />
+              <Route path="/ceopage/" element={<Home />} />
+              <Route path="login" element={<LoginPageforCEO />} />
+              <Route path="home" element={<Home />} />
+              <Route path="orders" element={<Orders />} />
+              <Route
+                path="orders/details/:doneOrderPk"
+                element={<OrdersDetail />}
+              />
+              <Route path="menu-management" element={<MenuManagement />} />
+              <Route path="reviews" element={<Reviews />} />
+              <Route path="store-management" element={<StoreManagement />} />
+              <Route path="statistics" element={<Statistics />} />
+            </Route>
 
-          {/* 공통 */}
-          <Route path="*" element={<NotFound />} />
-          <Route path="/test" element={<Test />} />
-        </Routes>
+            {/* 관리자 라우터 */}
+            <Route path="/admin" element={<AdminLayout />}>
+              <Route path="/admin/" element={<AdminPage />} />
+            </Route>
+
+            {/* 공통 */}
+            <Route path="*" element={<NotFound />} />
+            <Route path="/test" element={<Test />} />
+          </Routes>
+        </OrderProvider>
       </div>
     </>
   );

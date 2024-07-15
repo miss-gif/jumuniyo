@@ -1,24 +1,27 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import {
+  fetchRestaurantData,
+  fetchMenuData,
+} from "../../api/restaurantdetail/restaurantDetail";
 import RestaurantDetailHeader from "../../components/user/restaurantdetail/RestaurantDetailHeader";
 import RestaurantDetailCleanReview from "../../components/user/restaurantdetail/RestaurantDetailCleanReview";
 import RestaurantDetailMenuContent from "../../components/user/restaurantdetail/RestaurantDetailMenuContent";
 import RestaurantDetailTabInfo from "../../components/user/restaurantdetail/RestaurantDetailTabInfo";
 import RestaurantDetailInfo from "../../components/user/restaurantdetail/RestaurantDetailInfo";
 import OrderSummary from "../../components/user/restaurantdetail/OrderSummary";
-import { useParams } from "react-router-dom";
-import {
-  fetchRestaurantData,
-  fetchMenuData,
-} from "../../api/restaurantdetail/restaurantDetail";
+import { OrderContext } from "./OrderContext";
 
 const RestaurantDetailPage = () => {
   const [activeTab, setActiveTab] = useState("menu");
   const { id } = useParams();
+  const navigate = useNavigate();
   const [restaurantData, setRestaurantData] = useState(null);
   const [menuData, setMenuData] = useState([]);
   const [selectedMenuItems, setSelectedMenuItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const { addOrderItem, clearOrder } = useContext(OrderContext);
 
   useEffect(() => {
     const getData = async () => {
@@ -89,6 +92,15 @@ const RestaurantDetailPage = () => {
 
   const handleClearAll = () => {
     setSelectedMenuItems([]);
+    clearOrder();
+  };
+
+  const handleOrder = () => {
+    selectedMenuItems.forEach(item => {
+      addOrderItem(item);
+    });
+    setSelectedMenuItems([]);
+    navigate("/payment", { state: { orderItems: selectedMenuItems } });
   };
 
   const renderContent = () => {
@@ -128,6 +140,7 @@ const RestaurantDetailPage = () => {
             onDecreaseQuantity={handleDecreaseQuantity}
             onRemoveItem={handleRemoveItem}
             onClearAll={handleClearAll}
+            onOrder={handleOrder}
           />
         </div>
       </div>
