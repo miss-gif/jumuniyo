@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
 // import MypageModifyModal from "../components/common/mypage/MypageModifyModal";
+import jwtAxios from "../api/user/jwtUtil";
+import ModifyNickName from "../components/common/mypage/ModifyNickName";
+import ModifyPass from "../components/common/mypage/ModifyPass";
+import ModifyPhone from "../components/common/mypage/ModifyPhone";
 import Mypage from "../components/join/Mypage";
 import ImageImport from "../components/layout/ImageImport";
-import PhoneNumberInput from "../components/user/mypage/PhoneNumberInput";
-import jwtAxios from "../api/user/jwtUtil";
-import ModifyPass from "../components/common/mypage/ModifyPass";
-import ModifyNickName from "../components/common/mypage/ModifyNickName";
-import ModifyPhone from "../components/common/mypage/ModifyPhone";
 
 const MyPage = () => {
   const [isEditNickname, setIsEditNickname] = useState(false);
@@ -18,7 +17,7 @@ const MyPage = () => {
   const [userId, setUserId] = useState("");
   const [imgUrl, setImgUrl] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [newImgFile, setNewImgFile] = useState(null);
+  const [newImgFile, setNewImgFile] = useState("");
 
   // 기존 닉네임
   const [nickName, setNickName] = useState("");
@@ -61,14 +60,16 @@ const MyPage = () => {
   };
 
   const editImg = async () => {
-    const data = {
-      pic: newImgFile,
-    };
+    const pic = new FormData();
+    pic.append("pic", newImgFile);
+
     setIsEditImg(false);
-    const res = await jwtAxios.patch("/api/update-pic", data);
+    const res = await jwtAxios.patch("/api/update-pic", pic);
+
+    getUserInfo();
+
     return res;
   };
-  console.log(imgFile);
 
   return (
     <div className="mypage-wrap">
@@ -80,7 +81,10 @@ const MyPage = () => {
 
             {!isEditImg ? (
               <>
-                <img src={imgUrl} alt="profile-img" />
+                <img
+                  src={`http://192.168.0.67:8080/pic/${imgUrl}`}
+                  alt="profile-img"
+                />
                 <button className="btn" onClick={() => editMode("img")}>
                   변경
                 </button>
