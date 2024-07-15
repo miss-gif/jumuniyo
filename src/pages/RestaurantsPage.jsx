@@ -32,7 +32,7 @@ const RestaurantsPage = () => {
               className="restaurant-item bc"
               key={restaurant.restaurantPk}
               onClick={() => {
-                navigate(`/restaurantdetail/${restaurant.restaurantPk}`);
+                navigate(`/restaurants/${restaurant.restaurantPk}`);
               }}
             >
               <img
