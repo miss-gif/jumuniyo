@@ -35,6 +35,7 @@ const MyPageOrderPagee = () => {
 
   useEffect(() => {
     getOrderList();
+    console.log(orders);
   }, []);
 
   return (
