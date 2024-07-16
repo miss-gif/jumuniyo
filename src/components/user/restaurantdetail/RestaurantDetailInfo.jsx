@@ -21,8 +21,7 @@ const RestaurantDetailInfo = ({ restaurantData }) => {
         </div>
       </div>
       <p className="restaurant-detail-page__info-notice">
-        <span>사장님알림</span> 💜💙💛❤ {restaurantData.restaurantDesc}
-        💜💙💛❤ 🖤
+        <span>가게 소개: </span> {restaurantData.restaurantDesc}
       </p>
     </div>
   );

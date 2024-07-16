@@ -160,7 +160,7 @@ const StoreManagement = () => {
               {editMode ? (
                 <>
                   <input
-                    type="text"
+                    type="time"
                     name="openTime"
                     value={info.openTime}
                     onChange={handleChange}
@@ -168,7 +168,7 @@ const StoreManagement = () => {
                   />
                   -
                   <input
-                    type="text"
+                    type="time"
                     name="closeTime"
                     value={info.closeTime}
                     onChange={handleChange}
@@ -223,7 +223,7 @@ const StoreManagement = () => {
               )}
             </p>
             <p>
-              <h4>사업장 설명</h4>
+              <h4>가게 소개</h4>
               {editMode ? (
                 <textarea
                   name="restaurantDescription"
@@ -236,22 +236,26 @@ const StoreManagement = () => {
               )}
             </p>
             <p>
-              <h4>리뷰 설명</h4>
+              <h4>사장님 알림</h4>
               {editMode ? (
                 <textarea
                   name="reviewDescription"
                   value={info.reviewDescription}
                   onChange={handleChange}
-                  placeholder="리뷰 설명"
+                  placeholder="사장님 알림"
                 />
               ) : (
                 info.reviewDescription
               )}
             </p>
             {editMode ? (
-              <button onClick={handleSave}>저장</button>
+              <button className="btn" onClick={handleSave}>
+                저장
+              </button>
             ) : (
-              <button onClick={() => setEditMode(true)}>수정하기</button>
+              <button className="btn" onClick={() => setEditMode(true)}>
+                수정하기
+              </button>
             )}
           </div>
         </div>

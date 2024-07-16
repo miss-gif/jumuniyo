@@ -58,12 +58,33 @@ const Home = () => {
   return (
     <>
       <div className="ceo-home">
-        <h2 className="ceo-home-tab">주문요 사장님</h2>
-        <button onClick={loadOrders} className="refresh-btn">
-          새로고침
-        </button>
+        <div className="left">
+          <h3>새로 들어온 주문</h3>
+          <div className="waiting-orders">
+            {noOrders ? (
+              <div className="noOrdersMessage">새 주문이 없습니다.</div>
+            ) : (
+              orders.map(order => (
+                <div className="one-order" key={order.orderPk}>
+                  <div className="one-order-left">
+                    <div className="order-number">배달 No. {order.orderPk}</div>
+                    <div className="order-menus-number">메뉴 $3개</div>
+                  </div>
+                  <div className="one-order-right">
+                    <div className="order-time">{order.createdAt}</div>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+        </div>
+
         <div className="order-body">
-          <div className="left">
+          <button className="btn refresh-btn" onClick={loadOrders}>
+            새로고침
+          </button>
+          {/* 받아진 주문
+          <div className="newOrders-accepted">
             <div className="confirmedList">
               <div className="confirmedList-tab">접수된 주문</div>
               <div className="oneOrder">
@@ -116,6 +137,7 @@ const Home = () => {
               </div>
             </div>
           </div>
+           */}
           <div className="orderedList">
             {noOrders ? (
               <div className="noOrdersMessage">새 주문이 없습니다.</div>
@@ -160,10 +182,7 @@ const Home = () => {
                           <h3> 배달주소</h3>
                           <p>경기도 화성시 이성로 대명아파트 102동 906호</p>
                         </div>
-                        <div className="orderCallNumber">
-                          <h3>고객연락처</h3>
-                          <p>010-1111-2222</p>
-                        </div>
+
                         <div className="orderCallNumber">
                           <h3>주문번호</h3>
                           <p>{order.orderPk}</p>

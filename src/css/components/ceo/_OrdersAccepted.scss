@@ -1,0 +1,54 @@
+.ceo-home-accepted {
+  .left {
+  }
+}
+
+.newOrders-accepted {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  .confirmedList {
+    .confirmedList-tab {
+      background-color: $black;
+      color: $white;
+      padding: $padding-2;
+    }
+    .oneOrder {
+      border: 1px solid #ccc;
+      display: flex;
+      .orderedTime {
+        display: flex;
+        margin: 0 auto;
+      }
+      .orderInfo {
+        .orderAmount {
+          display: flex;
+          .orderNumber {
+          }
+          .orderPrice {
+          }
+          .payMethod {
+          }
+        }
+        .orderedMenu {
+          display: flex;
+
+          .menu-name {
+          }
+          .menu-amount {
+          }
+        }
+        .orderedAddress {
+        }
+        .requested {
+        }
+      }
+      .orderStatus {
+        .orderLeftTime {
+        }
+        .orderProcess {
+        }
+      }
+    }
+  }
+}

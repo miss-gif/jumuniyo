@@ -42,7 +42,7 @@ const Statistics = () => {
         const year = format(selectedYear, "yyyy");
 
         const monthSalesResponse = await axios.get(
-          `/api/stat/month_sales?year=${year}`,
+          `/api/owner/stat/month_sales?date=${year}`,
           {
             headers: {
               Authorization: `Bearer ${accessToken}`,
@@ -51,7 +51,7 @@ const Statistics = () => {
         );
 
         const monthOrderResponse = await axios.get(
-          `/api/stat/month_order_count?year=${year}`,
+          `/api/owner/stat/month_order_count?date=${year}`,
           {
             headers: {
               Authorization: `Bearer ${accessToken}`,
@@ -59,24 +59,35 @@ const Statistics = () => {
           },
         );
 
-        console.log("Month Sales Response: ", monthSalesResponse.data);
-        console.log("Month Order Response: ", monthOrderResponse.data);
-
         if (
-          Array.isArray(monthSalesResponse.data.data) &&
-          Array.isArray(monthOrderResponse.data.data)
+          Array.isArray(monthSalesResponse.data.resultData) &&
+          Array.isArray(monthOrderResponse.data.resultData)
         ) {
-          const combinedMonthData = monthSalesResponse.data.data.map(
-            (item, index) => ({
-              month: item.month,
-              sales: item.sales,
-              orders: monthOrderResponse.data.data[index]?.orders || 0,
-            }),
+          const combinedMonthData = monthSalesResponse.data.resultData.map(
+            (item, index) => {
+              const orderItem = monthOrderResponse.data.resultData.find(
+                order => order.created_at === item.created_at,
+              );
+
+              return {
+                month: item.created_at, // month 대신 created_at 사용
+                sales: item.month_sales,
+                orders: orderItem ? orderItem.month_order_count : 0,
+              };
+            },
           );
 
           setMonthSalesData(combinedMonthData);
         } else {
           console.error("Month Sales or Order response is not an array");
+          console.log(
+            "Month Sales Response Data:",
+            monthSalesResponse.data.resultData,
+          );
+          console.log(
+            "Month Order Response Data:",
+            monthOrderResponse.data.resultData,
+          );
         }
       } catch (error) {
         setError("데이터를 가져오는 중 에러가 발생했습니다.");
@@ -103,7 +114,7 @@ const Statistics = () => {
         const yearMonth = format(selectedMonth, "yyyy-MM");
 
         const dailySalesResponse = await axios.get(
-          `/api/stat/daily_sales?month=${yearMonth}`,
+          `/api/owner/stat/daily_sales?date=${yearMonth}`,
           {
             headers: {
               Authorization: `Bearer ${accessToken}`,
@@ -112,7 +123,7 @@ const Statistics = () => {
         );
 
         const dailyOrderResponse = await axios.get(
-          `/api/stat/daily_order_count?month=${yearMonth}`,
+          `/api/owner/stat/daily_order_count?date=${yearMonth}`,
           {
             headers: {
               Authorization: `Bearer ${accessToken}`,
@@ -124,20 +135,36 @@ const Statistics = () => {
         console.log("Daily Order Response: ", dailyOrderResponse.data);
 
         if (
-          Array.isArray(dailySalesResponse.data.data) &&
-          Array.isArray(dailyOrderResponse.data.data)
+          Array.isArray(dailySalesResponse.data.resultData) &&
+          Array.isArray(dailyOrderResponse.data.resultData)
         ) {
-          const combinedDailyData = dailySalesResponse.data.data.map(
-            (item, index) => ({
-              day: item.day,
-              sales: item.sales,
-              orders: dailyOrderResponse.data.data[index]?.orders || 0,
-            }),
-          );
+          const salesData = dailySalesResponse.data.resultData;
+          const orderData = dailyOrderResponse.data.resultData;
 
+          const combinedDailyData = salesData.map(item => {
+            const orderItem = orderData.find(
+              order => order.created_at === item.created_at,
+            );
+
+            return {
+              day: item.created_at,
+              sales: item.daily_sales,
+              orders: orderItem ? orderItem.daily_order_count : 0,
+            };
+          });
+
+          console.log("Combined Daily Data: ", combinedDailyData);
           setDailySalesData(combinedDailyData);
         } else {
           console.error("Daily Sales or Order response is not an array");
+          console.log(
+            "Daily Sales Response Data:",
+            dailySalesResponse.data.resultData,
+          );
+          console.log(
+            "Daily Order Response Data:",
+            dailyOrderResponse.data.resultData,
+          );
         }
       } catch (error) {
         setError("데이터를 가져오는 중 에러가 발생했습니다.");
@@ -198,11 +225,22 @@ const Statistics = () => {
             >
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="month" />
-              <YAxis />
+              <YAxis yAxisId="left" />
+              <YAxis yAxisId="right" orientation="right" />
               <Tooltip />
               <Legend />
-              <Bar dataKey="sales" fill="#8884d8" name="월 매출" />
-              <Bar dataKey="orders" fill="#82ca9d" name="월 주문 수" />
+              <Bar
+                yAxisId="left"
+                dataKey="sales"
+                fill="#8884d8"
+                name="월 매출"
+              />
+              <Bar
+                yAxisId="right"
+                dataKey="orders"
+                fill="#82ca9d"
+                name="월 주문 수"
+              />
             </BarChart>
           </ResponsiveContainer>
         </div>
@@ -229,11 +267,22 @@ const Statistics = () => {
             >
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="day" />
-              <YAxis />
+              <YAxis yAxisId="left" />
+              <YAxis yAxisId="right" orientation="right" />
               <Tooltip />
               <Legend />
-              <Bar dataKey="sales" fill="#8884d8" name="일 매출" />
-              <Bar dataKey="orders" fill="#82ca9d" name="일 주문 수" />
+              <Bar
+                yAxisId="left"
+                dataKey="sales"
+                fill="#8884d8"
+                name="일 매출"
+              />
+              <Bar
+                yAxisId="right"
+                dataKey="orders"
+                fill="#82ca9d"
+                name="일 주문 수"
+              />
             </BarChart>
           </ResponsiveContainer>
         </div>
