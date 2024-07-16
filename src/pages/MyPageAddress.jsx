@@ -14,18 +14,27 @@ const MyPageAddress = () => {
   const [newAddress, setNewAddress] = useState("");
   const [newAddressDetail, setNewAddressDetail] = useState("");
 
-  const getUserAddress = async () => {
-    try {
-      const res = await jwtAxios.get("/api/address/list");
-      setAddress(res.data.resultData[0].addr1);
-      setAddressDetail(res.data.resultData[0].addr2);
-      setXValue(res.data.resultData[0].addrCoorX);
-      setYValue(res.data.resultData[0].addrCoorY);
-      return res;
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  useEffect(() => {
+    const getUserAddress = async () => {
+      try {
+        const res = await jwtAxios.get("/api/address/list");
+        console.log(res.data);
+        setAddress(res.data.resultData[0].addr1);
+        setAddressDetail(res.data.resultData[0].addr2);
+        setXValue(res.data.resultData[0].addrCoorX);
+        setYValue(res.data.resultData[0].addrCoorY);
+        if (res.data.resultData[0] === "") {
+          setAddress("주소를 등록해주세요");
+          setAddressDetail("세부주소를 등록해주세요");
+        }
+        return res.data;
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getUserAddress();
+    console.log();
+  }, []);
 
   const editUserAddress = async () => {
     try {
@@ -43,10 +52,6 @@ const MyPageAddress = () => {
     }
   };
 
-  useEffect(() => {
-    getUserAddress();
-  }, []);
-
   const onModify = () => {
     setIsModalOpen(true);
   };
@@ -62,7 +67,6 @@ const MyPageAddress = () => {
 
   const onModifyNo = () => {
     setIsModalOpen(false);
-    getUserAddress();
   };
 
   return (

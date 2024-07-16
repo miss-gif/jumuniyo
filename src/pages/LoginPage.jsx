@@ -21,7 +21,12 @@ const AuthUserPage = () => {
       });
       setCookie("accessToken", response.data.resultData.accessToken);
       console.log(response.data.resultData.userRole);
-      if (response.data.resultData.userRole === "ROLE_USER") {
+      if (
+        response.data.resultData.userRole === "ROLE_USER" &&
+        response.data.resultData.mainAddr === null
+      ) {
+        navigate("/mypage/address");
+      } else {
         navigate("/");
       }
       return response.data;

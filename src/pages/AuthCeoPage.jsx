@@ -1,17 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import {
-  Box,
-  Checkbox,
-  FormControl,
-  FormControlLabel,
-  FormGroup,
-  FormHelperText,
-  FormLabel,
-  TextField,
-} from "@mui/material";
+import { Box, TextField } from "@mui/material";
 import axios from "axios";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import AuthImageImport from "../components/layout/AuthImageImport";
 import JoinFooter from "../components/layout/JoinFooter";
 import MyMap from "../components/user/mypage/MyMap";
@@ -32,6 +23,16 @@ const AuthUserPage = () => {
   const [userEmail, setUserEmail] = useState("");
   const [userCEOTip, setUserCEOTip] = useState("");
   const [userCEOEvent, setUserCEOEvent] = useState("");
+  const [emailCode, setEmailCode] = useState("");
+  const [isEmailCheck, setIsEmailCheck] = useState(false);
+
+  // 정규 표현식 참, 거짓 State
+  const [userIdComplete, setUerIdComplete] = useState(false);
+  const [userPwComplete, setUerPwComplete] = useState(false);
+  const [userPwCheckComplete, setUerPwCheckComplete] = useState(false);
+  const [userEmailComplete, setUerEmailComplete] = useState(false);
+  const [userPhoneComplete, setUerPhoneComplete] = useState(false);
+  const [userImgComplete, setUerImgComplete] = useState(false);
 
   // 주소 관련 State
   const [newXValue, setNewXValue] = useState("");
@@ -44,59 +45,171 @@ const AuthUserPage = () => {
     antoine: false,
   });
 
-  const emailTest = async () => {
-    try {
-      const res = await axios.get(`/api/is-duplicated?user_id=${userId}`);
-      console.log(res);
-      return res;
-    } catch (error) {
-      console.log(error);
+  // 정규 표현식 조건
+  const idRegex = /^.{8,}$/;
+  const passRegex = /^(?=.*[!@#$%^&*(),.?":{}|<>]).{8,}$/;
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  const phoneRegex = /^\d{3}-\d{4}-\d{4}$/;
+  const imageRegex = /^[\w,\s-]+\.(jpg|jpeg|png|gif|bmp)$/;
+
+  const idTest = async () => {
+    const isCheckId = idRegex.test(userId);
+    if (isCheckId) {
+      try {
+        const res = await axios.get(`/api/is-duplicated?user_id=${userId}`);
+        if (res) {
+          alert(res.data.resultMsg);
+        }
+        console.log(res);
+        return res;
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      alert("아이디 형식을 확인해주세요");
     }
   };
 
-  const ceoSignUp = async () => {
-    const pic = new FormData();
-
-    const p = {
-      desc1: userCEOTip,
-      desc2: userCEOEvent,
-      user_nickname: userNickName,
-      open_time: userOpenTime,
-      user_email: userEmail,
-      coor_x: newXValue,
-      coor_y: newYValue,
-      restaurant_name: userRestaurantName,
-      user_id: userId,
-      addr: newAddress,
-      close_time: userCloseTime,
-      user_phone: userPhone,
-      user_pw: userPw,
-      user_pw_confirm: userPwCheck,
-      regi_num: userCEONumber,
-      user_name: userName,
+  const emailCheck = async () => {
+    const data = {
+      email: userEmail,
     };
 
-    // JSON 객체를 문자열로 변환하지 않고 바로 FormData에 추가
-    pic.append("pic", userImgFile); // 파일(binary) 추가
-    pic.append("p", JSON.stringify(p)); // JSON 객체 추가
+    const isCheckEmail = emailRegex.test(userEmail);
+    if (isCheckEmail) {
+      setIsEmailCheck(true);
+      try {
+        const res = await axios.post("/api/mail/send", data);
+        return res;
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      alert("이메일 형식을 확인해주세요.");
+    }
+  };
 
+  const emailCheckCancle = () => {
+    setIsEmailCheck(false);
+  };
+
+  const emailCodeCheck = async () => {
+    setIsEmailCheck(false);
+    const data = {
+      email: userEmail,
+      authNum: emailCode,
+    };
     try {
-      const header = { headers: { "Content-Type": "multipart/form-data" } };
-      const res = await axios.post("/api/owner/sign-up", pic, header); // FormData 객체를 직접 전송
+      const res = await axios.post("/api/mail/auth_check", data);
       return res;
     } catch (error) {
       console.log(error);
     }
   };
 
-  const { gilad, jason, antoine } = state;
-  const error = [gilad, jason, antoine].filter(v => v).length >= 2;
+  const joinCeo = async event => {
+    event.preventDefault();
+    const isCheckId = idRegex.test(userId);
+    const isCheckPass = passRegex.test(userPw);
+    const isCheckPass2 = userPw === userPwCheck;
+    const isCheckEmail = emailRegex.test(userEmail);
+    const isCheckPhone = phoneRegex.test(userPhone);
+    const isCheckImgFile = !userImgFile || imageRegex.test(userImgFile.name);
 
-  const handleChange = event => {
-    setState({
-      ...state,
-      [event.target.name]: event.target.checked,
-    });
+    if (isCheckId === false) {
+      alert("아이디는 8자 이상이어야 합니다.");
+      setUerIdComplete(false);
+      return;
+    } else {
+      setUerIdComplete(true);
+    }
+
+    if (isCheckEmail === false) {
+      alert("이메일 인증을 해주세요");
+      setUerEmailComplete(false);
+      return;
+    } else {
+      setUerEmailComplete(true);
+    }
+
+    if (isCheckPass === false) {
+      alert("비밀번호는 8자 이상, 특수문자 사용해야합니다.");
+      setUerPwComplete(false);
+      return;
+    } else {
+      setUerPwComplete(true);
+    }
+
+    if (isCheckPass2 === false) {
+      alert("비밀번호가 다릅니다.");
+      setUerPwCheckComplete(false);
+      return;
+    } else {
+      setUerPwCheckComplete(true);
+    }
+
+    if (isCheckPhone === false) {
+      alert("전화번호를 확인해주세요.");
+      setUerPhoneComplete(false);
+      return;
+    } else {
+      setUerPhoneComplete(true);
+    }
+
+    if (isCheckImgFile === false) {
+      setUerImgComplete(true);
+      return;
+    } else {
+      setUerImgComplete(true);
+    }
+
+    if (
+      userIdComplete &&
+      userPwComplete &&
+      userPwCheckComplete &&
+      userEmailComplete &&
+      userPhoneComplete &&
+      userImgComplete
+    ) {
+      const pic = new FormData();
+
+      const p = {
+        desc1: userCEOTip,
+        desc2: userCEOEvent,
+        user_nickname: userNickName,
+        open_time: userOpenTime,
+        user_email: userEmail,
+        coor_x: newXValue,
+        coor_y: newYValue,
+        restaurant_name: userRestaurantName,
+        user_id: userId,
+        addr: newAddress,
+        close_time: userCloseTime,
+        user_phone: userPhone,
+        user_pw: userPw,
+        user_pw_confirm: userPwCheck,
+        regi_num: userCEONumber,
+        user_name: userName,
+      };
+
+      // JSON 객체를 문자열로 변환하지 않고 바로 FormData에 추가
+      pic.append("pic", userImgFile); // 파일(binary) 추가
+      pic.append("p", JSON.stringify(p)); // JSON 객체 추가
+
+      try {
+        const header = { headers: { "Content-Type": "multipart/form-data" } };
+        const res = await axios.post("/api/owner/sign-up", pic, header); // FormData 객체를 직접 전송
+        if (res.data.statusCode === 1) {
+          useNavigate("/login");
+        } else {
+          alert(res.data.resultMsg);
+        }
+
+        return res;
+      } catch (error) {
+        console.log(error);
+      }
+    }
   };
 
   return (
@@ -124,7 +237,13 @@ const AuthUserPage = () => {
                 }}
               />
             </Box>
-            <button type="button" className="id-check">
+            <button
+              type="button"
+              className="id-check"
+              onClick={() => {
+                idTest();
+              }}
+            >
               중복 확인
             </button>
           </div>
@@ -144,12 +263,47 @@ const AuthUserPage = () => {
               type="button"
               className="id-check"
               onClick={() => {
-                emailTest();
+                emailCheck();
               }}
             >
               이메일 인증
             </button>
           </div>
+          {isEmailCheck ? (
+            <>
+              <Box style={{ alignItems: "center" }}>
+                <TextField
+                  fullWidth
+                  label="인증 번호"
+                  id="fullWidth"
+                  placeholder="인증 번호를 입력해주세요."
+                  onChange={e => {
+                    setEmailCode(e.target.value);
+                  }}
+                />
+              </Box>
+              <div style={{ justifyContent: "center" }}>
+                <button
+                  type="button"
+                  className="btn"
+                  onClick={() => {
+                    emailCodeCheck();
+                  }}
+                >
+                  인증
+                </button>
+                <button
+                  type="button"
+                  className="btn"
+                  onClick={() => {
+                    emailCheckCancle();
+                  }}
+                >
+                  취소
+                </button>
+              </div>
+            </>
+          ) : null}
           <Box>
             <TextField
               fullWidth
@@ -221,8 +375,11 @@ const AuthUserPage = () => {
           </Box>
           <TextField
             id="outlined-multiline-static"
-            label="리뷰 이벤트 입력"
-            placeholder="리뷰 이벤트에 쓸 내용을 입력해주세요."
+            label="사장님 알림"
+            placeholder="가게 정보에 쓸 내용을 입력해주세요."
+            onChange={e => {
+              setUserCEOEvent(e.target.value);
+            }}
             multiline
             rows={4}
             defaultValue=""
@@ -303,57 +460,13 @@ const AuthUserPage = () => {
             />
           </Box>
 
-          <h3>음식 카테고리</h3>
-          <FormControl
-            required
-            error={error}
-            component="fieldset"
-            sx={{ m: 3 }}
-            variant="standard"
-          >
-            <FormLabel component="legend">3개 이하로 골라주세요</FormLabel>
-            <FormGroup>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={gilad}
-                    onChange={handleChange}
-                    name="gilad"
-                  />
-                }
-                label="Gilad Gray"
-              />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={jason}
-                    onChange={handleChange}
-                    name="jason"
-                  />
-                }
-                label="Jason Killian"
-              />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={antoine}
-                    onChange={handleChange}
-                    name="antoine"
-                  />
-                }
-                label="Antoine Llorca"
-              />
-            </FormGroup>
-            <FormHelperText>3개 오버 됐습니다</FormHelperText>
-          </FormControl>
-
           <h3>브랜드 로고</h3>
           <AuthImageImport setUserImgFile={setUserImgFile} />
 
           <button
             type="button"
-            onClick={() => {
-              ceoSignUp();
+            onClick={e => {
+              joinCeo(e);
             }}
           >
             회원가입

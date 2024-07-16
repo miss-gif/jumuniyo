@@ -178,6 +178,12 @@
   min-width: 50px;
 }
 
+.Withdrawal {
+  & input {
+    width: 95%;
+  }
+}
+
 @include tablet {
   .mypage-wrap {
     display: block;
