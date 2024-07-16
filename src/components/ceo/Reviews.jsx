@@ -3,12 +3,6 @@ import reviewItemsData from "../restaurantdetail/review.json";
 import ceoReviewData from "../restaurantdetail/ceoReview.json";
 import testMenu from "../restaurantdetail/testMenu.jpg";
 
-// const storeReviewNumber = [
-//   {
-//     reviews: 100,
-//   },
-// ];
-
 const Reviews = () => {
   const [reviewItems, setReviewItems] = useState([]);
   const [filteredReviews, setFilteredReviews] = useState([]);

@@ -113,7 +113,7 @@ const RestaurantDetailPage = () => {
           />
         );
       case "review":
-        return <RestaurantDetailCleanReview restaurantData={restaurantData} />;
+        return <RestaurantDetailCleanReview resPk={id} />;
       case "info":
         return <RestaurantDetailTabInfo restaurantData={restaurantData} />;
       default:
