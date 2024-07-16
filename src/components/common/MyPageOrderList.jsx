@@ -1,4 +1,3 @@
-import React from "react";
 /* eslint-disable react/prop-types */
 // eslint-disable-next-line react/prop-types
 const MyPageOrderList = ({ reviewOpenModal, orders }) => {
@@ -39,15 +38,16 @@ const MyPageOrderList = ({ reviewOpenModal, orders }) => {
                       {order.orderPrice.toLocaleString("ko-KR")}원
                     </div>
                   </div>
-                  <button
-                    className="btn"
-                    onClick={() => {
-                      reviewOpenModal();
-                    }}
-                    disabled={isOldOrder}
-                  >
-                    리뷰쓰기
-                  </button>
+                  {!isOldOrder ? (
+                    <button
+                      className="btn"
+                      onClick={() => {
+                        reviewOpenModal();
+                      }}
+                    >
+                      리뷰쓰기
+                    </button>
+                  ) : null}
                 </div>
               </div>
             </div>

@@ -6,6 +6,7 @@ import ModifyPass from "../components/common/mypage/ModifyPass";
 import ModifyPhone from "../components/common/mypage/ModifyPhone";
 import Mypage from "../components/join/Mypage";
 import ImageImport from "../components/layout/ImageImport";
+import { getCookie } from "../utils/cookie";
 
 const MyPage = () => {
   const [isEditNickname, setIsEditNickname] = useState(false);
@@ -18,6 +19,7 @@ const MyPage = () => {
   const [imgUrl, setImgUrl] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [newImgFile, setNewImgFile] = useState("");
+  const [isLogIn, setIsLogIn] = useState(false);
 
   // 기존 닉네임
   const [nickName, setNickName] = useState("");
@@ -41,7 +43,22 @@ const MyPage = () => {
   };
 
   useEffect(() => {
-    getUserInfo();
+    const fetchUserInfo = async () => {
+      await getUserInfo();
+    };
+    fetchUserInfo();
+    console.log(userId);
+    const isLogin = getCookie("accessToken");
+
+    if (!isLogin) {
+      setUserId("로그인 후 이용해주세요");
+      setPhoneNumber("로그인 후 이용해주세요");
+      setNickName("로그인 후 이용해주세요");
+      setName("로그인 후 이용해주세요");
+      setIsLogIn(false);
+    } else {
+      setIsLogIn(true);
+    }
   }, []);
 
   const editMode = mode => {
@@ -75,50 +92,53 @@ const MyPage = () => {
     <div className="mypage-wrap">
       <Mypage />
       <div className="mypage-box">
-        <div className="mypage-img">
-          <div>
-            <h3>프로필 사진</h3>
+        {!isLogIn ? null : (
+          <div className="mypage-img">
+            <div>
+              <h3>프로필 사진</h3>
 
-            {!isEditImg ? (
-              <>
-                <img
-                  src={`http://192.168.0.67:8080/pic/${imgUrl}`}
-                  alt="profile-img"
-                />
-                <button className="btn" onClick={() => editMode("img")}>
-                  변경
-                </button>
-              </>
-            ) : (
-              <>
-                <ImageImport
-                  setImgFile={setImgFile}
-                  setImgUrl={setImgUrl}
-                  newImgFile={newImgFile}
-                  setNewImgFile={setNewImgFile}
-                />
-                <div className="mypage-button-box-flex">
-                  <button
-                    className="btn"
-                    onClick={() => {
-                      editImg();
-                    }}
-                  >
-                    저장
+              {!isEditImg ? (
+                <>
+                  <img
+                    src={`http://192.168.0.67:8080/pic/${imgUrl}`}
+                    alt="profile-img"
+                  />
+                  <button className="btn" onClick={() => editMode("img")}>
+                    변경
                   </button>
-                  <button
-                    className="btn"
-                    onClick={() => {
-                      editCancel();
-                    }}
-                  >
-                    취소
-                  </button>
-                </div>
-              </>
-            )}
+                </>
+              ) : (
+                <>
+                  <ImageImport
+                    setImgFile={setImgFile}
+                    setImgUrl={setImgUrl}
+                    newImgFile={newImgFile}
+                    setNewImgFile={setNewImgFile}
+                  />
+                  <div className="mypage-button-box-flex">
+                    <button
+                      className="btn"
+                      onClick={() => {
+                        editImg();
+                      }}
+                    >
+                      저장
+                    </button>
+                    <button
+                      className="btn"
+                      onClick={() => {
+                        editCancel();
+                      }}
+                    >
+                      취소
+                    </button>
+                  </div>
+                </>
+              )}
+            </div>
           </div>
-        </div>
+        )}
+
         <div className="mypage-title">
           <div className="mypage-title-box">아이디</div>
           <div className="mypage-title-box-right">

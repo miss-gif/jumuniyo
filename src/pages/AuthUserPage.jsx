@@ -1,11 +1,13 @@
 import { Box, TextField } from "@mui/material";
 import axios from "axios";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import AuthImageImport from "../components/layout/AuthImageImport";
 import JoinFooter from "../components/layout/JoinFooter";
 
 const AuthUserPage = () => {
+  const navigate = useNavigate();
+  // 입력 관련 State
   const [userId, setUserId] = useState("");
   const [userPw, setUserPw] = useState("");
   const [userPwCheck, setUserPwCheck] = useState("");
@@ -14,50 +16,174 @@ const AuthUserPage = () => {
   const [userPhone, setUserPhone] = useState("");
   const [userImgFile, setUserImgFile] = useState(null);
   const [userEmail, setUserEmail] = useState("");
+  const [emailCode, setEmailCode] = useState("");
+  const [isEmailCheck, setIsEmailCheck] = useState(false);
+
+  // 정규 표현식 참, 거짓 State
+  const [userIdComplete, setUerIdComplete] = useState(false);
+  const [userPwComplete, setUerPwComplete] = useState(false);
+  const [userPwCheckComplete, setUerPwCheckComplete] = useState(false);
+  const [userEmailComplete, setUerEmailComplete] = useState(false);
+  const [userPhoneComplete, setUerPhoneComplete] = useState(false);
+  const [userImgComplete, setUerImgComplete] = useState(false);
+
+  // 정규 표현식 조건
+  const idRegex = /^.{8,}$/;
+  const passRegex = /^(?=.*[!@#$%^&*(),.?":{}|<>]).{8,}$/;
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  const phoneRegex = /^\d{3}-\d{4}-\d{4}$/;
+  const imageRegex = /^[\w,\s-]+\.(jpg|jpeg|png|gif|bmp)$/;
 
   const idTest = async () => {
-    try {
-      const res = await axios.get(`/api/is-duplicated?user_id=${userId}`);
-      console.log(res);
-      return res;
-    } catch (error) {
-      console.log(error);
+    const isCheckId = idRegex.test(userId);
+    if (isCheckId) {
+      try {
+        const res = await axios.get(`/api/is-duplicated?user_id=${userId}`);
+        if (res) {
+          alert(res.data.resultMsg);
+        }
+        console.log(res);
+        return res;
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      alert("아이디 형식을 확인해주세요");
     }
   };
 
-  const emailTest = async () => {
-    try {
-      const res = await axios.get(`/api/is-duplicated?user_id=${userId}`);
-      console.log(res);
-      return res;
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const signUp = async () => {
-    const pic = new FormData();
-
-    const p = {
-      user_id: userId,
-      user_pw: userPw,
-      user_pw_confirm: userPwCheck,
-      user_name: userName,
-      user_nickname: userNickName,
-      user_phone: userPhone,
-      user_email: userEmail,
+  const emailCheck = async () => {
+    const data = {
+      email: userEmail,
     };
 
-    // JSON 객체를 문자열로 변환하지 않고 바로 FormData에 추가
-    pic.append("pic", userImgFile); // 파일(binary) 추가
-    pic.append("p", JSON.stringify(p)); // JSON 객체 추가
+    const isCheckEmail = emailRegex.test(userEmail);
+    if (isCheckEmail) {
+      setIsEmailCheck(true);
+      try {
+        const res = await axios.post("/api/mail/send", data);
+        return res;
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      alert("이메일 형식을 확인해주세요.");
+    }
+  };
 
+  const emailCheckCancle = () => {
+    setIsEmailCheck(false);
+  };
+
+  const emailCodeCheck = async () => {
+    setIsEmailCheck(false);
+    const data = {
+      email: userEmail,
+      authNum: emailCode,
+    };
     try {
-      const header = { headers: { "Content-Type": "multipart/form-data" } };
-      const res = await axios.post("../api/sign-up", pic, header); // FormData 객체를 직접 전송
+      const res = await axios.post("/api/mail/auth_check", data);
+      console.log(res);
       return res;
     } catch (error) {
       console.log(error);
+    }
+  };
+
+  const joinMember = async event => {
+    event.preventDefault();
+    const isCheckId = idRegex.test(userId);
+    const isCheckPass = passRegex.test(userPw);
+    const isCheckPass2 = userPw === userPwCheck;
+    const isCheckEmail = emailRegex.test(userEmail);
+    const isCheckPhone = phoneRegex.test(userPhone);
+    const isCheckImgFile = !userImgFile || imageRegex.test(userImgFile.name);
+
+    if (isCheckId === false) {
+      alert("아이디는 8자 이상이어야 합니다.");
+      setUerIdComplete(false);
+      return;
+    } else {
+      setUerIdComplete(true);
+    }
+
+    if (isCheckEmail === false) {
+      alert("이메일 인증을 해주세요");
+      setUerEmailComplete(false);
+      return;
+    } else {
+      setUerEmailComplete(true);
+    }
+
+    if (isCheckPass === false) {
+      alert("비밀번호는 8자 이상, 특수문자 사용해야합니다.");
+      setUerPwComplete(false);
+      return;
+    } else {
+      setUerPwComplete(true);
+    }
+
+    if (isCheckPass2 === false) {
+      alert("비밀번호가 다릅니다.");
+      setUerPwCheckComplete(false);
+      return;
+    } else {
+      setUerPwCheckComplete(true);
+    }
+
+    if (isCheckPhone === false) {
+      alert("전화번호를 확인해주세요.");
+      setUerPhoneComplete(false);
+      return;
+    } else {
+      setUerPhoneComplete(true);
+    }
+
+    if (isCheckImgFile === false) {
+      setUerImgComplete(true);
+      return;
+    } else {
+      setUerImgComplete(true);
+    }
+
+    if (
+      userIdComplete &&
+      userPwComplete &&
+      userPwCheckComplete &&
+      userEmailComplete &&
+      userPhoneComplete &&
+      userImgComplete
+    ) {
+      const pic = new FormData();
+
+      const p = {
+        user_id: userId,
+        user_pw: userPw,
+        user_pw_confirm: userPwCheck,
+        user_name: userName,
+        user_nickname: userNickName,
+        user_phone: userPhone,
+        user_email: userEmail,
+      };
+
+      // JSON 객체를 문자열로 변환하지 않고 바로 FormData에 추가
+      pic.append("pic", userImgFile); // 파일(binary) 추가
+      pic.append("p", JSON.stringify(p)); // JSON 객체 추가
+
+      try {
+        const header = { headers: { "Content-Type": "multipart/form-data" } };
+        const res = await axios.post("../api/sign-up", pic, header); // FormData 객체를 직접 전송
+        if (res.data.resultData === 1) {
+          alert("회원가입 성공");
+          navigate("/login");
+        } else {
+          alert(res.data.resultMsg);
+        }
+
+        return res;
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 
@@ -111,12 +237,47 @@ const AuthUserPage = () => {
               type="button"
               className="id-check"
               onClick={() => {
-                emailTest();
+                emailCheck();
               }}
             >
               이메일 인증
             </button>
           </div>
+          {isEmailCheck ? (
+            <>
+              <Box style={{ alignItems: "center" }}>
+                <TextField
+                  fullWidth
+                  label="인증 번호"
+                  id="fullWidth"
+                  placeholder="인증 번호를 입력해주세요."
+                  onChange={e => {
+                    setEmailCode(e.target.value);
+                  }}
+                />
+              </Box>
+              <div style={{ justifyContent: "center" }}>
+                <button
+                  type="button"
+                  className="btn"
+                  onClick={() => {
+                    emailCodeCheck();
+                  }}
+                >
+                  인증
+                </button>
+                <button
+                  type="button"
+                  className="btn"
+                  onClick={() => {
+                    emailCheckCancle();
+                  }}
+                >
+                  취소
+                </button>
+              </div>
+            </>
+          ) : null}
           <Box>
             <TextField
               fullWidth
@@ -177,8 +338,8 @@ const AuthUserPage = () => {
           <AuthImageImport setUserImgFile={setUserImgFile} />
           <button
             type="button"
-            onClick={() => {
-              signUp();
+            onClick={e => {
+              joinMember(e);
             }}
           >
             회원가입

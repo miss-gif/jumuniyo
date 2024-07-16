@@ -29,7 +29,7 @@ const PhoneNumberInput = ({ value, onChange }) => {
 
   return (
     <div className="input-box">
-      <h2>닉네임 변경</h2>
+      <h2>전화번호 변경</h2>
       <Box>
         <TextField
           fullWidth

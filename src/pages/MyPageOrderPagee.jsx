@@ -26,7 +26,7 @@ const MyPageOrderPagee = () => {
       if (res.data.statusCode !== -7) {
         setOrders(res.data.resultData);
       } else {
-        console.log("데이터가 없습니다.");
+        setOrders(null);
       }
     } catch (error) {
       console.log(error);
@@ -41,10 +41,22 @@ const MyPageOrderPagee = () => {
     <div className="mypage-wrap">
       <Mypage />
       <div className="mypage-box">
-        <MyPageOrderList reviewOpenModal={reviewOpenModal} orders={orders} />
-        {reviewOpen ? (
-          <MypageReviewWrite reviewYes={reviewYes} reviewNo={reviewNo} />
-        ) : null}
+        {orders ? (
+          <>
+            <MyPageOrderList
+              reviewOpenModal={reviewOpenModal}
+              orders={orders}
+              reviewOpen={reviewOpen}
+              reviewYes={reviewYes}
+              reviewNo={reviewNo}
+            />
+            {reviewOpen ? (
+              <MypageReviewWrite reviewYes={reviewYes} reviewNo={reviewNo} />
+            ) : null}
+          </>
+        ) : (
+          <div className="order-list">주문 내역이 없습니다</div>
+        )}
       </div>
     </div>
   );
