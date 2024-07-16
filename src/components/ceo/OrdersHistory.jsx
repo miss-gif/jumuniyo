@@ -8,7 +8,7 @@ const getCookie = name => {
   if (parts.length === 2) return parts.pop().split(";").shift();
 };
 
-const Orders = () => {
+const OrdersHistory = () => {
   const [selectedTab, setSelectedTab] = useState("accepted");
   const [acceptedOrders, setAcceptedOrders] = useState([]);
   const [refusedOrders, setRefusedOrders] = useState([]);
@@ -165,4 +165,4 @@ const Orders = () => {
   );
 };
 
-export default Orders;
+export default OrdersHistory;

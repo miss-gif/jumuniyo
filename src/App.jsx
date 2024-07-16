@@ -14,7 +14,6 @@ import NotFound from "./pages/NotFound.jsx";
 import PaymentPage from "./pages/PaymentPage.jsx";
 import ProfilePage from "./pages/ProfilePage.jsx";
 import ProjectInfo from "./pages/ProjectInfo.jsx";
-import RestaurantDetailPage from "./pages/RestaurantDetailPage.jsx";
 import RestaurantsPage from "./pages/RestaurantsPage.jsx";
 import Test from "./pages/Test";
 import MyPageOrderPagee from "./pages/MyPageOrderPagee";
@@ -22,7 +21,6 @@ import MyPageReviewPage from "./pages/MyPageReviewPage";
 import AdminPage from "./pages/AdminPage";
 import CeoLayout from "./components/layout/CeoLayout";
 import Reviews from "./components/ceo/Reviews";
-import Orders from "./components/ceo/Orders";
 import MenuManagement from "./components/ceo/MenuManagement";
 import StoreManagement from "./components/ceo/StoreManagement";
 import Statistics from "./components/ceo/Statistics";
@@ -38,6 +36,8 @@ import LoginPageforCEO from "./components/ceo/LogintestforCeo";
 import { jwtDecode } from "jwt-decode";
 import { OrderProvider } from "./pages/user/OrderContext";
 import Pay from "./components/restaurantdetail/Pay";
+import OrdersAccepted from "./components/ceo/OrdersAccepted";
+import OrdersHistory from "./components/ceo/OrdersHistory";
 
 // gmu 테스트
 const getCookie = name => {
@@ -107,7 +107,8 @@ function App() {
               <Route path="/ceopage/" element={<Home />} />
               <Route path="login" element={<LoginPageforCEO />} />
               <Route path="home" element={<Home />} />
-              <Route path="orders" element={<Orders />} />
+              <Route path="orders-accepted" element={<OrdersAccepted />} />
+              <Route path="orders-history" element={<OrdersHistory />} />
               <Route
                 path="orders/details/:doneOrderPk"
                 element={<OrdersDetail />}

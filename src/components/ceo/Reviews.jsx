@@ -54,13 +54,6 @@ const Reviews = () => {
     setIsEditing({ ...isEditing, [reviewId]: false });
   };
 
-  // const handleReplyDelete = reviewId => {
-  //   alert(`삭제 리뷰id: ${reviewId}`);
-  //   const newReplies = { ...replies };
-  //   delete newReplies[reviewId];
-  //   setReplies(newReplies);
-  // };
-
   const enableEdit = reviewId => {
     setIsEditing({ ...isEditing, [reviewId]: true });
   };

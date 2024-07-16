@@ -1,62 +1,45 @@
 .ceo-home {
+  display: flex;
+  .left {
+    display: flex;
+    flex-direction: column;
+    background-color: #ccc;
+    h3 {
+      padding: 30px 50px 30px 50px;
+    }
+    .waiting-orders {
+      .one-order {
+        display: flex;
+        justify-content: space-between;
+        background-color: rgba(128, 122, 122, 0.8);
+        padding-left: 30px;
+        padding-right: 30px;
+        padding-bottom: 30px;
+      }
+      .one-order-left {
+        padding-right: 30px;
+      }
+      .one-order-right {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+    }
+  }
+
   .ceo-home-tab {
     font-size: 2em;
     color: #333;
     padding: 40px 80px;
   }
+
+  .refresh-btn {
+  }
+
   .order-body {
-    display: flex;
     gap: 20px;
     padding: 0px 80px 100px 80px;
-    .left {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-      .confirmedList {
-        .confirmedList-tab {
-          background-color: $black;
-          color: $white;
-          padding: $padding-2;
-        }
-        .oneOrder {
-          border: 1px solid #ccc;
-          display: flex;
-          .orderedTime {
-            display: flex;
-            margin: 0 auto;
-          }
-          .orderInfo {
-            .orderAmount {
-              display: flex;
-              .orderNumber {
-              }
-              .orderPrice {
-              }
-              .payMethod {
-              }
-            }
-            .orderedMenu {
-              display: flex;
 
-              .menu-name {
-              }
-              .menu-amount {
-              }
-            }
-            .orderedAddress {
-            }
-            .requested {
-            }
-          }
-          .orderStatus {
-            .orderLeftTime {
-            }
-            .orderProcess {
-            }
-          }
-        }
-      }
-    }
     .allSalesOntheDay {
       .title {
         background-color: $black;
@@ -76,6 +59,10 @@
     }
 
     .orderedList {
+      .noOrdersMessage {
+        display: flex;
+        align-items: center;
+      }
       .oneOrder {
         .AnOrderHead {
           background-color: $black;
