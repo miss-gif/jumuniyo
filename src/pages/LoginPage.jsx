@@ -97,7 +97,7 @@ const AuthUserPage = () => {
           >
             로그인
           </button>
-          <div className="social-login">
+          {/* <div className="social-login">
             <div className="social-login-kakao">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -162,7 +162,7 @@ const AuthUserPage = () => {
                 />
               </svg>
             </div>
-          </div>
+          </div> */}
         </form>
       </div>
       <JoinFooter />

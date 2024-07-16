@@ -27,6 +27,10 @@ const AuthUserPage = () => {
   const [userPhoneComplete, setUerPhoneComplete] = useState(false);
   const [userImgComplete, setUerImgComplete] = useState(false);
 
+  // 인증 참, 거짓 State
+  const [idCheckOk, setIdCheckOk] = useState(false);
+  const [emailCheckOk, setEmailCheckOk] = useState(false);
+
   // 정규 표현식 조건
   const idRegex = /^.{8,}$/;
   const passRegex = /^(?=.*[!@#$%^&*(),.?":{}|<>]).{8,}$/;
