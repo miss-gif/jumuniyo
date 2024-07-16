@@ -18,3 +18,14 @@ export const fetchMenuData = async id => {
     console.log(error);
   }
 };
+
+export const fetchReviewData = async resPk => {
+  try {
+    const response = await axios.get(`/api/rev/reviewlist?resPk=${resPk}`);
+    return response.data.resultData;
+  } catch (error) {
+    throw new Error(
+      error.response ? error.response.data.message : error.message,
+    );
+  }
+};

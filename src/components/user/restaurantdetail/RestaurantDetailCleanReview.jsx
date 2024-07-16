@@ -1,8 +1,32 @@
-import React from "react";
+/* eslint-disable react/prop-types */
+import React, { useState, useEffect } from "react";
 import Review from "../../common/Review";
 // import "./RestaurantDetailCleanReview.scss";
+import { fetchReviewData } from "../../../api/restaurantdetail/restaurantDetail";
 
-const RestaurantDetailCleanReview = () => {
+const RestaurantDetailCleanReview = ({ resPk }) => {
+  const [reviews, setReviews] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const getReviews = async () => {
+      try {
+        const reviewData = await fetchReviewData(resPk);
+        setReviews(reviewData);
+        setLoading(false);
+      } catch (err) {
+        setError(err.message);
+        setLoading(false);
+      }
+    };
+
+    getReviews();
+  }, [resPk]);
+
+  if (loading) return <p>로딩 중</p>;
+  if (error) return <p>에러: {error}</p>;
+
   return (
     <div className="restaurant-detail">
       <div className="restaurant-detail__overall-score">
@@ -33,18 +57,20 @@ const RestaurantDetailCleanReview = () => {
         <div className="review-list__filter">
           <div className="filter__text">
             <p>
-              리뷰 <span>10861</span>개
+              리뷰 <span>{reviews.length}</span>개
             </p>
             <p>
-              사장님댓글 <span>10861</span>개
+              사장님댓글
+              <span>{reviews.filter(review => review.reply).length}</span>개
             </p>
           </div>
           <p className="filter__photo-reviews">사진리뷰만</p>
         </div>
 
         <ul className="reviews">
-          <Review />
-          <Review />
+          {reviews.map(review => (
+            <Review key={review.reviewPk} review={review} />
+          ))}
         </ul>
       </div>
     </div>
