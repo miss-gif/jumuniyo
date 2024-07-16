@@ -1,6 +1,17 @@
-import React from "react";
+import React, { useContext } from "react";
+import { OrderContext } from "./user/OrderContext";
 
 const PaymentPage = () => {
+  const { order } = useContext(OrderContext); // useContext로 order 값 가져오기
+
+  const calculateTotalPrice = item => {
+    return item.menu_price * item.quantity; // 각 항목의 총 가격 계산
+  };
+
+  const calculateTotalOrderPrice = () => {
+    return order.reduce((total, item) => total + calculateTotalPrice(item), 0);
+  };
+
   return (
     <div className="payment-page">
       <div className="payment-page__section">
@@ -97,6 +108,7 @@ const PaymentPage = () => {
           </form>
         </div>
       </div>
+
       <div className="payment-page__order-summary">
         <h2 className="payment-page__title">주문내역</h2>
         <div className="payment-page__warp-border">
@@ -104,30 +116,20 @@ const PaymentPage = () => {
             뉴욕버거앤치킨-대구남산점
           </h3>
           <ul>
-            <li className="payment-page__order-item">
-              <p>
-                우삼겹 투움바 파스타 <span>x 1개</span>
-              </p>
-              <p>23,000원</p>
-            </li>
-            <li className="payment-page__order-item">
-              <p>
-                우삼겹 투움바 파스타 <span>x 1개</span>
-              </p>
-              <p>23,000원</p>
-            </li>
-            <li className="payment-page__order-item">
-              <p>
-                우삼겹 투움바 파스타 <span>x 1개</span>
-              </p>
-              <p>23,000원</p>
-            </li>
+            {order.map((item, index) => (
+              <li key={index} className="payment-page__order-item">
+                <p>
+                  {item.menu_name} <span>x {item.quantity}개</span>
+                </p>
+                <p>{calculateTotalPrice(item)}원</p> {/* 계산된 총 가격 표시 */}
+              </li>
+            ))}
           </ul>
 
           {/* 결제 */}
           <div className="payment-page__total-amount">
             <p>총 결제 금액</p>
-            <p>23,000원</p>
+            <p>{calculateTotalOrderPrice()}원</p>
           </div>
         </div>
         <p className="payment-page__terms">
