@@ -9,6 +9,7 @@ const MypageModal = ({
   setNewAddressDetail,
   setNewXValue,
   setNewYValue,
+  isFirstUser,
 }) => {
   return (
     <div className="modify-modal">

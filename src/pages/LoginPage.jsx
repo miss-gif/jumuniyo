@@ -19,6 +19,12 @@ const AuthUserPage = () => {
         user_pw: userPw,
         user_login_type: 1,
       });
+
+      if (response.data.statusCode === 2) {
+        alert(response.data.resultMsg);
+        return;
+      }
+
       setCookie("accessToken", response.data.resultData.accessToken);
       console.log(response.data.resultData.userRole);
       if (

@@ -100,7 +100,7 @@ const MyPage = () => {
               {!isEditImg ? (
                 <>
                   <img
-                    src={`http://192.168.0.67:8080/pic/${imgUrl}`}
+                    src={`https://34.64.63.109/pic/${imgUrl}`}
                     alt="profile-img"
                   />
                   <button className="btn" onClick={() => editMode("img")}>
@@ -156,7 +156,7 @@ const MyPage = () => {
           <div className="mypage-title-box-right">
             {!isEditPassword ? (
               <>
-                <input type="password" value={passWord} disabled />
+                <input type="password" value={12345678910} disabled />
                 <button
                   className="btn"
                   onClick={() => {
