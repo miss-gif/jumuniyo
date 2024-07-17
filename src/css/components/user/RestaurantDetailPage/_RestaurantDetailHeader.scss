@@ -8,6 +8,24 @@
   }
 }
 
+.restaurant-detail-page__menu-header {
+  list-style: none;
+  display: flex;
+  padding: 0;
+  margin: 0;
+}
+
+.header__item {
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.header__item.active {
+  color: $white;
+  font-weight: bold;
+  background-color: $color-info-500;
+}
+
 .header {
   &__item {
     display: flex;

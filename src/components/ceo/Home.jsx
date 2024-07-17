@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import ModalForHome from "./ModalForHome";
 
 const getCookie = name => {
   const value = `; ${document.cookie}`;
@@ -64,11 +66,17 @@ const fetchOrderDetail = async orderPk => {
 };
 
 const Home = () => {
+  const navigate = useNavigate();
   const [orders, setOrders] = useState([]);
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [orderDetail, setOrderDetail] = useState(null);
   const [error, setError] = useState(null);
   const [noOrders, setNoOrders] = useState(false);
+  const [selectedOrderPk, setSelectedOrderPk] = useState(null);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [modalAction, setModalAction] = useState(null);
+  const [modalOrderPk, setModalOrderPk] = useState(null);
+  const [modalMessage, setModalMessage] = useState("");
 
   const loadOrders = async () => {
     try {
@@ -102,6 +110,8 @@ const Home = () => {
   const handleConfirmOrder = async orderPk => {
     try {
       await confirmOrder(orderPk);
+      setOrderDetail(null);
+      setSelectedOrder(null);
       loadOrders();
     } catch (error) {
       setError(error);
@@ -111,17 +121,66 @@ const Home = () => {
   const handleCancelOrder = async orderPk => {
     try {
       await cancelOrder(orderPk);
+      setOrderDetail(null);
+      setSelectedOrder(null);
       loadOrders();
     } catch (error) {
       setError(error);
     }
   };
 
+  const openModal = (action, orderPk) => {
+    setModalAction(action);
+    setModalOrderPk(orderPk);
+    setModalMessage(
+      action === "confirm" ? "접수하시겠습니까?" : "거절하시겠습니까?",
+    );
+    setModalIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalIsOpen(false);
+    setModalAction(null);
+    setModalOrderPk(null);
+    setModalMessage("");
+  };
+
+  const handleModalConfirm = () => {
+    if (modalAction === "confirm") {
+      handleConfirmOrder(modalOrderPk);
+    } else if (modalAction === "cancel") {
+      handleCancelOrder(modalOrderPk);
+    }
+    closeModal();
+  };
+
+  useEffect(() => {
+    const checkLogin = () => {
+      const accessToken = getCookie("accessToken");
+      if (!accessToken) {
+        navigate("/login");
+      }
+    };
+
+    checkLogin();
+    loadOrders();
+  }, [navigate]);
+
   useEffect(() => {
     if (selectedOrder) {
       loadOrderDetail(selectedOrder.orderPk);
     }
   }, [selectedOrder]);
+
+  const formatTime = datetime => {
+    const date = new Date(datetime);
+    let hours = date.getHours();
+    const minutes = date.getMinutes().toString().padStart(2, "0");
+    const ampm = hours >= 12 ? "오후" : "오전";
+    hours = hours % 12;
+    hours = hours ? hours : 12; // the hour '0' should be '12'
+    return `${ampm} ${hours}:${minutes}`;
+  };
 
   if (error) {
     return <div>Error: {error.message}</div>;
@@ -138,9 +197,12 @@ const Home = () => {
             ) : (
               orders.map(order => (
                 <div
-                  className="one-order"
+                  className={`one-order ${selectedOrderPk === order.orderPk ? "selected" : ""}`}
                   key={order.orderPk}
-                  onClick={() => setSelectedOrder(order)}
+                  onClick={() => {
+                    setSelectedOrder(order);
+                    setSelectedOrderPk(order.orderPk);
+                  }}
                 >
                   <div className="one-order-left">
                     <div className="order-number">접수 No. {order.orderPk}</div>
@@ -149,7 +211,9 @@ const Home = () => {
                     </div>
                   </div>
                   <div className="one-order-right">
-                    <div className="order-time">{order.createdAt}</div>
+                    <div className="order-time">
+                      {formatTime(order.createdAt)}
+                    </div>
                   </div>
                 </div>
               ))
@@ -218,7 +282,7 @@ const Home = () => {
 
                       <div className="orderCallNumber">
                         <h3> 주문시간</h3>
-                        <p>{orderDetail.createdAt}</p>
+                        <p>{formatTime(orderDetail.createdAt)}</p>
                       </div>
                     </div>
                   </div>
@@ -226,13 +290,13 @@ const Home = () => {
                 <div className="acceptOrRefuse">
                   <button
                     className="btn"
-                    onClick={() => handleConfirmOrder(orderDetail.orderPk)}
+                    onClick={() => openModal("confirm", orderDetail.orderPk)}
                   >
                     접수하기
                   </button>
                   <button
                     className="btn"
-                    onClick={() => handleCancelOrder(orderDetail.orderPk)}
+                    onClick={() => openModal("cancel", orderDetail.orderPk)}
                   >
                     거절하기
                   </button>
@@ -244,6 +308,13 @@ const Home = () => {
           </div>
         </div>
       </div>
+
+      <ModalForHome
+        isOpen={modalIsOpen}
+        onClose={closeModal}
+        onConfirm={handleModalConfirm}
+        message={modalMessage}
+      />
     </>
   );
 };

@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from "react";
-import reviewItemsData from "../restaurantdetail/review.json";
-import ceoReviewData from "../restaurantdetail/ceoReview.json";
+import axios from "axios";
 import testMenu from "../restaurantdetail/testMenu.jpg";
+
+const getCookie = name => {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop().split(";").shift();
+};
 
 const Reviews = () => {
   const [reviewItems, setReviewItems] = useState([]);
@@ -11,19 +16,45 @@ const Reviews = () => {
   const [filter, setFilter] = useState("all");
 
   useEffect(() => {
-    const updatedReviewItems = reviewItemsData.map(item => {
-      const ceoReply = ceoReviewData.find(
-        reply => reply.reviewId === item.reviewId,
-      );
-      return {
-        ...item,
-        reviewImg: testMenu,
-        ceoReply: ceoReply,
-        answer: ceoReply ? "yes" : "no",
-      };
-    });
-    setReviewItems(updatedReviewItems);
-    setFilteredReviews(updatedReviewItems);
+    const fetchReviews = async () => {
+      const accessToken = getCookie("accessToken");
+      console.log("Token: ", accessToken);
+      try {
+        const response = await axios.get("/api/rev/list", {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+        const data = response.data;
+        console.log("Response Data: ", data);
+
+        if (data.statusCode === 1 || data.statusCode === 2) {
+          const updatedReviewItems = data.resultData.map(item => {
+            const reviewImg =
+              item.pics.length > 0 ? `/pic/${item.pics[0]}` : testMenu;
+            return {
+              ...item,
+              reviewImg: reviewImg,
+              ceoReply: item.reply
+                ? {
+                    content: item.reply.commentContents,
+                    writeTime: item.updatedAt,
+                    reviewCommentPk: item.reply.reviewCommentPk,
+                  }
+                : null,
+              answer: item.reply ? "yes" : "no",
+            };
+          });
+          setReviewItems(updatedReviewItems);
+          setFilteredReviews(updatedReviewItems);
+        }
+      } catch (error) {
+        console.error("Fetch error: ", error);
+      }
+    };
+
+    fetchReviews();
   }, []);
 
   useEffect(() => {
@@ -38,18 +69,111 @@ const Reviews = () => {
     setFilteredReviews(filtered);
   }, [filter, reviewItems]);
 
-  const handleReplyChange = (reviewId, event) => {
-    const newReplies = { ...replies, [reviewId]: event.target.value };
+  const handleReplyChange = (reviewPk, event) => {
+    const newReplies = { ...replies, [reviewPk]: event.target.value };
     setReplies(newReplies);
   };
 
-  const handleReplySubmit = reviewId => {
-    alert(`리뷰id: ${reviewId} 답글id: ${replies[reviewId]}`);
-    setIsEditing({ ...isEditing, [reviewId]: false });
+  const handleReplySubmit = async (reviewPk, isEdit = false) => {
+    const accessToken = getCookie("accessToken");
+    const commentContent = replies[reviewPk];
+    const payload = isEdit
+      ? {
+          review_comment_pk: reviewItems.find(
+            item => item.reviewPk === reviewPk,
+          ).ceoReply.reviewCommentPk,
+          comment_content: commentContent,
+        }
+      : {
+          review_pk: reviewPk,
+          comment_content: commentContent,
+        };
+
+    console.log("Request Payload: ", payload);
+
+    try {
+      const method = isEdit ? "put" : "post";
+      const response = await axios({
+        method: method,
+        url: "/api/rev/owner/comment",
+        data: payload,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+
+      console.log("Response: ", response.data);
+
+      if (response.data.statusCode === 1 || response.data.statusCode === 2) {
+        alert("답글이 성공적으로 저장되었습니다.");
+        const updatedReviewItems = reviewItems.map(item =>
+          item.reviewPk === reviewPk
+            ? {
+                ...item,
+                ceoReply: {
+                  content: commentContent,
+                  writeTime: new Date().toISOString(),
+                  reviewCommentPk: item.ceoReply
+                    ? item.ceoReply.reviewCommentPk
+                    : response.data.resultData,
+                },
+                answer: "yes",
+              }
+            : item,
+        );
+        setReviewItems(updatedReviewItems);
+        setFilteredReviews(updatedReviewItems);
+        setIsEditing({ ...isEditing, [reviewPk]: false });
+      } else {
+        alert("답글 저장에 실패했습니다.");
+      }
+    } catch (error) {
+      console.error("Reply submit error: ", error);
+      alert("답글 저장 중 오류가 발생했습니다.");
+    }
   };
 
-  const enableEdit = reviewId => {
-    setIsEditing({ ...isEditing, [reviewId]: true });
+  const handleReplyDelete = async reviewCommentPk => {
+    const accessToken = getCookie("accessToken");
+
+    try {
+      const response = await axios.delete(
+        `/api/rev/owner/comment/${reviewCommentPk}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+        },
+      );
+
+      console.log("Response: ", response.data);
+
+      if (response.data.statusCode === 1 || response.data.statusCode === 2) {
+        alert("답글이 성공적으로 삭제되었습니다.");
+        const updatedReviewItems = reviewItems.map(item =>
+          item.ceoReply && item.ceoReply.reviewCommentPk === reviewCommentPk
+            ? {
+                ...item,
+                ceoReply: null,
+                answer: "no",
+              }
+            : item,
+        );
+        setReviewItems(updatedReviewItems);
+        setFilteredReviews(updatedReviewItems);
+      } else {
+        alert("답글 삭제에 실패했습니다.");
+      }
+    } catch (error) {
+      console.error("Reply delete error: ", error);
+      alert("답글 삭제 중 오류가 발생했습니다.");
+    }
+  };
+
+  const enableEdit = reviewPk => {
+    setIsEditing({ ...isEditing, [reviewPk]: true });
   };
 
   return (
@@ -71,7 +195,7 @@ const Reviews = () => {
                   리뷰 <span>10861</span>개
                 </p>
                 <p>
-                  사장님댓글 <span>10861</span>개
+                  사장님댓글 <span>10861</span>
                 </p>
               </div>
               <p className="filter__photo-reviews">사진리뷰만</p>
@@ -94,13 +218,12 @@ const Reviews = () => {
                 {filteredReviews.map((item, index) => (
                   <div key={index} className="review">
                     <div className="review-header">
-                      <span className="review-user">{item.userId}</span>
-                      <span className="review-date">{item.writeTime}</span>
-                      <span className="review-rating">{item.score}</span>
+                      <span className="review-user">{item.userPk}</span>
+                      <span className="review-date">{item.createdAt}</span>
+                      <span className="review-rating">{item.reviewRating}</span>
                     </div>
                     <div className="review-content-image">
-                      <p>{item.content}</p>
-
+                      <p>{item.reviewContents}</p>
                       <img src={item.reviewImg} alt="Review" />
                     </div>
                     {item.ceoReply ? (
@@ -113,32 +236,38 @@ const Reviews = () => {
                         <textarea
                           className="textarea-custom"
                           value={
-                            replies[item.reviewId] || item.ceoReply.content
+                            isEditing[item.reviewPk]
+                              ? replies[item.reviewPk] || item.ceoReply.content
+                              : item.ceoReply.content
                           }
                           onChange={event =>
-                            handleReplyChange(item.reviewId, event)
+                            handleReplyChange(item.reviewPk, event)
                           }
-                          readOnly={!isEditing[item.reviewId]} // 읽기 전용 모드
+                          readOnly={!isEditing[item.reviewPk]}
                         />
-                        {isEditing[item.reviewId] ? (
+                        {isEditing[item.reviewPk] ? (
                           <>
                             <button
                               className="btn"
-                              onClick={() => handleReplySubmit(item.reviewId)}
+                              onClick={() =>
+                                handleReplySubmit(item.reviewPk, true)
+                              }
                             >
                               저장
                             </button>
-                            {/* <button
-                            className="btn"
-                            onClick={() => handleReplyDelete(item.reviewId)}
-                          >
-                            삭제
-                          </button> */}
+                            <button
+                              className="btn"
+                              onClick={() =>
+                                handleReplyDelete(item.ceoReply.reviewCommentPk)
+                              }
+                            >
+                              삭제
+                            </button>
                           </>
                         ) : (
                           <button
                             className="btn"
-                            onClick={() => enableEdit(item.reviewId)}
+                            onClick={() => enableEdit(item.reviewPk)}
                           >
                             수정
                           </button>
@@ -148,15 +277,15 @@ const Reviews = () => {
                       <div className="reply-section">
                         <textarea
                           className="textarea-custom"
-                          value={replies[item.reviewId] || ""}
+                          value={replies[item.reviewPk] || ""}
                           onChange={event =>
-                            handleReplyChange(item.reviewId, event)
+                            handleReplyChange(item.reviewPk, event)
                           }
                           placeholder="답글을 입력하세요"
                         />
                         <button
                           className="btn"
-                          onClick={() => handleReplySubmit(item.reviewId)}
+                          onClick={() => handleReplySubmit(item.reviewPk)}
                         >
                           답글 달기
                         </button>

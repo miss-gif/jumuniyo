@@ -128,7 +128,10 @@ const OrdersAccepted = () => {
                 </div>
                 <div className="one-order-right">
                   <div className="order-time">
-                    {new Date(order.createdAt).toLocaleTimeString()}
+                    {new Date(order.createdAt).toLocaleTimeString([], {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
                   </div>
                 </div>
               </div>

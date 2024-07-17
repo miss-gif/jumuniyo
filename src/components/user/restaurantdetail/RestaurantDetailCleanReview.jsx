@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import Review from "../../common/Review";
 import { fetchReviewData } from "../../../api/restaurantdetail/restaurantDetail";
 
-const RestaurantDetailCleanReview = ({ resPk }) => {
+const RestaurantDetailCleanReview = ({ resPk, restaurantData }) => {
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -12,7 +12,7 @@ const RestaurantDetailCleanReview = ({ resPk }) => {
     const getReviews = async () => {
       try {
         const reviewData = await fetchReviewData(resPk);
-        setReviews(reviewData || []); // 리뷰 데이터를 불러오지 못하면 빈 배열로 설정
+        setReviews(reviewData);
         setLoading(false);
       } catch (err) {
         setError(err.message);
@@ -30,8 +30,10 @@ const RestaurantDetailCleanReview = ({ resPk }) => {
     <div className="restaurant-detail">
       <div className="restaurant-detail__overall-score">
         <div className="overall-score">
-          <p className="overall-score__value">4.8</p>
-          <span className="overall-score__icon">★★★★★</span>
+          <p className="overall-score__value">{restaurantData.reviewScore}</p>
+          <span className="overall-score__icon">
+            {"★".repeat(Math.round(restaurantData.reviewScore))}
+          </span>
         </div>
         <div className="score-items">
           <div className="score-item score-item--taste">
@@ -59,7 +61,7 @@ const RestaurantDetailCleanReview = ({ resPk }) => {
               리뷰 <span>{reviews.length}</span>개
             </p>
             <p>
-              사장님댓글
+              사장님댓글{" "}
               <span>{reviews.filter(review => review.reply).length}</span>개
             </p>
           </div>

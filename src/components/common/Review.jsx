@@ -19,7 +19,7 @@ const Review = ({ review }) => {
         <div className="rating__stars">{"★".repeat(reviewRating)}</div>
       </div>
       {pics.length > 0 && (
-        <img src={pics[0]} alt="" className="review__image" />
+        <img src={`/pic/${pics[0]}`} alt="review" className="review__image" />
       )}
       <div className="review__content">{reviewContents}</div>
       {reply && <OwnerComment reply={reply} />}
