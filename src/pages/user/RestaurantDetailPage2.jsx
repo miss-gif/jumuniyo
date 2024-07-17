@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import {
   fetchRestaurantData,
   fetchMenuData,
+  fetchReviewData,
 } from "../../api/restaurantdetail/restaurantDetail";
 import RestaurantDetailHeader from "../../components/user/restaurantdetail/RestaurantDetailHeader";
 import RestaurantDetailCleanReview from "../../components/user/restaurantdetail/RestaurantDetailCleanReview";
@@ -12,13 +13,29 @@ import RestaurantDetailInfo from "../../components/user/restaurantdetail/Restaur
 import OrderSummary from "../../components/user/restaurantdetail/OrderSummary";
 import { OrderContext } from "./OrderContext";
 
+const saveStateToSessionStorage = (key, state) => {
+  sessionStorage.setItem(key, JSON.stringify(state));
+};
+
+const loadStateFromSessionStorage = key => {
+  const savedState = sessionStorage.getItem(key);
+  return savedState ? JSON.parse(savedState) : null;
+};
+
+const clearStateFromSessionStorage = key => {
+  sessionStorage.removeItem(key);
+};
+
 const RestaurantDetailPage = () => {
   const [activeTab, setActiveTab] = useState("menu");
   const { id } = useParams();
   const navigate = useNavigate();
   const [restaurantData, setRestaurantData] = useState(null);
   const [menuData, setMenuData] = useState([]);
-  const [selectedMenuItems, setSelectedMenuItems] = useState([]);
+  const [reviewData, setReviewData] = useState([]);
+  const [selectedMenuItems, setSelectedMenuItems] = useState(
+    loadStateFromSessionStorage(`selectedMenuItems_${id}`) || [],
+  );
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { addOrderItem, clearOrder } = useContext(OrderContext);
@@ -28,10 +45,13 @@ const RestaurantDetailPage = () => {
       try {
         const restaurant = await fetchRestaurantData(id);
         const menu = restaurant.menuList;
+        const reviews = await fetchReviewData(id);
         console.log("가게: ", restaurant);
         console.log("메뉴: ", menu);
+        console.log("리뷰: ", reviews);
         setRestaurantData(restaurant);
         setMenuData(menu);
+        setReviewData(reviews);
         setLoading(false);
       } catch (err) {
         console.error("에러: ", err);
@@ -43,9 +63,29 @@ const RestaurantDetailPage = () => {
     getData();
   }, [id]);
 
+  useEffect(() => {
+    saveStateToSessionStorage(`selectedMenuItems_${id}`, selectedMenuItems);
+  }, [selectedMenuItems, id]);
+
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      clearOrder();
+      clearStateFromSessionStorage(`selectedMenuItems_${id}`);
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, [id, clearOrder]);
+
   if (loading) return <p>로딩 중</p>;
   if (error) return <p>에러: {error.message}</p>;
   if (!restaurantData) return <p>없는 페이지 입니다.</p>;
+
+  const menuCount = menuData.length;
+  const reviewCount = reviewData.length;
 
   const handleSelectMenuItem = item => {
     setSelectedMenuItems(prevItems => {
@@ -93,14 +133,14 @@ const RestaurantDetailPage = () => {
   const handleClearAll = () => {
     setSelectedMenuItems([]);
     clearOrder();
+    clearStateFromSessionStorage(`selectedMenuItems_${id}`);
   };
 
   const handleOrder = () => {
     selectedMenuItems.forEach(item => {
       addOrderItem(item);
     });
-    setSelectedMenuItems([]);
-    navigate("/payment", { state: { orderItems: selectedMenuItems } });
+    navigate("/payment", { state: { orderItems: selectedMenuItems, id } });
   };
 
   const renderContent = () => {
@@ -136,6 +176,8 @@ const RestaurantDetailPage = () => {
             <RestaurantDetailHeader
               activeTab={activeTab}
               setActiveTab={setActiveTab}
+              menuCount={menuCount}
+              reviewCount={reviewCount}
             />
             <div>{renderContent()}</div>
           </div>

@@ -26,13 +26,16 @@ const RestaurantDetailCleanReview = ({ resPk, restaurantData }) => {
   if (loading) return <p>로딩 중</p>;
   if (error) return <p>에러: {error}</p>;
 
+  // 소수 둘째 자리에서 반올림된 reviewScore
+  const roundedReviewScore = Math.round(restaurantData.reviewScore * 100) / 100;
+
   return (
     <div className="restaurant-detail">
       <div className="restaurant-detail__overall-score">
         <div className="overall-score">
-          <p className="overall-score__value">{restaurantData.reviewScore}</p>
+          <p className="overall-score__value">{roundedReviewScore}</p>
           <span className="overall-score__icon">
-            {"★".repeat(Math.round(restaurantData.reviewScore))}
+            {"★".repeat(Math.round(roundedReviewScore))}
           </span>
         </div>
         <div className="score-items">

@@ -14,6 +14,9 @@ const Reviews = () => {
   const [replies, setReplies] = useState({});
   const [isEditing, setIsEditing] = useState({});
   const [filter, setFilter] = useState("all");
+  const [reviewCount, setReviewCount] = useState(0);
+  const [replyCount, setReplyCount] = useState(0);
+  const [averageRating, setAverageRating] = useState(0);
 
   useEffect(() => {
     const fetchReviews = async () => {
@@ -48,6 +51,21 @@ const Reviews = () => {
           });
           setReviewItems(updatedReviewItems);
           setFilteredReviews(updatedReviewItems);
+
+          setReviewCount(updatedReviewItems.length);
+          setReplyCount(
+            updatedReviewItems.filter(item => item.answer === "yes").length,
+          );
+
+          // Calculate average rating
+          const totalRating = updatedReviewItems.reduce(
+            (sum, item) => sum + item.reviewRating,
+            0,
+          );
+          const avgRating = (totalRating / updatedReviewItems.length).toFixed(
+            1,
+          );
+          setAverageRating(avgRating);
         }
       } catch (error) {
         console.error("Fetch error: ", error);
@@ -125,6 +143,17 @@ const Reviews = () => {
         setReviewItems(updatedReviewItems);
         setFilteredReviews(updatedReviewItems);
         setIsEditing({ ...isEditing, [reviewPk]: false });
+        setReplyCount(
+          updatedReviewItems.filter(item => item.answer === "yes").length,
+        );
+
+        // Recalculate average rating
+        const totalRating = updatedReviewItems.reduce(
+          (sum, item) => sum + item.reviewRating,
+          0,
+        );
+        const avgRating = (totalRating / updatedReviewItems.length).toFixed(1);
+        setAverageRating(avgRating);
       } else {
         alert("답글 저장에 실패했습니다.");
       }
@@ -163,6 +192,17 @@ const Reviews = () => {
         );
         setReviewItems(updatedReviewItems);
         setFilteredReviews(updatedReviewItems);
+        setReplyCount(
+          updatedReviewItems.filter(item => item.answer === "yes").length,
+        );
+
+        // Recalculate average rating
+        const totalRating = updatedReviewItems.reduce(
+          (sum, item) => sum + item.reviewRating,
+          0,
+        );
+        const avgRating = (totalRating / updatedReviewItems.length).toFixed(1);
+        setAverageRating(avgRating);
       } else {
         alert("답글 삭제에 실패했습니다.");
       }
@@ -176,6 +216,32 @@ const Reviews = () => {
     setIsEditing({ ...isEditing, [reviewPk]: true });
   };
 
+  const renderStars = rating => {
+    const fullStars = Math.floor(rating);
+    const halfStar = rating % 1 >= 0.5 ? 1 : 0;
+    const emptyStars = 5 - fullStars - halfStar;
+
+    return (
+      <>
+        {Array(fullStars)
+          .fill()
+          .map((_, index) => (
+            <span key={index} className="star">
+              ★
+            </span>
+          ))}
+        {halfStar === 1 && <span className="star">☆</span>}
+        {Array(emptyStars)
+          .fill()
+          .map((_, index) => (
+            <span key={index + fullStars + halfStar} className="star">
+              ☆
+            </span>
+          ))}
+      </>
+    );
+  };
+
   return (
     <div className="ceo-review-content">
       <div className="ceo-review-wrap">
@@ -185,17 +251,19 @@ const Reviews = () => {
           <div className="review-content">
             <div className="rating-section">
               <div className="overall-score">
-                <p className="overall-score__value">4.8</p>
-                <span className="overall-score__icon">★★★★★</span>
+                <p className="overall-score__value">{averageRating}</p>
+                <span className="overall-score__icon">
+                  {renderStars(averageRating)}
+                </span>
               </div>
             </div>
             <div className="review-list__filter">
               <div className="filter__text">
                 <p>
-                  리뷰 <span>10861</span>개
+                  리뷰 <span>{reviewCount}</span>개
                 </p>
                 <p>
-                  사장님댓글 <span>10861</span>
+                  사장님댓글 <span>{replyCount}</span> 개
                 </p>
               </div>
               <p className="filter__photo-reviews">사진리뷰만</p>
@@ -220,7 +288,9 @@ const Reviews = () => {
                     <div className="review-header">
                       <span className="review-user">{item.userPk}</span>
                       <span className="review-date">{item.createdAt}</span>
-                      <span className="review-rating">{item.reviewRating}</span>
+                      <span className="review-rating">
+                        {renderStars(item.reviewRating)} {item.reviewRating}
+                      </span>
                     </div>
                     <div className="review-content-image">
                       <p>{item.reviewContents}</p>
