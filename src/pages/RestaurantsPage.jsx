@@ -1,12 +1,15 @@
 import React, { useEffect } from "react";
 import { MdOutlineStarPurple500 } from "react-icons/md";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Filters from "../components/restaurants/Filters";
 import useFetchRestaurantData from "../hooks/useFetchRestaurantData";
 
 const RestaurantsPage = () => {
   const { restaurantData, isLoading, error, fetchData } =
     useFetchRestaurantData();
+
+  const { id } = useParams();
+  console.log(id);
 
   const navigate = useNavigate();
 
