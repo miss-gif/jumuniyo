@@ -1,10 +1,39 @@
+/* eslint-disable react/prop-types */
 import { Rating, TextField } from "@mui/material";
 import { useState } from "react";
+import jwtAxios from "../../../api/user/jwtUtil";
 
-// eslint-disable-next-line react/prop-types
-const MypageReviewWrite = ({ reviewYes, reviewNo }) => {
+const MypageReviewWrite = ({
+  reviewNo,
+  resPk,
+  doneOrderPk,
+  setReviewOpen,
+  setSelectedOrderPk,
+}) => {
   const [test, setTest] = useState("");
-  console.log(test);
+  const [reviewWrite, setReviewWrite] = useState("");
+
+  const postReview = async () => {
+    setReviewOpen(false);
+    setSelectedOrderPk(null);
+    const data = {
+      p: {
+        done_order_pk: doneOrderPk,
+        res_pk: resPk,
+        review_contents: reviewWrite,
+        review_rating: test,
+      },
+      pics: [],
+    };
+
+    try {
+      const header = { headers: { "Content-Type": "multipart/form-data" } };
+      const res = await jwtAxios.post("/api/rev", data, header);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="modify-modal">
       <h3>리뷰 쓰기</h3>
@@ -22,12 +51,15 @@ const MypageReviewWrite = ({ reviewYes, reviewNo }) => {
         multiline
         rows={4}
         defaultValue=""
+        onChange={e => {
+          setReviewWrite(e.target.value);
+        }}
       />
       <div className="mypage-button-box">
         <button
           className="btn"
           onClick={() => {
-            reviewYes();
+            postReview();
           }}
         >
           완료

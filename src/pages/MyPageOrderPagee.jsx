@@ -7,17 +7,28 @@ import jwtAxios from "../api/user/jwtUtil";
 const MyPageOrderPagee = () => {
   const [reviewOpen, setReviewOpen] = useState(false);
   const [orders, setOrders] = useState([]);
+  const [selectedOrderPk, setSelectedOrderPk] = useState(null);
+  const [doneOrderPk, setDoneOrderPk] = useState("");
+  const [resPk, setResPk] = useState("");
 
-  const reviewOpenModal = () => {
-    setReviewOpen(true);
+  const isOlderThanThreeDays = date => {
+    const orderDate = new Date(date);
+    const currentDate = new Date();
+    const threeDaysAgo = new Date();
+    threeDaysAgo.setDate(currentDate.getDate() - 3);
+    return orderDate < threeDaysAgo;
   };
 
-  const reviewYes = () => {
-    setReviewOpen(false);
+  const reviewOpenModal = (doneOrderPk, resPk) => {
+    setReviewOpen(true);
+    setSelectedOrderPk(doneOrderPk);
+    setDoneOrderPk(doneOrderPk);
+    setResPk(resPk);
   };
 
   const reviewNo = () => {
     setReviewOpen(false);
+    setSelectedOrderPk(null);
   };
 
   const getOrderList = async () => {
@@ -35,7 +46,6 @@ const MyPageOrderPagee = () => {
 
   useEffect(() => {
     getOrderList();
-    console.log(orders);
   }, []);
 
   return (
@@ -44,16 +54,28 @@ const MyPageOrderPagee = () => {
       <div className="mypage-box">
         {orders ? (
           <>
-            <MyPageOrderList
-              reviewOpenModal={reviewOpenModal}
-              orders={orders}
-              reviewOpen={reviewOpen}
-              reviewYes={reviewYes}
-              reviewNo={reviewNo}
-            />
-            {reviewOpen ? (
-              <MypageReviewWrite reviewYes={reviewYes} reviewNo={reviewNo} />
-            ) : null}
+            {orders.map(order => {
+              const isOldOrder = isOlderThanThreeDays(order.createdAt);
+              return (
+                <div key={order.doneOrderPk}>
+                  <MyPageOrderList
+                    isOldOrder={isOldOrder}
+                    order={order}
+                    reviewOpenModal={reviewOpenModal}
+                    orders={orders}
+                  />
+                  {reviewOpen && selectedOrderPk === order.doneOrderPk && (
+                    <MypageReviewWrite
+                      doneOrderPk={doneOrderPk}
+                      setReviewOpen={setReviewOpen}
+                      reviewNo={reviewNo}
+                      resPk={resPk}
+                      setSelectedOrderPk={setSelectedOrderPk}
+                    />
+                  )}
+                </div>
+              );
+            })}
           </>
         ) : (
           <div className="order-list">주문 내역이 없습니다</div>

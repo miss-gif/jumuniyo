@@ -34,6 +34,12 @@ const AuthUserPage = () => {
   const [userPhoneComplete, setUerPhoneComplete] = useState(false);
   const [userImgComplete, setUerImgComplete] = useState(false);
 
+  // 인증 참, 거짓 State
+  const [idCheckOk, setIdCheckOk] = useState(false);
+  const [idCheckComplete, setIdCheckComplete] = useState(false);
+  const [emailCheckOk, setEmailCheckOk] = useState(false);
+  const [emailCheckComplete, setEmailCheckComplete] = useState(false);
+
   // 주소 관련 State
   const [newXValue, setNewXValue] = useState("");
   const [newYValue, setNewYValue] = useState("");
@@ -59,6 +65,11 @@ const AuthUserPage = () => {
         const res = await axios.get(`/api/is-duplicated?user_id=${userId}`);
         if (res) {
           alert(res.data.resultMsg);
+        }
+        if (res.data.statusCode === 1) {
+          setIdCheckOk(true);
+        } else {
+          setIdCheckOk(false);
         }
         console.log(res);
         return res;
@@ -101,6 +112,15 @@ const AuthUserPage = () => {
     };
     try {
       const res = await axios.post("/api/mail/auth_check", data);
+      if (res.data.resultData === false) {
+        alert(res.data.resultMsg);
+        setEmailCheckOk(false);
+        return;
+      } else if (res.data.resultData === true) {
+        alert(res.data.resultMsg);
+        setEmailCheckOk(true);
+      }
+      console.log(res);
       return res;
     } catch (error) {
       console.log(error);
@@ -169,7 +189,9 @@ const AuthUserPage = () => {
       userPwCheckComplete &&
       userEmailComplete &&
       userPhoneComplete &&
-      userImgComplete
+      userImgComplete &&
+      idCheckComplete &&
+      emailCheckComplete
     ) {
       const pic = new FormData();
 

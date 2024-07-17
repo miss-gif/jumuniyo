@@ -29,7 +29,9 @@ const AuthUserPage = () => {
 
   // 인증 참, 거짓 State
   const [idCheckOk, setIdCheckOk] = useState(false);
+  const [idCheckComplete, setIdCheckComplete] = useState(false);
   const [emailCheckOk, setEmailCheckOk] = useState(false);
+  const [emailCheckComplete, setEmailCheckComplete] = useState(false);
 
   // 정규 표현식 조건
   const idRegex = /^.{8,}$/;
@@ -45,6 +47,11 @@ const AuthUserPage = () => {
         const res = await axios.get(`/api/is-duplicated?user_id=${userId}`);
         if (res) {
           alert(res.data.resultMsg);
+        }
+        if (res.data.statusCode === 1) {
+          setIdCheckOk(true);
+        } else {
+          setIdCheckOk(false);
         }
         console.log(res);
         return res;
@@ -87,6 +94,14 @@ const AuthUserPage = () => {
     };
     try {
       const res = await axios.post("/api/mail/auth_check", data);
+      if (res.data.resultData === false) {
+        alert(res.data.resultMsg);
+        setEmailCheckOk(false);
+        return;
+      } else if (res.data.resultData === true) {
+        alert(res.data.resultMsg);
+        setEmailCheckOk(true);
+      }
       console.log(res);
       return res;
     } catch (error) {
@@ -109,6 +124,30 @@ const AuthUserPage = () => {
       return;
     } else {
       setUerIdComplete(true);
+    }
+
+    if (idCheckOk === false) {
+      alert("아이디 중복확인을 해주세요");
+      setIdCheckComplete(false);
+      return;
+    } else {
+      setIdCheckComplete(true);
+    }
+
+    if (emailCheckOk === false) {
+      alert("이메일 인증을 해주세요");
+      setEmailCheckComplete(false);
+      return;
+    } else {
+      setEmailCheckComplete(true);
+    }
+
+    if (idCheckOk === false) {
+      alert("아이디 중복확인을 해주세요");
+      setIdCheckComplete(false);
+      return;
+    } else {
+      setIdCheckComplete(true);
     }
 
     if (isCheckEmail === false) {
@@ -143,20 +182,15 @@ const AuthUserPage = () => {
       setUerPhoneComplete(true);
     }
 
-    if (isCheckImgFile === false) {
-      setUerImgComplete(true);
-      return;
-    } else {
-      setUerImgComplete(true);
-    }
-
     if (
       userIdComplete &&
       userPwComplete &&
       userPwCheckComplete &&
       userEmailComplete &&
       userPhoneComplete &&
-      userImgComplete
+      userImgComplete &&
+      idCheckComplete &&
+      emailCheckComplete
     ) {
       const pic = new FormData();
 
