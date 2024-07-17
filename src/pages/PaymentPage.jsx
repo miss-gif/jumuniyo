@@ -3,11 +3,13 @@ import { OrderContext } from "./user/OrderContext";
 import PaymentSelect from "./user/PaymentSelect";
 import { Checkbox } from "@mui/material";
 import axios from "axios";
-import { Cookies } from "react-cookie";
-import { Navigate } from "react-router-dom";
+import { useCookies } from "react-cookie";
+import { useNavigate } from "react-router-dom";
 
 const PaymentPage = () => {
   const { order } = useContext(OrderContext); // useContext로 order 값 가져오기
+  const [cookies, setCookie] = useCookies(["accessToken", "refreshToken"]);
+  const navigate = useNavigate(); // useNavigate를 사용하여 navigate 함수를 가져옵니다.
 
   const calculateTotalPrice = item => {
     return item.menu_price * item.quantity; // 각 항목의 총 가격 계산
@@ -21,7 +23,7 @@ const PaymentPage = () => {
     const data = {
       order_res_pk: 1,
       order_request: "요청사항",
-      payment_method: "현장결제",
+      payment_method: "결제수단 키",
       order_phone: "전화번호",
       order_address: "배달주소",
       menu_pk: [1],
@@ -30,13 +32,13 @@ const PaymentPage = () => {
     try {
       const res = await axios.post("/api/order/", data, {
         headers: {
-          Authorization: `Bearer ${Cookies.accessToken}`,
+          Authorization: `Bearer ${cookies.accessToken}`,
         },
       });
 
       if (res.data.statusCode === 1) {
         alert(res.data.resultMsg);
-        Navigate(`/orderview/${res.data.resultData}`);
+        navigate(`/orderview/${res.data.resultData}`);
       } else {
         alert("결제에 실패했습니다. 다시 시도해주세요.");
       }
