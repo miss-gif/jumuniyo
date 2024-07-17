@@ -1,54 +1,163 @@
 .ceo-home-accepted {
+  display: flex;
   .left {
+    display: flex;
+    flex-direction: column;
+    background-color: #ccc;
+    h3 {
+      padding: 30px 50px 30px 50px;
+    }
+    .waiting-orders {
+      .one-order {
+        display: flex;
+        justify-content: space-between;
+        background-color: rgba(128, 122, 122, 0.8);
+        padding-left: 30px;
+        padding-right: 30px;
+        padding-bottom: 30px;
+      }
+      .one-order-left {
+        padding-right: 30px;
+      }
+      .one-order-right {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+    }
+  }
+
+  .ceo-home-tab {
+    font-size: 2em;
+    color: #333;
+    padding: 40px 80px;
+  }
+
+  .refresh-btn {
+  }
+
+  .order-body {
+    gap: 20px;
+    padding: 0px 80px 100px 80px;
+
+    .allSalesOntheDay {
+      .title {
+        background-color: $black;
+        color: $white;
+        padding: $padding-2;
+      }
+      .allSalesBody {
+        padding: $padding-2;
+        border: 1px solid #ccc;
+        .tabAndValue {
+          display: flex;
+          .allSalesTab {
+            padding-right: 50px;
+          }
+        }
+      }
+    }
+
+    .orderedList {
+      .noOrdersMessage {
+        display: flex;
+        align-items: center;
+      }
+      .oneOrder {
+        .AnOrderHead {
+          background-color: $black;
+          color: $white;
+          padding: $padding-2;
+        }
+        .AnOrderBody {
+          display: flex;
+
+          .AnOrderLeft {
+            .requested {
+              padding: $padding-2;
+              margin: 8px 8px 8px 0px;
+              border: 1px solid #ccc;
+              .requestedabout {
+                display: flex;
+                .requestedto {
+                  padding-right: 50px;
+                }
+              }
+            }
+            .orderedMenu {
+              border: 1px solid #ccc;
+              padding: $padding-2;
+              margin: 8px 8px 0px 0px;
+              .orderedMenuInf {
+                display: flex;
+                gap: 3vw;
+                justify-content: space-between;
+                padding-bottom: 10px;
+                margin-bottom: 10px;
+                .menuName {
+                }
+                .menuAmount {
+                }
+                .menuPrice {
+                }
+              }
+
+              .allOrderedMenuInf {
+                display: flex;
+                justify-content: space-between;
+                border-top: 2px solid #ccc;
+              }
+            }
+          }
+          .AnOrderRight {
+            .AnOrderInf {
+              padding: $padding-2;
+              border: 1px solid #ccc;
+              margin: 8px 0px 0px 0px;
+              display: block;
+            }
+            .AnOrderInf > div {
+              margin-bottom: 16px;
+            }
+
+            .AnOrderInf > div:last-child {
+              margin-bottom: 0;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .todaySale {
   }
 }
 
-.newOrders-accepted {
+// 주문내역과 배달주소 컬럼 높이 통일
+.AnOrderBody {
+  display: flex;
+}
+
+.AnOrderLeft,
+.AnOrderRight {
+  flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 15px;
-  .confirmedList {
-    .confirmedList-tab {
-      background-color: $black;
-      color: $white;
-      padding: $padding-2;
-    }
-    .oneOrder {
-      border: 1px solid #ccc;
-      display: flex;
-      .orderedTime {
-        display: flex;
-        margin: 0 auto;
-      }
-      .orderInfo {
-        .orderAmount {
-          display: flex;
-          .orderNumber {
-          }
-          .orderPrice {
-          }
-          .payMethod {
-          }
-        }
-        .orderedMenu {
-          display: flex;
+}
 
-          .menu-name {
-          }
-          .menu-amount {
-          }
-        }
-        .orderedAddress {
-        }
-        .requested {
-        }
-      }
-      .orderStatus {
-        .orderLeftTime {
-        }
-        .orderProcess {
-        }
-      }
-    }
-  }
+.orderedMenu {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.AnOrderInf {
+  flex: 1;
+  display: flex;
+}
+.acceptOrRefuse {
+  display: flex;
+  justify-content: space-between !important;
+  padding-top: 10px;
 }

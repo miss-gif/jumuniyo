@@ -26,10 +26,43 @@ const fetchOrders = async () => {
   return data;
 };
 
+const completeOrder = async orderPk => {
+  const accessToken = getCookie("accessToken");
+  const response = await axios.put(
+    `/api/order/owner/done/${orderPk}`,
+    {},
+    {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
+      },
+    },
+  );
+
+  return response.data;
+};
+
+const cancelOrder = async orderPk => {
+  const accessToken = getCookie("accessToken");
+  const response = await axios.put(
+    `/api/order/cancel/list/${orderPk}`,
+    {},
+    {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
+      },
+    },
+  );
+
+  return response.data;
+};
+
 const OrdersAccepted = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [selectedOrder, setSelectedOrder] = useState(null); // 새로운 상태 추가
 
   const loadOrders = async () => {
     try {
@@ -41,7 +74,25 @@ const OrdersAccepted = () => {
         console.log("데이터 결과 메세지:", data.resultMsg);
       }
     } catch (error) {
-      console.log(error);
+      setError(error);
+    }
+  };
+
+  const handleCompleteOrder = async orderPk => {
+    try {
+      await completeOrder(orderPk);
+      loadOrders(); // 주문 상태가 변경되면 주문 목록을 다시 로드
+    } catch (error) {
+      setError(error);
+    }
+  };
+
+  const handleCancelOrder = async orderPk => {
+    try {
+      await cancelOrder(orderPk);
+      loadOrders(); // 주문 상태가 변경되면 주문 목록을 다시 로드
+    } catch (error) {
+      setError(error);
     }
   };
 
@@ -64,7 +115,11 @@ const OrdersAccepted = () => {
             <div className="noOrdersMessage">주문이 없습니다.</div>
           ) : (
             orders.map(order => (
-              <div key={order.orderPk} className="one-order">
+              <div
+                key={order.orderPk}
+                className="one-order"
+                onClick={() => setSelectedOrder(order)}
+              >
                 <div className="one-order-left">
                   <div className="order-number">배달 No. {order.orderPk}</div>
                   <div className="order-menus-number">
@@ -81,45 +136,78 @@ const OrdersAccepted = () => {
           )}
         </div>
       </div>
-      <div className="newOrders-accepted">
-        <div className="confirmedList">
-          <div className="confirmedList-tab">접수된 주문</div>
-          {orders.map(order => (
-            <div key={order.orderPk} className="oneOrder">
-              <div className="orderedTime">
-                {new Date(order.createdAt).toLocaleTimeString()}
-              </div>
-              <div className="orderInfo">
-                <div className="orderAmount">
-                  <div className="orderNumber">
-                    [메뉴 {order.menuName.length}개]
-                  </div>
-                  <div className="orderPrice">
-                    {order.orderPrice.toLocaleString()}원
-                  </div>
-                  <div className="payMethod">후불</div>
-                </div>
-                <div className="orderedMenu">
-                  {order.menuName.map((menu, index) => (
-                    <div key={index}>
-                      <div className="menu-name">{menu}</div>
-                      <div className="menu-amount">1개</div>
+
+      {selectedOrder && (
+        <div className="order-body">
+          <div className="orderedList">
+            <div className="oneOrder" key={selectedOrder.orderPk}>
+              <div className="AnOrderHead">주문 상세 정보</div>
+              <div className="AnOrderBody">
+                <div className="AnOrderLeft">
+                  <div className="requested">
+                    <h3>요청사항</h3>
+                    <div className="requestedabout">
+                      <div className="requestedto">
+                        <h4>가게</h4>
+                        <h4>배달</h4>
+                      </div>
+                      <div className="requestedof">
+                        <p>맛있게 해주세요</p>
+                        <p>빨리 와주세요</p>
+                      </div>
                     </div>
-                  ))}
+                  </div>
+                  <div className="orderedMenu">
+                    <h3>주문내역</h3>
+                    {selectedOrder.menuName.map((menu, index) => (
+                      <div className="orderedMenuInf" key={index}>
+                        <div className="menuName">{menu}</div>
+                        <div className="menuAmount">1</div>
+                        <div className="menuPrice">3,000</div>
+                      </div>
+                    ))}
+                    <div className="allOrderedMenuInf">
+                      <div className="title">총주문</div>
+                      <div className="allMenuAmount">1</div>
+                      <div className="allMenuPrice">3,000</div>
+                    </div>
+                  </div>
                 </div>
-                <div className="orderedAddress">
-                  서울 송파구 방이동 44-2 장은빌딩 9층
+                <div className="AnOrderRight">
+                  <div className="AnOrderInf">
+                    <div className="orderAddress">
+                      <h3>배달주소</h3>
+                      <p>경기도 화성시 이성로 대명아파트 102동 906호</p>
+                    </div>
+                    <div className="orderCallNumber">
+                      <h3>주문번호</h3>
+                      <p>{selectedOrder.orderPk}</p>
+                    </div>
+                    <div className="orderCallNumber">
+                      <h3>주문시간</h3>
+                      <p>13:54</p>
+                    </div>
+                  </div>
                 </div>
-                <div className="requested">단무지 많이 주고 일회용품 ㄴㄴ</div>
               </div>
-              <div className="orderStatus">
-                <div className="orderLeftTime">12분</div>
-                <div className="orderProcess">배달중</div>
+              <div className="acceptOrRefuse">
+                <button
+                  className="btn"
+                  onClick={() => handleCompleteOrder(selectedOrder.orderPk)}
+                >
+                  완료하기
+                </button>
+                <button
+                  className="btn"
+                  onClick={() => handleCancelOrder(selectedOrder.orderPk)}
+                >
+                  취소하기
+                </button>
               </div>
             </div>
-          ))}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };

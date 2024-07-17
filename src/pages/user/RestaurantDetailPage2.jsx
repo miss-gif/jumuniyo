@@ -96,11 +96,17 @@ const RestaurantDetailPage = () => {
   };
 
   const handleOrder = () => {
+    clearOrder(); // 다시 돌아갈시 기존에 있던 주문 초기화 함수임
     selectedMenuItems.forEach(item => {
       addOrderItem(item);
     });
     setSelectedMenuItems([]);
-    navigate("/payment", { state: { orderItems: selectedMenuItems } });
+    navigate("/payment", {
+      state: {
+        orderItems: selectedMenuItems,
+        restaurantName: restaurantData.name,
+      },
+    });
   };
 
   const renderContent = () => {

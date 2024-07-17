@@ -22,10 +22,12 @@ export const fetchMenuData = async id => {
 export const fetchReviewData = async resPk => {
   try {
     const response = await axios.get(`/api/rev/reviewlist?resPk=${resPk}`);
+    if (response.data.statusCode !== 2) {
+      throw new Error(response.data.resultMsg);
+    }
     return response.data.resultData;
   } catch (error) {
-    throw new Error(
-      error.response ? error.response.data.message : error.message,
-    );
+    console.error("Error fetching review data:", error);
+    throw error;
   }
 };

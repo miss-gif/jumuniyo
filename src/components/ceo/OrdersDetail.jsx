@@ -26,7 +26,7 @@ const OrdersDetail = () => {
       });
       const data = response.data;
       console.log("주문 상세 API 응답:", data);
-      if (data.statusCode === 2) {
+      if (data.statusCode === 1 || data.statusCode === 2) {
         setOrderDetails(data.resultData);
       }
     } catch (error) {
@@ -73,24 +73,23 @@ const OrdersDetail = () => {
               <div className="mypage-order__section-title">주문내역</div>
               <div className="주문내역-콘텐츠">
                 <ul className="mypage-order__item">
-                  <li>
-                    <p className="mypage-order__item-name">
-                      순살 후라이드 <span>x 1개</span>
-                    </p>
-                    <p className="mypage-order__item-price">16,000원</p>
-                  </li>
-                  <li>
-                    <p className="mypage-order__item-name">
-                      순살 후라이드 <span>x 1개</span>
-                    </p>
-                    <p className="mypage-order__item-price">16,000원</p>
-                  </li>
+                  {orderDetails.menuInfoList &&
+                    orderDetails.menuInfoList.map((menu, index) => (
+                      <li key={index}>
+                        <p className="mypage-order__item-name">
+                          {menu.menuName} <span>x {menu.quantity}개</span>
+                        </p>
+                        <p className="mypage-order__item-price">
+                          {menu.menuPrice}원
+                        </p>
+                      </li>
+                    ))}
                 </ul>
               </div>
               <div className="mypage-order__total">
                 <p className="mypage-order__total-label">총 결제금액</p>
                 <p className="mypage-order__total-price">
-                  {orderDetails.orderPrice}
+                  {orderDetails.orderPrice}원
                 </p>
               </div>
             </div>
