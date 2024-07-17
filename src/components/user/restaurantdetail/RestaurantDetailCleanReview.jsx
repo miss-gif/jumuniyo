@@ -1,7 +1,6 @@
 /* eslint-disable react/prop-types */
 import React, { useState, useEffect } from "react";
 import Review from "../../common/Review";
-// import "./RestaurantDetailCleanReview.scss";
 import { fetchReviewData } from "../../../api/restaurantdetail/restaurantDetail";
 
 const RestaurantDetailCleanReview = ({ resPk }) => {
@@ -13,7 +12,7 @@ const RestaurantDetailCleanReview = ({ resPk }) => {
     const getReviews = async () => {
       try {
         const reviewData = await fetchReviewData(resPk);
-        setReviews(reviewData);
+        setReviews(reviewData || []); // 리뷰 데이터를 불러오지 못하면 빈 배열로 설정
         setLoading(false);
       } catch (err) {
         setError(err.message);

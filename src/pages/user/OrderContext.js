@@ -6,8 +6,21 @@ const OrderContext = createContext();
 const OrderProvider = ({ children }) => {
   const [order, setOrder] = useState([]);
 
-  const addOrderItem = item => {
-    setOrder(prevOrder => [...prevOrder, item]);
+  const addOrderItem = newItem => {
+    setOrder(prevOrder => {
+      const existingItem = prevOrder.find(
+        item => item.menu_pk === newItem.menu_pk,
+      );
+      if (existingItem) {
+        return prevOrder.map(item =>
+          item.menu_pk === newItem.menu_pk
+            ? { ...item, quantity: item.quantity + newItem.quantity }
+            : item,
+        );
+      } else {
+        return [...prevOrder, newItem];
+      }
+    });
   };
 
   const clearOrder = () => {
