@@ -21,7 +21,7 @@ const CategoryNavigation = () => {
   const navigate = useNavigate();
 
   const onClickLink = categoryPk => () => {
-    navigate(`/restaurants/category_id=${categoryPk}&page=1&order_type=1`);
+    navigate(`/restaurant/category_id=${categoryPk}&page=1&order_type=1`);
   };
 
   if (loading) return <p>로딩 중...</p>;
