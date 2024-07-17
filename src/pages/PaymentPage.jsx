@@ -1,5 +1,10 @@
 import React, { useContext } from "react";
 import { OrderContext } from "./user/OrderContext";
+import PaymentSelect from "./user/PaymentSelect";
+import { Checkbox } from "@mui/material";
+import axios from "axios";
+import { Cookies } from "react-cookie";
+import { Navigate } from "react-router-dom";
 
 const PaymentPage = () => {
   const { order } = useContext(OrderContext); // useContext로 order 값 가져오기
@@ -10,6 +15,35 @@ const PaymentPage = () => {
 
   const calculateTotalOrderPrice = () => {
     return order.reduce((total, item) => total + calculateTotalPrice(item), 0);
+  };
+
+  const handlePayment = async () => {
+    const data = {
+      order_res_pk: 1,
+      order_request: "요청사항",
+      payment_method: "현장결제",
+      order_phone: "전화번호",
+      order_address: "배달주소",
+      menu_pk: [1],
+    };
+
+    try {
+      const res = await axios.post("/api/order/", data, {
+        headers: {
+          Authorization: `Bearer ${Cookies.accessToken}`,
+        },
+      });
+
+      if (res.data.statusCode === 1) {
+        alert(res.data.resultMsg);
+        Navigate(`/orderview/${res.data.resultData}`);
+      } else {
+        alert("결제에 실패했습니다. 다시 시도해주세요.");
+      }
+    } catch (error) {
+      alert("결제에 실패했습니다. 다시 시도해주세요.");
+      console.log(error);
+    }
   };
 
   return (
@@ -60,36 +94,8 @@ const PaymentPage = () => {
                 ></textarea>
               </div>
             </div>
-            <div className="payment-page__input-wrap">
-              <h3 className="payment-page__subtitle">결제수단 선택</h3>
-              <div className="payment-page__payment-method">
-                <div className="payment-wrap">
-                  <h4>
-                    주문이요<span>웹에서 미리 결제</span>
-                  </h4>
-                  <div className="payment-page__mobile-payment">
-                    <button className="payment-page__button btn--active">
-                      네이버페이
-                    </button>
-                    <button className="payment-page__button btn--default">
-                      카카오페이
-                    </button>
-                  </div>
-                </div>
-                <div className="payment-wrap">
-                  <h4>현장결제</h4>
-                  <div className="payment-page__onsite-payment">
-                    <button className="payment-page__button btn--default">
-                      신용카드
-                    </button>
-                    <button className="payment-page__button btn--default">
-                      현금
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="payment-page__input-wrap">
+            <PaymentSelect />
+            <div className="payment-page__input-wrap none">
               <h3 className="payment-page__subtitle">할인방법 선택</h3>
               <div className="payment-page__coupon ">
                 <label htmlFor="coupon">쿠폰</label>
@@ -135,11 +141,19 @@ const PaymentPage = () => {
         <p className="payment-page__terms">
           <span>
             이용약관, 개인정보 수집 및 이용, 개인정보 제3자 제공 , 전자금융거래
-            이용약관, 만 14세 이상 이용자
+            이용약관, 만 14세 이상 이용자입니다.
           </span>
-          내용 확인하였으며 결제에 동의합니다.
+          <label className="agreement-checkbox">
+            결제에 동의합니다.
+            <Checkbox sx={{ padding: 0 }} />
+          </label>
         </p>
-        <button className="payment-page__button">결제하기</button>
+        <button
+          className="payment-page__button payment-btn"
+          onClick={handlePayment}
+        >
+          결제하기
+        </button>
       </div>
     </div>
   );
