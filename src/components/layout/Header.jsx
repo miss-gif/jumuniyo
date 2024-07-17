@@ -28,6 +28,9 @@ function Header() {
           </ul>
           <ul className="nav__list">
             <li className="nav__item">
+              <Link to="/login-test">log-in</Link>
+            </li>
+            <li className="nav__item">
               <Link to="/payment">결제하기</Link>
             </li>
             <li className="nav__item">

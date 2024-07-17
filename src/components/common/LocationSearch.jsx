@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import MyLocationIcon from "@mui/icons-material/MyLocation";
 import GoogleMaps from "./GoogleMaps";
 
@@ -13,6 +14,14 @@ const LocationSearch = () => {
     longitude: "",
   });
   const [errorMessage, setErrorMessage] = useState("");
+
+  // Redux에서 주소 좌표 가져오기
+  const addrCoorX = useSelector(
+    state => state.user.userData?.mainAddr.addrCoorX,
+  );
+  const addrCoorY = useSelector(
+    state => state.user.userData?.mainAddr.addrCoorY,
+  );
 
   // localStorage에서 저장된 위치 값 불러오기
   useEffect(() => {
@@ -43,11 +52,23 @@ const LocationSearch = () => {
     }
   };
 
-  console.log(
-    locationData.latitude && locationData.longitude
-      ? `위도: ${locationData.latitude}, 경도: ${locationData.longitude}`
-      : "",
-  );
+  const updateLocation = (newLatitude, newLongitude) => {
+    setLocationData({ latitude: newLatitude, longitude: newLongitude });
+  };
+
+  const onClickAddressCall = () => {
+    if (addrCoorX && addrCoorY) {
+      const newLocationData = {
+        latitude: addrCoorX,
+        longitude: addrCoorY,
+      };
+      localStorage.setItem("locationData", JSON.stringify(newLocationData));
+      console.log("주소 호출: ", newLocationData);
+      updateLocation(addrCoorX, addrCoorY); // 수정된 부분
+    } else {
+      setErrorMessage("주소 좌표를 가져오는 데 실패했습니다.");
+    }
+  };
 
   const onClickSearch = () => {
     navigate("/restaurants");
@@ -76,6 +97,7 @@ const LocationSearch = () => {
           <button className="location-search__btn" onClick={onClickSearch}>
             검색
           </button>
+          <button onClick={onClickAddressCall}>주소호출</button>
         </div>
         {errorMessage && (
           <p className="location-search__error">{errorMessage}</p>

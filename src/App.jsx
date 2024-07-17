@@ -38,6 +38,7 @@ import { OrderProvider } from "./pages/user/OrderContext";
 import Pay from "./components/restaurantdetail/Pay";
 import OrdersAccepted from "./components/ceo/OrdersAccepted";
 import OrdersHistory from "./components/ceo/OrdersHistory";
+import LoginTest from "./pages/LoginTest";
 
 // gmu 테스트
 const getCookie = name => {
@@ -127,6 +128,7 @@ function App() {
             {/* 공통 */}
             <Route path="*" element={<NotFound />} />
             <Route path="/test" element={<Test />} />
+            <Route path="/login-test" element={<LoginTest />} />
           </Routes>
         </OrderProvider>
       </div>
