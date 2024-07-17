@@ -71,7 +71,7 @@ const LocationSearch = () => {
   };
 
   const onClickSearch = () => {
-    navigate("/restaurants");
+    navigate("/restaurant/category_id=0&page=1&order_type=1");
   };
 
   return (
