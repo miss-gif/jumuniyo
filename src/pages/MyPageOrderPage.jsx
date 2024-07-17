@@ -1,10 +1,27 @@
-import React from "react";
-import OrderPreview from "../components/common/OrderPreview";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
 const MyPageOrderPage = () => {
+  const { id } = useParams();
+  const [orderData, setOrderData] = useState(null);
+
+  useEffect(() => {
+    const fetchOrderData = async () => {
+      const response = await fetch(`/api/order/${id}`);
+      const data = await response.json();
+      if (data.statusCode === 1) {
+        setOrderData(data.resultData);
+      }
+    };
+    fetchOrderData();
+  }, [id]);
+
+  if (!orderData) {
+    return <div>로딩 중...</div>;
+  }
+
   return (
     <div className="mypage-order">
-      <OrderPreview />
       <div className="mypage-order-content">
         <h2 className="mypage-order__title">주문완료</h2>
         <div className="mypage-order__contents">
@@ -20,15 +37,19 @@ const MyPageOrderPage = () => {
             <div className="mypage-order__section-title">배달정보</div>
             <div className="mypage-order__detail">
               <p className="mypage-order__label">주문번호</p>
-              <p className="mypage-order__value">111111111</p>
+              <p className="mypage-order__value">{orderData.orderPk}</p>
             </div>
             <div className="mypage-order__detail">
               <p className="mypage-order__label">주문시간</p>
-              <p className="mypage-order__value">24.07.07 오후 11:48</p>
+              <p className="mypage-order__value">
+                {new Date(orderData.createdAt).toLocaleString()}
+              </p>
             </div>
             <div className="mypage-order__detail">
               <p className="mypage-order__label">배달완료시간</p>
-              <p className="mypage-order__value">24.07.07 오후 12:48</p>
+              <p className="mypage-order__value">
+                {orderData.orderState === 1 ? "배달 완료" : "배달 중"}
+              </p>
             </div>
           </div>
 
@@ -36,48 +57,46 @@ const MyPageOrderPage = () => {
             <div className="mypage-order__section-title">주문자 정보</div>
             <div className="mypage-order__detail">
               <p className="mypage-order__label">연락처</p>
-              <p className="mypage-order__value">013-111-1111</p>
+              <p className="mypage-order__value">{orderData.userPk}</p>
             </div>
             <div className="mypage-order__detail">
               <p className="mypage-order__label">주소</p>
-              <p className="mypage-order__value">
-                대구광역시 서구 평리동 11-55
-              </p>
+              <p className="mypage-order__value">{orderData.orderAddress}</p>
             </div>
             <div className="mypage-order__detail">
               <p className="mypage-order__label">가게 요청사항</p>
-              <p className="mypage-order__value">수저, 포크 필요해요</p>
+              <p className="mypage-order__value">{orderData.orderRequest}</p>
             </div>
             <div className="mypage-order__detail">
               <p className="mypage-order__label">라이더 요청사항</p>
-              <p className="mypage-order__value">문 앞에 두세요</p>
+              <p className="mypage-order__value">없음</p>
             </div>
             <div className="mypage-order__detail">
               <p className="mypage-order__label">결제수단</p>
-              <p className="mypage-order__value">현장결제 - 신용카드 결제</p>
+              <p className="mypage-order__value">{orderData.paymentMethod}</p>
             </div>
           </div>
 
           <div className="mypage-order__section">
             <div className="mypage-order__section-title">주문내역</div>
             <ul className="mypage-order__item">
-              <li>
-                <p className="mypage-order__item-name">
-                  순살 후라이드 <span>x 1개</span>
-                </p>
-                <p className="mypage-order__item-price">16,000원</p>
-              </li>
-              <li>
-                <p className="mypage-order__item-name">
-                  순살 후라이드 <span>x 1개</span>
-                </p>
-                <p className="mypage-order__item-price">16,000원</p>
-              </li>
+              {orderData.menuInfoList.map((menu, index) => (
+                <li key={index}>
+                  <p className="mypage-order__item-name">
+                    {menu.menuName} <span>x 1개</span>
+                  </p>
+                  <p className="mypage-order__item-price">
+                    {menu.menuPrice.toLocaleString()}원
+                  </p>
+                </li>
+              ))}
             </ul>
           </div>
           <div className="mypage-order__total">
             <p className="mypage-order__total-label">총 결제금액</p>
-            <p className="mypage-order__total-price">16,000원</p>
+            <p className="mypage-order__total-price">
+              {orderData.orderPrice.toLocaleString()}원
+            </p>
           </div>
         </div>
       </div>
