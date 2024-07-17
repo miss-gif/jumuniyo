@@ -6,6 +6,8 @@ const Review = ({ review }) => {
   const { userPk, reviewContents, reviewRating, pics, createdAt, reply } =
     review;
 
+  const roundedRating = Math.round(reviewRating * 100) / 100;
+
   return (
     <li className="review">
       <div className="review__header">
@@ -16,7 +18,9 @@ const Review = ({ review }) => {
         <div className="review__report">신고</div>
       </div>
       <div className="review__rating">
-        <div className="rating__stars">{"★".repeat(reviewRating)}</div>
+        <div className="rating__stars">
+          {"★".repeat(Math.round(roundedRating))} {roundedRating}
+        </div>
       </div>
       {pics.length > 0 && (
         <img src={`/pic/${pics[0]}`} alt="review" className="review__image" />

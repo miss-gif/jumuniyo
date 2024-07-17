@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import ModalForOrdersAccepted from "./ModalForOrdersAccepted";
 
 const getCookie = name => {
   const value = `; ${document.cookie}`;
@@ -62,7 +63,10 @@ const OrdersAccepted = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [selectedOrder, setSelectedOrder] = useState(null); // 새로운 상태 추가
+  const [selectedOrder, setSelectedOrder] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
+  const [modalAction, setModalAction] = useState(null);
 
   const loadOrders = async () => {
     try {
@@ -79,21 +83,31 @@ const OrdersAccepted = () => {
   };
 
   const handleCompleteOrder = async orderPk => {
-    try {
-      await completeOrder(orderPk);
-      loadOrders(); // 주문 상태가 변경되면 주문 목록을 다시 로드
-    } catch (error) {
-      setError(error);
-    }
+    setModalMessage("이 주문을 완료하시겠습니까?");
+    setModalAction(() => async () => {
+      try {
+        await completeOrder(orderPk);
+        loadOrders(); // 주문 상태가 변경되면 주문 목록을 다시 로드
+        setShowModal(false);
+      } catch (error) {
+        setError(error);
+      }
+    });
+    setShowModal(true);
   };
 
   const handleCancelOrder = async orderPk => {
-    try {
-      await cancelOrder(orderPk);
-      loadOrders(); // 주문 상태가 변경되면 주문 목록을 다시 로드
-    } catch (error) {
-      setError(error);
-    }
+    setModalMessage("이 주문을 취소하시겠습니까?");
+    setModalAction(() => async () => {
+      try {
+        await cancelOrder(orderPk);
+        loadOrders(); // 주문 상태가 변경되면 주문 목록을 다시 로드
+        setShowModal(false);
+      } catch (error) {
+        setError(error);
+      }
+    });
+    setShowModal(true);
   };
 
   useEffect(() => {
@@ -117,7 +131,7 @@ const OrdersAccepted = () => {
             orders.map(order => (
               <div
                 key={order.orderPk}
-                className="one-order"
+                className={`one-order ${selectedOrder && selectedOrder.orderPk === order.orderPk ? "selected" : ""}`}
                 onClick={() => setSelectedOrder(order)}
               >
                 <div className="one-order-left">
@@ -211,6 +225,13 @@ const OrdersAccepted = () => {
           </div>
         </div>
       )}
+
+      <ModalForOrdersAccepted
+        show={showModal}
+        onClose={() => setShowModal(false)}
+        onConfirm={modalAction}
+        message={modalMessage}
+      />
     </div>
   );
 };

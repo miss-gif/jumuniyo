@@ -22,8 +22,7 @@ const RestaurantDetailTabInfo = ({ restaurantData }) => {
           <div className="restaurant-detail-tab-info__info">
             <p className="restaurant-detail-tab-info__info-title">전화번호</p>
             <p className="restaurant-detail-tab-info__info-detail">
-              050352550768 (요기요 제공 번호) (userPhone백엔드에
-              가져와달라고하기)
+              050-1234-4321 (주문이요 제공 번호)
             </p>
           </div>
           <div className="restaurant-detail-tab-info__info">

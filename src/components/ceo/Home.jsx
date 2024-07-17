@@ -191,6 +191,9 @@ const Home = () => {
       <div className="ceo-home">
         <div className="left">
           <h3>새로 들어온 주문</h3>
+          <button className="btn refresh-btn" onClick={loadOrders}>
+            새로고침
+          </button>
           <div className="waiting-orders">
             {noOrders ? (
               <div className="noOrdersMessage">새 주문이 없습니다.</div>
@@ -222,10 +225,6 @@ const Home = () => {
         </div>
 
         <div className="order-body">
-          <button className="btn refresh-btn" onClick={loadOrders}>
-            새로고침
-          </button>
-
           <div className="orderedList">
             {orderDetail ? (
               <div className="oneOrder" key={orderDetail.orderPk}>
