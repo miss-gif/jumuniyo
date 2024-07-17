@@ -101,7 +101,7 @@ const CeoLayout = () => {
     { path: "/ceopage/store-management", label: "매장관리" },
     { path: "/ceopage/orders-history", label: "주문내역" },
     { path: "/ceopage/statistics", label: "통계" },
-    { path: "/ceopage/login", label: "로그인" },
+    // { path: "/ceopage/login", label: "로그인" },
   ];
 
   return (

@@ -45,7 +45,7 @@ const MenuManagement = () => {
           const updatedMenuData = response.data.resultData.map(menu => ({
             ...menu,
             menu_pic: menu.menu_pic
-              ? `/uploads/${menu.menu_pic}`
+              ? `/pic/${menu.menu_pic}`
               : "default_image_url",
           }));
           setMenuData(updatedMenuData);
@@ -129,7 +129,7 @@ const MenuManagement = () => {
           ...prevMenuData,
           {
             ...response.data.resultData,
-            menu_pic: `/uploads/${response.data.resultData.menu_pic}`,
+            menu_pic: `/pic/${response.data.resultData.menu_pic}`,
           },
         ]);
         handleCloseModal();
@@ -174,7 +174,7 @@ const MenuManagement = () => {
               ? {
                   ...menu,
                   ...response.data.resultData,
-                  menu_pic: `/uploads/${response.data.resultData.menu_pic}`,
+                  menu_pic: `/pic/${response.data.resultData.menu_pic}`,
                 }
               : menu,
           ),
@@ -193,7 +193,7 @@ const MenuManagement = () => {
 
     try {
       const response = await axios.delete(
-        `/api/owner/menu?menu_pk=${deleteMenuItemId}`,
+        `/api/owner/menu/${deleteMenuItemId}`,
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,
@@ -221,16 +221,20 @@ const MenuManagement = () => {
       <div className="menu-management">
         <div className="menu-settings">
           <h2 className="settings-header">메뉴설정</h2>
-        </div>
-        <div className="menu-section">
-          <div className="menu-tap">메뉴</div>
           <div className="menu-upper">
             <div className="menu-add">
               <button className="btn" onClick={handleOpenModal}>
                 메뉴 추가
               </button>
+              <button className="btn" onClick={handleOpenModal}>
+                카테고리 추가
+              </button>
             </div>
           </div>
+        </div>
+        <div className="menu-section">
+          <div className="menu-tap">인기 메뉴</div>
+
           {menuData.length === 0 ? (
             <p>메뉴를 추가해주세요.</p>
           ) : (

@@ -1,8 +1,12 @@
 .menu-management {
   .menu-settings {
+    display: flex;
     .settings-header {
       font-size: 2em;
       padding: 40px 80px;
+    }
+    .menu-upper {
+      padding: 40px 0px;
     }
   }
   .menu-section {
@@ -40,7 +44,12 @@
           align-items: center;
           .picanddata {
             display: flex;
-
+            .menu-list-oneMenu-tablePic {
+              img {
+                width: 120px;
+                height: 80px;
+              }
+            }
             .menu-list-status {
               display: flex;
               margin: 0 auto;
