@@ -183,6 +183,11 @@
   }
 }
 
+.img-size {
+  width: 120px;
+  height: 80px;
+}
+
 @include tablet {
   .mypage-wrap {
     display: block;

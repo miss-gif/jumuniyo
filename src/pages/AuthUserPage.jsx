@@ -40,6 +40,27 @@ const AuthUserPage = () => {
   const phoneRegex = /^\d{3}-\d{4}-\d{4}$/;
   const imageRegex = /^[\w,\s-]+\.(jpg|jpeg|png|gif|bmp)$/;
 
+  // 전화번호 형식
+  const handleInputChange = e => {
+    const formattedPhoneNumber = formatPhoneNumber(e.target.value);
+    setUserPhone(formattedPhoneNumber);
+  };
+
+  const formatPhoneNumber = value => {
+    if (!value) return value;
+
+    // eslint-disable-next-line react/prop-types
+    const phoneNumber = value.replace(/[^\d]/g, "");
+    const phoneNumberLength = phoneNumber.length;
+
+    if (phoneNumberLength < 4) return phoneNumber;
+    if (phoneNumberLength < 8) {
+      return `${phoneNumber.slice(0, 3)}-${phoneNumber.slice(3)}`;
+    }
+    return `${phoneNumber.slice(0, 3)}-${phoneNumber.slice(3, 7)}-${phoneNumber.slice(7, 11)}`;
+  };
+
+  // 중복확인
   const idTest = async () => {
     const isCheckId = idRegex.test(userId);
     if (isCheckId) {
@@ -63,6 +84,7 @@ const AuthUserPage = () => {
     }
   };
 
+  // 이메일 인증
   const emailCheck = async () => {
     const data = {
       email: userEmail,
@@ -71,8 +93,10 @@ const AuthUserPage = () => {
     const isCheckEmail = emailRegex.test(userEmail);
     if (isCheckEmail) {
       setIsEmailCheck(true);
+      alert("메일을 발송 했습니다.");
       try {
         const res = await axios.post("/api/mail/send", data);
+
         return res;
       } catch (error) {
         console.log(error);
@@ -86,17 +110,24 @@ const AuthUserPage = () => {
     setIsEmailCheck(false);
   };
 
+  // 이메일 인증 코드 인증
   const emailCodeCheck = async () => {
-    setIsEmailCheck(false);
     const data = {
       email: userEmail,
       authNum: emailCode,
     };
     try {
       const res = await axios.post("/api/mail/auth_check", data);
+      if (res.data.statusCode === 1) {
+        setEmailCheckOk(true);
+        setIsEmailCheck(false);
+      } else {
+        setEmailCheckOk(false);
+        setIsEmailCheck(true);
+      }
       if (res.data.resultData === false) {
         alert(res.data.resultMsg);
-        setEmailCheckOk(false);
+
         return;
       } else if (res.data.resultData === true) {
         alert(res.data.resultMsg);
@@ -182,18 +213,24 @@ const AuthUserPage = () => {
       setUerPhoneComplete(true);
     }
 
+    console.log(userIdComplete);
+    console.log(userPwComplete);
+    console.log(userPwCheckComplete);
+    console.log(userEmailComplete);
+    console.log(userImgComplete);
+    console.log(idCheckComplete);
+    console.log(emailCheckComplete);
+
     if (
       userIdComplete &&
       userPwComplete &&
       userPwCheckComplete &&
       userEmailComplete &&
       userPhoneComplete &&
-      userImgComplete &&
       idCheckComplete &&
       emailCheckComplete
     ) {
       const pic = new FormData();
-
       const p = {
         user_id: userId,
         user_pw: userPw,
@@ -271,15 +308,17 @@ const AuthUserPage = () => {
                 }}
               />
             </Box>
-            <button
-              type="button"
-              className="id-check"
-              onClick={() => {
-                emailCheck();
-              }}
-            >
-              이메일 인증
-            </button>
+            {emailCheckOk === true ? null : (
+              <button
+                type="button"
+                className="id-check"
+                onClick={() => {
+                  emailCheck();
+                }}
+              >
+                이메일 인증
+              </button>
+            )}
           </div>
           {isEmailCheck ? (
             <>
@@ -366,10 +405,9 @@ const AuthUserPage = () => {
               fullWidth
               label="전화번호"
               id="fullWidth"
+              value={userPhone}
               placeholder="전화번호를 입력해주세요."
-              onChange={e => {
-                setUserPhone(e.target.value);
-              }}
+              onChange={handleInputChange}
             />
           </Box>
           <h3>프로필 사진</h3>

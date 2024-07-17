@@ -20,11 +20,6 @@ const AuthUserPage = () => {
         user_login_type: 1,
       });
 
-      if (response.data.statusCode === 2) {
-        alert(response.data.resultMsg);
-        return;
-      }
-
       setCookie("accessToken", response.data.resultData.accessToken);
       console.log(response.data.resultData.userRole);
       if (
@@ -34,6 +29,9 @@ const AuthUserPage = () => {
         navigate("/mypage/address");
       } else if (response.data.resultData.userRole === "ROLE_OWNER") {
         navigate("/ceopage/home");
+      } else if (response.data.statusCode === 2) {
+        alert(response.data.resultMsg);
+        navigate("/login");
       } else {
         navigate("/");
       }

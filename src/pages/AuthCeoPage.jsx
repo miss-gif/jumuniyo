@@ -58,6 +58,26 @@ const AuthUserPage = () => {
   const phoneRegex = /^\d{3}-\d{4}-\d{4}$/;
   const imageRegex = /^[\w,\s-]+\.(jpg|jpeg|png|gif|bmp)$/;
 
+  // 전화번호 형식
+  const handleInputChange = e => {
+    const formattedPhoneNumber = formatPhoneNumber(e.target.value);
+    setUserPhone(formattedPhoneNumber);
+  };
+
+  const formatPhoneNumber = value => {
+    if (!value) return value;
+
+    // eslint-disable-next-line react/prop-types
+    const phoneNumber = value.replace(/[^\d]/g, "");
+    const phoneNumberLength = phoneNumber.length;
+
+    if (phoneNumberLength < 4) return phoneNumber;
+    if (phoneNumberLength < 8) {
+      return `${phoneNumber.slice(0, 3)}-${phoneNumber.slice(3)}`;
+    }
+    return `${phoneNumber.slice(0, 3)}-${phoneNumber.slice(3, 7)}-${phoneNumber.slice(7, 11)}`;
+  };
+
   const idTest = async () => {
     const isCheckId = idRegex.test(userId);
     if (isCheckId) {
@@ -377,10 +397,9 @@ const AuthUserPage = () => {
               fullWidth
               label="전화번호"
               id="fullWidth"
+              value={userPhone}
               placeholder="전화번호를 입력해 주세요."
-              onChange={e => {
-                setUserPhone(e.target.value);
-              }}
+              onChange={handleInputChange}
             />
           </Box>
 

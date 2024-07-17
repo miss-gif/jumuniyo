@@ -1,16 +1,14 @@
 /* eslint-disable react/prop-types */
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 // eslint-disable-next-line react/prop-types
-const MyPageOrderList = ({
-  reviewOpenModal,
-  orders,
-  reviewYes,
-  reviewNo,
-  reviewOpen,
-  order,
-  isOldOrder,
-}) => {
+const MyPageOrderList = ({ reviewOpenModal, order, isOldOrder }) => {
+  const navgate = useNavigate();
+
+  const orderDetails = doneOrderPk => {
+    navgate(`../../mypage/order/${doneOrderPk}`);
+  };
   return (
     <>
       <div className="order-list-gap">
@@ -21,7 +19,13 @@ const MyPageOrderList = ({
                 {new Date(order.createdAt).toLocaleDateString("ko-KR")} -{" "}
                 {order.doneOrderState === 2 ? "취소" : "완료"}
               </div>
-              <div>주문상세</div>
+              <div
+                onClick={() => {
+                  orderDetails(order.doneOrderPk);
+                }}
+              >
+                주문상세
+              </div>
             </div>
             <div className="order-main">
               <img

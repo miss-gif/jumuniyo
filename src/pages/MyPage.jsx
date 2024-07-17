@@ -99,10 +99,18 @@ const MyPage = () => {
 
               {!isEditImg ? (
                 <>
-                  <img
-                    src={`https://34.64.63.109/pic/${imgUrl}`}
-                    alt="profile-img"
-                  />
+                  {imgUrl ? (
+                    <img
+                      src={`https://34.64.63.109/pic/${imgUrl}`}
+                      alt="profile-img"
+                    />
+                  ) : (
+                    <img
+                      src={`https://34.64.63.109/pic/default.png`}
+                      alt="profile-img"
+                    />
+                  )}
+
                   <button className="btn" onClick={() => editMode("img")}>
                     변경
                   </button>
