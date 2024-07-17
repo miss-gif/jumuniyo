@@ -37,12 +37,12 @@ const StoreManagement = () => {
 
         // accessToken이 없는 경우 로그인 페이지로 리디렉션
         if (!accessToken) {
-          navigate("/ceopage/login");
+          navigate("/login");
           return;
         }
 
         // 서버에서 영업 상태 가져오기
-        const statusResponse = await axios.get("/api/restaurant/manage/state", {
+        const statusResponse = await axios.get("/api/owner/restaurant/state", {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },

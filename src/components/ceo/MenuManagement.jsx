@@ -11,6 +11,8 @@ const getCookie = name => {
 };
 
 const MenuManagement = () => {
+  const navigate = useNavigate();
+
   const [menuData, setMenuData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -64,8 +66,9 @@ const MenuManagement = () => {
     } else {
       setError("Access token is not provided");
       setLoading(false);
+      navigate("/login");
     }
-  }, []);
+  }, [navigate]);
 
   const handleOpenModal = () => {
     setIsEditMode(false);

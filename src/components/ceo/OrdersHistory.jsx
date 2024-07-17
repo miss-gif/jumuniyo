@@ -31,11 +31,15 @@ const OrdersHistory = () => {
       });
       const data = response.data;
       console.log("완료 API 응답:", data);
-      if (data.statusCode === 2) {
+      if (data.statusCode === 1 || data.statusCode === 2) {
         setAcceptedOrders(data.resultData);
+        console.log("acceptedOrders:", data.resultData);
+      } else {
+        setAcceptedOrders([]);
       }
     } catch (error) {
       console.log("완료주문 에러: ", error);
+      setAcceptedOrders([]);
     }
   };
 
@@ -51,13 +55,17 @@ const OrdersHistory = () => {
       console.log("거절 API 응답:", data);
       if (data.statusCode === 1 || data.statusCode === 2) {
         setRefusedOrders(data.resultData);
+        console.log("refusedOrders:", data.resultData);
+      } else {
+        setRefusedOrders([]);
       }
     } catch (error) {
       console.error("거절 주문 에러", error);
+      setRefusedOrders([]);
     }
   };
 
-  const renderOrders = (orders, emptyMessage) => {
+  const renderOrders = (orders, emptyMessage, tab) => {
     return orders.length > 0 ? (
       orders.map(order => (
         <div className="ceo-orderList" key={order.doneOrderPk}>
@@ -65,7 +73,7 @@ const OrdersHistory = () => {
             <div className="order-header-left">
               <div className="order-header-title">
                 {new Date(order.createdAt).toLocaleDateString()} -{" "}
-                <span>주문취소</span>
+                <span>{tab === "accepted" ? "주문완료" : "주문취소"}</span>
               </div>
               <div className="order-header-left-wrap">
                 <div className="order-header-left-content">
@@ -121,12 +129,16 @@ const OrdersHistory = () => {
         </div>
         {selectedTab === "accepted" && (
           <div className="accepted">
-            {renderOrders(acceptedOrders, "완료된 주문이 없습니다.")}
+            {renderOrders(
+              acceptedOrders,
+              "완료된 주문이 없습니다.",
+              "accepted",
+            )}
           </div>
         )}
         {selectedTab === "refused" && (
           <div className="refused">
-            {renderOrders(refusedOrders, "거절된 주문이 없습니다.")}
+            {renderOrders(refusedOrders, "거절된 주문이 없습니다.", "refused")}
           </div>
         )}
       </div>

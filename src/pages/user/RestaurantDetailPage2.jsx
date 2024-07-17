@@ -44,7 +44,7 @@ const RestaurantDetailPage = () => {
   }, [id]);
 
   if (loading) return <p>로딩 중</p>;
-  if (error) return <p>error: {error.message}</p>;
+  if (error) return <p>에러: {error.message}</p>;
   if (!restaurantData) return <p>없는 페이지 입니다.</p>;
 
   const handleSelectMenuItem = item => {
@@ -96,17 +96,11 @@ const RestaurantDetailPage = () => {
   };
 
   const handleOrder = () => {
-    clearOrder(); // 다시 돌아갈시 기존에 있던 주문 초기화 함수임
     selectedMenuItems.forEach(item => {
       addOrderItem(item);
     });
     setSelectedMenuItems([]);
-    navigate("/payment", {
-      state: {
-        orderItems: selectedMenuItems,
-        restaurantName: restaurantData.name,
-      },
-    });
+    navigate("/payment", { state: { orderItems: selectedMenuItems } });
   };
 
   const renderContent = () => {
@@ -119,7 +113,12 @@ const RestaurantDetailPage = () => {
           />
         );
       case "review":
-        return <RestaurantDetailCleanReview resPk={id} />;
+        return (
+          <RestaurantDetailCleanReview
+            resPk={id}
+            restaurantData={restaurantData}
+          />
+        );
       case "info":
         return <RestaurantDetailTabInfo restaurantData={restaurantData} />;
       default:
@@ -134,7 +133,10 @@ const RestaurantDetailPage = () => {
           <RestaurantDetailInfo restaurantData={restaurantData} />
 
           <div className="restaurant-detail-page__menu">
-            <RestaurantDetailHeader setActiveTab={setActiveTab} />
+            <RestaurantDetailHeader
+              activeTab={activeTab}
+              setActiveTab={setActiveTab}
+            />
             <div>{renderContent()}</div>
           </div>
         </div>
