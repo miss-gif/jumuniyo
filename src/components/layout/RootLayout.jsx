@@ -7,31 +7,29 @@ import ToTop from "../common/ToTop";
 import LocationSearch from "../common/LocationSearch";
 import RestaurantsFilters from "../common/RestaurantsFilters";
 
+const MY_PAGE_PATHS = ["/restaurants"];
+const RESTAURANTS_PATHS = ["/restaurants"];
+
 function RootLayout() {
   const location = useLocation();
 
-  // 위치 검색 사용 시 path 등록
-  const myPagePaths = ["/restaurants"];
-  // 음식점 카테고리 필터 시 사용 path 등록
-  const restaurantsPaths = ["/restaurants"];
-
   const isHomePage = location.pathname === "/";
-  const isMyPagePath = myPagePaths.some(path =>
+  const isMyPagePath = MY_PAGE_PATHS.some(path =>
     location.pathname.startsWith(path),
   );
-  const isRestaurantsPaths = restaurantsPaths.some(path =>
+  const isRestaurantsPath = RESTAURANTS_PATHS.some(path =>
     location.pathname.startsWith(path),
   );
 
   return (
     <>
       <ToTop />
-
       <Header />
 
+      {/* 위치 검색은 홈 페이지 및 마이 페이지에서 사용 */}
       {isHomePage && <LocationSearch />}
       {isMyPagePath && <LocationSearch />}
-      {isRestaurantsPaths && <RestaurantsFilters />}
+      {isRestaurantsPath && <RestaurantsFilters />}
 
       <main className="main">
         <div className="inner">
