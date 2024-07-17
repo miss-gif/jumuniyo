@@ -6,6 +6,8 @@ const userSlice = createSlice({
   initialState: {
     userData: null,
     userRole: null,
+    userAddress: null, // 주소 추가
+    userPhone: null, // 전화번호 추가
   },
   reducers: {
     setUserData: (state, action) => {
@@ -14,10 +16,17 @@ const userSlice = createSlice({
     setUserRole: (state, action) => {
       state.userRole = action.payload;
     },
+    setUserAddress: (state, action) => {
+      state.userAddress = action.payload; // 주소 설정
+    },
+    setUserPhone: (state, action) => {
+      state.userPhone = action.payload; // 전화번호 설정
+    },
   },
 });
 
-export const { setUserData, setUserRole } = userSlice.actions;
+export const { setUserData, setUserRole, setUserAddress, setUserPhone } =
+  userSlice.actions;
 
 const store = configureStore({
   reducer: {

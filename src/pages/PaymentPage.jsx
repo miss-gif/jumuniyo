@@ -1,5 +1,6 @@
-import React, { useContext } from "react";
-import { OrderContext } from "./user/OrderContext";
+// PaymentPage.js
+import React from "react";
+import { useSelector } from "react-redux"; // useSelector 임포트
 import PaymentSelect from "./user/PaymentSelect";
 import { Checkbox } from "@mui/material";
 import axios from "axios";
@@ -7,12 +8,14 @@ import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 
 const PaymentPage = () => {
-  const { order } = useContext(OrderContext); // useContext로 order 값 가져오기
-  const [cookies, setCookie] = useCookies(["accessToken", "refreshToken"]);
-  const navigate = useNavigate(); // useNavigate를 사용하여 navigate 함수를 가져옵니다.
+  const order = []; // OrderContext 대신 사용할 수 있는 임시 데이터
+  const userAddress = useSelector(state => state.user.userAddress); // 주소 가져오기
+  const userPhone = useSelector(state => state.user.userPhone); // 전화번호 가져오기
+  const [cookies] = useCookies(["accessToken"]);
+  const navigate = useNavigate();
 
   const calculateTotalPrice = item => {
-    return item.menu_price * item.quantity; // 각 항목의 총 가격 계산
+    return item.menu_price * item.quantity;
   };
 
   const calculateTotalOrderPrice = () => {
@@ -24,8 +27,8 @@ const PaymentPage = () => {
       order_res_pk: 1,
       order_request: "요청사항",
       payment_method: "결제수단 키",
-      order_phone: "전화번호",
-      order_address: "배달주소",
+      order_phone: userPhone, // 저장된 전화번호 사용
+      order_address: `${userAddress.addr1} ${userAddress.addr2}`, // 저장된 주소 사용
       menu_pk: [1],
     };
 
@@ -63,6 +66,8 @@ const PaymentPage = () => {
                     type="text"
                     id="address"
                     className="payment-page__input"
+                    value={userAddress.addr1}
+                    readOnly
                   />
                 </div>
                 <div>
@@ -72,6 +77,7 @@ const PaymentPage = () => {
                     id="address"
                     className="payment-page__input"
                     placeholder="(필수) 상세주소 입력"
+                    value={userAddress.addr2}
                   />
                 </div>
                 <div>
@@ -80,6 +86,7 @@ const PaymentPage = () => {
                     type="text"
                     id="phone"
                     className="payment-page__input"
+                    value={userPhone}
                     placeholder="(필수) 휴대전화 번호 입력"
                   />
                 </div>
