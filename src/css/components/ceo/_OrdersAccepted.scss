@@ -1,20 +1,27 @@
+.noOrdersMessage {
+  color: #1657bf;
+  display: flex;
+  justify-content: center;
+}
+
 .ceo-home-accepted {
   display: flex;
   .left {
     display: flex;
     flex-direction: column;
-    background-color: #ccc;
+    background-color: #1e293b;
+    height: 1000px;
     h3 {
       padding: 30px 50px 30px 50px;
     }
     .waiting-orders {
+      background-color: #334155;
+
       .one-order {
         display: flex;
         justify-content: space-between;
-        background-color: rgba(128, 122, 122, 0.8);
-        padding-left: 30px;
-        padding-right: 30px;
-        padding-bottom: 30px;
+        color: #f8fafc;
+        padding: 30px;
       }
       .one-order-left {
         padding-right: 30px;

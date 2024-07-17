@@ -51,17 +51,30 @@ const cancelOrder = async orderPk => {
   return response.data;
 };
 
+const fetchOrderDetail = async orderPk => {
+  const accessToken = getCookie("accessToken");
+  const response = await axios.get(`/api/order/${orderPk}`, {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      "Content-Type": "application/json",
+    },
+  });
+
+  return response.data;
+};
+
 const Home = () => {
   const [orders, setOrders] = useState([]);
+  const [selectedOrder, setSelectedOrder] = useState(null);
+  const [orderDetail, setOrderDetail] = useState(null);
   const [error, setError] = useState(null);
   const [noOrders, setNoOrders] = useState(false);
-  const [selectedOrder, setSelectedOrder] = useState(null); // 새로운 상태 추가
 
   const loadOrders = async () => {
     try {
       const data = await fetchOrders();
       if (data.statusCode === -7) {
-        console.log(data.resultMsg); // 주문 정보가 없음을 콘솔에 출력
+        console.log(data.resultMsg);
         setNoOrders(true);
         setOrders([]);
       } else {
@@ -73,10 +86,23 @@ const Home = () => {
     }
   };
 
+  const loadOrderDetail = async orderPk => {
+    try {
+      const data = await fetchOrderDetail(orderPk);
+      if (data.statusCode === 1) {
+        setOrderDetail(data.resultData);
+      } else {
+        setOrderDetail(null);
+      }
+    } catch (error) {
+      setError(error);
+    }
+  };
+
   const handleConfirmOrder = async orderPk => {
     try {
       await confirmOrder(orderPk);
-      loadOrders(); // 주문 상태가 변경되면 주문 목록을 다시 로드
+      loadOrders();
     } catch (error) {
       setError(error);
     }
@@ -85,15 +111,17 @@ const Home = () => {
   const handleCancelOrder = async orderPk => {
     try {
       await cancelOrder(orderPk);
-      loadOrders(); // 주문 상태가 변경되면 주문 목록을 다시 로드
+      loadOrders();
     } catch (error) {
       setError(error);
     }
   };
 
   useEffect(() => {
-    loadOrders();
-  }, []);
+    if (selectedOrder) {
+      loadOrderDetail(selectedOrder.orderPk);
+    }
+  }, [selectedOrder]);
 
   if (error) {
     return <div>Error: {error.message}</div>;
@@ -112,11 +140,13 @@ const Home = () => {
                 <div
                   className="one-order"
                   key={order.orderPk}
-                  onClick={() => setSelectedOrder(order)} // 클릭 이벤트 핸들러 추가
+                  onClick={() => setSelectedOrder(order)}
                 >
                   <div className="one-order-left">
-                    <div className="order-number">배달 No. {order.orderPk}</div>
-                    <div className="order-menus-number">메뉴 $3개</div>
+                    <div className="order-number">접수 No. {order.orderPk}</div>
+                    <div className="order-menus-number">
+                      메뉴 {order.menuName.length}개
+                    </div>
                   </div>
                   <div className="one-order-right">
                     <div className="order-time">{order.createdAt}</div>
@@ -133,8 +163,8 @@ const Home = () => {
           </button>
 
           <div className="orderedList">
-            {selectedOrder ? ( // 클릭된 주문이 있는지 확인
-              <div className="oneOrder" key={selectedOrder.orderPk}>
+            {orderDetail ? (
+              <div className="oneOrder" key={orderDetail.orderPk}>
                 <div className="AnOrderHead">새 주문</div>
                 <div className="AnOrderBody">
                   <div className="AnOrderLeft">
@@ -143,44 +173,52 @@ const Home = () => {
                       <div className="requestedabout">
                         <div className="requestedto">
                           <h4>가게 </h4>
-                          <h4>배달 </h4>
                         </div>
                         <div className="requestedof">
-                          <p>맛있게해주세요</p>
-                          <p>빨리와주세요</p>
+                          <p>{orderDetail.orderRequest}</p>
                         </div>
                       </div>
                     </div>
                     <div className="orderedMenu">
                       <h3>주문내역</h3>
-                      {selectedOrder.menuName.map((menu, index) => (
+                      {orderDetail.menuInfoList.map((menu, index) => (
                         <div className="orderedMenuInf" key={index}>
-                          <div className="menuName">{menu}</div>
+                          <div className="menuName">{menu.menuName}</div>
                           <div className="menuAmount">1</div>
-                          <div className="menuPrice">3,000</div>
+                          <div className="menuPrice">{menu.menuPrice}</div>
                         </div>
                       ))}
                       <div className="allOrderedMenuInf">
                         <div className="title">총주문</div>
                         <div className="allMenuAmount">1</div>
-                        <div className="allMenuPrice">3,000</div>
+                        <div className="allMenuPrice">
+                          {orderDetail.orderPrice}
+                        </div>
                       </div>
                     </div>
                   </div>
                   <div className="AnOrderRight">
                     <div className="AnOrderInf">
+                      <div className="orderCallNumber">
+                        <h3>주문번호</h3>
+                        <p>{orderDetail.orderPk}</p>
+                      </div>
+                      <div className="payMethod">
+                        <h3>결제방법</h3>
+                        <p>
+                          {`${orderDetail.paymentMethod}` === "1"
+                            ? "카드"
+                            : "현금"}
+                        </p>
+                      </div>
                       <div className="orderAddress">
-                        <h3> 배달주소</h3>
-                        <p>경기도 화성시 이성로 대명아파트 102동 906호</p>
+                        <h3>배달주소</h3>
+                        <p className="address-p">{orderDetail.orderAddress}</p>
                       </div>
 
                       <div className="orderCallNumber">
-                        <h3>주문번호</h3>
-                        <p>{selectedOrder.orderPk}</p>
-                      </div>
-                      <div className="orderCallNumber">
                         <h3> 주문시간</h3>
-                        <p>13:54</p>
+                        <p>{orderDetail.createdAt}</p>
                       </div>
                     </div>
                   </div>
@@ -188,13 +226,13 @@ const Home = () => {
                 <div className="acceptOrRefuse">
                   <button
                     className="btn"
-                    onClick={() => handleConfirmOrder(selectedOrder.orderPk)}
+                    onClick={() => handleConfirmOrder(orderDetail.orderPk)}
                   >
                     접수하기
                   </button>
                   <button
                     className="btn"
-                    onClick={() => handleCancelOrder(selectedOrder.orderPk)}
+                    onClick={() => handleCancelOrder(orderDetail.orderPk)}
                   >
                     거절하기
                   </button>

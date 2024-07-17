@@ -35,7 +35,7 @@ const MenuCategory = ({ menuData, onSelectMenuItem }) => {
               </div>
               {item.menu_pic && (
                 <div className="menu-category__image">
-                  <img src="https://picsum.photos/100/" alt="" />
+                  <img src={`/pic/${item.menu_pic}`} alt={item.menu_pic} />
                 </div>
               )}
             </li>
