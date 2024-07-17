@@ -8,8 +8,8 @@ const isValidLocation = locationData.latitude && locationData.longitude;
 
 // 유효한 위치 정보가 없으면 기본값(대구) 사용, 있으면 로컬 스토리지 값 사용
 const {
-  latitude = isValidLocation ? locationData.latitude : 35.8714, // 대구의 위도
-  longitude = isValidLocation ? locationData.longitude : 128.6014, // 대구의 경도
+  latitude = isValidLocation ? locationData.latitude : null,
+  longitude = isValidLocation ? locationData.longitude : null,
 } = locationData;
 
 // API URL 생성 (위도, 경도 포함)
