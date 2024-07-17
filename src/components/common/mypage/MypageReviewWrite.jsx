@@ -12,23 +12,57 @@ const MypageReviewWrite = ({
 }) => {
   const [test, setTest] = useState("");
   const [reviewWrite, setReviewWrite] = useState("");
+  const [pics, setPics] = useState([]);
+
+  // const postReview = async () => {
+  //   setReviewOpen(false);
+  //   setSelectedOrderPk(null);
+  //   const data = {
+  //     p: {
+  //       done_order_pk: doneOrderPk,
+  //       review_contents: reviewWrite,
+  //       review_rating: test,
+  //     },
+  //     pics: [],
+  //   };
+
+  //   try {
+  //     const header = { headers: { "Content-Type": "multipart/form-data" } };
+  //     const res = await jwtAxios.post("/api/rev", data, header);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+  const handleFilesChange = e => {
+    const files = Array.from(e.target.files);
+    setPics(files);
+  };
+  console.log(pics);
 
   const postReview = async () => {
     setReviewOpen(false);
     setSelectedOrderPk(null);
-    const data = {
-      p: {
+
+    const data = new FormData();
+    data.append(
+      "p",
+      JSON.stringify({
         done_order_pk: doneOrderPk,
-        res_pk: resPk,
         review_contents: reviewWrite,
         review_rating: test,
-      },
-      pics: [],
-    };
+      }),
+    );
+
+    pics.forEach((pic, index) => {
+      data.append(`pics[${index}]`, pic);
+    });
 
     try {
       const header = { headers: { "Content-Type": "multipart/form-data" } };
       const res = await jwtAxios.post("/api/rev", data, header);
+      if (res.data.statusCode) {
+        alert(res.data.resultMsg);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -55,6 +89,7 @@ const MypageReviewWrite = ({
           setReviewWrite(e.target.value);
         }}
       />
+      <input type="file" multiple onChange={handleFilesChange} />
       <div className="mypage-button-box">
         <button
           className="btn"

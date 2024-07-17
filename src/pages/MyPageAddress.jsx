@@ -14,6 +14,7 @@ const MyPageAddress = () => {
   const [newAddress, setNewAddress] = useState("");
   const [newAddressDetail, setNewAddressDetail] = useState("");
   const [addressPk, setAddressPk] = useState("");
+  const [changeAddress, setChangeAddress] = useState("");
 
   const [isFirstUser, setIsFirstUser] = useState(false);
 
@@ -22,16 +23,19 @@ const MyPageAddress = () => {
       try {
         const res = await jwtAxios.get("/api/address/main-address");
         console.log(res.data);
-        setAddressPk(res.data.resultData.addrPk);
-        setAddress(res.data.resultData.addr1);
-        setAddressDetail(res.data.resultData.addr2);
-        setXValue(res.data.resultData.addrCoorX);
-        setYValue(res.data.resultData.addrCoorY);
-        if (res.data.resultData[0] === "") {
+        if (!res.data.resultData) {
+          console.log("뉴비입니다");
           setIsFirstUser(true);
-        } else {
+        } else if (res.data.resultData) {
+          console.log("뉴비가 아닙니다");
+          setAddressPk(res.data.resultData.addrPk);
+          setAddress(res.data.resultData.addr1);
+          setAddressDetail(res.data.resultData.addr2);
+          setXValue(res.data.resultData.addrCoorX);
+          setYValue(res.data.resultData.addrCoorY);
           setIsFirstUser(false);
         }
+
         return res.data;
       } catch (error) {
         console.log(error);
@@ -41,7 +45,8 @@ const MyPageAddress = () => {
     console.log();
   }, []);
 
-  const addUserAddress = async () => {
+  const editUserAddress = async () => {
+    setIsModalOpen(true);
     try {
       const data = {
         addr_pk: addressPk,
@@ -50,14 +55,16 @@ const MyPageAddress = () => {
         addr_coor_x: newXValue,
         addr_coor_y: newYValue,
       };
-      const res = jwtAxios.post("/api/address", data);
+      const res = jwtAxios.patch("/api/address", data);
+
       return res;
     } catch (error) {
       console.log(error);
     }
   };
 
-  const editUserAddress = async () => {
+  const addUserAddress = async () => {
+    setIsModalOpen(true);
     try {
       const data = {
         addr_pk: addressPk,
@@ -67,7 +74,6 @@ const MyPageAddress = () => {
         addr_coor_y: newYValue,
       };
       const res = jwtAxios.post("/api/address", data);
-      return res;
     } catch (error) {
       console.log(error);
     }
@@ -104,14 +110,25 @@ const MyPageAddress = () => {
         </div>
 
         <div className="mypage-button-box">
-          <button
-            type="button"
-            onClick={() => {
-              onModify();
-            }}
-          >
-            수정
-          </button>
+          {isFirstUser === true ? (
+            <button
+              type="button"
+              onClick={() => {
+                addUserAddress();
+              }}
+            >
+              등록
+            </button>
+          ) : (
+            <button
+              type="button"
+              onClick={() => {
+                onModify();
+              }}
+            >
+              수정
+            </button>
+          )}
         </div>
         {isModalOpen ? (
           <>

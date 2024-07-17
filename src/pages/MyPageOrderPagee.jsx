@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
+import jwtAxios from "../api/user/jwtUtil";
+import MypageReviewWrite from "../components/common/mypage/MypageReviewWrite";
 import MyPageOrderList from "../components/common/MyPageOrderList";
 import Mypage from "../components/join/Mypage";
-import MypageReviewWrite from "../components/common/mypage/MypageReviewWrite";
-import jwtAxios from "../api/user/jwtUtil";
 
 const MyPageOrderPagee = () => {
   const [reviewOpen, setReviewOpen] = useState(false);
@@ -59,6 +59,7 @@ const MyPageOrderPagee = () => {
               return (
                 <div key={order.doneOrderPk}>
                   <MyPageOrderList
+                    doneOrderPk={doneOrderPk}
                     isOldOrder={isOldOrder}
                     order={order}
                     reviewOpenModal={reviewOpenModal}

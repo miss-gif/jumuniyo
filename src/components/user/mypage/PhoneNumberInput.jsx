@@ -36,8 +36,8 @@ const PhoneNumberInput = ({ value, onChange }) => {
           type="text"
           value={phone}
           onChange={handleInputChange}
-          label="변경할 전화번호"
-          placeholder="새 전화번호를 입력해주세요."
+          label="전화번호 변경"
+          placeholder="변경할 전화번호를 입력해주세요."
         />
       </Box>
     </div>
