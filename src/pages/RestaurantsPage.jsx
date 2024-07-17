@@ -1,28 +1,64 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { MdOutlineStarPurple500 } from "react-icons/md";
 import { useNavigate, useParams } from "react-router-dom";
-import Filters from "../components/restaurants/Filters";
-import useFetchRestaurantData from "../hooks/useFetchRestaurantData";
+import axios from "axios";
 
 const RestaurantsPage = () => {
-  const { restaurantData, isLoading, error, fetchData } =
-    useFetchRestaurantData();
-
   const { id } = useParams();
-  console.log(id);
-
   const navigate = useNavigate();
 
+  const [restaurantData, setRestaurantData] = useState([]);
+  const [totalElements, setTotalElements] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [orderType, setOrderType] = useState(1); // 기본 정렬순
+
   useEffect(() => {
-    fetchData();
-  }, []);
+    const fetchRestaurants = async () => {
+      setIsLoading(true);
+      setError(null);
+
+      // 로컬 스토리지에서 위치 정보 가져오기
+      const locationData = JSON.parse(localStorage.getItem("locationData"));
+      const addrX = locationData?.latitude || 0;
+      const addrY = locationData?.longitude || 0;
+
+      const queryString = `${id}&page=1&order_type=${orderType}&addrX=${addrX}&addrY=${addrY}`;
+
+      try {
+        const response = await axios.get(`/api/restaurant?${queryString}`);
+        setRestaurantData(response.data.resultData.list);
+        setTotalElements(response.data.resultData.totalElements);
+      } catch (err) {
+        setError(err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchRestaurants();
+  }, [id, orderType]); // orderType이 변경될 때마다 재호출
+
+  const handleOrderChange = e => {
+    setOrderType(e.target.value);
+  };
 
   return (
     <div className="restaurants-page">
-      <Filters />
+      <div className="filters">
+        <select
+          className="filters__select"
+          value={orderType}
+          onChange={handleOrderChange}
+        >
+          <option value="1">기본 정렬순</option>
+          <option value="2">별점순</option>
+          <option value="3">리뷰 많은순</option>
+        </select>
+      </div>
       <h2 className="restaurants-page__title">
         주문이요 등록 음식점
-        <span className="search-count">{restaurantData.totalElements}</span>
+        <span className="search-count">{totalElements}</span>
       </h2>
       {isLoading ? (
         <p>로딩 중...</p>
@@ -51,7 +87,7 @@ const RestaurantsPage = () => {
                   <div className="restaurant-item__rank-point">
                     <div className="rank-point">
                       <MdOutlineStarPurple500 />
-                      <p>{restaurant.reviewAvgScore}</p>
+                      <p>{restaurant.reviewAvgScore || "N/A"}</p>
                     </div>
                     <p>
                       리뷰 <span>{restaurant.reviewTotalElements}</span>
