@@ -26,6 +26,8 @@ const AuthUserPage = () => {
         response.data.resultData.mainAddr === null
       ) {
         navigate("/mypage/address");
+      } else if (response.data.resultData.userRole === "ROLE_OWNER") {
+        navigate("/ceopage/home");
       } else {
         navigate("/");
       }
