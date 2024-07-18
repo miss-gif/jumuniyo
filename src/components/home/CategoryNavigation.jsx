@@ -5,7 +5,7 @@ import useCategories from "../../hooks/useCategories";
 import { useNavigate } from "react-router-dom";
 
 const CategoryItem = ({ index, categoryPk, categoryName, onClick }) => (
-  <li className="category__item border-set bc" onClick={onClick}>
+  <li className="category__item bc" onClick={onClick}>
     <p>{categoryName}</p>
     <img
       src={`${process.env.PUBLIC_URL}/images/category/category-${String(index + 1).padStart(2, "0")}.png`}

@@ -17,10 +17,18 @@
     background-color: #fff;
     z-index: 1;
     cursor: pointer;
+    border-radius: $border-radius-2;
+    border: 1px solid $borderColor;
+    &:hover {
+      box-shadow: $shadow-3;
+    }
     > p {
       position: absolute;
       font-weight: $medium;
       padding: $padding-2;
+      &:hover {
+        font-weight: 700;
+      }
     }
     > img {
       position: absolute;
