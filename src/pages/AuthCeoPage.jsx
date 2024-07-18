@@ -307,6 +307,7 @@ const AuthUserPage = () => {
               onClick={() => {
                 emailCheck();
               }}
+              disabled={emailCheckComplete}
             >
               이메일 인증
             </button>

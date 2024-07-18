@@ -65,26 +65,35 @@ const MyPageReviewPage = () => {
                     />
                   </div>
                   <div className="review-content-mypage">
-                    <div>
-                      {item.pics.map((pic, picIndex) => (
-                        <img
-                          className="img-size"
-                          key={picIndex}
-                          src={`https://34.64.63.109/pic/${pic}`}
-                          alt={`Review ${picIndex}`}
-                        />
-                      ))}
-                    </div>
                     <div className="review-font">
                       <div className="review-font-box">
                         <h2>고객 리뷰</h2>
                         <p>{item.reviewContents}</p>
                       </div>
+
                       {item.reply && item.reply.commentContents ? (
-                        <div className="review-font-box">
-                          <h2>사장님 답변</h2>
-                          <p>{item.reply.commentContents}</p>
-                        </div>
+                        <>
+                          <div className="review-font-box">
+                            <h2>사장님 답변</h2>
+                            <p>{item.reply.commentContents}</p>
+                          </div>
+                          {item.pics.length ? (
+                            <div className="review-imgs-box">
+                              {item.pics.map((pic, picIndex) => (
+                                <>
+                                  <div className="review-img-box">
+                                    <img
+                                      className="img-size"
+                                      key={picIndex}
+                                      src={`https://34.64.63.109/pic/${pic}`}
+                                      alt={`Review ${picIndex}`}
+                                    />
+                                  </div>
+                                </>
+                              ))}
+                            </div>
+                          ) : null}
+                        </>
                       ) : null}
                     </div>
                   </div>

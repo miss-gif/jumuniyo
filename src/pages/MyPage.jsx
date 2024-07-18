@@ -7,6 +7,7 @@ import ModifyPhone from "../components/common/mypage/ModifyPhone";
 import Mypage from "../components/join/Mypage";
 import ImageImport from "../components/layout/ImageImport";
 import { getCookie } from "../utils/cookie";
+import NotLogin from "../components/common/mypage/NotLogin";
 
 const MyPage = () => {
   const [isEditNickname, setIsEditNickname] = useState(false);
@@ -91,123 +92,125 @@ const MyPage = () => {
   return (
     <div className="mypage-wrap">
       <Mypage />
-      <div className="mypage-box">
-        {!isLogIn ? null : (
-          <div className="mypage-img">
-            <div>
-              <h3>프로필 사진</h3>
+      {!isLogIn ? (
+        <NotLogin></NotLogin>
+      ) : (
+        <>
+          <div className="mypage-box">
+            <div className="mypage-img">
+              <div>
+                <h3>프로필 사진</h3>
 
-              {!isEditImg ? (
-                <>
-                  {imgUrl ? (
-                    <img
-                      src={`https://34.64.63.109/pic/${imgUrl}`}
-                      alt="profile-img"
-                    />
-                  ) : (
-                    <img
-                      src={`https://34.64.63.109/pic/default.png`}
-                      alt="profile-img"
-                    />
-                  )}
+                {!isEditImg ? (
+                  <>
+                    {imgUrl ? (
+                      <img
+                        src={`https://34.64.63.109/pic/${imgUrl}`}
+                        alt="profile-img"
+                      />
+                    ) : (
+                      <img
+                        src={`https://34.64.63.109/pic/default.png`}
+                        alt="profile-img"
+                      />
+                    )}
 
-                  <button className="btn" onClick={() => editMode("img")}>
-                    변경
-                  </button>
-                </>
-              ) : (
-                <>
-                  <ImageImport
-                    setImgFile={setImgFile}
-                    setImgUrl={setImgUrl}
-                    newImgFile={newImgFile}
-                    setNewImgFile={setNewImgFile}
-                  />
-                  <div className="mypage-button-box-flex">
-                    <button
-                      className="btn"
-                      onClick={() => {
-                        editImg();
-                      }}
-                    >
-                      저장
+                    <button className="btn" onClick={() => editMode("img")}>
+                      변경
                     </button>
-                    <button
-                      className="btn"
-                      onClick={() => {
-                        editCancel();
-                      }}
-                    >
-                      취소
-                    </button>
-                  </div>
-                </>
-              )}
-            </div>
-          </div>
-        )}
-
-        <div className="mypage-title">
-          <div className="mypage-title-box">아이디</div>
-          <div className="mypage-title-box-right">
-            <div>{userId}</div>
-          </div>
-        </div>
-        <div className="mypage-title">
-          <div className="mypage-title-box">이름</div>
-          <div className="mypage-title-box-right">
-            <div>{name}</div>
-          </div>
-        </div>
-        <div className="mypage-title">
-          <div className="mypage-title-box">비밀번호</div>
-          <div className="mypage-title-box-right">
-            {!isEditPassword ? (
-              <>
-                <input type="password" value={12345678910} disabled />
-
-                {!isLogIn ? null : (
-                  <button
-                    className="btn"
-                    onClick={() => {
-                      editMode("password");
-                    }}
-                  >
-                    변경
-                  </button>
+                  </>
+                ) : (
+                  <>
+                    <ImageImport
+                      setImgFile={setImgFile}
+                      setImgUrl={setImgUrl}
+                      newImgFile={newImgFile}
+                      setNewImgFile={setNewImgFile}
+                    />
+                    <div className="mypage-button-box-flex">
+                      <button
+                        className="btn"
+                        onClick={() => {
+                          editImg();
+                        }}
+                      >
+                        저장
+                      </button>
+                      <button
+                        className="btn"
+                        onClick={() => {
+                          editCancel();
+                        }}
+                      >
+                        취소
+                      </button>
+                    </div>
+                  </>
                 )}
-              </>
-            ) : (
-              <ModifyPass
-                setPassWord={setPassWord}
-                passWord={passWord}
-                setIsEditPassword={setIsEditPassword}
-                editCancel={editCancel}
-              />
-            )}
+              </div>
+            </div>
+
+            <div className="mypage-title">
+              <div className="mypage-title-box">아이디</div>
+              <div className="mypage-title-box-right">
+                <div>{userId}</div>
+              </div>
+            </div>
+            <div className="mypage-title">
+              <div className="mypage-title-box">이름</div>
+              <div className="mypage-title-box-right">
+                <div>{name}</div>
+              </div>
+            </div>
+            <div className="mypage-title">
+              <div className="mypage-title-box">비밀번호</div>
+              <div className="mypage-title-box-right">
+                {!isEditPassword ? (
+                  <>
+                    <input type="password" value={12345678910} disabled />
+
+                    <button
+                      className="btn"
+                      onClick={() => {
+                        editMode("password");
+                      }}
+                    >
+                      변경
+                    </button>
+                  </>
+                ) : (
+                  <ModifyPass
+                    setPassWord={setPassWord}
+                    passWord={passWord}
+                    setIsEditPassword={setIsEditPassword}
+                    editCancel={editCancel}
+                  />
+                )}
+              </div>
+            </div>
+
+            <ModifyNickName
+              isLogIn={isLogIn}
+              setNickName={setNickName}
+              nickName={nickName}
+              setIsEditNickname={setIsEditNickname}
+              isEditNickname={isEditNickname}
+              editMode={editMode}
+              editCancel={editCancel}
+            />
+
+            <ModifyPhone
+              isLogIn={isLogIn}
+              isEditPhoneNumber={isEditPhoneNumber}
+              phoneNumber={phoneNumber}
+              editMode={editMode}
+              setPhoneNumber={setPhoneNumber}
+              editCancel={editCancel}
+              setIsEditPhoneNumber={setIsEditPhoneNumber}
+            />
           </div>
-        </div>
-
-        <ModifyNickName
-          isLogIn={isLogIn}
-          setNickName={setNickName}
-          nickName={nickName}
-          setIsEditNickname={setIsEditNickname}
-          isEditNickname={isEditNickname}
-          editMode={editMode}
-          editCancel={editCancel}
-        />
-
-        <ModifyPhone
-          isLogIn={isLogIn}
-          isEditPhoneNumber={isEditPhoneNumber}
-          phoneNumber={phoneNumber}
-          editMode={editMode}
-          setPhoneNumber={setPhoneNumber}
-          editCancel={editCancel}
-          setIsEditPhoneNumber={setIsEditPhoneNumber}
-        />
-      </div>
+        </>
+      )}
     </div>
   );
 };
