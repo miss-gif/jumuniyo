@@ -135,7 +135,7 @@ const OrdersAccepted = () => {
                 onClick={() => setSelectedOrder(order)}
               >
                 <div className="one-order-left">
-                  <div className="order-number">접수 No. {order.orderPk}</div>
+                  <div className="order-number">No. {order.orderPk}</div>
                   <div className="order-menus-number">
                     메뉴 {order.menuName.length}개
                   </div>
