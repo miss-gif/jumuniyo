@@ -25,15 +25,15 @@
         justify-content: space-between;
         color: #f8fafc;
         padding: 30px;
+        .one-order-left {
+          padding-right: 50px;
+        }
       }
 
       .one-order.selected {
         background-color: #23497e;
       }
 
-      .one-order-left {
-        padding-right: 30px;
-      }
       .one-order-right {
         display: flex;
         flex-direction: column;
