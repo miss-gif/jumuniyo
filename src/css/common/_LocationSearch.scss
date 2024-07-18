@@ -2,7 +2,13 @@ $height: 44px;
 
 .location-search {
   @include flex-column-center;
-  background-color: #1657bf;
+
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 196, 189, 1),
+    rgba(161, 217, 206, 1)
+  );
+
   padding: $padding-8 0;
 
   h2 {
