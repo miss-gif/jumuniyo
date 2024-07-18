@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
+import LoadingSpinner from "../common/LoadingSpinner";
 
 // 쿠키에서 특정 이름의 값을 읽어오는 함수
 const getCookie = name => {
@@ -217,7 +218,12 @@ const MenuManagement = () => {
     }
   };
 
-  if (loading) return <p>Loading...</p>;
+  if (loading)
+    return (
+      <p>
+        <LoadingSpinner />
+      </p>
+    );
   if (error) return <p>Error: {error}</p>;
   return (
     <>
