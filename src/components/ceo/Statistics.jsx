@@ -195,7 +195,7 @@ const Statistics = () => {
     <div className="statistics">
       <h2>가게 통계</h2>
       {error && <p>{error}</p>}
-      <div>
+      <div className="buttonforstatistics">
         <button className="btn" onClick={() => handleViewChange("month")}>
           월 매출 및 주문 수 보기
         </button>
@@ -207,12 +207,13 @@ const Statistics = () => {
         <div>
           <h3>연도 선택</h3>
           <DatePicker
+            className="datepicker"
             selected={selectedYear}
             onChange={handleYearChange}
             dateFormat="yyyy"
             showYearPicker
           />
-          <h3>월 매출 및 주문 수</h3>
+          <h3 className="selected-unit">월 단위</h3>
           <ResponsiveContainer width="100%" height={400}>
             <BarChart
               data={monthSalesData}
@@ -247,14 +248,15 @@ const Statistics = () => {
       )}
       {view === "day" && (
         <div>
-          <h3>연도와 월 선택</h3>
+          <h3 className="selected-unit">연 월 선택</h3>
           <DatePicker
+            className="datepicker"
             selected={selectedMonth}
             onChange={handleMonthChange}
             dateFormat="yyyy-MM"
             showMonthYearPicker
           />
-          <h3>일 매출 및 주문 수</h3>
+          <h3>일 단위</h3>
           <ResponsiveContainer width="100%" height={400}>
             <BarChart
               data={dailySalesData}

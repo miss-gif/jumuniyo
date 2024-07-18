@@ -11,7 +11,10 @@
     flex-direction: column;
     background-color: #1e293b;
     height: 1000px;
-    h3 {
+    h1 {
+      display: flex;
+      justify-content: center;
+      color: #fff;
       padding: 30px 50px 30px 50px;
     }
     .waiting-orders {
@@ -50,7 +53,7 @@
 
   .order-body {
     gap: 20px;
-    padding: 0px 80px 100px 80px;
+    padding: 100px 80px 100px 80px;
 
     .allSalesOntheDay {
       .title {
@@ -89,6 +92,8 @@
               padding: $padding-2;
               margin: 8px 8px 8px 0px;
               border: 1px solid #ccc;
+              width: 30vw;
+
               .requestedabout {
                 display: flex;
                 .requestedto {
@@ -127,6 +132,7 @@
               border: 1px solid #ccc;
               margin: 8px 0px 0px 0px;
               display: block;
+              width: 30vw;
             }
             .AnOrderInf > div {
               margin-bottom: 16px;

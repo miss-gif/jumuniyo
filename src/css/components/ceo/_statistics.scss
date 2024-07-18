@@ -1,8 +1,23 @@
 .statistics {
-  padding: 40px 80px;
+  padding: 40px 15vw;
   h2 {
-    font-weight: 700;
+    font-size: 30px;
+    padding-bottom: 40px;
   }
+
+  .selected-unit {
+    display: flex;
+    justify-content: center;
+  }
+
+  .buttonforstatistics {
+    display: flex;
+    justify-content: center;
+  }
+  .btn {
+    margin: 0px 20px 0px 20px;
+  }
+
   .statistics-title {
     font-size: 2em;
     color: #333;
@@ -11,7 +26,9 @@
   .tabforchoice {
   }
 }
-
+.datepicker {
+  border: 1px solid red;
+}
 .tabforsales {
   display: flex;
   justify-content: center;

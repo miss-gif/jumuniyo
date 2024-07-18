@@ -229,9 +229,6 @@ const MenuManagement = () => {
               <button className="btn" onClick={handleOpenModal}>
                 메뉴 추가
               </button>
-              <button className="btn" onClick={handleOpenModal}>
-                카테고리 추가
-              </button>
             </div>
           </div>
         </div>

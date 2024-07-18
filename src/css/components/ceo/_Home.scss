@@ -12,8 +12,11 @@
     background-color: #1e293b;
     height: 1000px;
 
-    h3 {
+    h1 {
+      display: flex;
+      justify-content: center;
       padding: 30px 50px 30px 50px;
+      color: #fff;
     }
     .waiting-orders {
       background-color: #334155;
@@ -50,25 +53,7 @@
 
   .order-body {
     gap: 20px;
-    padding: 0px 80px 100px 80px;
-
-    .allSalesOntheDay {
-      .title {
-        background-color: $black;
-        color: $white;
-        padding: $padding-2;
-      }
-      .allSalesBody {
-        padding: $padding-2;
-        border: 1px solid #ccc;
-        .tabAndValue {
-          display: flex;
-          .allSalesTab {
-            padding-right: 50px;
-          }
-        }
-      }
-    }
+    padding: 80px 80px 100px 80px;
 
     .orderedList {
       .noOrdersMessage {
@@ -89,8 +74,13 @@
               padding: $padding-2;
               margin: 8px 8px 8px 0px;
               border: 1px solid #ccc;
+              width: 30vw;
+
               .requestedabout {
                 display: flex;
+                padding-top: 20px;
+
+                padding-bottom: 50px;
                 .requestedto {
                   padding-right: 50px;
                 }
@@ -127,9 +117,7 @@
               border: 1px solid #ccc;
               margin: 8px 0px 0px 0px;
               display: block;
-
-              .address-p {
-              }
+              width: 30vw;
             }
             .AnOrderInf > div {
               margin-bottom: 16px;
@@ -170,9 +158,16 @@
 .AnOrderInf {
   flex: 1;
   display: flex;
+  p {
+    padding-bottom: 30px;
+  }
 }
 .acceptOrRefuse {
   display: flex;
   justify-content: space-between !important;
   padding-top: 10px;
+}
+
+.forSpace {
+  width: 20vw;
 }

@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import React from "react";
+import styled from "styled-components";
 
 const ModalForHome = ({ isOpen, onClose, onConfirm, message }) => {
   if (!isOpen) return null;
@@ -7,16 +8,25 @@ const ModalForHome = ({ isOpen, onClose, onConfirm, message }) => {
   return (
     <div className="modal">
       <div className="modal-content">
-        <p>{message}</p>
-        <button className="btn" onClick={onConfirm}>
+        <P>{message}</P>
+        <Button className="btn" onClick={onConfirm}>
           확인
-        </button>
-        <button className="btn" onClick={onClose}>
+        </Button>
+        <Button className="btn" onClick={onClose}>
           취소
-        </button>
+        </Button>
       </div>
     </div>
   );
 };
 
 export default ModalForHome;
+const Button = styled.button`
+  margin: 0px 20px 0px 20px;
+`;
+
+const P = styled.p`
+  margin-top: 20px;
+  margin-bottom: 50px;
+  font-size: 16px;
+`;

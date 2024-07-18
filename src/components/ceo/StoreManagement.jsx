@@ -248,15 +248,17 @@ const StoreManagement = () => {
                 info.reviewDescription
               )}
             </p>
-            {editMode ? (
-              <button className="btn" onClick={handleSave}>
-                저장
-              </button>
-            ) : (
-              <button className="btn" onClick={() => setEditMode(true)}>
-                수정하기
-              </button>
-            )}
+            <div className="button-wrap">
+              {editMode ? (
+                <button className="btn" onClick={handleSave}>
+                  저장
+                </button>
+              ) : (
+                <button className="btn" onClick={() => setEditMode(true)}>
+                  수정하기
+                </button>
+              )}
+            </div>
           </div>
         </div>
       </div>

@@ -40,18 +40,22 @@ const OrdersDetail = () => {
 
   return (
     <div className="ceo-orderDetail-wrap">
+      <h2>주문 번호 {orderDetails.doneOrderPk}</h2>
       <div className="ceo-order-list">
         <div className="ceo-orders">
           <div className="mypage-order">
-            <h2 className="mypage-order__title">제목</h2>
             <div className="mypage-order__contents">
-              <p className="mypage-order__thanks">감사</p>
-              <p className="mypage-order__confirmation">확정</p>
-              <div className="mypage-order__section-title">배달정보</div>
+              <div className="mypage-order__section-titles">배달정보</div>
               <div className="배달정보-콘텐츠">
                 <div className="mypage-order__detail">
-                  <p className="mypage-order__label">주문식당</p>
-                  <p className="mypage-order__value">후라이드참잘하는집</p>
+                  <p className="mypage-order__label">주문상태</p>
+                  <p className="mypage-order__value">배달완료</p>
+                </div>
+                <div className="mypage-order__detail">
+                  <p className="mypage-order__label">주문날짜</p>
+                  <p className="mypage-order__value">
+                    {orderDetails.createdAt}
+                  </p>
                 </div>
                 <div className="mypage-order__detail">
                   <p className="mypage-order__label">결제수단</p>
@@ -66,8 +70,10 @@ const OrdersDetail = () => {
                   </p>
                 </div>
                 <div className="mypage-order__detail">
-                  <p className="mypage-order__label">연락처</p>
-                  <p className="mypage-order__value">01012345551</p>
+                  <p className="mypage-order__label">주문 요청 사항</p>
+                  <p className="mypage-order__value">
+                    {orderDetails.orderRequest}
+                  </p>
                 </div>
               </div>
               <div className="mypage-order__section-title">주문내역</div>
@@ -77,7 +83,7 @@ const OrdersDetail = () => {
                     orderDetails.menuInfoList.map((menu, index) => (
                       <li key={index}>
                         <p className="mypage-order__item-name">
-                          {menu.menuName} <span>x {menu.quantity}개</span>
+                          {menu.menuName} <span>x {menu.quantity} 1 개</span>
                         </p>
                         <p className="mypage-order__item-price">
                           {menu.menuPrice}원
@@ -95,26 +101,6 @@ const OrdersDetail = () => {
             </div>
           </div>
         </div>
-      </div>
-
-      <div className="order-details">
-        <h2>주문 상세 정보</h2>
-        <p>주문 번호: {orderDetails.doneOrderPk}</p>
-        <p>사용자 번호: {orderDetails.userPk}</p>
-        <p>가게 번호: {orderDetails.resPk}</p>
-        <p>주문 가격: {orderDetails.orderPrice}원</p>
-        <p>주문 요청 사항: {orderDetails.orderRequest}</p>
-        <p>주문 상태: {orderDetails.doneOrderState}</p>
-        <p>결제 방법: {orderDetails.paymentMethod}</p>
-        <p>주문 시간: {orderDetails.createdAt}</p>
-        <h3>메뉴 정보</h3>
-        <ul>
-          {orderDetails.menuInfoList.map((menu, index) => (
-            <li key={index}>
-              {menu.menuName} - {menu.menuPrice}원
-            </li>
-          ))}
-        </ul>
       </div>
     </div>
   );
