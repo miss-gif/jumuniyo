@@ -1,9 +1,21 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { getCookie } from "../../utils/cookie";
 
 const Mypage = () => {
+  const [isLogin, setIsLogin] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+
+  useEffect(() => {
+    const isLogin = getCookie("accessToken");
+    if (!isLogin) {
+      setIsLogin(false);
+      return;
+    } else {
+      setIsLogin(true);
+    }
+  }, []);
 
   return (
     <div className="mypage-select">
@@ -46,16 +58,19 @@ const Mypage = () => {
       >
         리뷰내역
       </button>
-      <button
-        onClick={() => navigate("/mypage/withdrawal")}
-        style={{
-          backgroundColor:
-            location.pathname === "/mypage/withdrawal" ? "#333" : "white",
-          color: location.pathname === "/mypage/withdrawal" ? "white" : "#333",
-        }}
-      >
-        회원탈퇴
-      </button>
+      {!isLogin ? null : (
+        <button
+          onClick={() => navigate("/mypage/withdrawal")}
+          style={{
+            backgroundColor:
+              location.pathname === "/mypage/withdrawal" ? "#333" : "white",
+            color:
+              location.pathname === "/mypage/withdrawal" ? "white" : "#333",
+          }}
+        >
+          회원탈퇴
+        </button>
+      )}
     </div>
   );
 };

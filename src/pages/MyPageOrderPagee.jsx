@@ -3,6 +3,7 @@ import jwtAxios from "../api/user/jwtUtil";
 import MypageReviewWrite from "../components/common/mypage/MypageReviewWrite";
 import MyPageOrderList from "../components/common/MyPageOrderList";
 import Mypage from "../components/join/Mypage";
+import { getCookie } from "../utils/cookie";
 
 const MyPageOrderPagee = () => {
   const [reviewOpen, setReviewOpen] = useState(false);
@@ -10,6 +11,8 @@ const MyPageOrderPagee = () => {
   const [selectedOrderPk, setSelectedOrderPk] = useState(null);
   const [doneOrderPk, setDoneOrderPk] = useState("");
   const [resPk, setResPk] = useState("");
+  const [isLogin, setIsLogin] = useState(false);
+  const [isCancle, setIsCancle] = useState(false);
 
   const isOlderThanThreeDays = date => {
     const orderDate = new Date(date);
@@ -46,20 +49,29 @@ const MyPageOrderPagee = () => {
 
   useEffect(() => {
     getOrderList();
+    const isLogin = getCookie("accessToken");
+    if (!isLogin) {
+      setIsLogin(false);
+      return;
+    } else {
+      setIsLogin(true);
+    }
   }, []);
 
   return (
     <div className="mypage-wrap">
       <Mypage />
       <div className="mypage-box">
-        {orders ? (
+        {!isLogin ? (
+          <div>로그인 후 이용해주세요</div>
+        ) : orders ? (
           <>
             {orders.map(order => {
               const isOldOrder = isOlderThanThreeDays(order.createdAt);
               return (
                 <div key={order.doneOrderPk}>
                   <MyPageOrderList
-                    doneOrderPk={doneOrderPk}
+                    doneOrderPk={order.doneOrderPk}
                     isOldOrder={isOldOrder}
                     order={order}
                     reviewOpenModal={reviewOpenModal}
@@ -67,7 +79,7 @@ const MyPageOrderPagee = () => {
                   />
                   {reviewOpen && selectedOrderPk === order.doneOrderPk && (
                     <MypageReviewWrite
-                      doneOrderPk={doneOrderPk}
+                      doneOrderPk={order.doneOrderPk}
                       setReviewOpen={setReviewOpen}
                       reviewNo={reviewNo}
                       resPk={resPk}

@@ -10,6 +10,7 @@ const ModifyNickName = ({
   setNickName,
   editCancel,
   setIsEditNickname,
+  isLogIn,
 }) => {
   const [newNickName, setNewNickName] = useState("");
 
@@ -38,9 +39,11 @@ const ModifyNickName = ({
         {!isEditNickname ? (
           <>
             <div>{nickName}</div>
-            <button className="btn" onClick={() => editMode("nickname")}>
-              변경
-            </button>
+            {!isLogIn ? null : (
+              <button className="btn" onClick={() => editMode("nickname")}>
+                변경
+              </button>
+            )}
           </>
         ) : (
           <>

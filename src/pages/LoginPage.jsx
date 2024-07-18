@@ -4,10 +4,18 @@ import { Box, TextField } from "@mui/material";
 import { useState } from "react";
 import axios from "axios";
 import { setCookie } from "../utils/cookie";
+import { useDispatch } from "react-redux";
+import {
+  setUserAddress,
+  setUserData,
+  setUserPhone,
+  setUserRole,
+} from "../app/store";
 
 const AuthUserPage = () => {
   const [userId, setUserId] = useState("");
   const [userPw, setUserPw] = useState("");
+  const dispatch = useDispatch();
 
   const navigate = useNavigate();
 
@@ -20,6 +28,13 @@ const AuthUserPage = () => {
         user_login_type: 1,
       });
 
+      if (response.data.statusCode === 1) {
+        const { resultData } = response.data;
+        dispatch(setUserData(resultData));
+        dispatch(setUserRole(resultData.userRole));
+        dispatch(setUserAddress(resultData.mainAddr)); // 주소 저장
+        dispatch(setUserPhone(resultData.userPhone)); // 전화번호 저장
+      }
       setCookie("accessToken", response.data.resultData.accessToken);
       console.log(response.data.resultData.userRole);
       if (
