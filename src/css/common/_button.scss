@@ -8,13 +8,19 @@
 .btn {
   @extend .btn-base;
   color: $white;
+  background-color: $mainColor;
+}
+
+.btn--black {
+  @extend .btn-base;
+  color: $white;
   background-color: $black;
 }
 
 .btn--active {
   @extend .btn-base;
   color: $white;
-  background-color: $black;
+  background-color: $mainColor;
 }
 
 .btn--default {
