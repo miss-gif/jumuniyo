@@ -34,11 +34,13 @@ const Reviews = () => {
 
         if (data.statusCode === 1 || data.statusCode === 2) {
           const updatedReviewItems = data.resultData.map(item => {
-            const reviewImg =
-              item.pics.length > 0 ? `/pic/${item.pics[0]}` : testMenu;
+            const reviewImgs =
+              item.pics.length > 0
+                ? item.pics.map(pic => `/pic/${pic}`)
+                : [testMenu];
             return {
               ...item,
-              reviewImg: reviewImg,
+              reviewImgs: reviewImgs,
               ceoReply: item.reply
                 ? {
                     content: item.reply.commentContents,
@@ -294,7 +296,9 @@ const Reviews = () => {
                     </div>
                     <div className="review-content-image">
                       <p>{item.reviewContents}</p>
-                      <img src={item.reviewImg} alt="Review" />
+                      {item.reviewImgs.map((img, idx) => (
+                        <img key={idx} src={img} alt={`Review ${idx + 1}`} />
+                      ))}
                     </div>
                     {item.ceoReply ? (
                       <div className="ceo-reply">

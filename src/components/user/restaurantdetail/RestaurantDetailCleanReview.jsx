@@ -26,7 +26,6 @@ const RestaurantDetailCleanReview = ({ resPk, restaurantData }) => {
   if (loading) return <p>로딩 중</p>;
   if (error) return <p>에러: {error}</p>;
 
-  // 소수 둘째 자리에서 반올림된 reviewScore
   const roundedReviewScore = Math.round(restaurantData.reviewScore * 100) / 100;
 
   return (
