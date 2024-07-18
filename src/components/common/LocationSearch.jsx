@@ -80,7 +80,7 @@ const LocationSearch = () => {
   };
 
   const onClickSearch = () => {
-    navigate("/restaurant/category_id=0&page=1&order_type=1");
+    navigate("/restaurant/category_id=0");
   };
 
   return (
