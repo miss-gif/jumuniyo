@@ -112,6 +112,7 @@ const AuthUserPage = () => {
           </div>
           <button
             type="submit"
+            className="btn"
             onClick={e => {
               login(e);
             }}

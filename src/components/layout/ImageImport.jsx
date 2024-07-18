@@ -73,7 +73,7 @@ const ImageImport = ({ setImgFile, setImgUrl, setNewImgFile, newImgFile }) => {
         </div>
       )} */}
       <FileInputContainer>
-        <StyledLabel htmlFor="file-upload">Upload Image</StyledLabel>
+        <StyledLabel htmlFor="file-upload">이미지 업로드</StyledLabel>
         <HiddenInput
           id="file-upload"
           type="file"

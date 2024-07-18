@@ -57,37 +57,21 @@ const MyPageAddress = () => {
     console.log();
   }, []);
 
-  // const editUserAddress = async () => {
-  //   setIsModalOpen(true);
-  //   try {
-  //     const data = {
-  //       addr_pk: addressPk,
-  //       addr1: newAddress,
-  //       addr2: newAddressDetail,
-  //       addr_coor_x: newXValue,
-  //       addr_coor_y: newYValue,
-  //     };
-  //     const res = jwtAxios.post("/api/address", data);
-
-  //     return res;
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
   const addUserAddress = async () => {
     setIsModalOpen(true);
-    try {
-      const data = {
-        addr_name: "우리집",
-        addr1: newAddress,
-        addr2: newAddressDetail,
-        addr_coor_x: newXValue,
-        addr_coor_y: newYValue,
-      };
-      const res = jwtAxios.post("/api/address", data);
-    } catch (error) {
-      console.log(error);
+    if (isFirstUser) {
+      try {
+        const data = {
+          addr_name: "우리집",
+          addr1: newAddress,
+          addr2: newAddressDetail,
+          addr_coor_x: newXValue,
+          addr_coor_y: newYValue,
+        };
+        const res = jwtAxios.post("/api/address", data);
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 
@@ -128,6 +112,7 @@ const MyPageAddress = () => {
             {!isLogin ? null : isFirstUser ? (
               <button
                 type="button"
+                className="btn"
                 onClick={() => {
                   onModify();
                 }}
@@ -137,6 +122,7 @@ const MyPageAddress = () => {
             ) : (
               <button
                 type="button"
+                className="btn"
                 onClick={() => {
                   onModify();
                 }}
