@@ -53,8 +53,8 @@ const MypageReviewWrite = ({
       }),
     );
 
-    pics.forEach((pic, index) => {
-      data.append(`pics[${index}]`, pic);
+    pics.forEach(pic => {
+      data.append("pics", pic);
     });
 
     try {

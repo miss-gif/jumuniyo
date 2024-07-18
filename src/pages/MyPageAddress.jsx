@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import MypageModal from "../components/common/mypage/MypageModal";
 import Mypage from "../components/join/Mypage";
 import jwtAxios from "../api/user/jwtUtil";
+import { getCookie } from "../utils/cookie";
 //
 const MyPageAddress = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -15,10 +16,20 @@ const MyPageAddress = () => {
   const [newAddressDetail, setNewAddressDetail] = useState("");
   const [addressPk, setAddressPk] = useState("");
   const [changeAddress, setChangeAddress] = useState("");
+  const [isLogin, setIsLogin] = useState(false);
 
   const [isFirstUser, setIsFirstUser] = useState(false);
 
   useEffect(() => {
+    const isLogin = getCookie("accessToken");
+    if (!isLogin) {
+      setIsLogin(false);
+      setAddress("로그인 후 이용해주세요");
+      setAddressDetail("로그인 후 이용해주세요");
+      return;
+    } else {
+      setIsLogin(true);
+    }
     const getUserAddress = async () => {
       try {
         const res = await jwtAxios.get("/api/address/main-address");
@@ -110,7 +121,7 @@ const MyPageAddress = () => {
         </div>
 
         <div className="mypage-button-box">
-          {isFirstUser === true ? (
+          {!isLogin ? null : isFirstUser ? (
             <button
               type="button"
               onClick={() => {

@@ -42,7 +42,7 @@ const MyPageOrderList = ({ reviewOpenModal, order, isOldOrder }) => {
                     {order.orderPrice.toLocaleString("ko-KR")}원
                   </div>
                 </div>
-                {!isOldOrder ? (
+                {!isOldOrder && order.doneOrderState === 1 ? (
                   <button
                     className="btn"
                     onClick={() =>

@@ -165,14 +165,17 @@ const MyPage = () => {
             {!isEditPassword ? (
               <>
                 <input type="password" value={12345678910} disabled />
-                <button
-                  className="btn"
-                  onClick={() => {
-                    editMode("password");
-                  }}
-                >
-                  변경
-                </button>
+
+                {!isLogIn ? null : (
+                  <button
+                    className="btn"
+                    onClick={() => {
+                      editMode("password");
+                    }}
+                  >
+                    변경
+                  </button>
+                )}
               </>
             ) : (
               <ModifyPass
@@ -186,6 +189,7 @@ const MyPage = () => {
         </div>
 
         <ModifyNickName
+          isLogIn={isLogIn}
           setNickName={setNickName}
           nickName={nickName}
           setIsEditNickname={setIsEditNickname}
@@ -195,6 +199,7 @@ const MyPage = () => {
         />
 
         <ModifyPhone
+          isLogIn={isLogIn}
           isEditPhoneNumber={isEditPhoneNumber}
           phoneNumber={phoneNumber}
           editMode={editMode}

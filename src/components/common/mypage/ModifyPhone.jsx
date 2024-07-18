@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PhoneNumberInput from "../../user/mypage/PhoneNumberInput";
 import jwtAxios from "../../../api/user/jwtUtil";
 
@@ -10,6 +10,7 @@ const ModifyPhone = ({
   setPhoneNumber,
   editCancel,
   setIsEditPhoneNumber,
+  isLogIn,
 }) => {
   const [newPhoneNumber, setNewPhoneNumber] = useState("");
 
@@ -38,9 +39,11 @@ const ModifyPhone = ({
         {!isEditPhoneNumber ? (
           <>
             <div>{phoneNumber}</div>
-            <button className="btn" onClick={() => editMode("PhoneNumber")}>
-              변경
-            </button>
+            {!isLogIn ? null : (
+              <button className="btn" onClick={() => editMode("PhoneNumber")}>
+                변경
+              </button>
+            )}
           </>
         ) : (
           <>
