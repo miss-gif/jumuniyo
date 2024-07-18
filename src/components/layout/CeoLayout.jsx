@@ -94,8 +94,8 @@ const CeoLayout = () => {
   const currentPath = location.pathname;
 
   const navItems = [
-    { path: "/ceopage/home", label: "홈" },
-    { path: "/ceopage/orders-accepted", label: "주문관리" },
+    { path: "/ceopage/home", label: "신규주문" },
+    { path: "/ceopage/orders-accepted", label: "접수주문" },
     { path: "/ceopage/menu-management", label: "메뉴관리" },
     { path: "/ceopage/reviews", label: "리뷰관리" },
     { path: "/ceopage/store-management", label: "매장관리" },
