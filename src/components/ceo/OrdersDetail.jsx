@@ -49,7 +49,11 @@ const OrdersDetail = () => {
               <div className="배달정보-콘텐츠">
                 <div className="mypage-order__detail">
                   <p className="mypage-order__label">주문상태</p>
-                  <p className="mypage-order__value">배달완료</p>
+                  <p className="mypage-order__value">
+                    {orderDetails.doneOrderState === 1
+                      ? "주문완료"
+                      : "취소완료"}
+                  </p>
                 </div>
                 <div className="mypage-order__detail">
                   <p className="mypage-order__label">주문날짜</p>
@@ -66,7 +70,7 @@ const OrdersDetail = () => {
                 <div className="mypage-order__detail">
                   <p className="mypage-order__label">주문자정보</p>
                   <p className="mypage-order__value">
-                    서울특별시 강남구 삼성동 143-10 위워크 타워
+                    {orderDetails.orderAddress}
                   </p>
                 </div>
                 <div className="mypage-order__detail">

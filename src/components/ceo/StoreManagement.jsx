@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import InfoManagement from "./storemanagement/InfoManagement";
+import CategoryManagement from "./storemanagement/CategoryManagement";
+import MenuManagement from "./storemanagement/MenuManagement";
 
 const StoreManagement = () => {
   const [info, setInfo] = useState({
@@ -13,17 +16,18 @@ const StoreManagement = () => {
     regiNum: "",
     restaurantDescription: "",
     reviewDescription: "",
+    restaurantState: 2,
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [status, setStatus] = useState(null);
-  const [editMode, setEditMode] = useState(false);
+  const [activeTab, setActiveTab] = useState("storeInfo");
+  const [modalMessage, setModalMessage] = useState("");
+  const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // 쿠키에서 accessToken 가져오기
         const getCookie = name => {
           const value = `; ${document.cookie}`;
           const parts = value.split(`; ${name}=`);
@@ -33,34 +37,25 @@ const StoreManagement = () => {
 
         const accessToken = getCookie("accessToken");
 
-        console.log(accessToken);
-
-        // accessToken이 없는 경우 로그인 페이지로 리디렉션
         if (!accessToken) {
           navigate("/login");
           return;
         }
 
-        // 서버에서 영업 상태 가져오기
-        const statusResponse = await axios.get("/api/owner/restaurant/state", {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        });
-        const currentStatus = statusResponse.data.statusCode;
-        setStatus(currentStatus);
+        console.log("Fetching store info with accessToken:", accessToken);
 
-        // 서버에서 매장 정보 데이터 요청
         const response = await axios.get("/api/owner/restaurant", {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
         });
 
-        // 데이터 설정
+        console.log("Store info response:", response.data);
+
         setInfo(response.data.resultData);
         setLoading(false);
       } catch (error) {
+        console.error("Error fetching store info:", error);
         setError("데이터를 가져오는 중 에러가 발생했습니다.");
         setLoading(false);
       }
@@ -69,11 +64,9 @@ const StoreManagement = () => {
     fetchData();
   }, [navigate]);
 
-  const handleStatusToggle = async e => {
-    const newStatus = status === 1 ? 2 : 1;
-    setStatus(newStatus);
+  const handleStatusToggle = async () => {
+    const newStatus = info.restaurantState === 1 ? 2 : 1;
     try {
-      // 쿠키에서 accessToken 가져오기
       const getCookie = name => {
         const value = `; ${document.cookie}`;
         const parts = value.split(`; ${name}=`);
@@ -83,7 +76,6 @@ const StoreManagement = () => {
 
       const accessToken = getCookie("accessToken");
 
-      // 서버로 상태 변경 요청
       await axios.get("/api/owner/restaurant/state", {
         headers: {
           Authorization: `Bearer ${accessToken}`,
@@ -92,44 +84,25 @@ const StoreManagement = () => {
           statusCode: newStatus,
         },
       });
+
+      setInfo(prevInfo => ({
+        ...prevInfo,
+        restaurantState: newStatus,
+      }));
+
+      // 모달 메시지 설정 및 모달 표시
+      setModalMessage(
+        newStatus === 1 ? "영업시작되었습니다." : "영업종료되었습니다.",
+      );
+      setShowModal(true);
     } catch (error) {
       console.error("상태 변경 중 에러 발생: ", error);
     }
   };
 
-  const handleChange = e => {
-    const { name, value } = e.target;
-    setInfo(prevInfo => ({
-      ...prevInfo,
-      [name]: value,
-    }));
-  };
-
-  const handleSave = async () => {
-    try {
-      // 쿠키에서 accessToken 가져오기
-      const getCookie = name => {
-        const value = `; ${document.cookie}`;
-        const parts = value.split(`; ${name}=`);
-        if (parts.length === 2) return parts.pop().split(";").shift();
-        return null;
-      };
-
-      const accessToken = getCookie("accessToken");
-
-      // 서버로 데이터 저장 요청
-      await axios.put("/api/owner/restaurant", info, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
-
-      alert("정보가 저장되었습니다.");
-      setEditMode(false); // 수정 모드 종료
-    } catch (error) {
-      console.error("정보 저장 중 에러 발생: ", error);
-      alert("정보 저장 중 에러가 발생했습니다.");
-    }
+  const closeModal = () => {
+    setShowModal(false);
+    window.location.reload(); // 페이지 새로고침
   };
 
   if (loading) {
@@ -143,125 +116,47 @@ const StoreManagement = () => {
   return (
     <div className="store-management">
       <h2 className="store-management-tab">매장관리</h2>
-      <div className="statusborder">
-        <div className="status-taps">매장 설정</div>
-
-        <div className="statusandInfo">
-          <div className="status-section">
-            <h2 className="status-title">영업 상태</h2>
-            <button className="status-toggle" onClick={handleStatusToggle}>
-              {status === 1 ? "영업중" : "준비중"}
-            </button>
-          </div>
-          <div className="info-section">
-            <h3>업체정보</h3>
-            <p>
-              <h4>영업시간</h4>
-              {editMode ? (
-                <>
-                  <input
-                    type="time"
-                    name="openTime"
-                    value={info.openTime}
-                    onChange={handleChange}
-                    placeholder="오픈 시간"
-                  />
-                  -
-                  <input
-                    type="time"
-                    name="closeTime"
-                    value={info.closeTime}
-                    onChange={handleChange}
-                    placeholder="종료 시간"
-                  />
-                </>
-              ) : (
-                `${info.openTime} - ${info.closeTime}`
-              )}
-            </p>
-            <p>
-              <h4>주소</h4>
-              {editMode ? (
-                <input
-                  type="text"
-                  name="addr"
-                  value={info.addr}
-                  onChange={handleChange}
-                  placeholder="주소"
-                />
-              ) : (
-                info.addr
-              )}
-            </p>
-            <h3>사업자정보</h3>
-            <p>
-              <h4>상호명</h4>
-              {editMode ? (
-                <input
-                  type="text"
-                  name="restaurantName"
-                  value={info.restaurantName}
-                  onChange={handleChange}
-                  placeholder="상호명"
-                />
-              ) : (
-                info.restaurantName
-              )}
-            </p>
-            <p>
-              <h4>사업자등록번호</h4>
-              {editMode ? (
-                <input
-                  type="text"
-                  name="regiNum"
-                  value={info.regiNum}
-                  onChange={handleChange}
-                  placeholder="사업자등록번호"
-                />
-              ) : (
-                info.regiNum
-              )}
-            </p>
-            <p>
-              <h4>가게 소개</h4>
-              {editMode ? (
-                <textarea
-                  name="restaurantDescription"
-                  value={info.restaurantDescription}
-                  onChange={handleChange}
-                  placeholder="사업장 설명"
-                />
-              ) : (
-                info.restaurantDescription
-              )}
-            </p>
-            <p>
-              <h4>사장님 알림</h4>
-              {editMode ? (
-                <textarea
-                  name="reviewDescription"
-                  value={info.reviewDescription}
-                  onChange={handleChange}
-                  placeholder="사장님 알림"
-                />
-              ) : (
-                info.reviewDescription
-              )}
-            </p>
-            <div className="button-wrap">
-              {editMode ? (
-                <button className="btn" onClick={handleSave}>
-                  저장
-                </button>
-              ) : (
-                <button className="btn" onClick={() => setEditMode(true)}>
-                  수정하기
-                </button>
-              )}
+      <div className="tabs">
+        <button onClick={() => setActiveTab("storeInfo")}>매장 설정</button>
+        <button onClick={() => setActiveTab("categoryManagement")}>
+          카테고리 관리
+        </button>
+        <button onClick={() => setActiveTab("menuManagement")}>
+          메뉴 설정
+        </button>
+      </div>
+      {console.log("Active tab:", activeTab)}
+      {activeTab === "storeInfo" && (
+        <div className="statusborder">
+          <div className="statusandInfo">
+            <div className="status-section">
+              <h2 className="status-title">
+                영업 상태: {info.restaurantState === 1 ? "영업중" : "준비중"}
+              </h2>
+              <button className="status-toggle" onClick={handleStatusToggle}>
+                {info.restaurantState === 1 ? "영업종료" : "영업시작"}
+              </button>
             </div>
+            <InfoManagement
+              info={info}
+              setInfo={setInfo}
+              setLoading={setLoading}
+              setError={setError}
+            />
           </div>
         </div>
-      </div>
+      )}
+      {activeTab === "categoryManagement" && <CategoryManagement />}
+      {activeTab === "menuManagement" && <MenuManagement />}
+
+      {showModal && (
+        <div className="modal">
+          <div className="modal-content">
+            <p>{modalMessage}</p>
+            <button onClick={closeModal}>확인</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

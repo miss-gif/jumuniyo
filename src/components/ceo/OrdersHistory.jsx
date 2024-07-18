@@ -9,15 +9,18 @@ const getCookie = name => {
 };
 
 const OrdersHistory = () => {
-  const [selectedTab, setSelectedTab] = useState("accepted");
+  const [selectedTab, setSelectedTab] = useState("all");
   const [acceptedOrders, setAcceptedOrders] = useState([]);
   const [refusedOrders, setRefusedOrders] = useState([]);
+  const [allOrders, setAllOrders] = useState([]);
 
   useEffect(() => {
     if (selectedTab === "accepted") {
       getAcceptedOrders();
     } else if (selectedTab === "refused") {
       getRefusedOrders();
+    } else if (selectedTab === "all") {
+      getAllOrders();
     }
   }, [selectedTab]);
 
@@ -65,7 +68,50 @@ const OrdersHistory = () => {
     }
   };
 
-  const renderOrders = (orders, emptyMessage, tab) => {
+  const getAllOrders = async () => {
+    try {
+      const accessToken = getCookie("accessToken");
+      const [acceptedResponse, refusedResponse] = await Promise.all([
+        axios.get("/api/done/owner/done/list", {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }),
+        axios.get("/api/done/owner/cancel/list", {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }),
+      ]);
+
+      const acceptedData = acceptedResponse.data;
+      const refusedData = refusedResponse.data;
+
+      let allData = [];
+      if (
+        (acceptedData.statusCode === 1 || acceptedData.statusCode === 2) &&
+        (refusedData.statusCode === 1 || refusedData.statusCode === 2)
+      ) {
+        allData = [...acceptedData.resultData, ...refusedData.resultData];
+      } else if (
+        acceptedData.statusCode === 1 ||
+        acceptedData.statusCode === 2
+      ) {
+        allData = acceptedData.resultData;
+      } else if (refusedData.statusCode === 1 || refusedData.statusCode === 2) {
+        allData = refusedData.resultData;
+      }
+
+      allData.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      setAllOrders(allData);
+      console.log("allOrders:", allData);
+    } catch (error) {
+      console.error("전체 주문 에러", error);
+      setAllOrders([]);
+    }
+  };
+
+  const renderOrders = (orders, emptyMessage) => {
     return orders.length > 0 ? (
       orders.map(order => (
         <div className="ceo-orderList" key={order.doneOrderPk}>
@@ -73,7 +119,9 @@ const OrdersHistory = () => {
             <div className="order-header-left">
               <div className="order-header-title">
                 {new Date(order.createdAt).toLocaleDateString()} -{" "}
-                <span>{tab === "accepted" ? "주문완료" : "주문취소"}</span>
+                <span>
+                  {order.doneOrderState === 1 ? "주문완료" : "주문취소"}
+                </span>
               </div>
               <div className="order-header-left-wrap">
                 <div className="order-header-left-content">
@@ -115,6 +163,9 @@ const OrdersHistory = () => {
         <div className="orderListing">
           <ul className="tabforchoiceUl">
             <li>
+              <button className="btn" onClick={() => setSelectedTab("all")}>
+                전체 주문
+              </button>
               <button
                 className="btn"
                 onClick={() => setSelectedTab("accepted")}
@@ -129,16 +180,17 @@ const OrdersHistory = () => {
         </div>
         {selectedTab === "accepted" && (
           <div className="accepted">
-            {renderOrders(
-              acceptedOrders,
-              "완료된 주문이 없습니다.",
-              "accepted",
-            )}
+            {renderOrders(acceptedOrders, "완료된 주문이 없습니다.")}
           </div>
         )}
         {selectedTab === "refused" && (
           <div className="refused">
-            {renderOrders(refusedOrders, "거절된 주문이 없습니다.", "refused")}
+            {renderOrders(refusedOrders, "거절된 주문이 없습니다.")}
+          </div>
+        )}
+        {selectedTab === "all" && (
+          <div className="all">
+            {renderOrders(allOrders, "전체 주문이 없습니다.")}
           </div>
         )}
       </div>

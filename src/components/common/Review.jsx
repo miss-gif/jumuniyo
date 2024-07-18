@@ -1,10 +1,24 @@
 /* eslint-disable react/prop-types */
-import React from "react";
+import React, { useState } from "react";
 import OwnerComment from "./OwnerComment";
+import ModalforReview from "./ModalForReview";
 
 const Review = ({ review }) => {
   const { userPk, reviewContents, reviewRating, pics, createdAt, reply } =
     review;
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
+
+  const openModal = pic => {
+    setSelectedImage(pic);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setSelectedImage(null);
+    setIsModalOpen(false);
+  };
 
   const roundedRating = Math.round(reviewRating * 100) / 100;
 
@@ -23,10 +37,32 @@ const Review = ({ review }) => {
         </div>
       </div>
       {pics.length > 0 && (
-        <img src={`/pic/${pics[0]}`} alt="review" className="review__image" />
+        <div
+          className="review__images"
+          style={{ display: "flex", gap: "10px" }}
+        >
+          {pics.map((pic, index) => (
+            <img
+              key={index}
+              src={`/pic/${pic}`}
+              alt={`review pic ${index + 1}`}
+              className="review__image"
+              style={{ width: "200px", height: "100px", cursor: "pointer" }}
+              onClick={() => openModal(pic)}
+            />
+          ))}
+        </div>
       )}
       <div className="review__content">{reviewContents}</div>
       {reply && <OwnerComment reply={reply} />}
+
+      <ModalforReview isOpen={isModalOpen} onClose={closeModal}>
+        <img
+          src={`/pic/${selectedImage}`}
+          alt="Original"
+          style={{ width: "100%" }}
+        />
+      </ModalforReview>
     </li>
   );
 };
