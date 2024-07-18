@@ -19,7 +19,7 @@ const RestaurantDetailInfo = ({ restaurantData }) => {
             <span>★★★★★</span> <p>{roundedReviewScore}</p>
           </div>
           <p className="restaurant-detail-page__info-payment">
-            <span className="gray">결제</span> 신용카드 , 현금 , 웹 결제
+            <span className="gray">결제</span> 신용카드, 현금, 웹 결제
           </p>
         </div>
       </div>

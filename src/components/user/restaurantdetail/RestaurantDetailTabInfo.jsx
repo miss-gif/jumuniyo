@@ -45,7 +45,7 @@ const RestaurantDetailTabInfo = ({ restaurantData }) => {
           <div className="restaurant-detail-tab-info__info">
             <p className="restaurant-detail-tab-info__info-title">결제수단</p>
             <p className="restaurant-detail-tab-info__info-detail">
-              신용카드, 현금, 요기서결제
+              신용카드, 현금, 웹 결제
             </p>
           </div>
         </div>
