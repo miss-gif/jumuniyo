@@ -288,7 +288,7 @@ const AuthUserPage = () => {
             </Box>
             <button
               type="button"
-              className="id-check"
+              className="btn"
               onClick={() => {
                 idTest();
               }}
@@ -312,7 +312,7 @@ const AuthUserPage = () => {
             {emailCheckOk === true ? null : (
               <button
                 type="button"
-                className="id-check"
+                className="btn"
                 onClick={() => {
                   emailCheck();
                 }}
@@ -415,6 +415,7 @@ const AuthUserPage = () => {
           <AuthImageImport setUserImgFile={setUserImgFile} />
           <button
             type="button"
+            className="btn"
             onClick={e => {
               joinMember(e);
             }}

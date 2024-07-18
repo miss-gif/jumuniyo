@@ -73,13 +73,6 @@
   display: flex;
   gap: 16px;
   justify-content: end;
-
-  & button {
-    padding: 8px 12px;
-    background-color: #333;
-    color: white;
-    border-radius: 4px;
-  }
 }
 
 .mypage-address {
@@ -195,9 +188,11 @@
 
 .review-img-box {
   display: flex;
+}
 
-  & img {
-  }
+.null-item {
+  width: 100%;
+  margin: 32px 0;
 }
 
 @include tablet {

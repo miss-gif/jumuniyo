@@ -1,7 +1,11 @@
+import { Alert } from "@mui/material";
+
 const NotLogin = () => {
   return (
     <div className="mypage-box">
-      <div>로그인 후 이용해주세요</div>
+      <Alert variant="outlined" severity="warning">
+        로그인 후 이용해 주세요.
+      </Alert>
     </div>
   );
 };

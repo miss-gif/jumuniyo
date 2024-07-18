@@ -281,7 +281,7 @@ const AuthUserPage = () => {
             </Box>
             <button
               type="button"
-              className="id-check"
+              className="btn"
               onClick={() => {
                 idTest();
               }}
@@ -303,7 +303,7 @@ const AuthUserPage = () => {
             </Box>
             <button
               type="button"
-              className="id-check"
+              className="btn"
               onClick={() => {
                 emailCheck();
               }}
@@ -507,6 +507,7 @@ const AuthUserPage = () => {
 
           <button
             type="button"
+            className="btn"
             onClick={e => {
               joinCeo(e);
             }}

@@ -4,6 +4,8 @@ import MypageReviewWrite from "../components/common/mypage/MypageReviewWrite";
 import MyPageOrderList from "../components/common/MyPageOrderList";
 import Mypage from "../components/join/Mypage";
 import { getCookie } from "../utils/cookie";
+import NotLogin from "../components/common/mypage/NotLogin";
+import { Alert } from "@mui/material";
 
 const MyPageOrderPagee = () => {
   const [reviewOpen, setReviewOpen] = useState(false);
@@ -61,11 +63,11 @@ const MyPageOrderPagee = () => {
   return (
     <div className="mypage-wrap">
       <Mypage />
-      <div className="mypage-box">
-        {!isLogin ? (
-          <div>로그인 후 이용해주세요</div>
-        ) : orders ? (
-          <>
+      {!isLogin ? (
+        <NotLogin />
+      ) : orders ? (
+        <>
+          <div className="mypage-box">
             {orders.map(order => {
               const isOldOrder = isOlderThanThreeDays(order.createdAt);
               return (
@@ -89,11 +91,15 @@ const MyPageOrderPagee = () => {
                 </div>
               );
             })}
-          </>
-        ) : (
-          <div className="order-list">주문 내역이 없습니다</div>
-        )}
-      </div>
+          </div>
+        </>
+      ) : (
+        <div className="null-item">
+          <Alert variant="outlined" severity="info">
+            주문내역이 없습니다.
+          </Alert>
+        </div>
+      )}
     </div>
   );
 };
