@@ -1,42 +1,42 @@
 [
   {
     "title": "프로젝트 소개",
-    "path": "/projectinfo"
+    "path": "/projectinfo#project-hero"
   },
   {
     "title": "기획의도",
-    "path": "/projectinfo"
+    "path": "/projectinfo#project-planning"
   },
   {
     "title": "핵심기능",
-    "path": "/projectinfo"
+    "path": "/projectinfo#project-core-features"
   },
   {
     "title": "기술스택",
-    "path": "/projectinfo"
+    "path": "/projectinfo#project-tech-stack"
   },
   {
     "title": "진행일정",
-    "path": "/projectinfo"
-  },
-  {
-    "title": "IA 명세서",
-    "path": "/projectinfo"
-  },
-  {
-    "title": "API 명세서",
-    "path": "/projectinfo"
+    "path": "/projectinfo#project-schedule"
   },
   {
     "title": "문제해결 과정",
-    "path": "/projectinfo"
+    "path": "/projectinfo#project-solving-process"
+  },
+  {
+    "title": "역할 분담",
+    "path": "/projectinfo#project-roles"
   },
   {
     "title": "성과지표",
-    "path": "/projectinfo"
+    "path": "/projectinfo#project-metrics"
+  },
+  {
+    "title": "프로젝트 결과물",
+    "path": "/projectinfo#project-results"
   },
   {
     "title": "향후 개선방향",
-    "path": "/projectinfo"
+    "path": "/projectinfo#project-future-improvements"
   }
 ]

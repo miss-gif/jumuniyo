@@ -31,7 +31,7 @@ const Nav = styled.ul`
 const NavLink = styled.a`
   margin: 5px 0;
   cursor: pointer;
-  color: #007bff;
+  color: #00c4bd;
   text-decoration: none;
 
   &:hover {
@@ -40,7 +40,7 @@ const NavLink = styled.a`
 
   &.active {
     font-weight: bold;
-    color: #0056b3;
+    color: #00798d;
   }
 `;
 
