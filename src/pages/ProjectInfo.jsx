@@ -19,13 +19,12 @@ const links = {
 const Nav = styled.ul`
   position: fixed;
   right: 20px;
-  top: 20px;
-  width: 200px;
   background-color: #fff;
   border: 1px solid #ccc;
   padding: 10px;
   list-style: none;
-  z-index: 1000;
+  z-index: 10;
+  border-radius: 4px;
 `;
 
 const NavLink = styled.a`
