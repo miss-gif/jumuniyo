@@ -6,6 +6,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import PersonIcon from "@mui/icons-material/Person";
 import axios from "axios";
 import { useCookies } from "react-cookie";
+import { Logo } from "../common/Logo";
 
 function Header() {
   const navigate = useNavigate();
@@ -37,14 +38,7 @@ function Header() {
   return (
     <header className="header">
       <div className="inner">
-        <h1>
-          <Link to="/">
-            <img
-              src={process.env.PUBLIC_URL + "/images/logo_1x.png"}
-              alt="Logo"
-            />
-          </Link>
-        </h1>
+        <Logo />
         <nav className="nav">
           <ul className="nav__top">
             <li>

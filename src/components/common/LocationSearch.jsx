@@ -36,6 +36,15 @@ const LocationSearch = () => {
     localStorage.setItem("locationData", JSON.stringify(locationData));
   }, [locationData]);
 
+  // 로그인 시 리덕스에서 주소 좌표 가져오기
+  useEffect(() => {
+    if (addrCoorX && addrCoorY) {
+      setLocationData({ latitude: addrCoorX, longitude: addrCoorY });
+    } else {
+      onClickLocationSearch();
+    }
+  }, [addrCoorX, addrCoorY]);
+
   const onClickLocationSearch = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -64,7 +73,7 @@ const LocationSearch = () => {
       };
       localStorage.setItem("locationData", JSON.stringify(newLocationData));
       console.log("주소 호출: ", newLocationData);
-      updateLocation(addrCoorX, addrCoorY); // 수정된 부분
+      updateLocation(addrCoorX, addrCoorY);
     } else {
       setErrorMessage("주소 좌표를 가져오는 데 실패했습니다.");
     }
@@ -97,7 +106,6 @@ const LocationSearch = () => {
           <button className="location-search__btn" onClick={onClickSearch}>
             검색
           </button>
-          <button onClick={onClickAddressCall}>주소호출</button>
         </div>
         {errorMessage && (
           <p className="location-search__error">{errorMessage}</p>
