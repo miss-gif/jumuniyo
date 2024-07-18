@@ -3,6 +3,7 @@ import MypageModal from "../components/common/mypage/MypageModal";
 import Mypage from "../components/join/Mypage";
 import jwtAxios from "../api/user/jwtUtil";
 import { getCookie } from "../utils/cookie";
+import NotLogin from "../components/common/mypage/NotLogin";
 //
 const MyPageAddress = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -56,29 +57,29 @@ const MyPageAddress = () => {
     console.log();
   }, []);
 
-  const editUserAddress = async () => {
-    setIsModalOpen(true);
-    try {
-      const data = {
-        addr_pk: addressPk,
-        addr1: newAddress,
-        addr2: newAddressDetail,
-        addr_coor_x: newXValue,
-        addr_coor_y: newYValue,
-      };
-      const res = jwtAxios.patch("/api/address", data);
+  // const editUserAddress = async () => {
+  //   setIsModalOpen(true);
+  //   try {
+  //     const data = {
+  //       addr_pk: addressPk,
+  //       addr1: newAddress,
+  //       addr2: newAddressDetail,
+  //       addr_coor_x: newXValue,
+  //       addr_coor_y: newYValue,
+  //     };
+  //     const res = jwtAxios.post("/api/address", data);
 
-      return res;
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  //     return res;
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   const addUserAddress = async () => {
     setIsModalOpen(true);
     try {
       const data = {
-        addr_pk: addressPk,
+        addr_name: "우리집",
         addr1: newAddress,
         addr2: newAddressDetail,
         addr_coor_x: newXValue,
@@ -95,12 +96,12 @@ const MyPageAddress = () => {
   };
 
   const onModifyYes = () => {
-    setIsModalOpen(false);
     setAddress(newAddress);
     setAddressDetail(newAddressDetail);
     setXValue(newXValue);
     setXValue(newYValue);
-    editUserAddress();
+    addUserAddress();
+    setIsModalOpen(false);
   };
 
   const onModifyNo = () => {
@@ -110,52 +111,56 @@ const MyPageAddress = () => {
   return (
     <div className="mypage-wrap">
       <Mypage />
-      <div className="mypage-box">
-        <div className="mypage-title">
-          <div className="mypage-title-box">주소</div>
-          <div>{address}</div>
-        </div>
-        <div className="mypage-title">
-          <div className="mypage-title-box">상세 주소</div>
-          <div>{addressDetail}</div>
-        </div>
+      {!isLogin ? (
+        <NotLogin></NotLogin>
+      ) : (
+        <div className="mypage-box">
+          <div className="mypage-title">
+            <div className="mypage-title-box">주소</div>
+            <div>{address}</div>
+          </div>
+          <div className="mypage-title">
+            <div className="mypage-title-box">상세 주소</div>
+            <div>{addressDetail}</div>
+          </div>
 
-        <div className="mypage-button-box">
-          {!isLogin ? null : isFirstUser ? (
-            <button
-              type="button"
-              onClick={() => {
-                addUserAddress();
-              }}
-            >
-              등록
-            </button>
-          ) : (
-            <button
-              type="button"
-              onClick={() => {
-                onModify();
-              }}
-            >
-              수정
-            </button>
-          )}
+          <div className="mypage-button-box">
+            {!isLogin ? null : isFirstUser ? (
+              <button
+                type="button"
+                onClick={() => {
+                  onModify();
+                }}
+              >
+                등록
+              </button>
+            ) : (
+              <button
+                type="button"
+                onClick={() => {
+                  onModify();
+                }}
+              >
+                수정
+              </button>
+            )}
+          </div>
+          {isModalOpen ? (
+            <>
+              <MypageModal
+                onModifyYes={onModifyYes}
+                onModifyNo={onModifyNo}
+                setAddress={setAddress}
+                setNewAddress={setNewAddress}
+                setNewAddressDetail={setNewAddressDetail}
+                setNewXValue={setNewXValue}
+                setNewYValue={setNewYValue}
+                isFirstUser={isFirstUser}
+              ></MypageModal>
+            </>
+          ) : null}
         </div>
-        {isModalOpen ? (
-          <>
-            <MypageModal
-              onModifyYes={onModifyYes}
-              onModifyNo={onModifyNo}
-              setAddress={setAddress}
-              setNewAddress={setNewAddress}
-              setNewAddressDetail={setNewAddressDetail}
-              setNewXValue={setNewXValue}
-              setNewYValue={setNewYValue}
-              isFirstUser={isFirstUser}
-            ></MypageModal>
-          </>
-        ) : null}
-      </div>
+      )}
     </div>
   );
 };

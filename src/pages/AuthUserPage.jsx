@@ -306,6 +306,7 @@ const AuthUserPage = () => {
                 onChange={e => {
                   setUserEmail(e.target.value);
                 }}
+                disabled={emailCheckOk}
               />
             </Box>
             {emailCheckOk === true ? null : (

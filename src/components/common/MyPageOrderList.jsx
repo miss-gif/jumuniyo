@@ -29,7 +29,7 @@ const MyPageOrderList = ({ reviewOpenModal, order, isOldOrder }) => {
             </div>
             <div className="order-main">
               <img
-                src={process.env.PUBLIC_URL + "/images/logo_1x.png"}
+                src={`https://34.64.63.109/pic${order.resPic}`}
                 className="order-logo"
                 alt="Order Logo"
               />
