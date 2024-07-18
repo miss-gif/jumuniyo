@@ -121,7 +121,7 @@ const OrdersAccepted = () => {
   return (
     <div className="ceo-home-accepted">
       <div className="left">
-        <h3>접수된 주문</h3>
+        <h1>접수 주문</h1>
         <div className="waiting-orders">
           {error ? (
             <div className="errorMessage">{error}</div>
@@ -154,7 +154,7 @@ const OrdersAccepted = () => {
         </div>
       </div>
 
-      {selectedOrder && (
+      {selectedOrder ? (
         <div className="order-body">
           <div className="orderedList">
             <div className="oneOrder" key={selectedOrder.orderPk}>
@@ -224,6 +224,8 @@ const OrdersAccepted = () => {
             </div>
           </div>
         </div>
+      ) : (
+        <div className="noSelectedOrderMessage">주문을 선택해주세요</div>
       )}
 
       <ModalForOrdersAccepted

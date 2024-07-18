@@ -10,18 +10,18 @@ $border-radius: 5px;
   .store-management-tab {
     font-size: 2em;
     color: #333;
-    padding: 40px 80px;
+    padding: 40px 15vw;
   }
   .status-taps {
     border: -1px solid $borderColor;
     background-color: $black;
     color: $white;
     padding: 8px;
-    margin: 0px 80px;
+    margin: 0px 15vw;
   }
   .statusandInfo {
     border: 1px solid #ccc;
-    margin: 0px 80px;
+    margin: 0px 15vw;
     padding: 40px;
 
     .status-section {
@@ -56,6 +56,9 @@ $border-radius: 5px;
         border-bottom: 2px solid #1657bf;
         padding-bottom: 5px;
         margin-bottom: 10px;
+      }
+      .button-wrap {
+        padding-top: 20px;
       }
 
       p {

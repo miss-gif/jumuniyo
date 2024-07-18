@@ -1,73 +1,89 @@
 .ceo-orderDetail-wrap {
+  margin: 0px 15vw 15vw;
+  h2 {
+    padding: 40px 0px;
+    font-size: 32px;
+  }
   .ceo-order-list {
-    .ceo-order-tab {
+    .ceo-orders {
       font-size: 2em;
       color: #333;
-      padding: 40px 80px;
-    }
-    .orderListing {
-      margin: 0px 80px;
-      padding-bottom: 20px;
-      .tabforchoiceUl {
-        li {
+      .mypage-order {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+
+        &__title {
+          color: $white;
+          background-color: $black;
+          padding: $padding-2;
+          font-weight: $medium;
+        }
+
+        &__contents {
+          border-bottom: 1px solid $borderColor;
+          border-left: 1px solid $borderColor;
+          border-right: 1px solid $borderColor;
+        }
+
+        &__thanks {
+          font-size: 1.5rem;
+          font-weight: $medium;
+          text-align: center;
+          padding: $padding-8 0;
+          margin: 0 50px;
+          border-bottom: 1px solid $borderColor;
+        }
+
+        &__confirmation {
+          font-weight: $medium;
+          text-align: center;
+          padding: $padding-7 0;
+        }
+
+        &__section-titles {
+          font-weight: $medium;
+          background-color: $gray;
+          padding: $padding-3 $padding-2;
+        }
+
+        &__detail {
+          display: flex;
+          align-items: center;
+          padding: $padding-3 $padding-2;
+        }
+
+        &__label {
+          font-weight: $medium;
+          max-width: $width;
+          width: 100%;
+        }
+
+        &__value {
+          font-size: 14px;
+        }
+
+        &__item {
+          padding: 0 $padding-2;
+          display: flex;
+          flex-direction: column;
+          li {
+            display: flex;
+            justify-content: space-between;
+            padding: $padding-3 0;
+          }
+        }
+        &__total {
+          margin: $padding-2;
+          border-top: 1px solid $borderColor;
+          padding: $padding-5 0 $padding-3;
           display: flex;
           justify-content: space-between;
         }
-      }
-    }
-    .ceo-orders {
-      margin: 0px 80px;
-      .order-lists {
-        .order {
-          border: 1px solid #ccc;
-          border-radius: 5px;
-          padding: 20px;
-          margin-bottom: 20px;
-          background-color: #f9f9f9;
-
-          h2 {
-            margin-top: 0;
-            font-size: 1.5em;
-            color: #0056b3;
-          }
-
-          p {
-            margin: 10px 0;
-            font-size: 1em;
-            color: #555;
-          }
-
-          h3 {
-            font-size: 1.2em;
-            color: #333;
-            margin-top: 20px;
-          }
-
-          ul {
-            padding-left: 20px;
-            list-style-type: disc;
-
-            li {
-              margin-bottom: 10px;
-              font-size: 1em;
-              color: #444;
-            }
-          }
-        }
-      }
-
-      @media (max-width: 768px) {
-        h1 {
-          font-size: 2em;
-          color: #333;
-          padding: 40px 80px;
-          display: flex;
-          justify-content: center;
-        }
-        .order-lists {
-          margin: 0px 0px;
-          .order {
-          }
+        &__total-label,
+        &__total-price {
+          font-size: 1rem;
+          font-weight: $medium;
         }
       }
     }

@@ -190,7 +190,7 @@ const Home = () => {
     <>
       <div className="ceo-home">
         <div className="left">
-          <h3>새로 들어온 주문</h3>
+          <h1>신규 주문</h1>
           <button className="btn refresh-btn" onClick={loadOrders}>
             새로고침
           </button>
@@ -232,10 +232,10 @@ const Home = () => {
                 <div className="AnOrderBody">
                   <div className="AnOrderLeft">
                     <div className="requested">
-                      <h3>요청사항</h3>
+                      <h2>요청사항</h2>
                       <div className="requestedabout">
                         <div className="requestedto">
-                          <h4>가게 </h4>
+                          <h3>가게 </h3>
                         </div>
                         <div className="requestedof">
                           <p>{orderDetail.orderRequest}</p>
@@ -243,7 +243,7 @@ const Home = () => {
                       </div>
                     </div>
                     <div className="orderedMenu">
-                      <h3>주문내역</h3>
+                      <h2>주문내역</h2>
                       {orderDetail.menuInfoList.map((menu, index) => (
                         <div className="orderedMenuInf" key={index}>
                           <div className="menuName">{menu.menuName}</div>
@@ -263,11 +263,11 @@ const Home = () => {
                   <div className="AnOrderRight">
                     <div className="AnOrderInf">
                       <div className="orderCallNumber">
-                        <h3>주문번호</h3>
+                        <h2 className="forSpace">주문번호</h2>
                         <p>{orderDetail.orderPk}</p>
                       </div>
                       <div className="payMethod">
-                        <h3>결제방법</h3>
+                        <h2>결제방법</h2>
                         <p>
                           {`${orderDetail.paymentMethod}` === "1"
                             ? "카드"
@@ -275,12 +275,15 @@ const Home = () => {
                         </p>
                       </div>
                       <div className="orderAddress">
-                        <h3>배달주소</h3>
-                        <p className="address-p">{orderDetail.orderAddress}</p>
+                        <h2>배달주소</h2>
+                        <p className="address-p">
+                          {orderDetail.orderAddress}
+                          [지번]제주 제주시 애월읍 하귀 1리 5515
+                        </p>
                       </div>
 
                       <div className="orderCallNumber">
-                        <h3> 주문시간</h3>
+                        <h2> 주문시간</h2>
                         <p>{formatTime(orderDetail.createdAt)}</p>
                       </div>
                     </div>
