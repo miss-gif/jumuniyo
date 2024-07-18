@@ -8,6 +8,7 @@
     align-items: center;
     gap: 20px;
     border-bottom: 1px solid $borderColor;
+    border-top: 1px solid $borderColor;
 
     .overall-score {
       display: flex;
