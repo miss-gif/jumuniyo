@@ -59,21 +59,14 @@ const ImageImport = ({ setImgFile, setImgUrl, setNewImgFile, newImgFile }) => {
 
   return (
     <>
-      {/* <input
-        type="file"
-        accept=".jpg, .jpeg, .png"
-        onChange={e => {
-          handleImageChange(e);
-          setNewImgFile(e.target.files[0]);
-        }}
-      />
-      {imageUrl && (
-        <div className="image-preview">
-          <img src={imageUrl} alt="이미지 미리보기" />
-        </div>
-      )} */}
       <FileInputContainer>
-        <StyledLabel htmlFor="file-upload">이미지 업로드</StyledLabel>
+        <StyledLabel
+          type="file"
+          accept=".jpg, .jpeg, .png"
+          htmlFor="file-upload"
+        >
+          이미지 업로드
+        </StyledLabel>
         <HiddenInput
           id="file-upload"
           type="file"

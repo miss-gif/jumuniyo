@@ -94,11 +94,9 @@ const MyPageOrderPagee = () => {
             return (
               <div key={order.doneOrderPk}>
                 <MyPageOrderList
-                  doneOrderPk={order.doneOrderPk}
                   isOldOrder={isOldOrder}
                   order={order}
                   reviewOpenModal={reviewOpenModal}
-                  orders={orders}
                 />
                 {reviewOpen && selectedOrderPk === order.doneOrderPk && (
                   <MypageReviewWrite
