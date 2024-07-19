@@ -5,9 +5,11 @@ import { Link, useNavigate } from "react-router-dom";
 import AuthImageImport from "../components/layout/AuthImageImport";
 import JoinFooter from "../components/layout/JoinFooter";
 import { Logo } from "../components/common/Logo";
+import LoadingSpinner from "../components/common/LoadingSpinner";
 
 const AuthUserPage = () => {
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
   // 입력 관련 State
   const [userId, setUserId] = useState("");
   const [userPw, setUserPw] = useState("");
@@ -21,18 +23,18 @@ const AuthUserPage = () => {
   const [isEmailCheck, setIsEmailCheck] = useState(false);
 
   // 정규 표현식 참, 거짓 State
-  const [userIdComplete, setUerIdComplete] = useState(false);
-  const [userPwComplete, setUerPwComplete] = useState(false);
-  const [userPwCheckComplete, setUerPwCheckComplete] = useState(false);
-  const [userEmailComplete, setUerEmailComplete] = useState(false);
-  const [userPhoneComplete, setUerPhoneComplete] = useState(false);
-  const [userImgComplete, setUerImgComplete] = useState(false);
+  const [userIdComplete, setUserIdComplete] = useState(true);
+  const [userPwComplete, setUerPwComplete] = useState(true);
+  const [userPwCheckComplete, setUserPwCheckComplete] = useState(true);
+  const [userEmailComplete, setUserEmailComplete] = useState(true);
+  const [userPhoneComplete, setUserPhoneComplete] = useState(true);
+  const [userImgComplete, setUserImgComplete] = useState(false);
 
   // 인증 참, 거짓 State
   const [idCheckOk, setIdCheckOk] = useState(false);
-  const [idCheckComplete, setIdCheckComplete] = useState(false);
+  const [idCheckComplete, setIdCheckComplete] = useState(true);
   const [emailCheckOk, setEmailCheckOk] = useState(false);
-  const [emailCheckComplete, setEmailCheckComplete] = useState(false);
+  const [emailCheckComplete, setEmailCheckComplete] = useState(true);
 
   // 정규 표현식 조건
   const idRegex = /^.{8,}$/;
@@ -63,6 +65,7 @@ const AuthUserPage = () => {
 
   // 중복확인
   const idTest = async () => {
+    setIsLoading(true);
     const isCheckId = idRegex.test(userId);
     if (isCheckId) {
       try {
@@ -79,6 +82,8 @@ const AuthUserPage = () => {
         return res;
       } catch (error) {
         console.log(error);
+      } finally {
+        setIsLoading(false);
       }
     } else {
       alert("아이디 형식을 확인해주세요");
@@ -87,20 +92,24 @@ const AuthUserPage = () => {
 
   // 이메일 인증
   const emailCheck = async () => {
+    setIsLoading(true);
     const data = {
       email: userEmail,
     };
 
     const isCheckEmail = emailRegex.test(userEmail);
     if (isCheckEmail) {
-      setIsEmailCheck(true);
-      alert("메일을 발송 했습니다.");
       try {
         const res = await axios.post("/api/mail/send", data);
-
+        alert(res.data.resultMsg);
+        if (res.data.resultMsg === "메일이 발송되었습니다.") {
+          setIsEmailCheck(true);
+        }
         return res;
       } catch (error) {
         console.log(error);
+      } finally {
+        setIsLoading(false);
       }
     } else {
       alert("이메일 형식을 확인해주세요.");
@@ -113,6 +122,7 @@ const AuthUserPage = () => {
 
   // 이메일 인증 코드 인증
   const emailCodeCheck = async () => {
+    setIsLoading(true);
     const data = {
       email: userEmail,
       authNum: emailCode,
@@ -138,6 +148,8 @@ const AuthUserPage = () => {
       return res;
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -152,26 +164,10 @@ const AuthUserPage = () => {
 
     if (isCheckId === false) {
       alert("아이디는 8자 이상이어야 합니다.");
-      setUerIdComplete(false);
+      setUserIdComplete(false);
       return;
     } else {
-      setUerIdComplete(true);
-    }
-
-    if (idCheckOk === false) {
-      alert("아이디 중복확인을 해주세요");
-      setIdCheckComplete(false);
-      return;
-    } else {
-      setIdCheckComplete(true);
-    }
-
-    if (emailCheckOk === false) {
-      alert("이메일 인증을 해주세요");
-      setEmailCheckComplete(false);
-      return;
-    } else {
-      setEmailCheckComplete(true);
+      setUserIdComplete(true);
     }
 
     if (idCheckOk === false) {
@@ -183,11 +179,19 @@ const AuthUserPage = () => {
     }
 
     if (isCheckEmail === false) {
-      alert("이메일 인증을 해주세요");
-      setUerEmailComplete(false);
+      alert("이메일 형식을 확인 해주세요");
+      setUserEmailComplete(false);
       return;
     } else {
-      setUerEmailComplete(true);
+      setUserEmailComplete(true);
+    }
+
+    if (emailCheckOk === false) {
+      alert("이메일 인증을 해주세요");
+      setEmailCheckComplete(false);
+      return;
+    } else {
+      setEmailCheckComplete(true);
     }
 
     if (isCheckPass === false) {
@@ -200,18 +204,18 @@ const AuthUserPage = () => {
 
     if (isCheckPass2 === false) {
       alert("비밀번호가 다릅니다.");
-      setUerPwCheckComplete(false);
+      setUserPwCheckComplete(false);
       return;
     } else {
-      setUerPwCheckComplete(true);
+      setUserPwCheckComplete(true);
     }
 
     if (isCheckPhone === false) {
       alert("전화번호를 확인해주세요.");
-      setUerPhoneComplete(false);
+      setUserPhoneComplete(false);
       return;
     } else {
-      setUerPhoneComplete(true);
+      setUserPhoneComplete(true);
     }
 
     console.log(userIdComplete);
@@ -273,6 +277,7 @@ const AuthUserPage = () => {
           <div>
             <Box style={{ alignItems: "center" }}>
               <TextField
+                error={!userIdComplete || !idCheckComplete}
                 fullWidth
                 label="아이디"
                 id="fullWidth"
@@ -296,6 +301,7 @@ const AuthUserPage = () => {
             <Box style={{ alignItems: "center" }}>
               <TextField
                 fullWidth
+                error={!userEmailComplete || !emailCheckComplete}
                 label="이메일"
                 id="fullWidth"
                 placeholder="이메일을 입력해주세요."
@@ -355,6 +361,7 @@ const AuthUserPage = () => {
           <Box>
             <TextField
               fullWidth
+              error={!userPwComplete}
               label="비밀번호"
               type="password"
               placeholder="비밀번호를 입력해주세요."
@@ -366,6 +373,7 @@ const AuthUserPage = () => {
           <Box>
             <TextField
               fullWidth
+              error={!userPwCheckComplete}
               label="비밀번호 확인"
               id="fullWidth"
               type="password"
@@ -400,6 +408,7 @@ const AuthUserPage = () => {
           <Box>
             <TextField
               fullWidth
+              error={!userPhoneComplete}
               label="전화번호"
               id="fullWidth"
               value={userPhone}
@@ -421,6 +430,7 @@ const AuthUserPage = () => {
         </form>
       </div>
       <JoinFooter />
+      {isLoading ? <LoadingSpinner /> : null}
     </>
   );
 };

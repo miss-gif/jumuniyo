@@ -3,10 +3,13 @@ import Mypage from "../components/join/Mypage";
 import { Box, TextField } from "@mui/material";
 import jwtAxios from "../api/user/jwtUtil";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { logout } from "../app/store";
 
 const MypageUserWithdrawal = () => {
   const [userPwCheck, setUserPwCheck] = useState("");
   const [isWithdrawal, setIsWithdrawal] = useState(false);
+  const dispatch = useDispatch();
 
   const navgate = useNavigate();
 
@@ -22,8 +25,10 @@ const MypageUserWithdrawal = () => {
       const res = await jwtAxios.post("/api/delete", data);
       if (res.data.statusCode !== 1) {
         alert(res.data.resultMsg);
+      } else if (res.data.statusCode === 1) {
+        dispatch(logout());
+        navgate("/");
       }
-      setIsWithdrawal(false);
       return res;
     } catch (error) {
       console.log(error);
@@ -31,7 +36,6 @@ const MypageUserWithdrawal = () => {
   };
 
   const useuserWithdrawalCancle = () => {
-    setIsWithdrawal(false);
     navgate("/");
   };
 
