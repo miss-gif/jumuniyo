@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-// import MypageModifyModal from "../components/common/mypage/MypageModifyModal";
 import jwtAxios from "../api/user/jwtUtil";
 import ModifyNickName from "../components/common/mypage/ModifyNickName";
 import ModifyPass from "../components/common/mypage/ModifyPass";
@@ -8,6 +7,7 @@ import Mypage from "../components/join/Mypage";
 import ImageImport from "../components/layout/ImageImport";
 import { getCookie } from "../utils/cookie";
 import NotLogin from "../components/common/mypage/NotLogin";
+import LoadingSpinner from "../components/common/LoadingSpinner";
 
 const MyPage = () => {
   const [isEditNickname, setIsEditNickname] = useState(false);
@@ -21,14 +21,13 @@ const MyPage = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [newImgFile, setNewImgFile] = useState("");
   const [isLogIn, setIsLogIn] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  // 기존 닉네임
   const [nickName, setNickName] = useState("");
-  // 기존 비밀번호
   const [passWord, setPassWord] = useState("");
 
-  // 유저정보 불러오기
   const getUserInfo = async () => {
+    setIsLoading(true);
     try {
       const res = await jwtAxios.get("/api/user-info");
       setImgUrl(res.data.resultData.userPic);
@@ -36,10 +35,11 @@ const MyPage = () => {
       setPassWord(res.data.resultData.userPhone);
       setNickName(res.data.resultData.userNickname);
       setName(res.data.resultData.userName);
-      setName(res.data.resultData.userName);
       setUserId(res.data.resultData.userId);
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -47,8 +47,6 @@ const MyPage = () => {
     const fetchUserInfo = async () => {
       await getUserInfo();
     };
-    fetchUserInfo();
-    console.log(userId);
     const isLogin = getCookie("accessToken");
 
     if (!isLogin) {
@@ -57,8 +55,10 @@ const MyPage = () => {
       setNickName("로그인 후 이용해주세요");
       setName("로그인 후 이용해주세요");
       setIsLogIn(false);
+      setIsLoading(false);
     } else {
       setIsLogIn(true);
+      fetchUserInfo();
     }
   }, []);
 
@@ -82,25 +82,46 @@ const MyPage = () => {
     pic.append("pic", newImgFile);
 
     setIsEditImg(false);
-    const res = await jwtAxios.patch("/api/update-pic", pic);
-
-    getUserInfo();
-
-    return res;
+    try {
+      const res = await jwtAxios.patch("/api/update-pic", pic);
+      getUserInfo();
+      return res;
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
   };
+
+  if (!isLogIn) {
+    return (
+      <div className="mypage-wrap">
+        <Mypage />
+        <NotLogin />
+      </div>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <div className="mypage-wrap">
+        <Mypage />
+        <LoadingSpinner />
+      </div>
+    );
+  }
 
   return (
     <div className="mypage-wrap">
       <Mypage />
       {!isLogIn ? (
-        <NotLogin></NotLogin>
+        <NotLogin />
       ) : (
         <>
           <div className="mypage-box">
             <div className="mypage-img">
               <div>
                 <h3>프로필 사진</h3>
-
                 {!isEditImg ? (
                   <>
                     {imgUrl ? (
@@ -114,7 +135,6 @@ const MyPage = () => {
                         alt="profile-img"
                       />
                     )}
-
                     <button className="btn" onClick={() => editMode("img")}>
                       변경
                     </button>
@@ -128,20 +148,10 @@ const MyPage = () => {
                       setNewImgFile={setNewImgFile}
                     />
                     <div className="mypage-button-box-flex">
-                      <button
-                        className="btn"
-                        onClick={() => {
-                          editImg();
-                        }}
-                      >
+                      <button className="btn" onClick={editImg}>
                         저장
                       </button>
-                      <button
-                        className="btn"
-                        onClick={() => {
-                          editCancel();
-                        }}
-                      >
+                      <button className="btn" onClick={editCancel}>
                         취소
                       </button>
                     </div>
@@ -149,7 +159,6 @@ const MyPage = () => {
                 )}
               </div>
             </div>
-
             <div className="mypage-title">
               <div className="mypage-title-box">아이디</div>
               <div className="mypage-title-box-right">
@@ -168,12 +177,9 @@ const MyPage = () => {
                 {!isEditPassword ? (
                   <>
                     <input type="password" value={12345678910} disabled />
-
                     <button
                       className="btn"
-                      onClick={() => {
-                        editMode("password");
-                      }}
+                      onClick={() => editMode("password")}
                     >
                       변경
                     </button>
@@ -188,7 +194,6 @@ const MyPage = () => {
                 )}
               </div>
             </div>
-
             <ModifyNickName
               isLogIn={isLogIn}
               setNickName={setNickName}
@@ -198,7 +203,6 @@ const MyPage = () => {
               editMode={editMode}
               editCancel={editCancel}
             />
-
             <ModifyPhone
               isLogIn={isLogIn}
               isEditPhoneNumber={isEditPhoneNumber}

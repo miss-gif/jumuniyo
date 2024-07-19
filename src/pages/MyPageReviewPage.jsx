@@ -4,18 +4,23 @@ import jwtAxios from "../api/user/jwtUtil";
 import Mypage from "../components/join/Mypage";
 import { getCookie } from "../utils/cookie";
 import NotLogin from "../components/common/mypage/NotLogin";
+import LoadingSpinner from "../components/common/LoadingSpinner";
 
 const MyPageReviewPage = () => {
   const [reviewItems, setReviewItems] = useState([]);
   const [isLogin, setIsLogin] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const getReview = async () => {
+    setIsLoading(true);
     try {
       const res = await jwtAxios.get("/api/rev/list");
       return res.data.resultData;
     } catch (error) {
       console.log(error);
-      return []; // 오류 발생 시 빈 배열 반환
+      return [];
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -30,8 +35,8 @@ const MyPageReviewPage = () => {
   };
 
   useEffect(() => {
-    const isLogin = getCookie("accessToken");
-    if (!isLogin) {
+    const accessToken = getCookie("accessToken");
+    if (!accessToken) {
       setIsLogin(false);
       return;
     } else {
@@ -45,6 +50,8 @@ const MyPageReviewPage = () => {
       <Mypage />
       {!isLogin ? (
         <NotLogin />
+      ) : isLoading ? (
+        <LoadingSpinner />
       ) : reviewItems.length === 0 ? (
         <div className="null-item">
           <Alert variant="outlined" severity="info">

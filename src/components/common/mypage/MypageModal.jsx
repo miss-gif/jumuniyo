@@ -35,6 +35,7 @@ const MypageModal = ({
       <div className="mypage-button-box">
         <button
           type="button"
+          className="btn"
           onClick={() => {
             onModifyYes();
           }}
@@ -43,6 +44,7 @@ const MypageModal = ({
         </button>
         <button
           type="button"
+          className="btn"
           onClick={() => {
             onModifyNo();
           }}
