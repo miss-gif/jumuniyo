@@ -23,9 +23,11 @@ const LocationSearch = () => {
    * userData.mainAddr.addrCoorX, userData.mainAddr.addrCoorY 값을 사용하고 리덕스를 업데이트한다.
    */
 
-  // 1. 브라우저가 시작될 때 위치 검색 실행한다.
+  // 1. 리덕스에 저장된 위치값이 없으면 브라우저가 시작될 때 위치 검색 실행한다.
   useEffect(() => {
-    onClickLocationSearch();
+    if (!locationData.latitude && !locationData.longitude) {
+      onClickLocationSearch();
+    }
   }, []);
 
   // 2. 1번 실행 후 latitude, longitude값을 리덕스에 담는다.
