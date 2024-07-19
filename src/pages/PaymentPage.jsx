@@ -8,8 +8,14 @@ import { useNavigate } from "react-router-dom";
 
 const PaymentPage = () => {
   const order = []; // OrderContext 대신 사용할 수 있는 임시 데이터
-  const userAddress = useSelector(state => state.user.userAddress) || {}; // 주소 가져오기
   const userPhone = useSelector(state => state.user.userPhone) || ""; // 전화번호 가져오기
+
+  const userData = useSelector(state => state.user.userData);
+  const userAddr1 = userData.mainAddr.addr1;
+  const userAddr2 = userData.mainAddr.addr2;
+
+  console.log(userAddr1, userAddr2);
+
   const [cookies] = useCookies(["accessToken"]);
   const navigate = useNavigate();
 
@@ -29,7 +35,7 @@ const PaymentPage = () => {
       order_request: "요청사항",
       payment_method: "결제수단 키",
       order_phone: userPhone, // 저장된 전화번호 사용
-      order_address: `${userAddress.addr1} ${userAddress.addr2}`, // 저장된 주소 사용
+      order_address: `${userAddr1} ${userAddr2}`,
       menu_pk: [92],
     };
 
@@ -67,7 +73,7 @@ const PaymentPage = () => {
                     type="text"
                     id="address"
                     className="payment-page__input"
-                    value={userAddress.addr1 || ""}
+                    value={userAddr1 || ""}
                     readOnly
                   />
                 </div>
@@ -78,7 +84,7 @@ const PaymentPage = () => {
                     id="address"
                     className="payment-page__input"
                     placeholder="(필수) 상세주소 입력"
-                    value={userAddress.addr2 || ""}
+                    value={userAddr2 || ""}
                   />
                 </div>
                 <div>
