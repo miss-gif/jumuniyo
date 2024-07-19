@@ -13,6 +13,8 @@ const PaymentPage = () => {
   const [cookies] = useCookies(["accessToken"]);
   const navigate = useNavigate();
 
+  const restaurantName = sessionStorage.getItem("restaurantName");
+
   const calculateTotalPrice = item => {
     return item.menu_price * item.quantity;
   };
@@ -28,7 +30,7 @@ const PaymentPage = () => {
       payment_method: "결제수단 키",
       order_phone: userPhone, // 저장된 전화번호 사용
       order_address: `${userAddress.addr1} ${userAddress.addr2}`, // 저장된 주소 사용
-      menu_pk: [70],
+      menu_pk: [92],
     };
 
     try {
@@ -126,9 +128,7 @@ const PaymentPage = () => {
       <div className="payment-page__order-summary">
         <h2 className="payment-page__title">주문내역</h2>
         <div className="payment-page__warp-border">
-          <h3 className="payment-page__restaurant-name">
-            뉴욕버거앤치킨-대구남산점
-          </h3>
+          <h3 className="payment-page__restaurant-name">{restaurantName}</h3>
           <ul>
             {order.map((item, index) => (
               <li key={index} className="payment-page__order-item">

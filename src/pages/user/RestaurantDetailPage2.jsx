@@ -156,7 +156,7 @@ const RestaurantDetailPage = () => {
     clearStateFromSessionStorage(`selectedMenuItems_${id}`);
   };
 
-  const handleOrder = () => {
+  const handleOrder = restaurantName => {
     console.log("주문 시도: isLoggedIn = ", isLoggedIn);
     if (!isLoggedIn) {
       setShowLoginModal(true);
@@ -166,7 +166,12 @@ const RestaurantDetailPage = () => {
     selectedMenuItems.forEach(item => {
       addOrderItem(item);
     });
-    navigate("/payment", { state: { orderItems: selectedMenuItems, id } });
+
+    sessionStorage.setItem("restaurantName", restaurantName);
+
+    navigate(`/payment/${id}`, {
+      state: { orderItems: selectedMenuItems, id },
+    });
   };
 
   const renderContent = () => {
@@ -217,6 +222,7 @@ const RestaurantDetailPage = () => {
             onRemoveItem={handleRemoveItem}
             onClearAll={handleClearAll}
             onOrder={handleOrder}
+            restaurantName={restaurantData.restaurantName}
           />
         </div>
       </div>

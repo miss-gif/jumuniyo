@@ -19,7 +19,7 @@ const RestaurantDetailTabInfo = ({ restaurantData }) => {
               {restaurantData.openTime} - {restaurantData.closeTime}
             </p>
           </div>
-          <div className="restaurant-detail-tab-info__info">
+          <div className="restaurant-detail-tab-info__info none">
             <p className="restaurant-detail-tab-info__info-title">전화번호</p>
             <p className="restaurant-detail-tab-info__info-detail">
               050-1234-4321 (주문이요 제공 번호)
@@ -31,7 +31,7 @@ const RestaurantDetailTabInfo = ({ restaurantData }) => {
               {restaurantData.restaurantAddr}
             </p>
           </div>
-          <div className="restaurant-detail-tab-info__info">
+          <div className="restaurant-detail-tab-info__info none">
             <p className="restaurant-detail-tab-info__info-title">부가정보</p>
             <p className="restaurant-detail-tab-info__info-detail">
               세스코멤버스 사업장
@@ -69,7 +69,7 @@ const RestaurantDetailTabInfo = ({ restaurantData }) => {
           </div>
         </div>
       </div>
-      <div className="restaurant-detail-tab-info__wrap">
+      <div className="restaurant-detail-tab-info__wrap none">
         <div className="restaurant-detail-tab-info__title">원산지정보</div>
         <div className="restaurant-detail-tab-info__content">
           <p className="restaurant-detail-tab-info__info-detail">
