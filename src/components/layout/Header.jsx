@@ -7,15 +7,33 @@ import PersonIcon from "@mui/icons-material/Person";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { Logo } from "../common/Logo";
-import { logout } from "../../app/store";
+import { logout, setAccessToken, setTokenMaxAge } from "../../app/store";
 import { removeCookie } from "../../utils/cookie";
-
 function Header() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const isLoggedIn = useSelector(state => state.user.isLoggedIn);
   const accessToken = useSelector(state => state.user.accessToken);
   const tokenMaxAge = useSelector(state => state.user.tokenMaxAge);
+
+  useEffect(() => {
+    const checkTokenExpiration = () => {
+      if (tokenMaxAge) {
+        const currentTime = new Date().getTime();
+        const expiryTime = new Date(tokenMaxAge).getTime();
+
+        if (currentTime > expiryTime) {
+          dispatch(logout()); // 토큰이 만료되었으므로 로그아웃 처리
+          navigate("/login"); // 로그인 페이지로 리디렉션
+        }
+      }
+    };
+
+    // 1분마다 토큰 만료 확인
+    const interval = setInterval(checkTokenExpiration, 60000);
+
+    return () => clearInterval(interval); // 컴포넌트 언마운트 시 인터벌 제거
+  }, [dispatch, navigate, tokenMaxAge]);
 
   const handleLogout = async () => {
     try {
@@ -37,35 +55,29 @@ function Header() {
     }
   };
 
-  const formatDate = dateString => {
-    const options = {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    };
-    return new Date(dateString).toLocaleDateString(undefined, options);
-  };
+  const handleExtendToken = async () => {
+    try {
+      const response = await axios.get("/api/access-token", {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
 
-  useEffect(() => {
-    if (tokenMaxAge) {
-      const tokenExpiryTime = new Date(tokenMaxAge).getTime();
-      const currentTime = new Date().getTime();
-      const timeRemaining = tokenExpiryTime - currentTime;
-
-      if (timeRemaining > 0) {
-        const timer = setTimeout(() => {
-          handleLogout(); // 토큰 만료 시 로그아웃 실행
-        }, timeRemaining);
-
-        // 컴포넌트 언마운트 시 타이머 클리어
-        return () => clearTimeout(timer);
+      if (response.status === 200) {
+        const { newAccessToken, tokenMaxAge } = response.data;
+        if (newAccessToken) {
+          dispatch(setAccessToken(newAccessToken));
+        }
+        if (tokenMaxAge) {
+          dispatch(setTokenMaxAge(tokenMaxAge));
+        }
       } else {
-        handleLogout(); // 이미 만료된 경우 즉시 로그아웃
+        console.error("Token extension failed");
       }
+    } catch (error) {
+      console.error("An error occurred while extending the token", error);
     }
-  }, [tokenMaxAge]);
+  };
 
   return (
     <header className="header">
@@ -73,7 +85,12 @@ function Header() {
         <Logo />
         <nav className="nav">
           <ul className="nav__top">
-            <li>{tokenMaxAge ? formatDate(tokenMaxAge) : "N/A"}</li>
+            <li>
+              만료 시간:{" "}
+              {tokenMaxAge
+                ? new Date(tokenMaxAge).toLocaleString()
+                : "로그인 필요"}
+            </li>
             <li>유저님 환영합니다.</li>
             <li className="알림자리 none">
               <Link to="/admin">알림</Link>
@@ -87,6 +104,9 @@ function Header() {
                 </li>
                 <li className="nav__item">
                   <button onClick={handleLogout}>로그아웃</button>
+                </li>
+                <li className="nav__item">
+                  <button onClick={handleExtendToken}>시간연장</button>
                 </li>
               </>
             ) : (
