@@ -4,7 +4,8 @@ import Mypage from "../components/join/Mypage";
 import jwtAxios from "../api/user/jwtUtil";
 import { getCookie } from "../utils/cookie";
 import NotLogin from "../components/common/mypage/NotLogin";
-//
+import LoadingSpinner from "../components/common/LoadingSpinner";
+
 const MyPageAddress = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [address, setAddress] = useState("");
@@ -16,62 +17,64 @@ const MyPageAddress = () => {
   const [newAddress, setNewAddress] = useState("");
   const [newAddressDetail, setNewAddressDetail] = useState("");
   const [addressPk, setAddressPk] = useState("");
-  const [changeAddress, setChangeAddress] = useState("");
-  const [isLogin, setIsLogin] = useState(false);
-
   const [isFirstUser, setIsFirstUser] = useState(false);
+  const [isLogin, setIsLogin] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    const isLogin = getCookie("accessToken");
-    if (!isLogin) {
+    setIsLoading(true);
+    const accessToken = getCookie("accessToken");
+    if (!accessToken) {
       setIsLogin(false);
       setAddress("로그인 후 이용해주세요");
       setAddressDetail("로그인 후 이용해주세요");
+      setIsLoading(false);
       return;
     } else {
       setIsLogin(true);
     }
+
     const getUserAddress = async () => {
       try {
         const res = await jwtAxios.get("/api/address/main-address");
-        console.log(res.data);
-        if (!res.data.resultData) {
-          console.log("뉴비입니다");
-          setIsFirstUser(true);
-        } else if (res.data.resultData) {
-          console.log("뉴비가 아닙니다");
-          setAddressPk(res.data.resultData.addrPk);
-          setAddress(res.data.resultData.addr1);
-          setAddressDetail(res.data.resultData.addr2);
-          setXValue(res.data.resultData.addrCoorX);
-          setYValue(res.data.resultData.addrCoorY);
+        if (res.data.resultData) {
+          const { addrPk, addr1, addr2, addrCoorX, addrCoorY } =
+            res.data.resultData;
+          setAddressPk(addrPk);
+          setAddress(addr1);
+          setAddressDetail(addr2);
+          setXValue(addrCoorX);
+          setYValue(addrCoorY);
           setIsFirstUser(false);
+        } else {
+          setIsFirstUser(true);
         }
-
-        return res.data;
       } catch (error) {
         console.log(error);
+      } finally {
+        setIsLoading(false);
       }
     };
     getUserAddress();
-    console.log();
   }, []);
 
-  const addUserAddress = async () => {
-    setIsModalOpen(true);
-    if (isFirstUser) {
-      try {
-        const data = {
-          addr_name: "우리집",
-          addr1: newAddress,
-          addr2: newAddressDetail,
-          addr_coor_x: newXValue,
-          addr_coor_y: newYValue,
-        };
-        const res = jwtAxios.post("/api/address", data);
-      } catch (error) {
-        console.log(error);
+  const handleAddressSubmit = async () => {
+    try {
+      const data = {
+        addr_name: "우리집",
+        addr1: newAddress,
+        addr2: newAddressDetail,
+        addr_coor_x: newXValue,
+        addr_coor_y: newYValue,
+      };
+      if (isFirstUser) {
+        await jwtAxios.post("/api/address", data);
+      } else {
+        data.addr_pk = addressPk;
+        await jwtAxios.patch("/api/address", data);
       }
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -83,8 +86,8 @@ const MyPageAddress = () => {
     setAddress(newAddress);
     setAddressDetail(newAddressDetail);
     setXValue(newXValue);
-    setXValue(newYValue);
-    addUserAddress();
+    setYValue(newYValue);
+    handleAddressSubmit();
     setIsModalOpen(false);
   };
 
@@ -92,61 +95,55 @@ const MyPageAddress = () => {
     setIsModalOpen(false);
   };
 
+  if (!isLogin) {
+    return (
+      <div className="mypage-wrap">
+        <Mypage />
+        <NotLogin />
+      </div>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <div className="mypage-wrap">
+        <Mypage />
+        <LoadingSpinner />
+      </div>
+    );
+  }
+
   return (
     <div className="mypage-wrap">
       <Mypage />
-      {!isLogin ? (
-        <NotLogin></NotLogin>
-      ) : (
-        <div className="mypage-box">
-          <div className="mypage-title">
-            <div className="mypage-title-box">주소</div>
-            <div>{address}</div>
-          </div>
-          <div className="mypage-title">
-            <div className="mypage-title-box">상세 주소</div>
-            <div>{addressDetail}</div>
-          </div>
-
-          <div className="mypage-button-box">
-            {!isLogin ? null : isFirstUser ? (
-              <button
-                type="button"
-                className="btn"
-                onClick={() => {
-                  onModify();
-                }}
-              >
-                등록
-              </button>
-            ) : (
-              <button
-                type="button"
-                className="btn"
-                onClick={() => {
-                  onModify();
-                }}
-              >
-                수정
-              </button>
-            )}
-          </div>
-          {isModalOpen ? (
-            <>
-              <MypageModal
-                onModifyYes={onModifyYes}
-                onModifyNo={onModifyNo}
-                setAddress={setAddress}
-                setNewAddress={setNewAddress}
-                setNewAddressDetail={setNewAddressDetail}
-                setNewXValue={setNewXValue}
-                setNewYValue={setNewYValue}
-                isFirstUser={isFirstUser}
-              ></MypageModal>
-            </>
-          ) : null}
+      <div className="mypage-box">
+        <div className="mypage-title">
+          <div className="mypage-title-box">주소</div>
+          <div>{address}</div>
         </div>
-      )}
+        <div className="mypage-title">
+          <div className="mypage-title-box">상세 주소</div>
+          <div>{addressDetail}</div>
+        </div>
+
+        <div className="mypage-button-box">
+          <button type="button" className="btn" onClick={onModify}>
+            {isFirstUser ? "등록" : "수정"}
+          </button>
+        </div>
+        {isModalOpen && (
+          <MypageModal
+            onModifyYes={onModifyYes}
+            onModifyNo={onModifyNo}
+            setAddress={setAddress}
+            setNewAddress={setNewAddress}
+            setNewAddressDetail={setNewAddressDetail}
+            setNewXValue={setNewXValue}
+            setNewYValue={setNewYValue}
+            isFirstUser={isFirstUser}
+          />
+        )}
+      </div>
     </div>
   );
 };

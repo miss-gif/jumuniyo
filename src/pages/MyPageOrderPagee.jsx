@@ -6,6 +6,7 @@ import Mypage from "../components/join/Mypage";
 import { getCookie } from "../utils/cookie";
 import NotLogin from "../components/common/mypage/NotLogin";
 import { Alert } from "@mui/material";
+import LoadingSpinner from "../components/common/LoadingSpinner";
 
 const MyPageOrderPagee = () => {
   const [reviewOpen, setReviewOpen] = useState(false);
@@ -14,7 +15,7 @@ const MyPageOrderPagee = () => {
   const [doneOrderPk, setDoneOrderPk] = useState("");
   const [resPk, setResPk] = useState("");
   const [isLogin, setIsLogin] = useState(false);
-  const [isCancle, setIsCancle] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const isOlderThanThreeDays = date => {
     const orderDate = new Date(date);
@@ -37,62 +38,81 @@ const MyPageOrderPagee = () => {
   };
 
   const getOrderList = async () => {
+    setIsLoading(true);
     try {
       const res = await jwtAxios.get("/api/done/user/list");
       if (res.data.statusCode !== -7) {
-        setOrders(res.data.resultData);
+        setOrders(res.data.resultData.contents);
       } else {
-        setOrders(null);
+        setOrders([]);
       }
     } catch (error) {
       console.log(error);
+      setOrders([]);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    getOrderList();
-    const isLogin = getCookie("accessToken");
-    if (!isLogin) {
+    const accessToken = getCookie("accessToken");
+    if (!accessToken) {
       setIsLogin(false);
+      setIsLoading(false);
       return;
     } else {
       setIsLogin(true);
+      getOrderList();
     }
   }, []);
+
+  if (!isLogin) {
+    return (
+      <div className="mypage-wrap">
+        <Mypage />
+        <NotLogin />
+      </div>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <div className="mypage-wrap">
+        <Mypage />
+        <LoadingSpinner />
+      </div>
+    );
+  }
 
   return (
     <div className="mypage-wrap">
       <Mypage />
-      {!isLogin ? (
-        <NotLogin />
-      ) : orders ? (
-        <>
-          <div className="mypage-box">
-            {orders.map(order => {
-              const isOldOrder = isOlderThanThreeDays(order.createdAt);
-              return (
-                <div key={order.doneOrderPk}>
-                  <MyPageOrderList
+      {orders.length > 0 ? (
+        <div className="mypage-box">
+          {orders.map(order => {
+            const isOldOrder = isOlderThanThreeDays(order.createdAt);
+            return (
+              <div key={order.doneOrderPk}>
+                <MyPageOrderList
+                  doneOrderPk={order.doneOrderPk}
+                  isOldOrder={isOldOrder}
+                  order={order}
+                  reviewOpenModal={reviewOpenModal}
+                  orders={orders}
+                />
+                {reviewOpen && selectedOrderPk === order.doneOrderPk && (
+                  <MypageReviewWrite
                     doneOrderPk={order.doneOrderPk}
-                    isOldOrder={isOldOrder}
-                    order={order}
-                    reviewOpenModal={reviewOpenModal}
-                    orders={orders}
+                    setReviewOpen={setReviewOpen}
+                    reviewNo={reviewNo}
+                    resPk={resPk}
+                    setSelectedOrderPk={setSelectedOrderPk}
                   />
-                  {reviewOpen && selectedOrderPk === order.doneOrderPk && (
-                    <MypageReviewWrite
-                      doneOrderPk={order.doneOrderPk}
-                      setReviewOpen={setReviewOpen}
-                      reviewNo={reviewNo}
-                      resPk={resPk}
-                      setSelectedOrderPk={setSelectedOrderPk}
-                    />
-                  )}
-                </div>
-              );
-            })}
-          </div>
-        </>
+                )}
+              </div>
+            );
+          })}
+        </div>
       ) : (
         <div className="null-item">
           <Alert variant="outlined" severity="info">
