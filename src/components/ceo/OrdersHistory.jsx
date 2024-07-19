@@ -13,30 +13,36 @@ const OrdersHistory = () => {
   const [acceptedOrders, setAcceptedOrders] = useState([]);
   const [refusedOrders, setRefusedOrders] = useState([]);
   const [allOrders, setAllOrders] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [maxPage, setMaxPage] = useState(1);
 
   useEffect(() => {
     if (selectedTab === "accepted") {
-      getAcceptedOrders();
+      getAcceptedOrders(currentPage);
     } else if (selectedTab === "refused") {
-      getRefusedOrders();
+      getRefusedOrders(currentPage);
     } else if (selectedTab === "all") {
-      getAllOrders();
+      getAllOrders(currentPage);
     }
-  }, [selectedTab]);
+  }, [selectedTab, currentPage]);
 
-  const getAcceptedOrders = async () => {
+  const getAcceptedOrders = async page => {
     try {
       const accessToken = getCookie("accessToken");
-      const response = await axios.get("/api/done/owner/done/list", {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
+      const response = await axios.get(
+        `/api/done/owner/done/list?page=${page}`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
         },
-      });
+      );
       const data = response.data;
       console.log("완료 API 응답:", data);
       if (data.statusCode === 1 || data.statusCode === 2) {
-        setAcceptedOrders(data.resultData);
-        console.log("acceptedOrders:", data.resultData);
+        setAcceptedOrders(data.resultData.contents);
+        setMaxPage(data.resultData.maxPage);
+        console.log("acceptedOrders:", data.resultData.contents);
       } else {
         setAcceptedOrders([]);
       }
@@ -46,19 +52,23 @@ const OrdersHistory = () => {
     }
   };
 
-  const getRefusedOrders = async () => {
+  const getRefusedOrders = async page => {
     try {
       const accessToken = getCookie("accessToken");
-      const response = await axios.get("/api/done/owner/cancel/list", {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
+      const response = await axios.get(
+        `/api/done/owner/cancel/list?page=${page}`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
         },
-      });
+      );
       const data = response.data;
       console.log("거절 API 응답:", data);
       if (data.statusCode === 1 || data.statusCode === 2) {
-        setRefusedOrders(data.resultData);
-        console.log("refusedOrders:", data.resultData);
+        setRefusedOrders(data.resultData.contents);
+        setMaxPage(data.resultData.maxPage);
+        console.log("refusedOrders:", data.resultData.contents);
       } else {
         setRefusedOrders([]);
       }
@@ -68,16 +78,16 @@ const OrdersHistory = () => {
     }
   };
 
-  const getAllOrders = async () => {
+  const getAllOrders = async page => {
     try {
       const accessToken = getCookie("accessToken");
       const [acceptedResponse, refusedResponse] = await Promise.all([
-        axios.get("/api/done/owner/done/list", {
+        axios.get(`/api/done/owner/done/list?page=${page}`, {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
         }),
-        axios.get("/api/done/owner/cancel/list", {
+        axios.get(`/api/done/owner/cancel/list?page=${page}`, {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
@@ -92,18 +102,27 @@ const OrdersHistory = () => {
         (acceptedData.statusCode === 1 || acceptedData.statusCode === 2) &&
         (refusedData.statusCode === 1 || refusedData.statusCode === 2)
       ) {
-        allData = [...acceptedData.resultData, ...refusedData.resultData];
+        allData = [
+          ...acceptedData.resultData.contents,
+          ...refusedData.resultData.contents,
+        ];
       } else if (
         acceptedData.statusCode === 1 ||
         acceptedData.statusCode === 2
       ) {
-        allData = acceptedData.resultData;
+        allData = acceptedData.resultData.contents;
       } else if (refusedData.statusCode === 1 || refusedData.statusCode === 2) {
-        allData = refusedData.resultData;
+        allData = refusedData.resultData.contents;
       }
 
       allData.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
       setAllOrders(allData);
+      setMaxPage(
+        Math.max(
+          acceptedData.resultData.maxPage,
+          refusedData.resultData.maxPage,
+        ),
+      );
       console.log("allOrders:", allData);
     } catch (error) {
       console.error("전체 주문 에러", error);
@@ -155,19 +174,43 @@ const OrdersHistory = () => {
     );
   };
 
+  const handlePageChange = newPage => {
+    if (newPage >= 1 && newPage <= maxPage) {
+      setCurrentPage(newPage);
+    }
+  };
+
   return (
     <div className="ceo-order-wrap">
       <h2 className="ceo-order-tab">주문내역</h2>
       <div className="orderListing">
         <ul className="tabforchoiceUl">
           <li>
-            <button className="btn" onClick={() => setSelectedTab("all")}>
+            <button
+              className="btn"
+              onClick={() => {
+                setSelectedTab("all");
+                setCurrentPage(1);
+              }}
+            >
               전체 주문
             </button>
-            <button className="btn" onClick={() => setSelectedTab("accepted")}>
+            <button
+              className="btn"
+              onClick={() => {
+                setSelectedTab("accepted");
+                setCurrentPage(1);
+              }}
+            >
               접수 주문
             </button>
-            <button className="btn" onClick={() => setSelectedTab("refused")}>
+            <button
+              className="btn"
+              onClick={() => {
+                setSelectedTab("refused");
+                setCurrentPage(1);
+              }}
+            >
               거절 주문
             </button>
           </li>
@@ -189,6 +232,21 @@ const OrdersHistory = () => {
             {renderOrders(allOrders, "전체 주문이 없습니다.")}
           </div>
         )}
+      </div>
+      <div className="pagination">
+        <button
+          onClick={() => handlePageChange(currentPage - 1)}
+          disabled={currentPage === 1}
+        >
+          이전
+        </button>
+        <span>{currentPage}</span>
+        <button
+          onClick={() => handlePageChange(currentPage + 1)}
+          disabled={currentPage === maxPage}
+        >
+          다음
+        </button>
       </div>
     </div>
   );
