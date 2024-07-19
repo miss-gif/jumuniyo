@@ -1,42 +1,42 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 import MenuIcon from "@mui/icons-material/Menu";
 import PersonIcon from "@mui/icons-material/Person";
 import axios from "axios";
-import { useCookies } from "react-cookie";
+import { useDispatch, useSelector } from "react-redux";
 import { Logo } from "../common/Logo";
+import { logout, setAccessToken } from "../../app/store";
+import { removeCookie } from "../../utils/cookie";
 
 function Header() {
   const navigate = useNavigate();
-  const [cookies, setCookie, removeCookie] = useCookies(["accessToken"]);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const dispatch = useDispatch();
+  const isLoggedIn = useSelector(state => state.user.isLoggedIn);
+  const accessToken = useSelector(state => state.user.accessToken);
 
   useEffect(() => {
-    // 쿠키가 존재하는지 확인하여 로그인 상태 업데이트
-    setIsLoggedIn(!!cookies.accessToken);
-  }, [cookies]);
+    const storedState = JSON.parse(localStorage.getItem("state"));
+    if (storedState && storedState.user && storedState.user.accessToken) {
+      dispatch(setAccessToken(storedState.user.accessToken));
+    }
+  }, [dispatch]);
 
   const handleLogout = async () => {
     try {
       const response = await axios.get("/api/sign-out", {
         headers: {
-          Authorization: `Bearer ${cookies.accessToken}`,
+          Authorization: `Bearer ${accessToken}`,
         },
       });
 
       if (response.status === 200) {
-        // 쿠키에서 accessToken 삭제
-        removeCookie("accessToken", { path: "/" });
-
-        // 로그아웃 성공 시, 로그인 페이지로 리디렉션
+        dispatch(logout()); // 리덕스 상태 초기화 및 로그아웃 처리
+        localStorage.removeItem("state");
+        removeCookie("accessToken");
         navigate("/login");
-
-        // 로그인 상태 업데이트
-        setIsLoggedIn(false);
       } else {
-        // 에러 처리 (예: 에러 메시지 표시)
         console.error("Logout failed");
       }
     } catch (error) {
