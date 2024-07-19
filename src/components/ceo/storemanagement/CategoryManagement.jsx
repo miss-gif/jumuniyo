@@ -44,9 +44,9 @@ const CategoryManagement = () => {
         const fetchedCategories = response.data.resultData.categories || [];
         setCategories(fetchedCategories);
 
-        if (fetchedCategories.length === 0) {
-          navigate("/category-management");
-        }
+        // if (fetchedCategories.length === 0) {
+        //   navigate("/");
+        // }
 
         setLoading(false);
       } catch (error) {
@@ -86,7 +86,7 @@ const CategoryManagement = () => {
       setCategories(updatedCategories);
 
       if (updatedCategories.length === 0) {
-        navigate("/category-management");
+        navigate("/ceopage/category-management");
       }
     } catch (error) {
       console.error("Error deleting category:", error);

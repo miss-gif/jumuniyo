@@ -180,6 +180,39 @@ const OrdersHistory = () => {
     }
   };
 
+  const renderPagination = () => {
+    const pageNumbers = [];
+    for (let i = 1; i <= Math.min(maxPage, 10); i++) {
+      pageNumbers.push(i);
+    }
+
+    return (
+      <div className="pagination">
+        <button
+          onClick={() => handlePageChange(currentPage - 1)}
+          disabled={currentPage === 1}
+        >
+          이전
+        </button>
+        {pageNumbers.map(pageNumber => (
+          <button
+            key={pageNumber}
+            onClick={() => handlePageChange(pageNumber)}
+            className={currentPage === pageNumber ? "active" : ""}
+          >
+            {pageNumber}
+          </button>
+        ))}
+        <button
+          onClick={() => handlePageChange(currentPage + 1)}
+          disabled={currentPage === maxPage}
+        >
+          다음
+        </button>
+      </div>
+    );
+  };
+
   return (
     <div className="ceo-order-wrap">
       <h2 className="ceo-order-tab">주문내역</h2>
@@ -233,21 +266,7 @@ const OrdersHistory = () => {
           </div>
         )}
       </div>
-      <div className="pagination">
-        <button
-          onClick={() => handlePageChange(currentPage - 1)}
-          disabled={currentPage === 1}
-        >
-          이전
-        </button>
-        <span>{currentPage}</span>
-        <button
-          onClick={() => handlePageChange(currentPage + 1)}
-          disabled={currentPage === maxPage}
-        >
-          다음
-        </button>
-      </div>
+      {renderPagination()}
     </div>
   );
 };

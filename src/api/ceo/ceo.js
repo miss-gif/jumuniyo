@@ -1,15 +1,40 @@
 import axios from "axios";
-import { getCookie } from "../../utils/cookie";
+import { getCookie, removeCookie } from "../../utils/cookie";
+
+const api = axios.create({
+  baseURL: "/api",
+});
+
+api.interceptors.request.use(
+  config => {
+    const token = getCookie("accessToken");
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  error => {
+    return Promise.reject(error);
+  },
+);
+
+api.interceptors.response.use(
+  response => response,
+  error => {
+    if (error.response) {
+      const status = error.response.status;
+      if (status === 401 || status === 403) {
+        removeCookie("accessToken");
+        window.location.href = "/login";
+      }
+    }
+    return Promise.reject(error);
+  },
+);
 
 export const fetchRestaurantInfo = async () => {
-  const token = getCookie("accessToken");
-
   try {
-    const response = await axios.get("/api/owner/restaurant", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await api.get("/owner/restaurant");
     return response.data.resultData;
   } catch (error) {
     console.error("API 호출 에러:", error);
@@ -18,14 +43,8 @@ export const fetchRestaurantInfo = async () => {
 };
 
 export const fetchUserInfo = async () => {
-  const token = getCookie("accessToken");
-
   try {
-    const response = await axios.get("/api/user-info", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await api.get("/user-info");
     return response.data.resultData;
   } catch (error) {
     console.error("API 호출 에러:", error);

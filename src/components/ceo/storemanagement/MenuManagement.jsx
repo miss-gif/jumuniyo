@@ -92,7 +92,7 @@ const MenuManagement = () => {
     const { name, value } = e.target;
     setNewMenuItem(prevState => ({
       ...prevState,
-      [name]: value,
+      [name]: name === "menu_state" ? parseInt(value, 10) : value,
     }));
   };
 
@@ -144,6 +144,15 @@ const MenuManagement = () => {
     }
   };
 
+  const handleStatusChange = (menu_pk, e) => {
+    const newStatus = parseInt(e.target.value, 10);
+    setMenuData(prevMenuData =>
+      prevMenuData.map(menu =>
+        menu.menu_pk === menu_pk ? { ...menu, menu_state: newStatus } : menu,
+      ),
+    );
+  };
+
   const handleEditMenuItem = async () => {
     const accessToken = getCookie("accessToken");
 
@@ -190,7 +199,50 @@ const MenuManagement = () => {
       setError(err.message);
     }
   };
+  const handleStatusToggle = async menu => {
+    const accessToken = getCookie("accessToken");
+    const newStatus = menu.menu_state === 1 ? 2 : 1;
 
+    const formData = new FormData();
+    formData.append(
+      "p",
+      JSON.stringify({
+        menu_pk: menu.menu_pk,
+        menu_name: menu.menu_name,
+        menu_content: menu.menu_content,
+        menu_price: menu.menu_price,
+        menu_state: newStatus,
+      }),
+    );
+
+    // 이미지 파일이 있다면 추가
+    if (menu.img) {
+      formData.append("pic", menu.img);
+    }
+
+    try {
+      const response = await axios.put("/api/owner/menu", formData, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      if (response.data.statusCode === 1) {
+        setMenuData(prevMenuData =>
+          prevMenuData.map(item =>
+            item.menu_pk === menu.menu_pk
+              ? { ...item, menu_state: newStatus }
+              : item,
+          ),
+        );
+      } else {
+        throw new Error(response.data.resultMsg || "Unknown error");
+      }
+    } catch (err) {
+      setError(err.message);
+    }
+  };
   const handleDeleteMenuItem = async () => {
     const accessToken = getCookie("accessToken");
 
@@ -265,10 +317,12 @@ const MenuManagement = () => {
 
                     <div className="status-action">
                       <div className="menu-list-status">
-                        <select className="menu-list-select">
-                          <option value="판매중">판매중</option>
-                          <option value="판매중지">판매중지</option>
-                        </select>
+                        <button
+                          className="menu-list-select"
+                          onClick={() => handleStatusToggle(menu)}
+                        >
+                          {menu.menu_state === 1 ? "판매중" : "판매중지"}
+                        </button>
                       </div>
                       <div className="menu-list-actions">
                         <button
@@ -339,21 +393,6 @@ const MenuManagement = () => {
                   }
                   onChange={handleInputChange}
                 />
-              </div>
-              <div className="form-group">
-                <label htmlFor="menu_state">상태</label>
-                <select
-                  id="menu_state"
-                  name="menu_state"
-                  value={
-                    newMenuItem.menu_state ||
-                    (isEditMode ? editMenuItem.menu_state : 1)
-                  }
-                  onChange={handleInputChange}
-                >
-                  <option value={1}>판매중</option>
-                  <option value={0}>판매중지</option>
-                </select>
               </div>
               <div className="form-group">
                 <label htmlFor="img">이미지</label>

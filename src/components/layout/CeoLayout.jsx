@@ -4,6 +4,7 @@ import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import CeoHeader from "./CeoHeader";
 import Footer from "./Footer";
 import { fetchRestaurantInfo, fetchUserInfo } from "../../api/ceo/ceo";
+import { getCookie } from "../../utils/cookie"; // 쿠키 가져오기 함수 추가
 
 const NavButton = ({ path, label, currentPath }) => {
   const navigate = useNavigate();
@@ -22,12 +23,19 @@ const NavButton = ({ path, label, currentPath }) => {
 
 const CeoLayout = () => {
   const [restaurantInfo, setRestaurantInfo] = useState(null);
-  const [userInfo, setUserInfo] = useState(null); // 사용자 정보를 위한 상태 추가
+  const [userInfo, setUserInfo] = useState(null);
   const location = useLocation();
   const currentPath = location.pathname;
-  const navigate = useNavigate(); // useNavigate 훅을 추가
+  const navigate = useNavigate();
 
   useEffect(() => {
+    const checkLoginStatus = () => {
+      const token = getCookie("accessToken");
+      if (!token) {
+        navigate("/login");
+      }
+    };
+
     const getRestaurantInfo = async () => {
       try {
         const data = await fetchRestaurantInfo();
@@ -46,9 +54,10 @@ const CeoLayout = () => {
       }
     };
 
+    checkLoginStatus(); // 로그인 상태를 먼저 확인
     getRestaurantInfo();
     getUserInfo();
-  }, []);
+  }, [navigate]);
 
   const navItems = [
     { path: "/ceopage/home", label: "신규주문" },
@@ -79,7 +88,7 @@ const CeoLayout = () => {
             </div>
             <div
               className="owner-nav__search__status"
-              onClick={() => navigate("/ceopage/store-management")} // 클릭 이벤트 추가
+              onClick={() => navigate("/ceopage/store-management")}
             >
               {restaurantInfo
                 ? restaurantInfo.restaurantState === 1

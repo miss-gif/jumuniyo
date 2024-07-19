@@ -253,7 +253,9 @@ const Home = () => {
                       ))}
                       <div className="allOrderedMenuInf">
                         <div className="title">총주문</div>
-                        <div className="allMenuAmount">1</div>
+                        <div className="allMenuAmount">
+                          {orderDetail.menuInfoList.length}
+                        </div>
                         <div className="allMenuPrice">
                           {orderDetail.orderPrice}
                         </div>
