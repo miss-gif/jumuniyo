@@ -1,9 +1,78 @@
 /* eslint-disable react/prop-types */
-import React, { useEffect, useState } from "react";
-import { Outlet, useNavigate, useLocation } from "react-router-dom";
+import React from "react";
 import CeoHeader from "./CeoHeader";
+import { Outlet, NavLink, useNavigate, useLocation } from "react-router-dom";
 import Footer from "./Footer";
-import { fetchRestaurantInfo, fetchUserInfo } from "../../api/ceo/ceo";
+
+// const CeoLayout = () => {
+//   return (
+//     <div className="inner">
+//       <CeoHeader />
+//       <div className="ceo-page">
+//         <div className="ceo-page__main">
+//           <aside className="ceo-page__menu">
+//             <NavLink
+//               to="home"
+//               className={({ isActive }) =>
+//                 isActive ? "ceo-page__menu-item active" : "ceo-page__menu-item"
+//               }
+//             >
+//               홈
+//             </NavLink>
+//             <NavLink
+//               to="orders"
+//               className={({ isActive }) =>
+//                 isActive ? "ceo-page__menu-item active" : "ceo-page__menu-item"
+//               }
+//             >
+//               주문내역
+//             </NavLink>
+//             <NavLink
+//               to="menu-management"
+//               className={({ isActive }) =>
+//                 isActive ? "ceo-page__menu-item active" : "ceo-page__menu-item"
+//               }
+//             >
+//               메뉴관리
+//             </NavLink>
+//             <NavLink
+//               to="reviews"
+//               className={({ isActive }) =>
+//                 isActive ? "ceo-page__menu-item active" : "ceo-page__menu-item"
+//               }
+//             >
+//               리뷰관리
+//             </NavLink>
+//             <NavLink
+//               to="store-management"
+//               className={({ isActive }) =>
+//                 isActive ? "ceo-page__menu-item active" : "ceo-page__menu-item"
+//               }
+//             >
+//               매장관리
+//             </NavLink>
+//             <NavLink
+//               to="statistics"
+//               className={({ isActive }) =>
+//                 isActive ? "ceo-page__menu-item active" : "ceo-page__menu-item"
+//               }
+//             >
+//               통계
+//             </NavLink>
+//           </aside>
+//           <div className="ceo-page__content-wrap">
+//             <div className="ceo-page__content">
+//               <Outlet />
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+//       <Footer />
+//     </div>
+//   );
+// };
+
+// export default CeoLayout;
 
 const NavButton = ({ path, label, currentPath }) => {
   const navigate = useNavigate();
@@ -21,34 +90,8 @@ const NavButton = ({ path, label, currentPath }) => {
 };
 
 const CeoLayout = () => {
-  const [restaurantInfo, setRestaurantInfo] = useState(null);
-  const [userInfo, setUserInfo] = useState(null); // 사용자 정보를 위한 상태 추가
   const location = useLocation();
   const currentPath = location.pathname;
-  const navigate = useNavigate(); // useNavigate 훅을 추가
-
-  useEffect(() => {
-    const getRestaurantInfo = async () => {
-      try {
-        const data = await fetchRestaurantInfo();
-        setRestaurantInfo(data);
-      } catch (error) {
-        console.error("Failed to fetch restaurant info", error);
-      }
-    };
-
-    const getUserInfo = async () => {
-      try {
-        const data = await fetchUserInfo();
-        setUserInfo(data);
-      } catch (error) {
-        console.error("Failed to fetch user info", error);
-      }
-    };
-
-    getRestaurantInfo();
-    getUserInfo();
-  }, []);
 
   const navItems = [
     { path: "/ceopage/home", label: "신규주문" },
@@ -58,6 +101,7 @@ const CeoLayout = () => {
     { path: "/ceopage/store-management", label: "매장관리" },
     { path: "/ceopage/orders-history", label: "주문내역" },
     { path: "/ceopage/statistics", label: "통계" },
+    // { path: "/ceopage/login", label: "로그인" },
   ];
 
   return (
@@ -67,26 +111,12 @@ const CeoLayout = () => {
         <div className="ceo-page__main">
           <div className="owner-nav">
             <div className="owner-nav__profile">
-              <img
-                src={
-                  userInfo
-                    ? `/pic/${userInfo.userPic}`
-                    : "https://picsum.photos/100/"
-                }
-                alt="프로필 이미지"
-              />
-              <p>{restaurantInfo ? restaurantInfo.restaurantName : "닉네임"}</p>
+              <img src="https://picsum.photos/100/" alt="프로필 이미지" />
+              <p>닉네임</p>
               <span>통합 매니저</span>
             </div>
-            <div
-              className="owner-nav__search__status"
-              onClick={() => navigate("/ceopage/store-management")} // 클릭 이벤트 추가
-            >
-              {restaurantInfo
-                ? restaurantInfo.restaurantState === 1
-                  ? "영업중"
-                  : "준비중"
-                : "상태"}
+            <div className="owner-nav__search">
+              <div className="owner-nav__search__status">영업중</div>
             </div>
             <div className="owner-nav__wrap">
               <ul className="owner-nav__list">

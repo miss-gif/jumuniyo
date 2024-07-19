@@ -12,6 +12,7 @@ import RestaurantDetailTabInfo from "../../components/user/restaurantdetail/Rest
 import RestaurantDetailInfo from "../../components/user/restaurantdetail/RestaurantDetailInfo";
 import OrderSummary from "../../components/user/restaurantdetail/OrderSummary";
 import { OrderContext } from "./OrderContext";
+import LoginModal from "../../components/user/restaurantdetail/LoginModal";
 
 const saveStateToSessionStorage = (key, state) => {
   sessionStorage.setItem(key, JSON.stringify(state));
@@ -24,6 +25,12 @@ const loadStateFromSessionStorage = key => {
 
 const clearStateFromSessionStorage = key => {
   sessionStorage.removeItem(key);
+};
+
+const getCookie = name => {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop().split(";").shift();
 };
 
 const RestaurantDetailPage = () => {
@@ -39,6 +46,19 @@ const RestaurantDetailPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { addOrderItem, clearOrder } = useContext(OrderContext);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false);
+
+  // 로그인 상태 확인 로직 추가
+  useEffect(() => {
+    const accessToken = getCookie("accessToken");
+    if (accessToken) {
+      setIsLoggedIn(true);
+      console.log("로그인 상태 확인: true");
+    } else {
+      console.log("로그인 상태 확인: false");
+    }
+  }, []);
 
   useEffect(() => {
     const getData = async () => {
@@ -137,6 +157,12 @@ const RestaurantDetailPage = () => {
   };
 
   const handleOrder = () => {
+    console.log("주문 시도: isLoggedIn = ", isLoggedIn);
+    if (!isLoggedIn) {
+      setShowLoginModal(true);
+      return;
+    }
+
     selectedMenuItems.forEach(item => {
       addOrderItem(item);
     });
@@ -194,6 +220,9 @@ const RestaurantDetailPage = () => {
           />
         </div>
       </div>
+      {showLoginModal && (
+        <LoginModal onClose={() => setShowLoginModal(false)} />
+      )}
     </>
   );
 };

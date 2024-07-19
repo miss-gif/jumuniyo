@@ -116,47 +116,57 @@ const StoreManagement = () => {
   return (
     <div className="store-management">
       <h2 className="store-management-tab">매장관리</h2>
-      <div className="tabs">
-        <button onClick={() => setActiveTab("storeInfo")}>매장 설정</button>
-        <button onClick={() => setActiveTab("categoryManagement")}>
-          카테고리 관리
-        </button>
-        <button onClick={() => setActiveTab("menuManagement")}>
-          메뉴 설정
-        </button>
-      </div>
-      {console.log("Active tab:", activeTab)}
-      {activeTab === "storeInfo" && (
-        <div className="statusborder">
-          <div className="statusandInfo">
-            <div className="status-section">
-              <h2 className="status-title">
-                영업 상태: {info.restaurantState === 1 ? "영업중" : "준비중"}
-              </h2>
-              <button className="status-toggle" onClick={handleStatusToggle}>
-                {info.restaurantState === 1 ? "영업종료" : "영업시작"}
-              </button>
+      <div className="store-management-body">
+        <div className="tabs">
+          <button className="btn" onClick={() => setActiveTab("storeInfo")}>
+            매장 설정
+          </button>
+          <button
+            className="btn"
+            onClick={() => setActiveTab("categoryManagement")}
+          >
+            카테고리 관리
+          </button>
+          <button
+            className="btn"
+            onClick={() => setActiveTab("menuManagement")}
+          >
+            메뉴 설정
+          </button>
+        </div>
+        {console.log("Active tab:", activeTab)}
+        {activeTab === "storeInfo" && (
+          <div className="statusborder">
+            <div className="statusandInfo">
+              <div className="status-section">
+                <h2 className="status-title">
+                  영업 상태: {info.restaurantState === 1 ? "영업중" : "준비중"}
+                </h2>
+                <button className="status-toggle" onClick={handleStatusToggle}>
+                  {info.restaurantState === 1 ? "영업종료" : "영업시작"}
+                </button>
+              </div>
+              <InfoManagement
+                info={info}
+                setInfo={setInfo}
+                setLoading={setLoading}
+                setError={setError}
+              />
             </div>
-            <InfoManagement
-              info={info}
-              setInfo={setInfo}
-              setLoading={setLoading}
-              setError={setError}
-            />
           </div>
-        </div>
-      )}
-      {activeTab === "categoryManagement" && <CategoryManagement />}
-      {activeTab === "menuManagement" && <MenuManagement />}
+        )}
+        {activeTab === "categoryManagement" && <CategoryManagement />}
+        {activeTab === "menuManagement" && <MenuManagement />}
 
-      {showModal && (
-        <div className="modal">
-          <div className="modal-content">
-            <p>{modalMessage}</p>
-            <button onClick={closeModal}>확인</button>
+        {showModal && (
+          <div className="modal">
+            <div className="modal-content">
+              <p>{modalMessage}</p>
+              <button onClick={closeModal}>확인</button>
+            </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };
