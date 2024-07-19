@@ -32,12 +32,12 @@ const RestaurantDetailCleanReview = ({ resPk, restaurantData }) => {
     <div className="restaurant-detail">
       <div className="restaurant-detail__overall-score">
         <div className="overall-score">
-          <p className="overall-score__value">{roundedReviewScore}</p>
+          <p className="overall-score__value"> {roundedReviewScore}</p>
           <span className="overall-score__icon">
             {"★".repeat(Math.round(roundedReviewScore))}
           </span>
         </div>
-        <div className="score-items">
+        {/* <div className="score-items">
           <div className="score-item score-item--taste">
             <p className="score-item__title">맛</p>
             <span className="score-item__icon">★★★★★</span>
@@ -53,7 +53,7 @@ const RestaurantDetailCleanReview = ({ resPk, restaurantData }) => {
             <span className="score-item__icon">★★★★★</span>
             <p className="score-item__value">4.8</p>
           </div>
-        </div>
+        </div> */}
       </div>
 
       <div className="review-list">
