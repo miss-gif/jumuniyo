@@ -32,9 +32,9 @@ const LoginModal = ({ onClose }) => {
         <Typography id="modal-modal-description" sx={{ mt: 2 }}>
           주문을 하려면 로그인이 필요합니다.
         </Typography>
-        <Button variant="contained" onClick={onClose} sx={{ mt: 2 }}>
+        <button className="btn" onClick={onClose}>
           닫기
-        </Button>
+        </button>
       </Box>
     </Modal>
   );

@@ -1,0 +1,53 @@
+.ceo-order-wrap {
+  margin: 0px 15vw;
+
+  .ceo-order-tab {
+    font-size: 2em;
+    color: #333;
+    padding: 40px 0px;
+  }
+  .ceo-order-content {
+    border: 1px solid $borderColor;
+
+    .orderListing {
+      padding-bottom: 20px;
+      .tabforchoiceUl {
+        li {
+          display: flex;
+
+          .btn {
+            margin: 20px;
+          }
+        }
+      }
+    }
+    .ceo-orderList {
+      .ceo-order-header {
+        display: flex;
+        justify-content: space-between;
+        border-top: 1px solid #ccc;
+        .ceo-order-header:first-child {
+          border-top: none;
+        }
+
+        .order-header-left {
+          .order-header-title {
+          }
+          .order-header-left-wrap {
+            .order-header-left-image {
+            }
+            .order-header-left-content {
+              .order-header-left-content-title {
+              }
+              .order-header-left-content-text {
+              }
+            }
+          }
+        }
+        .order-header-right {
+          justify-content: center;
+        }
+      }
+    }
+  }
+}

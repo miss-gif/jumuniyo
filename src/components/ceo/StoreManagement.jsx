@@ -42,7 +42,7 @@ const StoreManagement = () => {
           return;
         }
 
-        console.log("Fetching store info with accessToken:", accessToken);
+        console.log("액세스토큰 :", accessToken);
 
         const response = await axios.get("/api/owner/restaurant", {
           headers: {
@@ -50,7 +50,7 @@ const StoreManagement = () => {
           },
         });
 
-        console.log("Store info response:", response.data);
+        console.log("가게정보 데이터:", response.data);
 
         setInfo(response.data.resultData);
         setLoading(false);
@@ -118,17 +118,20 @@ const StoreManagement = () => {
       <h2 className="store-management-tab">매장관리</h2>
       <div className="store-management-body">
         <div className="tabs">
-          <button className="btn" onClick={() => setActiveTab("storeInfo")}>
+          <button
+            className={`btn ${activeTab === "storeInfo" ? "active" : ""}`}
+            onClick={() => setActiveTab("storeInfo")}
+          >
             매장 설정
           </button>
           <button
-            className="btn"
+            className={`btn ${activeTab === "categoryManagement" ? "active" : ""}`}
             onClick={() => setActiveTab("categoryManagement")}
           >
             카테고리 관리
           </button>
           <button
-            className="btn"
+            className={`btn ${activeTab === "menuManagement" ? "active" : ""}`}
             onClick={() => setActiveTab("menuManagement")}
           >
             메뉴 설정

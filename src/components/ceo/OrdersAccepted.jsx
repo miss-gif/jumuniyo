@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import ModalForOrdersAccepted from "./ModalForOrdersAccepted";
+import { Navigate } from "react-router-dom";
 
 const getCookie = name => {
   const value = `; ${document.cookie}`;
@@ -115,7 +116,7 @@ const OrdersAccepted = () => {
   }, []);
 
   if (error) {
-    return <p>에러임 {error.message}</p>;
+    return Navigate("/login");
   }
 
   return (
