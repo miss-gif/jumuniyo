@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AuthImageImport from "../components/layout/AuthImageImport";
 import JoinFooter from "../components/layout/JoinFooter";
+import { Logo } from "../components/common/Logo";
 
 const AuthUserPage = () => {
   const navigate = useNavigate();
@@ -265,12 +266,7 @@ const AuthUserPage = () => {
   return (
     <>
       <div className="user-join-wrap">
-        <Link to="/">
-          <img
-            src={process.env.PUBLIC_URL + "/images/logo_1x.png"}
-            alt="Logo"
-          />
-        </Link>
+        <Logo />
         <h2>일반 회원가입</h2>
         <div className="line"></div>
         <form className="user-join-form">

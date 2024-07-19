@@ -11,6 +11,7 @@ import {
   setUserPhone,
   setUserRole,
 } from "../app/store";
+import { Logo } from "../components/common/Logo";
 
 const AuthUserPage = () => {
   const [userId, setUserId] = useState("");
@@ -60,12 +61,7 @@ const AuthUserPage = () => {
   return (
     <>
       <div className="user-join-wrap">
-        <Link to="/">
-          <img
-            src={process.env.PUBLIC_URL + "/images/logo_1x.png"}
-            alt="Logo"
-          />
-        </Link>
+        <Logo />
         <h2>일반 로그인</h2>
         <div className="line"></div>
         <form className="user-join-form">

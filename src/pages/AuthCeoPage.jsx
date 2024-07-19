@@ -6,6 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import AuthImageImport from "../components/layout/AuthImageImport";
 import JoinFooter from "../components/layout/JoinFooter";
 import MyMap from "../components/user/mypage/MyMap";
+import { Logo } from "../components/common/Logo";
 
 const AuthUserPage = () => {
   // 입력 관련 State
@@ -257,12 +258,7 @@ const AuthUserPage = () => {
   return (
     <>
       <div className="user-join-wrap">
-        <Link to="/">
-          <img
-            src={process.env.PUBLIC_URL + "/images/logo_1x.png"}
-            alt="Logo"
-          />
-        </Link>
+        <Logo />
 
         <h2>사장님 회원가입</h2>
         <div className="line"></div>

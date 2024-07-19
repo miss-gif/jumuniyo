@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import JoinFooter from "../components/layout/JoinFooter";
 import { Link } from "react-router-dom";
+import { Logo } from "../components/common/Logo";
 
 const AuthPage = () => {
   const joinNav = useNavigate();
@@ -8,12 +9,7 @@ const AuthPage = () => {
   return (
     <>
       <div className="join-wrap">
-        <Link to="/">
-          <img
-            src={process.env.PUBLIC_URL + "/images/logo_1x.png"}
-            alt="Logo"
-          />
-        </Link>
+        <Logo />
         <h2>회원가입</h2>
         <div className="join-top">
           도움이 필요하신 서비스 유형을 선택해주세요.
