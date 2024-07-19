@@ -6,6 +6,7 @@
     align-items: center;
     gap: $gap;
     padding: $padding-2 0;
+
     .search-btn {
       position: relative;
       padding: $padding-1;
@@ -22,11 +23,16 @@
     .filters__item {
       position: relative;
       display: flex;
+      cursor: pointer;
       &::before {
         position: absolute;
         content: "|";
         left: -($gap/2 + 1);
         color: $borderColor;
+      }
+      &:hover {
+        font-weight: 500;
+        color: $mainColor;
       }
     }
   }
