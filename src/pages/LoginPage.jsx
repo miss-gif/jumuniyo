@@ -6,11 +6,14 @@ import axios from "axios";
 import { setCookie } from "../utils/cookie";
 import { useDispatch } from "react-redux";
 import {
+  setAccessToken,
+  setTokenMaxAge,
   setUserAddress,
   setUserData,
   setUserPhone,
   setUserRole,
 } from "../app/store";
+import { Logo } from "../components/common/Logo";
 
 const AuthUserPage = () => {
   const [userId, setUserId] = useState("");
@@ -34,6 +37,8 @@ const AuthUserPage = () => {
         dispatch(setUserRole(resultData.userRole));
         dispatch(setUserAddress(resultData.mainAddr)); // 주소 저장
         dispatch(setUserPhone(resultData.userPhone)); // 전화번호 저장
+        dispatch(setAccessToken(resultData.accessToken)); // accessToken 저장
+        dispatch(setTokenMaxAge(resultData.tokenMaxAge)); // tokenMaxAge 저장
       }
       setCookie("accessToken", response.data.resultData.accessToken);
       console.log(response.data.resultData.userRole);
@@ -60,12 +65,7 @@ const AuthUserPage = () => {
   return (
     <>
       <div className="user-join-wrap">
-        <Link to="/">
-          <img
-            src={process.env.PUBLIC_URL + "/images/logo_1x.png"}
-            alt="Logo"
-          />
-        </Link>
+        <Logo />
         <h2>일반 로그인</h2>
         <div className="line"></div>
         <form className="user-join-form">
