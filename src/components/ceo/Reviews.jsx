@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import testMenu from "../restaurantdetail/testMenu.jpg";
+import { Navigate } from "react-router-dom";
 
 const getCookie = name => {
   const value = `; ${document.cookie}`;
@@ -17,10 +18,17 @@ const Reviews = () => {
   const [reviewCount, setReviewCount] = useState(0);
   const [replyCount, setReplyCount] = useState(0);
   const [averageRating, setAverageRating] = useState(0);
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchReviews = async () => {
       const accessToken = getCookie("accessToken");
+      if (!accessToken) {
+        setIsLoggedIn(false);
+        return;
+      }
+
       console.log("Token: ", accessToken);
       try {
         const response = await axios.get("/api/rev/list", {
@@ -71,6 +79,7 @@ const Reviews = () => {
         }
       } catch (error) {
         console.error("Fetch error: ", error);
+        setError(error);
       }
     };
 
@@ -244,12 +253,28 @@ const Reviews = () => {
     );
   };
 
+  if (!isLoggedIn || error) {
+    return <Navigate to="/login" />;
+  }
+
   return (
     <div className="ceo-review-content">
       <div className="ceo-review-wrap">
         <h2 className="review-tap">리뷰관리</h2>
         <div className="review-body">
-          <div className="review-taps">리뷰</div>
+          <div className="review-section">
+            <div className="filter-buttons">
+              <button className="btn" onClick={() => setFilter("all")}>
+                전체
+              </button>
+              <button className="btn" onClick={() => setFilter("yes")}>
+                답변 있음
+              </button>
+              <button className="btn" onClick={() => setFilter("no")}>
+                미답변
+              </button>
+            </div>
+          </div>
           <div className="review-content">
             <div className="rating-section">
               <div className="overall-score">
@@ -270,19 +295,7 @@ const Reviews = () => {
               </div>
               <p className="filter__photo-reviews">사진리뷰만</p>
             </div>
-            <div className="review-section">
-              <div className="filter-buttons">
-                <button className="btn" onClick={() => setFilter("all")}>
-                  전체
-                </button>
-                <button className="btn" onClick={() => setFilter("yes")}>
-                  답변 있음
-                </button>
-                <button className="btn" onClick={() => setFilter("no")}>
-                  미답변
-                </button>
-              </div>
-            </div>
+
             <div className="reviews">
               <div className="reviews-wrap">
                 {filteredReviews.map((item, index) => (
