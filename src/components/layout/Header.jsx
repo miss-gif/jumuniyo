@@ -7,7 +7,7 @@ import PersonIcon from "@mui/icons-material/Person";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { Logo } from "../common/Logo";
-import { logout, setAccessToken } from "../../app/store";
+import { logout } from "../../app/store";
 import { removeCookie } from "../../utils/cookie";
 
 function Header() {
@@ -15,13 +15,7 @@ function Header() {
   const dispatch = useDispatch();
   const isLoggedIn = useSelector(state => state.user.isLoggedIn);
   const accessToken = useSelector(state => state.user.accessToken);
-
-  useEffect(() => {
-    const storedState = JSON.parse(localStorage.getItem("state"));
-    if (storedState && storedState.user && storedState.user.accessToken) {
-      dispatch(setAccessToken(storedState.user.accessToken));
-    }
-  }, [dispatch]);
+  const tokenMaxAge = useSelector(state => state.user.tokenMaxAge);
 
   const handleLogout = async () => {
     try {
@@ -33,7 +27,6 @@ function Header() {
 
       if (response.status === 200) {
         dispatch(logout()); // 리덕스 상태 초기화 및 로그아웃 처리
-        localStorage.removeItem("state");
         removeCookie("accessToken");
         navigate("/login");
       } else {
@@ -44,13 +37,43 @@ function Header() {
     }
   };
 
+  const formatDate = dateString => {
+    const options = {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    };
+    return new Date(dateString).toLocaleDateString(undefined, options);
+  };
+
+  useEffect(() => {
+    if (tokenMaxAge) {
+      const tokenExpiryTime = new Date(tokenMaxAge).getTime();
+      const currentTime = new Date().getTime();
+      const timeRemaining = tokenExpiryTime - currentTime;
+
+      if (timeRemaining > 0) {
+        const timer = setTimeout(() => {
+          handleLogout(); // 토큰 만료 시 로그아웃 실행
+        }, timeRemaining);
+
+        // 컴포넌트 언마운트 시 타이머 클리어
+        return () => clearTimeout(timer);
+      } else {
+        handleLogout(); // 이미 만료된 경우 즉시 로그아웃
+      }
+    }
+  }, [tokenMaxAge]);
+
   return (
     <header className="header">
       <div className="inner">
         <Logo />
         <nav className="nav">
           <ul className="nav__top">
-            <li>시간표시</li>
+            <li>{tokenMaxAge ? formatDate(tokenMaxAge) : "N/A"}</li>
             <li>유저님 환영합니다.</li>
             <li className="알림자리 none">
               <Link to="/admin">알림</Link>
