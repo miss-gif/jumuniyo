@@ -14,67 +14,72 @@ $border-radius: 5px;
   }
   .store-management-body {
     margin: 0px 15vw;
-  }
-  .status-taps {
-    border: -1px solid $borderColor;
-    background-color: $black;
-    color: $white;
-    padding: 8px;
-    margin: 0px 15vw;
-  }
-  .statusandInfo {
-    border: 1px solid #ccc;
-    padding: 40px;
-
-    .status-section {
-      display: flex;
-      margin-bottom: 20px;
-      align-items: center;
-
-      .status-title {
-        padding-right: 20px;
-      }
-
-      div {
-        font-size: 18px;
-        font-weight: bold;
-        margin-bottom: 10px;
-      }
-
-      select {
-        padding: 8px;
-        font-size: 16px;
-        border: 1px solid #ccc;
-        border-radius: $border-radius;
-      }
-
-      option {
-        font-size: 16px;
-      }
+    .btn.active {
+      background-color: #007bff;
+      color: white;
     }
-    .info-section {
-      h3 {
-        color: #1657bf;
-        border-bottom: 2px solid #1657bf;
-        padding-bottom: 5px;
-        margin-bottom: 10px;
-      }
-      .button-wrap {
-        padding-top: 20px;
-      }
 
-      p {
-        margin: 10px 0;
+    .status-taps {
+      border: -1px solid $borderColor;
+      background-color: $black;
+      color: $white;
+      padding: 8px;
+      margin: 0px 15vw;
+    }
+    .statusandInfo {
+      border: 1px solid #ccc;
+      padding: 40px;
 
-        h4 {
-          display: inline-block;
-          color: $text-color;
-          font-weight: bold;
-          margin-right: 5px;
+      .status-section {
+        display: flex;
+        margin-bottom: 20px;
+        align-items: center;
+
+        .status-title {
+          padding-right: 20px;
         }
 
-        &:last-of-type {
-          margin-bottom: 0;
+        div {
+          font-size: 18px;
+          font-weight: bold;
+          margin-bottom: 10px;
+        }
+
+        select {
+          padding: 8px;
+          font-size: 16px;
+          border: 1px solid #ccc;
+          border-radius: $border-radius;
+        }
+
+        option {
+          font-size: 16px;
+        }
+      }
+      .info-section {
+        h3 {
+          color: #1657bf;
+          border-bottom: 2px solid #1657bf;
+          padding-bottom: 5px;
+          margin-bottom: 10px;
+        }
+        .button-wrap {
+          padding-top: 20px;
+        }
+
+        p {
+          margin: 10px 0;
+
+          h4 {
+            display: inline-block;
+            color: $text-color;
+            font-weight: bold;
+            margin-right: 5px;
+          }
+
+          &:last-of-type {
+            margin-bottom: 0;
+          }
         }
       }
     }

@@ -158,26 +158,22 @@ const OrdersHistory = () => {
   return (
     <div className="ceo-order-wrap">
       <h2 className="ceo-order-tab">주문내역</h2>
-      <div className="ceo-order-tag">주문</div>
+      <div className="orderListing">
+        <ul className="tabforchoiceUl">
+          <li>
+            <button className="btn" onClick={() => setSelectedTab("all")}>
+              전체 주문
+            </button>
+            <button className="btn" onClick={() => setSelectedTab("accepted")}>
+              접수 주문
+            </button>
+            <button className="btn" onClick={() => setSelectedTab("refused")}>
+              거절 주문
+            </button>
+          </li>
+        </ul>
+      </div>
       <div className="ceo-order-content">
-        <div className="orderListing">
-          <ul className="tabforchoiceUl">
-            <li>
-              <button className="btn" onClick={() => setSelectedTab("all")}>
-                전체 주문
-              </button>
-              <button
-                className="btn"
-                onClick={() => setSelectedTab("accepted")}
-              >
-                접수 주문
-              </button>
-              <button className="btn" onClick={() => setSelectedTab("refused")}>
-                거절 주문
-              </button>
-            </li>
-          </ul>
-        </div>
         {selectedTab === "accepted" && (
           <div className="accepted">
             {renderOrders(acceptedOrders, "완료된 주문이 없습니다.")}
