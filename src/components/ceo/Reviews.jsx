@@ -68,14 +68,18 @@ const Reviews = () => {
           );
 
           // Calculate average rating
-          const totalRating = updatedReviewItems.reduce(
-            (sum, item) => sum + item.reviewRating,
-            0,
-          );
-          const avgRating = (totalRating / updatedReviewItems.length).toFixed(
-            1,
-          );
-          setAverageRating(avgRating);
+          if (updatedReviewItems.length > 0) {
+            const totalRating = updatedReviewItems.reduce(
+              (sum, item) => sum + item.reviewRating,
+              0,
+            );
+            const avgRating = (totalRating / updatedReviewItems.length).toFixed(
+              1,
+            );
+            setAverageRating(avgRating);
+          } else {
+            setAverageRating(0);
+          }
         }
       } catch (error) {
         console.error("Fetch error: ", error);
@@ -228,6 +232,10 @@ const Reviews = () => {
   };
 
   const renderStars = rating => {
+    if (!rating || rating <= 0) {
+      return <span className="star">☆☆☆☆☆</span>;
+    }
+
     const fullStars = Math.floor(rating);
     const halfStar = rating % 1 >= 0.5 ? 1 : 0;
     const emptyStars = 5 - fullStars - halfStar;
@@ -301,7 +309,7 @@ const Reviews = () => {
                 {filteredReviews.map((item, index) => (
                   <div key={index} className="review">
                     <div className="review-header">
-                      <span className="review-user">{item.userPk}</span>
+                      <span className="review-user">{item.nickName}</span>
                       <span className="review-date">{item.createdAt}</span>
                       <span className="review-rating">
                         {renderStars(item.reviewRating)} {item.reviewRating}

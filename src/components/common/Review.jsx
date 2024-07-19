@@ -4,7 +4,7 @@ import OwnerComment from "./OwnerComment";
 import ModalforReview from "./ModalForReview";
 
 const Review = ({ review }) => {
-  const { userPk, reviewContents, reviewRating, pics, createdAt, reply } =
+  const { nickName, reviewContents, reviewRating, pics, createdAt, reply } =
     review;
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -26,7 +26,7 @@ const Review = ({ review }) => {
     <li className="review">
       <div className="review__header">
         <div className="review__user-info">
-          <p className="user-info__id">{userPk}님</p>
+          <p className="user-info__id">{nickName}님</p>
           <p className="user-info__time">{createdAt}</p>
         </div>
         <div className="review__report">신고</div>
@@ -60,7 +60,7 @@ const Review = ({ review }) => {
         <img
           src={`/pic/${selectedImage}`}
           alt="Original"
-          style={{ width: "100%" }}
+          style={{ width: "500px", height: "100%" }}
         />
       </ModalforReview>
     </li>
