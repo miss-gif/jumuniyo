@@ -9,6 +9,7 @@ import MyMap from "../components/user/mypage/MyMap";
 import { Logo } from "../components/common/Logo";
 
 const AuthUserPage = () => {
+  const [isLoading, setIsLoading] = useState(false);
   // 입력 관련 State
   const [userId, setUserId] = useState("");
   const [userPw, setUserPw] = useState("");
@@ -80,6 +81,7 @@ const AuthUserPage = () => {
   };
 
   const idTest = async () => {
+    setIsLoading(true);
     const isCheckId = idRegex.test(userId);
     if (isCheckId) {
       try {
@@ -96,6 +98,8 @@ const AuthUserPage = () => {
         return res;
       } catch (error) {
         console.log(error);
+      } finally {
+        setIsLoading(false);
       }
     } else {
       alert("아이디 형식을 확인해주세요");
@@ -103,6 +107,7 @@ const AuthUserPage = () => {
   };
 
   const emailCheck = async () => {
+    setIsLoading(true);
     const data = {
       email: userEmail,
     };
@@ -115,6 +120,8 @@ const AuthUserPage = () => {
         return res;
       } catch (error) {
         console.log(error);
+      } finally {
+        setIsLoading(false);
       }
     } else {
       alert("이메일 형식을 확인해주세요.");
@@ -126,6 +133,7 @@ const AuthUserPage = () => {
   };
 
   const emailCodeCheck = async () => {
+    setIsLoading(true);
     setIsEmailCheck(false);
     const data = {
       email: userEmail,
@@ -145,6 +153,8 @@ const AuthUserPage = () => {
       return res;
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
