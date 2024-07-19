@@ -12,6 +12,9 @@ $border-radius: 5px;
     color: #333;
     padding: 40px 15vw;
   }
+  .store-management-body {
+    margin: 0px 15vw;
+  }
   .status-taps {
     border: -1px solid $borderColor;
     background-color: $black;
@@ -21,7 +24,6 @@ $border-radius: 5px;
   }
   .statusandInfo {
     border: 1px solid #ccc;
-    margin: 0px 15vw;
     padding: 40px;
 
     .status-section {

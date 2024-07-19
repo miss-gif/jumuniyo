@@ -12,7 +12,7 @@ const RestaurantDetailInfo = ({ restaurantData }) => {
       </h2>
       <div className="restaurant-detail-page__info-content">
         <div className="restaurant-detail-page__info-image">
-          <img src="https://picsum.photos/100/" alt="" />
+          <img src={`/pic/${restaurantData.restaurantPic}`} alt="" />
         </div>
         <div className="restaurant-detail-page__info-details">
           <div className="restaurant-detail-page__info-rating">
