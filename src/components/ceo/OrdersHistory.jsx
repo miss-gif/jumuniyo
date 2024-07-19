@@ -82,12 +82,12 @@ const OrdersHistory = () => {
     try {
       const accessToken = getCookie("accessToken");
       const [acceptedResponse, refusedResponse] = await Promise.all([
-        axios.get(`/api/done/owner/done/list?page=${page}`, {
+        axios.get(`/api/done/owner/done/list?size=10&page=${page}`, {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
         }),
-        axios.get(`/api/done/owner/cancel/list?page=${page}`, {
+        axios.get(`/api/done/owner/cancel/list?size=10&page=${page}`, {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },

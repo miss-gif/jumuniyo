@@ -41,6 +41,7 @@ const InfoManagement = ({ info, setInfo, setLoading, setError }) => {
   return (
     <div className="info-section">
       <h3>업체정보</h3>
+      <img src={`/pic/${info.restaurantPic}`} alt="" />
       <p>
         <h4>영업시간</h4>
         {editMode ? (
