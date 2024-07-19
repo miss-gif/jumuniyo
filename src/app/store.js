@@ -31,6 +31,7 @@ const userSlice = createSlice({
     accessToken: null,
     tokenMaxAge: null,
     isLoggedIn: false,
+    locationData: { latitude: "", longitude: "" },
   },
   reducers: {
     setUserData: (state, action) => {
@@ -52,6 +53,9 @@ const userSlice = createSlice({
     setTokenMaxAge: (state, action) => {
       state.tokenMaxAge = action.payload;
     },
+    setLocationData: (state, action) => {
+      state.locationData = action.payload;
+    },
     logout: state => {
       state.userData = null;
       state.userRole = null;
@@ -60,6 +64,7 @@ const userSlice = createSlice({
       state.accessToken = null;
       state.tokenMaxAge = null;
       state.isLoggedIn = false;
+      state.locationData = { latitude: "", longitude: "" };
     },
   },
 });
@@ -71,6 +76,7 @@ export const {
   setUserPhone,
   setAccessToken,
   setTokenMaxAge,
+  setLocationData,
   logout,
 } = userSlice.actions;
 

@@ -1,56 +1,40 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import MyLocationIcon from "@mui/icons-material/MyLocation";
 import GoogleMaps from "./GoogleMaps";
+import { setLocationData } from "../../app/store";
 
 const LocationSearch = () => {
   const location = useLocation();
   const isHomePage = location.pathname === "/";
   const navigate = useNavigate();
-
-  const [locationData, setLocationData] = useState({
-    latitude: "",
-    longitude: "",
-  });
+  const dispatch = useDispatch();
   const [errorMessage, setErrorMessage] = useState("");
 
-  // Redux에서 주소 좌표 가져오기
-  const addrCoorX = useSelector(
-    state => state.user.userData?.mainAddr.addrCoorX,
-  );
-  const addrCoorY = useSelector(
-    state => state.user.userData?.mainAddr.addrCoorY,
-  );
+  const onClickSearch = () => {
+    navigate("/restaurant/category_id=0");
+  };
 
-  // localStorage에서 저장된 위치 값 불러오기
+  /**
+   * 1. 브라우저가 시작될 때 위치 검색 실행한다.
+   * 2. 1번 실행 후 latitude, longitude값을 리덕스에 담는다.
+   * 3. 로그인 했을 때, 2번 값을 리덕스에서 확인하고, latitude, longitude값이 없으면
+   * userData.mainAddr.addrCoorX, userData.mainAddr.addrCoorY 값을 사용하고 리덕스를 업데이트한다.
+   */
+
+  // 1. 브라우저가 시작될 때 위치 검색 실행한다.
   useEffect(() => {
-    const storedLocationData = JSON.parse(localStorage.getItem("locationData"));
-    if (storedLocationData) {
-      setLocationData(storedLocationData);
-    }
+    onClickLocationSearch();
   }, []);
 
-  // 위치 값이 변경될 때 localStorage에 저장
-  useEffect(() => {
-    localStorage.setItem("locationData", JSON.stringify(locationData));
-  }, [locationData]);
-
-  // 로그인 시 리덕스에서 주소 좌표 가져오기
-  useEffect(() => {
-    if (addrCoorX && addrCoorY) {
-      setLocationData({ latitude: addrCoorX, longitude: addrCoorY });
-    } else {
-      onClickLocationSearch();
-    }
-  }, [addrCoorX, addrCoorY]);
-
+  // 2. 1번 실행 후 latitude, longitude값을 리덕스에 담는다.
   const onClickLocationSearch = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         position => {
           const { latitude, longitude } = position.coords;
-          setLocationData({ latitude, longitude });
+          dispatch(setLocationData({ latitude, longitude }));
         },
         error => {
           setErrorMessage("위치를 가져오는데 실패했습니다: " + error.message);
@@ -61,27 +45,28 @@ const LocationSearch = () => {
     }
   };
 
-  const updateLocation = (newLatitude, newLongitude) => {
-    setLocationData({ latitude: newLatitude, longitude: newLongitude });
-  };
+  // 리덕스에서 위치 데이터와 주소 좌표 가져오기
+  const locationData = useSelector(state => state.user.locationData);
+  const addrCoorX = useSelector(
+    state => state.user.userData?.mainAddr.addrCoorX,
+  );
+  const addrCoorY = useSelector(
+    state => state.user.userData?.mainAddr.addrCoorY,
+  );
 
-  const onClickAddressCall = () => {
-    if (addrCoorX && addrCoorY) {
-      const newLocationData = {
-        latitude: addrCoorX,
-        longitude: addrCoorY,
-      };
-      localStorage.setItem("locationData", JSON.stringify(newLocationData));
-      console.log("주소 호출: ", newLocationData);
-      updateLocation(addrCoorX, addrCoorY);
-    } else {
-      setErrorMessage("주소 좌표를 가져오는 데 실패했습니다.");
+  // 3. 로그인 했을 때, 2번 값을 리덕스에서 확인하고, latitude, longitude값이 없으면
+  // userData.mainAddr.addrCoorX, userData.mainAddr.addrCoorY 값을 사용하고 리덕스를 업데이트한다.
+  useEffect(() => {
+    if (!locationData.latitude && !locationData.longitude) {
+      if (addrCoorX && addrCoorY) {
+        dispatch(
+          setLocationData({ latitude: addrCoorX, longitude: addrCoorY }),
+        );
+      } else {
+        onClickLocationSearch();
+      }
     }
-  };
-
-  const onClickSearch = () => {
-    navigate("/restaurant/category_id=0");
-  };
+  }, [addrCoorX, addrCoorY, dispatch, locationData]);
 
   return (
     <div className="location-search">

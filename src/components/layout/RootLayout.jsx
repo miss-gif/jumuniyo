@@ -7,8 +7,8 @@ import ToTop from "../common/ToTop";
 import LocationSearch from "../common/LocationSearch";
 import RestaurantsFilters from "../common/RestaurantsFilters";
 
-const MY_PAGE_PATHS = ["/restaurants"];
-const RESTAURANTS_PATHS = ["/restaurants"];
+const MY_PAGE_PATHS = ["/restaurant"];
+const RESTAURANTS_PATHS = ["/restaurant"];
 
 function RootLayout() {
   const location = useLocation();
