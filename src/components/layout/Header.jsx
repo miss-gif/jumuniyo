@@ -90,6 +90,8 @@ const Header = () => {
   const isLoggedIn = useSelector(state => state.user.isLoggedIn);
   const accessToken = useSelector(state => state.user.accessToken);
   const tokenMaxAge = useSelector(state => state.user.tokenMaxAge);
+  const userData = useSelector(state => state.user.userData);
+  const userNickname = userData ? userData.userNickname : "Guest";
 
   useTokenRefreshScheduler(accessToken, tokenMaxAge, dispatch, navigate);
 
@@ -119,7 +121,7 @@ const Header = () => {
         <Logo />
         <nav className="nav">
           <ul className="nav__top">
-            <li>유저님 환영합니다.</li>
+            <li className="bold">{userNickname}님 환영합니다.</li>
             <li className="알림자리 none"></li>
           </ul>
           <ul className="nav__list">
