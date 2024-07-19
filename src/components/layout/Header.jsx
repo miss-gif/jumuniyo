@@ -50,6 +50,7 @@ function Header() {
         <Logo />
         <nav className="nav">
           <ul className="nav__top">
+            <li>시간표시</li>
             <li>유저님 환영합니다.</li>
             <li className="알림자리 none">
               <Link to="/admin">알림</Link>
