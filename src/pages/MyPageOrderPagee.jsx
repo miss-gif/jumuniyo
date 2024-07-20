@@ -179,31 +179,11 @@ const MyPageOrderPagee = () => {
                 </div>
               ))}
             </div>
-          ) : null}
-          <div>완료된 리스트</div>
-          {orders.map(order => {
-            const isOldOrder = isOlderThanThreeDays(order.createdAt);
-            return (
-              <div key={order.doneOrderPk}>
-                <MyPageOrderList
-                  isOldOrder={isOldOrder}
-                  order={order}
-                  reviewOpenModal={reviewOpenModal}
-                />
-                {reviewOpen && selectedOrderPk === order.doneOrderPk && (
-                  <MypageReviewWrite
-                    getOrderList={getOrderList}
-                    getOrderNow={getOrderNow}
-                    doneOrderPk={order.doneOrderPk}
-                    setReviewOpen={setReviewOpen}
-                    reviewNo={reviewNo}
-                    resPk={resPk}
-                    setSelectedOrderPk={setSelectedOrderPk}
-                  />
-                )}
-              </div>
-            );
-          })}
+          ) : (
+            <Alert variant="outlined" severity="info">
+              주문 진행중인 리스트가 없습니다.
+            </Alert>
+          )}
         </div>
       ) : (
         <div className="null-item">
