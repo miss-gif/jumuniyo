@@ -4,6 +4,7 @@ import PaymentSelect from "./user/PaymentSelect";
 import { Checkbox } from "@mui/material";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
+import { initiateKakaoPay } from "../utils/kakaopayUtils";
 
 const PaymentPage = () => {
   const userPhone = useSelector(state => state.user.userPhone) || "";
@@ -32,6 +33,13 @@ const PaymentPage = () => {
     setMenuPkArray(menuPkArray);
   }, [id]);
 
+  useEffect(() => {
+    if (!locationData || !locationData.geocodeAddress) {
+      alert("주소 정보를 불러올 수 없습니다. 다시 시도해 주세요.");
+      navigate(-1); // 이전 페이지로 이동
+    }
+  }, [locationData, navigate]);
+
   const calculateTotalPrice = item => {
     return item.menu_price * item.quantity;
   };
@@ -56,6 +64,33 @@ const PaymentPage = () => {
     }
     if (!agreement) {
       alert("결제 동의에 체크해 주세요.");
+      return;
+    }
+
+    if (selectedPayment === "카카오페이") {
+      try {
+        // 카카오페이 결제 요청
+        const orderId = await initiateKakaoPay(
+          calculateTotalOrderPrice(),
+          phone,
+          id, // 주문 ID
+          accessToken, // 인증 토큰
+          request,
+          locationData,
+          addressDetail,
+          menuPkArray,
+        );
+        alert("결제 완료: " + orderId);
+
+        // 결제 성공 후 이동
+        navigate(`/mypage/order/${orderId}`); // 주문 ID를 사용하여 이동
+
+        // 결제 성공 후 세션 저장소 데이터 삭제
+        sessionStorage.removeItem(`selectedMenuItems_${id}`);
+        sessionStorage.removeItem("restaurantName");
+      } catch (error) {
+        alert("결제 실패: " + error);
+      }
       return;
     }
 

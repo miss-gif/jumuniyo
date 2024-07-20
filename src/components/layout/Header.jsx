@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import React, { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
@@ -7,7 +8,7 @@ import PersonIcon from "@mui/icons-material/Person";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { Logo } from "../common/Logo";
-import { logout, setAccessToken, setTokenMaxAge } from "../../app/store";
+import store, { logout, setAccessToken, setTokenMaxAge } from "../../app/store";
 import { removeCookie } from "../../utils/cookie";
 
 // 토큰 갱신 스케줄러 훅
@@ -28,16 +29,23 @@ const useTokenRefreshScheduler = (
           },
         });
 
-        if (response.status === 200) {
-          const { newAccessToken, tokenMaxAge: newTokenMaxAge } = response.data;
+        if (response.data.statusCode === 1) {
+          const { accessToken: newAccessToken, TokenMaxAge: newTokenMaxAge } =
+            response.data.resultData;
           if (newAccessToken) {
             dispatch(setAccessToken(newAccessToken));
           }
           if (newTokenMaxAge) {
             dispatch(setTokenMaxAge(newTokenMaxAge));
           }
+
+          // 로컬스토리지 업데이트
+          const currentState = store.getState();
+          currentState.user.accessToken = newAccessToken;
+          currentState.user.tokenMaxAge = newTokenMaxAge;
+          saveState(currentState);
         } else {
-          console.error("Token extension failed: ", response.status);
+          console.error("Token extension failed: ", response.data.resultMsg);
         }
       } catch (error) {
         console.error("Error occurred while extending the token: ", error);
