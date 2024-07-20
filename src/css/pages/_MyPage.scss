@@ -195,6 +195,10 @@
   margin: 32px 0;
 }
 
+.order-detail-text {
+  cursor: pointer;
+}
+
 @include tablet {
   .mypage-wrap {
     display: block;

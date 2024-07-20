@@ -82,20 +82,20 @@ const MyPageReviewPage = () => {
                           <h2>사장님 답변</h2>
                           <p>{item.reply.commentContents}</p>
                         </div>
-                        {item.pics.length ? (
-                          <div className="review-imgs-box">
-                            {item.pics.map((pic, picIndex) => (
-                              <div key={picIndex} className="review-img-box">
-                                <img
-                                  className="img-size"
-                                  src={`https://34.64.63.109/pic/${pic}`}
-                                  alt={`Review ${picIndex}`}
-                                />
-                              </div>
-                            ))}
-                          </div>
-                        ) : null}
                       </>
+                    ) : null}
+                    {item.pics.length ? (
+                      <div className="review-imgs-box">
+                        {item.pics.map((pic, picIndex) => (
+                          <div key={picIndex} className="review-img-box">
+                            <img
+                              className="img-size"
+                              src={`https://34.64.63.109/pic/${pic}`}
+                              alt={`Review ${picIndex}`}
+                            />
+                          </div>
+                        ))}
+                      </div>
                     ) : null}
                   </div>
                 </div>

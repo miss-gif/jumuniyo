@@ -5,35 +5,16 @@ import jwtAxios from "../../../api/user/jwtUtil";
 
 const MypageReviewWrite = ({
   reviewNo,
-  resPk,
   doneOrderPk,
   setReviewOpen,
   setSelectedOrderPk,
+  getOrderList,
+  getOrderNow,
 }) => {
   const [test, setTest] = useState("");
   const [reviewWrite, setReviewWrite] = useState("");
   const [pics, setPics] = useState([]);
-  const [reviewSubmitted, setReviewSubmitted] = useState(false);
 
-  // const postReview = async () => {
-  //   setReviewOpen(false);
-  //   setSelectedOrderPk(null);
-  //   const data = {
-  //     p: {
-  //       done_order_pk: doneOrderPk,
-  //       review_contents: reviewWrite,
-  //       review_rating: test,
-  //     },
-  //     pics: [],
-  //   };
-
-  //   try {
-  //     const header = { headers: { "Content-Type": "multipart/form-data" } };
-  //     const res = await jwtAxios.post("/api/rev", data, header);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
   const handleFilesChange = e => {
     const files = Array.from(e.target.files);
     setPics(files);
@@ -61,22 +42,15 @@ const MypageReviewWrite = ({
     try {
       const header = { headers: { "Content-Type": "multipart/form-data" } };
       const res = await jwtAxios.post("/api/rev", data, header);
+      getOrderNow();
+      getOrderList();
       if (res.data.statusCode) {
         alert(res.data.resultMsg);
-        setReviewSubmitted(true);
       }
     } catch (error) {
       console.log(error);
     }
   };
-
-  useEffect(() => {
-    if (reviewSubmitted) {
-      // 리렌더링 동작 또는 다른 작업 수행
-      console.log("Review submitted, component re-rendering");
-      setReviewSubmitted(false); // 상태 초기화
-    }
-  }, [reviewSubmitted]);
 
   return (
     <div className="modify-modal">
@@ -84,7 +58,7 @@ const MypageReviewWrite = ({
       <Rating
         name="half-rating"
         defaultValue={0}
-        precision={0.5}
+        precision={1}
         onChange={e => {
           setTest(e.target.value);
         }}
