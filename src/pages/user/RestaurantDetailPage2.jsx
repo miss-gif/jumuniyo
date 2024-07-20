@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import {
   fetchRestaurantData,
   fetchMenuData,
@@ -27,12 +28,6 @@ const clearStateFromSessionStorage = key => {
   sessionStorage.removeItem(key);
 };
 
-const getCookie = name => {
-  const value = `; ${document.cookie}`;
-  const parts = value.split(`; ${name}=`);
-  if (parts.length === 2) return parts.pop().split(";").shift();
-};
-
 const RestaurantDetailPage = () => {
   const [activeTab, setActiveTab] = useState("menu");
   const { id } = useParams();
@@ -46,19 +41,14 @@ const RestaurantDetailPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { addOrderItem, clearOrder } = useContext(OrderContext);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
 
-  // 로그인 상태 확인 로직 추가
+  const accessToken = useSelector(state => state.user.accessToken);
+  const isLoggedIn = !!accessToken;
+
   useEffect(() => {
-    const accessToken = getCookie("accessToken");
-    if (accessToken) {
-      setIsLoggedIn(true);
-      console.log("로그인 상태 확인: true");
-    } else {
-      console.log("로그인 상태 확인: false");
-    }
-  }, []);
+    console.log("로그인 상태 확인: ", isLoggedIn);
+  }, [isLoggedIn]);
 
   useEffect(() => {
     const getData = async () => {
