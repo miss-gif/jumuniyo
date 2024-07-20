@@ -65,6 +65,8 @@ const PaymentPage = () => {
         const message = await initiateKakaoPay(
           calculateTotalOrderPrice(),
           phone,
+          id,
+          accessToken, // accessToken 추가
         );
         alert("결제 완료: " + message);
         sessionStorage.removeItem(`selectedMenuItems_${id}`);
