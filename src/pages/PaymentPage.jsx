@@ -122,7 +122,7 @@ const PaymentPage = () => {
                 <div>
                   <label htmlFor="phone">휴대전화번호</label>
                   <input
-                    type="text"
+                    type="number"
                     id="phone"
                     className="payment-page__input"
                     placeholder="(필수) 휴대전화 번호 입력"
