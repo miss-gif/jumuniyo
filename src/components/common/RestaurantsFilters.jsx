@@ -43,7 +43,7 @@ const RestaurantsFilters = () => {
       <div className="background-color">
         <div className="inner">
           <div className="restaurants-page__filters">
-            <button className="search-btn" onClick={onClickMenuSearch}>
+            <button className="search-btn none" onClick={onClickMenuSearch}>
               <SearchIcon />
             </button>
             <ul className="filters__list">

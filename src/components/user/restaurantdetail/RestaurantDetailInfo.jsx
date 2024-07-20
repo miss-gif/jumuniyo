@@ -12,7 +12,10 @@ const RestaurantDetailInfo = ({ restaurantData }) => {
       </h2>
       <div className="restaurant-detail-page__info-content">
         <div className="restaurant-detail-page__info-image">
-          <img src={`/pic/${restaurantData.restaurantPic}`} alt="" />
+          <img
+            src={`/pic/${restaurantData.restaurantPic}`}
+            alt={restaurantData.restaurantPic}
+          />
         </div>
         <div className="restaurant-detail-page__info-details">
           <div className="restaurant-detail-page__info-rating">

@@ -1,17 +1,36 @@
-import React from "react";
-import { useSelector } from "react-redux"; // useSelector 임포트
+import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import PaymentSelect from "./user/PaymentSelect";
 import { Checkbox } from "@mui/material";
 import axios from "axios";
-import { useCookies } from "react-cookie";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const PaymentPage = () => {
-  const order = []; // OrderContext 대신 사용할 수 있는 임시 데이터
-  const userAddress = useSelector(state => state.user.userAddress) || {}; // 주소 가져오기
-  const userPhone = useSelector(state => state.user.userPhone) || ""; // 전화번호 가져오기
-  const [cookies] = useCookies(["accessToken"]);
+  const [request, setRequest] = useState(""); // 요청사항 상태
+  const [selectedPayment, setSelectedPayment] = useState(""); // 결제수단 상태
+  const [menuPkArray, setMenuPkArray] = useState([]); // 메뉴 PK 배열 상태
+  const [order, setOrder] = useState([]); // 주문 상세 정보 상태
+  const [addressDetail, setAddressDetail] = useState(""); // 상세주소 상태
+  const [phone, setPhone] = useState(""); // 휴대전화 상태
+  const [agreement, setAgreement] = useState(false); // 결제 동의 체크 상태
+
+  const userPhone = useSelector(state => state.user.userPhone) || "";
+  const locationData = useSelector(state => state.user.locationData);
+  const accessToken = useSelector(state => state.user.accessToken);
+  const { id } = useParams();
+
   const navigate = useNavigate();
+  const restaurantName = sessionStorage.getItem("restaurantName");
+
+  useEffect(() => {
+    const selectedMenuItems =
+      JSON.parse(sessionStorage.getItem(`selectedMenuItems_${id}`)) || [];
+    setOrder(selectedMenuItems);
+    const menuPkArray = selectedMenuItems.flatMap(item =>
+      Array(item.quantity).fill(item.menu_pk),
+    );
+    setMenuPkArray(menuPkArray);
+  }, [id]);
 
   const calculateTotalPrice = item => {
     return item.menu_price * item.quantity;
@@ -22,19 +41,37 @@ const PaymentPage = () => {
   };
 
   const handlePayment = async () => {
+    // 입력 값 검증
+    if (!addressDetail.trim()) {
+      alert("상세주소를 입력해 주세요.");
+      return;
+    }
+    if (!phone.trim()) {
+      alert("휴대전화 번호를 입력해 주세요.");
+      return;
+    }
+    if (!selectedPayment) {
+      alert("결제수단을 선택해 주세요.");
+      return;
+    }
+    if (!agreement) {
+      alert("결제 동의에 체크해 주세요.");
+      return;
+    }
+
     const data = {
-      order_res_pk: 1,
-      order_request: "요청사항",
-      payment_method: "결제수단 키",
-      order_phone: userPhone, // 저장된 전화번호 사용
-      order_address: `${userAddress.addr1} ${userAddress.addr2}`, // 저장된 주소 사용
-      menu_pk: [70],
+      order_res_pk: id,
+      order_request: request, // 상태에서 요청사항 가져오기
+      payment_method: selectedPayment, // 상태에서 결제수단 가져오기
+      order_phone: phone,
+      order_address: `${locationData.geocodeAddress} ${addressDetail}`, // 주소 합치기
+      menu_pk: menuPkArray,
     };
 
     try {
       const res = await axios.post("/api/order/", data, {
         headers: {
-          Authorization: `Bearer ${cookies.accessToken}`,
+          Authorization: `Bearer ${accessToken}`,
         },
       });
 
@@ -65,18 +102,19 @@ const PaymentPage = () => {
                     type="text"
                     id="address"
                     className="payment-page__input"
-                    value={userAddress.addr1 || ""}
+                    value={locationData.geocodeAddress}
                     readOnly
                   />
                 </div>
                 <div>
-                  <label htmlFor="address"></label>
+                  <label htmlFor="addressDetail">상세주소</label>
                   <input
                     type="text"
-                    id="address"
+                    id="addressDetail"
                     className="payment-page__input"
                     placeholder="(필수) 상세주소 입력"
-                    value={userAddress.addr2 || ""}
+                    value={addressDetail}
+                    onChange={e => setAddressDetail(e.target.value)} // 상세주소 상태 업데이트
                   />
                 </div>
                 <div>
@@ -85,8 +123,9 @@ const PaymentPage = () => {
                     type="text"
                     id="phone"
                     className="payment-page__input"
-                    value={userPhone}
                     placeholder="(필수) 휴대전화 번호 입력"
+                    value={phone}
+                    onChange={e => setPhone(e.target.value)} // 휴대전화 상태 업데이트
                   />
                 </div>
               </div>
@@ -99,10 +138,13 @@ const PaymentPage = () => {
                   id="request"
                   placeholder="요청사항을 남겨주세요."
                   className="payment-page__textarea"
+                  value={request}
+                  onChange={e => setRequest(e.target.value)} // 요청사항 상태 업데이트
                 ></textarea>
               </div>
             </div>
-            <PaymentSelect />
+            <PaymentSelect onPaymentSelect={setSelectedPayment} />
+            {/* 결제수단 선택 전달 */}
             <div className="payment-page__input-wrap none">
               <h3 className="payment-page__subtitle">할인방법 선택</h3>
               <div className="payment-page__coupon ">
@@ -126,16 +168,14 @@ const PaymentPage = () => {
       <div className="payment-page__order-summary">
         <h2 className="payment-page__title">주문내역</h2>
         <div className="payment-page__warp-border">
-          <h3 className="payment-page__restaurant-name">
-            뉴욕버거앤치킨-대구남산점
-          </h3>
+          <h3 className="payment-page__restaurant-name">{restaurantName}</h3>
           <ul>
             {order.map((item, index) => (
               <li key={index} className="payment-page__order-item">
                 <p>
                   {item.menu_name} <span>x {item.quantity}개</span>
                 </p>
-                <p>{calculateTotalPrice(item)}원</p> {/* 계산된 총 가격 표시 */}
+                <p>{calculateTotalPrice(item)}원</p>
               </li>
             ))}
           </ul>
@@ -153,7 +193,11 @@ const PaymentPage = () => {
           </span>
           <label className="agreement-checkbox">
             결제에 동의합니다.
-            <Checkbox sx={{ padding: 0 }} />
+            <Checkbox
+              sx={{ padding: 0 }}
+              checked={agreement}
+              onChange={e => setAgreement(e.target.checked)}
+            />
           </label>
         </p>
         <button

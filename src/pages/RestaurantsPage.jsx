@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { MdOutlineStarPurple500 } from "react-icons/md";
 import { useNavigate, useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 import axios from "axios";
 
 const RestaurantsPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+
+  const locationData = useSelector(state => state.user.locationData);
 
   const [restaurantData, setRestaurantData] = useState([]);
   const [totalElements, setTotalElements] = useState(0);
@@ -18,8 +21,6 @@ const RestaurantsPage = () => {
       setIsLoading(true);
       setError(null);
 
-      // 로컬 스토리지에서 위치 정보 가져오기
-      const locationData = JSON.parse(localStorage.getItem("locationData"));
       const addrX = locationData?.latitude || 0;
       const addrY = locationData?.longitude || 0;
 
@@ -37,7 +38,7 @@ const RestaurantsPage = () => {
     };
 
     fetchRestaurants();
-  }, [id, orderType]); // orderType이 변경될 때마다 재호출
+  }, [id, orderType, locationData]); // orderType이나 locationData가 변경될 때마다 재호출
 
   const handleOrderChange = e => {
     setOrderType(e.target.value);

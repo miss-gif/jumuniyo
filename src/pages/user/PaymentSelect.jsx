@@ -1,11 +1,13 @@
+/* eslint-disable react/prop-types */
 import React, { useState } from "react";
 
-const PaymentSelect = () => {
+const PaymentSelect = ({ onPaymentSelect }) => {
   const [selectedPayment, setSelectedPayment] = useState("");
 
   const handlePaymentSelect = (event, method) => {
     event.preventDefault();
     setSelectedPayment(method);
+    onPaymentSelect(method); // 상위 컴포넌트에 선택된 결제수단 전달
   };
 
   return (

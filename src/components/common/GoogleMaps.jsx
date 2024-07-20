@@ -9,6 +9,8 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import parse from "autosuggest-highlight/parse";
 import { debounce } from "@mui/material/utils";
+import { useDispatch, useSelector } from "react-redux";
+import { setLocationData } from "../../app/store";
 
 const GOOGLE_MAPS_API_KEY = "AIzaSyAMR0g0QOUBQiHoZMLjMovMkzjJ7VkUBuU";
 
@@ -28,7 +30,10 @@ const autocompleteService = { current: null };
 const placesService = { current: null };
 const geocoderService = { current: null };
 
-const GoogleMaps = ({ latitude, longitude }) => {
+const GoogleMaps = () => {
+  const dispatch = useDispatch();
+  const locationData = useSelector(state => state.user.locationData);
+
   const [value, setValue] = useState(null);
   const [inputValue, setInputValue] = useState("");
   const [options, setOptions] = useState([]);
@@ -48,15 +53,15 @@ const GoogleMaps = ({ latitude, longitude }) => {
   }, []);
 
   useEffect(() => {
-    if (latitude && longitude) {
+    if (locationData.latitude && locationData.longitude) {
       const initializeGeocoder = () => {
         if (!geocoderService.current && window.google) {
           geocoderService.current = new window.google.maps.Geocoder();
         }
 
         const latlng = {
-          lat: parseFloat(latitude),
-          lng: parseFloat(longitude),
+          lat: parseFloat(locationData.latitude),
+          lng: parseFloat(locationData.longitude),
         };
 
         if (geocoderService.current) {
@@ -66,6 +71,15 @@ const GoogleMaps = ({ latitude, longitude }) => {
               if (status === "OK" && results[0]) {
                 setValue(results[0]);
                 setInputValue(results[0].formatted_address);
+
+                // 리덕스에 지오코딩 주소 값을 저장
+                dispatch(
+                  setLocationData({
+                    latitude: latlng.lat,
+                    longitude: latlng.lng,
+                    geocodeAddress: results[0].formatted_address,
+                  }),
+                );
               } else {
                 console.error("지오코딩에 실패했습니다.");
               }
@@ -76,14 +90,13 @@ const GoogleMaps = ({ latitude, longitude }) => {
         }
       };
 
-      // 구글 맵 스크립트가 로드되었는지 확인
       if (window.google) {
         initializeGeocoder();
       } else {
         console.error("Google Maps API가 아직 로드되지 않았습니다.");
       }
     }
-  }, [latitude, longitude]);
+  }, [locationData.latitude, locationData.longitude, dispatch]);
 
   const fetch = useMemo(
     () =>
@@ -151,10 +164,13 @@ const GoogleMaps = ({ latitude, longitude }) => {
             console.log("Latitude:", latitude);
             console.log("Longitude:", longitude);
 
-            // 세션에 위치 데이터 저장
-            localStorage.setItem(
-              "locationData",
-              JSON.stringify({ latitude, longitude }),
+            // 리덕스에 위치 데이터와 지오코딩 주소 값 저장
+            dispatch(
+              setLocationData({
+                latitude,
+                longitude,
+                geocodeAddress: place.formatted_address, // 지오코딩 주소 저장
+              }),
             );
           }
         },

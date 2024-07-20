@@ -94,7 +94,7 @@ function App() {
               <Route path="/mypage/ordere" element={<MyPageOrderPagee />} />
               <Route path="/mypage/review" element={<MyPageReviewPage />} />
               <Route path="/mypage/address" element={<MyPageAddress />} />
-              <Route path="/payment" element={<PaymentPage />} />
+              <Route path="/payment/:id" element={<PaymentPage />} />
               <Route path="/projectinfo" element={<ProjectInfo />} />
               <Route
                 path="/mypage/withdrawal"
