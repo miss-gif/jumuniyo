@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import React, { useState } from "react";
 import axios from "axios";
+import CategoryManagement from "./CategoryManagement";
 
 const InfoManagement = ({ info, setInfo, setLoading, setError }) => {
   const [editMode, setEditMode] = useState(false);
@@ -209,6 +210,9 @@ const InfoManagement = ({ info, setInfo, setLoading, setError }) => {
           </button>
         )}
       </div>
+      <br />
+      <h3>음식점 카테고리</h3>
+      <CategoryManagement />
     </div>
   );
 };

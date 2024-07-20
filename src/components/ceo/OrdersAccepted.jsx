@@ -60,11 +60,24 @@ const cancelOrder = async orderPk => {
   return response.data;
 };
 
+const fetchOrderDetail = async orderPk => {
+  const accessToken = getCookie("accessToken");
+  const response = await axios.get(`/api/order/${orderPk}`, {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      "Content-Type": "application/json",
+    },
+  });
+
+  return response.data;
+};
+
 const OrdersAccepted = () => {
   const [orders, setOrders] = useState([]);
+  const [selectedOrder, setSelectedOrder] = useState(null);
+  const [orderDetail, setOrderDetail] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [selectedOrder, setSelectedOrder] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
   const [modalAction, setModalAction] = useState(null);
@@ -87,6 +100,19 @@ const OrdersAccepted = () => {
     }
   };
 
+  const loadOrderDetail = async orderPk => {
+    try {
+      const data = await fetchOrderDetail(orderPk);
+      if (data.statusCode === 1) {
+        setOrderDetail(data.resultData);
+      } else {
+        setOrderDetail(null);
+      }
+    } catch (error) {
+      setError(error);
+    }
+  };
+
   const handleCompleteOrder = async orderPk => {
     setModalMessage("이 주문을 완료하시겠습니까?");
     setModalAction(() => async () => {
@@ -95,6 +121,7 @@ const OrdersAccepted = () => {
         loadOrders(); // 주문 상태가 변경되면 주문 목록을 다시 로드
         setShowModal(false);
         setSelectedOrder(null); // 주문 완료 후 상세 정보 창 닫기
+        setOrderDetail(null);
       } catch (error) {
         setError(error);
       }
@@ -121,6 +148,26 @@ const OrdersAccepted = () => {
     loadOrders();
   }, []);
 
+  useEffect(() => {
+    if (selectedOrder) {
+      loadOrderDetail(selectedOrder.orderPk);
+    }
+  }, [selectedOrder]);
+
+  const formatTime = datetime => {
+    const date = new Date(datetime);
+    let hours = date.getHours();
+    const minutes = date.getMinutes().toString().padStart(2, "0");
+    const ampm = hours >= 12 ? "오후" : "오전";
+    hours = hours % 12;
+    hours = hours ? hours : 12;
+    return `${ampm} ${hours}:${minutes}`;
+  };
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
+
   if (error) {
     return Navigate("/login");
   }
@@ -136,142 +183,157 @@ const OrdersAccepted = () => {
   };
 
   return (
-    <div className="ceo-home-accepted">
-      <div className="left">
-        <h1>접수 주문</h1>
-        <div className="sort-buttons">
-          <button
-            className="btn sort-btn"
-            onClick={() => {
-              setSortOrder("latest");
-              setOrders(sortOrders([...orders], "latest"));
-            }}
-          >
-            최신순
-          </button>
-          <button
-            className="btn sort-btn"
-            onClick={() => {
-              setSortOrder("oldest");
-              setOrders(sortOrders([...orders], "oldest"));
-            }}
-          >
-            과거순
-          </button>
-        </div>
-        <div className="waiting-orders">
-          {error ? (
-            <div className="errorMessage">{error}</div>
-          ) : orders.length === 0 ? (
-            <div className="noOrdersMessage">접수된 주문이 없습니다.</div>
-          ) : (
-            orders.map(order => (
-              <div
-                key={order.orderPk}
-                className={`one-order ${selectedOrder && selectedOrder.orderPk === order.orderPk ? "selected" : ""}`}
-                onClick={() => setSelectedOrder(order)}
-              >
-                <div className="one-order-left">
-                  <div className="order-number">No. {order.orderPk}</div>
-                  <div className="order-menus-number">
-                    메뉴 {order.menuName.length}개
-                  </div>
-                </div>
-                <div className="one-order-right">
-                  <div className="order-time">
-                    {new Date(order.createdAt).toLocaleTimeString([], {
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })}
-                  </div>
-                </div>
-              </div>
-            ))
-          )}
-        </div>
-      </div>
-
-      {selectedOrder ? (
-        <div className="order-body">
-          <div className="orderedList">
-            <div className="oneOrder" key={selectedOrder.orderPk}>
-              <div className="AnOrderHead">주문 상세 정보</div>
-              <div className="AnOrderBody">
-                <div className="AnOrderLeft">
-                  <div className="requested">
-                    <h3>요청사항</h3>
-                    <div className="requestedabout">
-                      <div className="requestedto">
-                        <h4>가게</h4>
-                        <h4>배달</h4>
-                      </div>
-                      <div className="requestedof">
-                        <p>맛있게 해주세요</p>
-                        <p>빨리 와주세요</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="orderedMenu">
-                    <h3>주문내역</h3>
-                    {selectedOrder.menuName.map((menu, index) => (
-                      <div className="orderedMenuInf" key={index}>
-                        <div className="menuName">{menu}</div>
-                        <div className="menuAmount">1</div>
-                        <div className="menuPrice">3,000</div>
-                      </div>
-                    ))}
-                    <div className="allOrderedMenuInf">
-                      <div className="title">총주문</div>
-                      <div className="allMenuAmount">1</div>
-                      <div className="allMenuPrice">3,000</div>
-                    </div>
-                  </div>
-                </div>
-                <div className="AnOrderRight">
-                  <div className="AnOrderInf">
-                    <div className="orderAddress">
-                      <h3>배달주소</h3>
-                      <p>경기도 화성시 이성로 대명아파트 102동 906호</p>
-                    </div>
-                    <div className="orderCallNumber">
-                      <h3>주문번호</h3>
-                      <p>{selectedOrder.orderPk}</p>
-                    </div>
-                    <div className="orderCallNumber">
-                      <h3>주문시간</h3>
-                      <p>13:54</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="acceptOrRefuse">
-                <button
-                  className="btn"
-                  onClick={() => handleCompleteOrder(selectedOrder.orderPk)}
+    <>
+      <div className="ceo-home-accepted">
+        <div className="left">
+          <h1>접수 주문</h1>
+          <div className="sort-buttons">
+            <button
+              className="btn sort-btn"
+              onClick={() => {
+                setSortOrder("latest");
+                setOrders(sortOrders([...orders], "latest"));
+              }}
+            >
+              최신순
+            </button>
+            <button
+              className="btn sort-btn"
+              onClick={() => {
+                setSortOrder("oldest");
+                setOrders(sortOrders([...orders], "oldest"));
+              }}
+            >
+              과거순
+            </button>
+          </div>
+          <div className="waiting-orders">
+            {error ? (
+              <div className="errorMessage">{error}</div>
+            ) : orders.length === 0 ? (
+              <div className="noOrdersMessage">접수된 주문이 없습니다.</div>
+            ) : (
+              orders.map(order => (
+                <div
+                  key={order.orderPk}
+                  className={`one-order ${selectedOrder && selectedOrder.orderPk === order.orderPk ? "selected" : ""}`}
+                  onClick={() => setSelectedOrder(order)}
                 >
-                  완료하기
-                </button>
-                <button
-                  className="btn"
-                  onClick={() => handleCancelOrder(selectedOrder.orderPk)}
-                >
-                  취소하기
-                </button>
-              </div>
-            </div>
+                  <div className="one-order-left">
+                    <div className="order-number">No. {order.orderPk}</div>
+                    <div className="order-menus-number">
+                      메뉴 {order.menuName.length}개
+                    </div>
+                  </div>
+                  <div className="one-order-right">
+                    <div className="order-time">
+                      {new Date(order.createdAt).toLocaleTimeString([], {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
+                    </div>
+                  </div>
+                </div>
+              ))
+            )}
           </div>
         </div>
-      ) : (
-        <div className="noSelectedOrderMessage">← 주문을 선택해주세요.</div>
-      )}
 
+        <div className="order-body">
+          <div className="orderedList">
+            {orderDetail ? (
+              <div className="oneOrder" key={orderDetail.orderPk}>
+                <div className="AnOrderHead">주문 상세 정보</div>
+                <div className="AnOrderBody">
+                  <div className="AnOrderLeft">
+                    <div className="requested">
+                      <h2>요청사항</h2>
+                      <div className="requestedabout">
+                        <div className="requestedto">
+                          <h3>가게 </h3>
+                        </div>
+                        <div className="requestedof">
+                          <p>{orderDetail.orderRequest}</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="orderedMenu">
+                      <h2>주문내역</h2>
+                      {orderDetail.menuInfoList.map((menu, index) => (
+                        <div className="orderedMenuInf" key={index}>
+                          <div className="menuName">{menu.menuName}</div>
+                          <div className="menuAmount">1</div>
+                          <div className="menuPrice">{menu.menuPrice}</div>
+                        </div>
+                      ))}
+                      <div className="allOrderedMenuInf">
+                        <div className="title">총주문</div>
+                        <div className="allMenuAmount">
+                          {orderDetail.menuInfoList.length}
+                        </div>
+                        <div className="allMenuPrice">
+                          {orderDetail.orderPrice}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="AnOrderRight">
+                    <div className="AnOrderInf">
+                      <div className="orderCallNumber">
+                        <h2 className="forSpace">주문번호</h2>
+                        <p>{orderDetail.orderPk}</p>
+                      </div>
+                      <div className="payMethod">
+                        <h2>결제방법</h2>
+                        <p>
+                          {`${orderDetail.paymentMethod}` === "1"
+                            ? "카드"
+                            : "현금"}
+                        </p>
+                      </div>
+                      <div className="orderAddress">
+                        <h2>배달주소</h2>
+                        <p className="address-p">{orderDetail.orderAddress}</p>
+                      </div>
+                      <div className="orderphone">
+                        <h2>전화번호</h2>
+                        <p>{orderDetail.orderPhone}</p>
+                      </div>
+                      <div className="orderCallNumber">
+                        <h2> 주문시간</h2>
+                        <p>{formatTime(orderDetail.createdAt)}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="acceptOrRefuse">
+                  <button
+                    className="btn"
+                    onClick={() => handleCompleteOrder(selectedOrder.orderPk)}
+                  >
+                    완료하기
+                  </button>
+                  <button
+                    className="btn"
+                    onClick={() => handleCancelOrder(selectedOrder.orderPk)}
+                  >
+                    취소하기
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <div className="orderChoiceMsg">← 주문을 선택해주세요.</div>
+            )}
+          </div>
+        </div>
+      </div>
       <ModalForOrdersAccepted
         show={showModal}
         onClose={() => setShowModal(false)}
         onConfirm={modalAction}
         message={modalMessage}
       />
-    </div>
+    </>
   );
 };
 

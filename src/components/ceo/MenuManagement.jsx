@@ -242,7 +242,7 @@ const MenuManagement = () => {
           <div className="menu-tap">인기 메뉴</div>
 
           {menuData.length === 0 ? (
-            <p>메뉴를 추가해주세요.</p>
+            <p className="plsAddMenues">메뉴를 추가해주세요.</p>
           ) : (
             <div className="menu-list">
               {menuData.map(menu => (

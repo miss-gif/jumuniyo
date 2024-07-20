@@ -1,9 +1,9 @@
 .ceo-home {
-  .noOrdersMessage {
+  .orderChoiceMsg {
     color: #1657bf;
     font-size: 22px;
     font-weight: 500;
-    margin: 30px 80px 100px;
+    margin: 80px 80px 100px 0px;
   }
   .noOrdersMessages {
     display: flex;
@@ -52,9 +52,6 @@
     font-size: 2em;
     color: #333;
     padding: 40px 80px;
-  }
-
-  .refresh-btn {
   }
 
   .order-body {
@@ -132,9 +129,6 @@
         }
       }
     }
-  }
-
-  .todaySale {
   }
 }
 
