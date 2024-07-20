@@ -3,24 +3,16 @@ import { useSelector } from "react-redux"; // useSelector 임포트
 import PaymentSelect from "./user/PaymentSelect";
 import { Checkbox } from "@mui/material";
 import axios from "axios";
-import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 
 const PaymentPage = () => {
   const order = []; // OrderContext 대신 사용할 수 있는 임시 데이터
   const userPhone = useSelector(state => state.user.userPhone) || ""; // 전화번호 가져오기
-
-  const userData = useSelector(state => state.user.userData);
-  const userAddr1 = userData.mainAddr.addr1;
-  const userAddr2 = userData.mainAddr.addr2;
-
   const locationData = useSelector(state => state.user.locationData);
+  const accessToken = useSelector(state => state.user.accessToken); // 리덕스에서 accessToken 가져오기
 
   console.log(locationData);
 
-  console.log(userAddr1, userAddr2);
-
-  const [cookies] = useCookies(["accessToken"]);
   const navigate = useNavigate();
 
   const restaurantName = sessionStorage.getItem("restaurantName");
@@ -39,14 +31,14 @@ const PaymentPage = () => {
       order_request: "요청사항",
       payment_method: "결제수단 키",
       order_phone: userPhone, // 저장된 전화번호 사용
-      order_address: `${userAddr1} ${userAddr2}`,
+      order_address: locationData.geocodeAddress,
       menu_pk: [92],
     };
 
     try {
       const res = await axios.post("/api/order/", data, {
         headers: {
-          Authorization: `Bearer ${cookies.accessToken}`,
+          Authorization: `Bearer ${accessToken}`, // 리덕스에서 가져온 accessToken 사용
         },
       });
 
@@ -77,7 +69,7 @@ const PaymentPage = () => {
                     type="text"
                     id="address"
                     className="payment-page__input"
-                    value={userAddr1 || ""}
+                    value={locationData.geocodeAddress}
                     readOnly
                   />
                 </div>
@@ -88,7 +80,6 @@ const PaymentPage = () => {
                     id="address"
                     className="payment-page__input"
                     placeholder="(필수) 상세주소 입력"
-                    value={userAddr2 || ""}
                   />
                 </div>
                 <div>
