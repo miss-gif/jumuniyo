@@ -31,16 +31,17 @@ export const initiateKakaoPay = (amount, phone, orderId, accessToken) => {
           msg += "// 결제 금액 : " + data.paid_amount;
           msg += "// 구매자 이름 : " + data.buyer_name;
 
+          // 서버에 결제 완료 정보를 전송하고 응답을 받아 주문 ID를 반환
           axios
             .post(
               "/api/order/",
               {
-                order_res_pk: orderId,
-                payment_method: "카카오페이",
-                order_phone: phone,
-                order_address: "주소 정보를 제공하세요", // 주소 정보 추가 필요
-                menu_pk: [], // 메뉴 PK 배열 추가 필요
-                order_request: "", // 요청사항 추가 필요
+                order_res_pk: 1,
+                order_request: 1, // 상태에서 요청사항 가져오기
+                payment_method: 1, // 상태에서 결제수단 가져오기
+                order_phone: 1,
+                order_address: 1, // 주소 합치기
+                menu_pk: [3],
               },
               {
                 headers: {
@@ -48,7 +49,7 @@ export const initiateKakaoPay = (amount, phone, orderId, accessToken) => {
                 },
               },
             )
-            .then(response => resolve(response.data.message))
+            .then(response => resolve(response.data.resultData)) // 주문 ID 반환
             .catch(error =>
               reject("결제 성공 후 처리 중 오류: " + error.message),
             );

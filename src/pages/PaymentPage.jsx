@@ -62,16 +62,21 @@ const PaymentPage = () => {
 
     if (selectedPayment === "카카오페이") {
       try {
-        const message = await initiateKakaoPay(
+        // 카카오페이 결제 요청
+        const orderId = await initiateKakaoPay(
           calculateTotalOrderPrice(),
           phone,
-          id,
-          accessToken, // accessToken 추가
+          id, // 주문 ID
+          accessToken, // 인증 토큰
         );
-        alert("결제 완료: " + message);
+        alert("결제 완료: " + orderId);
+
+        // 결제 성공 후 이동
+        navigate(`/mypage/order/${orderId}`); // 주문 ID를 사용하여 이동
+
+        // 결제 성공 후 세션 저장소 데이터 삭제
         sessionStorage.removeItem(`selectedMenuItems_${id}`);
         sessionStorage.removeItem("restaurantName");
-        navigate(`/mypage/order/${id}`); // 결제 성공 후 이동
       } catch (error) {
         alert("결제 실패: " + error);
       }
