@@ -1,20 +1,32 @@
+import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 
 const MyPageOrderPage = () => {
   const { id } = useParams();
   const [orderData, setOrderData] = useState(null);
+  const accessToken = useSelector(state => state.user.accessToken);
 
   useEffect(() => {
     const fetchOrderData = async () => {
-      const response = await fetch(`/api/order/${id}`);
-      const data = await response.json();
-      if (data.statusCode === 1) {
-        setOrderData(data.resultData);
+      try {
+        const response = await axios.get(`/api/order/${id}`, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+        const data = response.data;
+        if (data.statusCode === 1) {
+          setOrderData(data.resultData);
+        }
+      } catch (error) {
+        console.error("Error fetching order data", error);
       }
     };
+
     fetchOrderData();
-  }, [id]);
+  }, [id, accessToken]);
 
   if (!orderData) {
     return <div>로딩 중...</div>;
