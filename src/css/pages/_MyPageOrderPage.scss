@@ -3,10 +3,22 @@
   flex-direction: column;
   gap: 12px;
 
-  &__title {
-    color: $white;
+  &__header {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     background-color: $black;
+    color: $white;
     padding: $padding-2;
+    button {
+      position: absolute;
+      right: 8px;
+      padding: 4px 8px;
+    }
+  }
+
+  &__title {
     font-weight: $medium;
   }
 

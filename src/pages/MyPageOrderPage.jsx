@@ -35,7 +35,10 @@ const MyPageOrderPage = () => {
   return (
     <div className="mypage-order">
       <div className="mypage-order-content">
-        <h2 className="mypage-order__title">주문완료</h2>
+        <div className="mypage-order__header">
+          <h2 className="mypage-order__title">주문완료</h2>
+          <button className="btn">주문 취소</button>
+        </div>
         <div className="mypage-order__contents">
           <div className="주문완료-안내">
             <p className="mypage-order__thanks">주문 감사합니다</p>
