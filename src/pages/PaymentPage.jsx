@@ -4,6 +4,7 @@ import PaymentSelect from "./user/PaymentSelect";
 import { Checkbox } from "@mui/material";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
+import { initiateKakaoPay } from "../utils/kakaopayUtils";
 
 const PaymentPage = () => {
   const userPhone = useSelector(state => state.user.userPhone) || "";
@@ -56,6 +57,22 @@ const PaymentPage = () => {
     }
     if (!agreement) {
       alert("결제 동의에 체크해 주세요.");
+      return;
+    }
+
+    if (selectedPayment === "카카오페이") {
+      try {
+        const message = await initiateKakaoPay(
+          calculateTotalOrderPrice(),
+          phone,
+        );
+        alert("결제 완료: " + message);
+        sessionStorage.removeItem(`selectedMenuItems_${id}`);
+        sessionStorage.removeItem("restaurantName");
+        navigate(`/mypage/order/${id}`); // 결제 성공 후 이동
+      } catch (error) {
+        alert("결제 실패: " + error);
+      }
       return;
     }
 
