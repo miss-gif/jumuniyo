@@ -20,6 +20,7 @@ const MyPageOrderList = ({ reviewOpenModal, order, isOldOrder }) => {
                 {order.doneOrderState === 2 ? "취소" : "완료"}
               </div>
               <div
+                className="order-detail-text"
                 onClick={() => {
                   orderDetails(order.doneOrderPk);
                 }}
@@ -28,11 +29,19 @@ const MyPageOrderList = ({ reviewOpenModal, order, isOldOrder }) => {
               </div>
             </div>
             <div className="order-main">
-              <img
-                src={`https://34.64.63.109/pic${order.resPic}`}
-                className="order-logo"
-                alt="Order Logo"
-              />
+              {!order.resPic ? (
+                <img
+                  src={`https://34.64.63.109/pic/default.png`}
+                  className="order-logo"
+                  alt="Order Logo"
+                />
+              ) : (
+                <img
+                  src={`https://34.64.63.109/pic${order.resPic}`}
+                  className="order-logo"
+                  alt="Order Logo"
+                />
+              )}
               <div className="order-detail-box">
                 <div>
                   <div>{order.resName}</div>
@@ -42,7 +51,9 @@ const MyPageOrderList = ({ reviewOpenModal, order, isOldOrder }) => {
                     {order.orderPrice.toLocaleString("ko-KR")}원
                   </div>
                 </div>
-                {!isOldOrder && order.doneOrderState === 1 ? (
+                {!isOldOrder &&
+                order.reviewState === 0 &&
+                order.doneOrderState === 1 ? (
                   <button
                     className="btn"
                     onClick={() =>
