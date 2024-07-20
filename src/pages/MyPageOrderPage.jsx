@@ -36,6 +36,10 @@ const MyPageOrderPage = () => {
           <div className="mypage-order__section">
             <div className="mypage-order__section-title">배달정보</div>
             <div className="mypage-order__detail">
+              <p className="mypage-order__label">음식점</p>
+              <p className="mypage-order__value">{orderData.resPk}</p>
+            </div>
+            <div className="mypage-order__detail">
               <p className="mypage-order__label">주문번호</p>
               <p className="mypage-order__value">{orderData.orderPk}</p>
             </div>
@@ -45,7 +49,7 @@ const MyPageOrderPage = () => {
                 {new Date(orderData.createdAt).toLocaleString()}
               </p>
             </div>
-            <div className="mypage-order__detail">
+            <div className="mypage-order__detail none">
               <p className="mypage-order__label">배달완료시간</p>
               <p className="mypage-order__value">
                 {orderData.orderState === 1 ? "배달 완료" : "배달 중"}
@@ -57,7 +61,7 @@ const MyPageOrderPage = () => {
             <div className="mypage-order__section-title">주문자 정보</div>
             <div className="mypage-order__detail">
               <p className="mypage-order__label">연락처</p>
-              <p className="mypage-order__value">{orderData.userPk}</p>
+              <p className="mypage-order__value">{orderData.orderPhone}</p>
             </div>
             <div className="mypage-order__detail">
               <p className="mypage-order__label">주소</p>
@@ -67,7 +71,7 @@ const MyPageOrderPage = () => {
               <p className="mypage-order__label">가게 요청사항</p>
               <p className="mypage-order__value">{orderData.orderRequest}</p>
             </div>
-            <div className="mypage-order__detail">
+            <div className="mypage-order__detail none">
               <p className="mypage-order__label">라이더 요청사항</p>
               <p className="mypage-order__value">없음</p>
             </div>
