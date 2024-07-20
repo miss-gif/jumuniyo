@@ -178,7 +178,7 @@ const Home = () => {
     const minutes = date.getMinutes().toString().padStart(2, "0");
     const ampm = hours >= 12 ? "오후" : "오전";
     hours = hours % 12;
-    hours = hours ? hours : 12; // the hour '0' should be '12'
+    hours = hours ? hours : 12;
     return `${ampm} ${hours}:${minutes}`;
   };
 
@@ -278,12 +278,12 @@ const Home = () => {
                       </div>
                       <div className="orderAddress">
                         <h2>배달주소</h2>
-                        <p className="address-p">
-                          {orderDetail.orderAddress}
-                          [지번]제주 제주시 애월읍 하귀 1리 5515
-                        </p>
+                        <p className="address-p">{orderDetail.orderAddress}</p>
                       </div>
-
+                      <div className="orderphone">
+                        <h2>전화번호</h2>
+                        <p>{orderDetail.orderPhone}</p>
+                      </div>
                       <div className="orderCallNumber">
                         <h2> 주문시간</h2>
                         <p>{formatTime(orderDetail.createdAt)}</p>
@@ -307,7 +307,7 @@ const Home = () => {
                 </div>
               </div>
             ) : (
-              <div className="noOrdersMessage">← 주문을 선택해주세요.</div>
+              <div className="orderChoiceMsg">← 주문을 선택해주세요.</div>
             )}
           </div>
         </div>

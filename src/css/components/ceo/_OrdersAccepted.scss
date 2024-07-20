@@ -61,36 +61,11 @@
     padding: 40px 80px;
   }
 
-  .refresh-btn {
-  }
-
   .order-body {
     gap: 20px;
-    padding: 100px 80px 100px 80px;
-
-    .allSalesOntheDay {
-      .title {
-        background-color: $black;
-        color: $white;
-        padding: $padding-2;
-      }
-      .allSalesBody {
-        padding: $padding-2;
-        border: 1px solid #ccc;
-        .tabAndValue {
-          display: flex;
-          .allSalesTab {
-            padding-right: 50px;
-          }
-        }
-      }
-    }
+    padding: 80px 80px 100px 80px;
 
     .orderedList {
-      .noOrdersMessage {
-        display: flex;
-        align-items: center;
-      }
       .oneOrder {
         .AnOrderHead {
           background-color: $black;
@@ -109,6 +84,9 @@
 
               .requestedabout {
                 display: flex;
+                padding-top: 20px;
+
+                padding-bottom: 50px;
                 .requestedto {
                   padding-right: 50px;
                 }
@@ -159,9 +137,6 @@
       }
     }
   }
-
-  .todaySale {
-  }
 }
 
 .AnOrderBody {
@@ -191,9 +166,9 @@
   justify-content: space-between !important;
   padding-top: 10px;
 }
-.noSelectedOrderMessage {
+.orderChoiceMsg {
   color: #1657bf;
   font-size: 22px;
   font-weight: 500;
-  margin: 120px 160px 200px;
+  margin: 80px 80px 100px 0px;
 }

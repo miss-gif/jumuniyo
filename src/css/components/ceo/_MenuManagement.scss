@@ -1,24 +1,34 @@
 .menu-management {
+  margin-bottom: 100px;
+
   .menu-settings {
     .settings-header {
       font-size: 2em;
       padding: 40px 15vw;
     }
-  }
-  .menu-upper {
-    padding: 0px 40px;
+    .menu-upper {
+      padding: 0px 40px;
 
-    .menu-add {
-      display: flex;
-      justify-content: center;
+      .menu-add {
+        display: flex;
+        justify-content: center;
+      }
     }
   }
+
   .menu-section {
+    margin-bottom: 100px;
+    .plsAddMenues {
+      display: flex;
+      justify-content: center;
+      margin: 100px;
+    }
     .menu-tap {
       background-color: $black;
       color: $white;
       padding: $padding-2;
     }
+
     .menu-list {
       display: flex;
       flex-direction: column;

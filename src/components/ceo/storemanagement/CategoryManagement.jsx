@@ -2,16 +2,16 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import LoadingSpinner from "../../common/LoadingSpinner";
+import { Checkbox, FormControlLabel } from "@mui/material";
 
 const CategoryManagement = () => {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [editMode, setEditMode] = useState(false); // 수정 모드 상태 추가
-  const [isAddModalOpen, setIsAddModalOpen] = useState(false); // 카테고리 추가 모달 상태
-  const [allCategories, setAllCategories] = useState([]); // 모든 카테고리 리스트
-  const [selectedCategories, setSelectedCategories] = useState([]); // 선택된 카테고리 리스트
-  const [warningModalOpen, setWarningModalOpen] = useState(false); // 경고 모달 상태
+  const [editMode, setEditMode] = useState(false);
+  const [allCategories, setAllCategories] = useState([]);
+  const [selectedCategories, setSelectedCategories] = useState([]);
+  const [warningModalOpen, setWarningModalOpen] = useState(false);
   const navigate = useNavigate();
 
   const getCookie = name => {
@@ -44,10 +44,7 @@ const CategoryManagement = () => {
 
         const fetchedCategories = response.data.resultData.categories || [];
         setCategories(fetchedCategories);
-
-        // if (fetchedCategories.length === 0) {
-        //   navigate("/");
-        // }
+        setSelectedCategories(fetchedCategories.map(cat => cat.categoryPk)); // 기존 카테고리를 선택된 상태로 설정
 
         setLoading(false);
       } catch (error) {
@@ -60,42 +57,7 @@ const CategoryManagement = () => {
     fetchCategories();
   }, [navigate]);
 
-  const handleDeleteCategory = async categoryPk => {
-    if (categories.length <= 1) {
-      setWarningModalOpen(true);
-      return;
-    }
-
-    const accessToken = getCookie("accessToken");
-
-    if (!accessToken) {
-      setError("로그인이 필요합니다.");
-      return;
-    }
-
-    try {
-      await axios.delete(`/api/owner/restaurant/category/${categoryPk}`, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
-
-      // 카테고리 삭제 후 상태 업데이트
-      const updatedCategories = categories.filter(
-        category => category.categoryPk !== categoryPk,
-      );
-      setCategories(updatedCategories);
-
-      if (updatedCategories.length === 0) {
-        navigate("/ceopage/category-management");
-      }
-    } catch (error) {
-      console.error("Error deleting category:", error);
-      setError("카테고리를 삭제하는 중 에러가 발생했습니다.");
-    }
-  };
-
-  const handleOpenAddModal = async () => {
+  const fetchAllCategories = async () => {
     const accessToken = getCookie("accessToken");
 
     if (!accessToken) {
@@ -113,14 +75,18 @@ const CategoryManagement = () => {
       console.log("All categories response:", response.data);
 
       setAllCategories(response.data.resultData || []);
-      setIsAddModalOpen(true);
     } catch (error) {
       console.error("Error fetching all categories:", error);
       setError("모든 카테고리를 불러오는 중 에러가 발생했습니다.");
     }
   };
 
-  const handleAddCategory = async () => {
+  const handleSaveCategories = async () => {
+    if (selectedCategories.length === 0) {
+      setWarningModalOpen(true);
+      return;
+    }
+
     const accessToken = getCookie("accessToken");
 
     if (!accessToken) {
@@ -129,27 +95,44 @@ const CategoryManagement = () => {
     }
 
     try {
+      // 추가할 카테고리
       for (const categoryPk of selectedCategories) {
-        await axios.post(
-          `/api/owner/restaurant/category?seq=${categoryPk}`,
-          {},
-          {
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
+        if (!categories.some(cat => cat.categoryPk === categoryPk)) {
+          await axios.post(
+            `/api/owner/restaurant/category?seq=${categoryPk}`,
+            {},
+            {
+              headers: {
+                Authorization: `Bearer ${accessToken}`,
+              },
             },
-          },
-        );
+          );
+        }
+      }
+
+      // 삭제할 카테고리
+      for (const category of categories) {
+        if (!selectedCategories.includes(category.categoryPk)) {
+          await axios.delete(
+            `/api/owner/restaurant/category/${category.categoryPk}`,
+            {
+              headers: {
+                Authorization: `Bearer ${accessToken}`,
+              },
+            },
+          );
+        }
       }
 
       // 선택된 카테고리를 추가 후 상태 업데이트
       const updatedCategories = allCategories.filter(category =>
         selectedCategories.includes(category.categoryPk),
       );
-      setCategories([...categories, ...updatedCategories]);
-      setIsAddModalOpen(false);
+      setCategories(updatedCategories);
+      setEditMode(false); // 저장 후 수정 모드 종료
     } catch (error) {
-      console.error("Error adding categories:", error);
-      setError("카테고리를 추가하는 중 에러가 발생했습니다.");
+      console.error("Error saving categories:", error);
+      setError("카테고리를 저장하는 중 에러가 발생했습니다.");
     }
   };
 
@@ -160,6 +143,10 @@ const CategoryManagement = () => {
       setSelectedCategories([...selectedCategories, categoryPk]);
     }
   };
+
+  useEffect(() => {
+    fetchAllCategories();
+  }, []);
 
   if (loading) {
     return (
@@ -174,54 +161,48 @@ const CategoryManagement = () => {
   }
 
   return (
-    <div>
-      <h2>카테고리 관리</h2>
-      <button onClick={() => setEditMode(!editMode)}>
-        {editMode ? "수정 모드 종료" : "카테고리 수정"}
-      </button>
-      <button onClick={handleOpenAddModal}>카테고리 추가</button>
-      <ul>
+    <div className="category-wrap">
+      <ul className="categoryList">
         {categories.map(category => (
-          <li key={category.categoryPk}>
-            <p>이름: {category.categoryName}</p>
-            {editMode && (
-              <button onClick={() => handleDeleteCategory(category.categoryPk)}>
-                삭제
-              </button>
-            )}
+          <li className="oneCategory" key={category.categoryPk}>
+            <h2>{category.categoryName}</h2>
           </li>
         ))}
       </ul>
-      {isAddModalOpen && (
-        <div className="modal">
-          <div className="modal-content">
-            <span
-              className="close-button"
-              onClick={() => setIsAddModalOpen(false)}
-            >
-              &times;
-            </span>
-            <h2>카테고리 추가</h2>
-            <ul>
-              {allCategories.map(category => (
-                <li key={category.categoryPk}>
-                  <label>
-                    <input
-                      type="checkbox"
+
+      {editMode && (
+        <div>
+          <h2>카테고리 수정 및 추가</h2>
+          <ul>
+            {allCategories.map(category => (
+              <li key={category.categoryPk}>
+                <FormControlLabel
+                  control={
+                    <Checkbox
                       checked={selectedCategories.includes(category.categoryPk)}
                       onChange={() =>
                         handleCategorySelection(category.categoryPk)
                       }
+                      name={category.categoryName}
                     />
-                    {category.categoryName}
-                  </label>
-                </li>
-              ))}
-            </ul>
-            <button onClick={handleAddCategory}>추가</button>
-          </div>
+                  }
+                  label={category.categoryName}
+                />
+              </li>
+            ))}
+          </ul>
+          <button className="btn" onClick={handleSaveCategories}>
+            저장
+          </button>
         </div>
       )}
+
+      {!editMode && (
+        <button className="btn" onClick={() => setEditMode(true)}>
+          {categories.length === 0 ? "카테고리 추가" : "카테고리 수정"}
+        </button>
+      )}
+
       {warningModalOpen && (
         <div className="modal">
           <div className="modal-content">

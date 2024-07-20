@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useLocation } from "react-router-dom";
 import InfoManagement from "./storemanagement/InfoManagement";
-import CategoryManagement from "./storemanagement/CategoryManagement";
 import MenuManagement from "./storemanagement/MenuManagement";
 import queryString from "query-string"; // query-string 패키지 import
 import LoadingSpinner from "../common/LoadingSpinner";
@@ -57,14 +56,6 @@ const StoreManagement = () => {
 
         setInfo(response.data.resultData);
         setLoading(false);
-
-        // URL 쿼리 파라미터를 확인하여 activeTab 설정
-        const queryParams = queryString.parse(location.search);
-        if (queryParams.tab) {
-          setActiveTab(queryParams.tab);
-        } else if (response.data.resultData.categories.length === 0) {
-          setActiveTab("categoryManagement");
-        }
       } catch (error) {
         console.error("Error fetching store info:", error);
         setError("데이터를 가져오는 중 에러가 발생했습니다.");
@@ -139,12 +130,7 @@ const StoreManagement = () => {
           >
             매장 설정
           </button>
-          <button
-            className={`btn ${activeTab === "categoryManagement" ? "active" : ""}`}
-            onClick={() => setActiveTab("categoryManagement")}
-          >
-            카테고리 관리
-          </button>
+
           <button
             className={`btn ${activeTab === "menuManagement" ? "active" : ""}`}
             onClick={() => setActiveTab("menuManagement")}
@@ -176,7 +162,6 @@ const StoreManagement = () => {
             </div>
           </div>
         )}
-        {activeTab === "categoryManagement" && <CategoryManagement />}
         {activeTab === "menuManagement" && <MenuManagement />}
 
         {showModal && (
