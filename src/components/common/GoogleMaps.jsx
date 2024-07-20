@@ -71,6 +71,15 @@ const GoogleMaps = () => {
               if (status === "OK" && results[0]) {
                 setValue(results[0]);
                 setInputValue(results[0].formatted_address);
+
+                // 리덕스에 지오코딩 주소 값을 저장
+                dispatch(
+                  setLocationData({
+                    latitude: latlng.lat,
+                    longitude: latlng.lng,
+                    geocodeAddress: results[0].formatted_address,
+                  }),
+                );
               } else {
                 console.error("지오코딩에 실패했습니다.");
               }
@@ -87,7 +96,7 @@ const GoogleMaps = () => {
         console.error("Google Maps API가 아직 로드되지 않았습니다.");
       }
     }
-  }, [locationData]);
+  }, [locationData.latitude, locationData.longitude, dispatch]);
 
   const fetch = useMemo(
     () =>
@@ -155,8 +164,14 @@ const GoogleMaps = () => {
             console.log("Latitude:", latitude);
             console.log("Longitude:", longitude);
 
-            // 리덕스에 위치 데이터 저장
-            dispatch(setLocationData({ latitude, longitude }));
+            // 리덕스에 위치 데이터와 지오코딩 주소 값 저장
+            dispatch(
+              setLocationData({
+                latitude,
+                longitude,
+                geocodeAddress: place.formatted_address, // 지오코딩 주소 저장
+              }),
+            );
           }
         },
       );

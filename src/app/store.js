@@ -31,7 +31,7 @@ const userSlice = createSlice({
     accessToken: null,
     tokenMaxAge: null,
     isLoggedIn: false,
-    locationData: { latitude: "", longitude: "" },
+    locationData: { latitude: "", longitude: "", geocodeAddress: "" }, // 지오코딩 주소 추가
   },
   reducers: {
     setUserData: (state, action) => {
@@ -64,7 +64,7 @@ const userSlice = createSlice({
       state.accessToken = null;
       state.tokenMaxAge = null;
       state.isLoggedIn = false;
-      state.locationData = { latitude: "", longitude: "" };
+      state.locationData = { latitude: "", longitude: "", geocodeAddress: "" };
     },
   },
 });

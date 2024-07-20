@@ -14,6 +14,10 @@ const PaymentPage = () => {
   const userAddr1 = userData.mainAddr.addr1;
   const userAddr2 = userData.mainAddr.addr2;
 
+  const locationData = useSelector(state => state.user.locationData);
+
+  console.log(locationData);
+
   console.log(userAddr1, userAddr2);
 
   const [cookies] = useCookies(["accessToken"]);
