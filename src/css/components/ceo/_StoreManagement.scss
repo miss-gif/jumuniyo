@@ -13,9 +13,24 @@ $border-radius: 5px;
   }
   .store-management-body {
     margin: 0px 15vw;
-    .btn.active {
-      background-color: #007bff;
-      color: white;
+    .tabs {
+      .btn {
+        background-color: rgb(197, 197, 197);
+        color: black;
+        border: 1px solid #ccc;
+        border-bottom: none;
+
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+        margin-right: 10px;
+      }
+
+      .btn.active {
+        background-color: white;
+        color: $mainColor;
+
+        border-bottom: 1px solid white;
+      }
     }
 
     .status-taps {

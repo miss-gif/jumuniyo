@@ -295,13 +295,22 @@ const Reviews = () => {
         <div className="review-body">
           <div className="review-section">
             <div className="filter-buttons">
-              <button className="btn" onClick={() => setFilter("all")}>
+              <button
+                className={`btn ${filter === "all" ? "active" : ""}`}
+                onClick={() => setFilter("all")}
+              >
                 전체
               </button>
-              <button className="btn" onClick={() => setFilter("yes")}>
+              <button
+                className={`btn ${filter === "yes" ? "active" : ""}`}
+                onClick={() => setFilter("yes")}
+              >
                 답변 있음
               </button>
-              <button className="btn" onClick={() => setFilter("no")}>
+              <button
+                className={`btn ${filter === "no" ? "active" : ""}`}
+                onClick={() => setFilter("no")}
+              >
                 미답변
               </button>
             </div>
