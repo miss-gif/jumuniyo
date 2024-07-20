@@ -10,6 +10,9 @@ const PaymentPage = () => {
   const [selectedPayment, setSelectedPayment] = useState(""); // 결제수단 상태
   const [menuPkArray, setMenuPkArray] = useState([]); // 메뉴 PK 배열 상태
   const [order, setOrder] = useState([]); // 주문 상세 정보 상태
+  const [addressDetail, setAddressDetail] = useState(""); // 상세주소 상태
+  const [phone, setPhone] = useState(""); // 휴대전화 상태
+  const [agreement, setAgreement] = useState(false); // 결제 동의 체크 상태
 
   const userPhone = useSelector(state => state.user.userPhone) || "";
   const locationData = useSelector(state => state.user.locationData);
@@ -38,12 +41,30 @@ const PaymentPage = () => {
   };
 
   const handlePayment = async () => {
+    // 입력 값 검증
+    if (!addressDetail.trim()) {
+      alert("상세주소를 입력해 주세요.");
+      return;
+    }
+    if (!phone.trim()) {
+      alert("휴대전화 번호를 입력해 주세요.");
+      return;
+    }
+    if (!selectedPayment) {
+      alert("결제수단을 선택해 주세요.");
+      return;
+    }
+    if (!agreement) {
+      alert("결제 동의에 체크해 주세요.");
+      return;
+    }
+
     const data = {
       order_res_pk: id,
       order_request: request, // 상태에서 요청사항 가져오기
       payment_method: selectedPayment, // 상태에서 결제수단 가져오기
-      order_phone: userPhone,
-      order_address: locationData.geocodeAddress,
+      order_phone: phone,
+      order_address: `${locationData.geocodeAddress} ${addressDetail}`, // 주소 합치기
       menu_pk: menuPkArray,
     };
 
@@ -86,12 +107,14 @@ const PaymentPage = () => {
                   />
                 </div>
                 <div>
-                  <label htmlFor="address"></label>
+                  <label htmlFor="addressDetail">상세주소</label>
                   <input
                     type="text"
-                    id="address"
+                    id="addressDetail"
                     className="payment-page__input"
                     placeholder="(필수) 상세주소 입력"
+                    value={addressDetail}
+                    onChange={e => setAddressDetail(e.target.value)} // 상세주소 상태 업데이트
                   />
                 </div>
                 <div>
@@ -100,8 +123,9 @@ const PaymentPage = () => {
                     type="text"
                     id="phone"
                     className="payment-page__input"
-                    value={userPhone}
                     placeholder="(필수) 휴대전화 번호 입력"
+                    value={phone}
+                    onChange={e => setPhone(e.target.value)} // 휴대전화 상태 업데이트
                   />
                 </div>
               </div>
@@ -169,7 +193,11 @@ const PaymentPage = () => {
           </span>
           <label className="agreement-checkbox">
             결제에 동의합니다.
-            <Checkbox sx={{ padding: 0 }} />
+            <Checkbox
+              sx={{ padding: 0 }}
+              checked={agreement}
+              onChange={e => setAgreement(e.target.checked)}
+            />
           </label>
         </p>
         <button
