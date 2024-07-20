@@ -6,18 +6,31 @@ import axios from "axios";
  * @param {string} phone - 구매자 전화번호
  * @param {string} orderId - 주문 ID
  * @param {string} accessToken - 인증 토큰
+ * @param {string} request - 요청 사항
+ * @param {object} locationData - 위치 데이터
+ * @param {string} addressDetail - 상세 주소
+ * @param {array} menuPkArray - 메뉴 PK 배열
  * @returns {Promise<string>} - 결제 완료 메시지
  */
-export const initiateKakaoPay = (amount, phone, orderId, accessToken) => {
+export const initiateKakaoPay = (
+  amount,
+  phone,
+  id,
+  accessToken,
+  request,
+  locationData,
+  addressDetail,
+  menuPkArray,
+) => {
   return new Promise((resolve, reject) => {
     var IMP = window.IMP;
     IMP.init("imp56341203");
     IMP.request_pay(
       {
         pg: "kakaopay.TC0ONETIME",
-        pay_method: "card",
+        pay_method: "카카오페이",
         merchant_uid: "GPK_" + new Date().getTime(),
-        name: "GOOTTFLEX",
+        name: "주문이요-카카오페이",
         amount: amount,
         buyer_name: "buyer_name",
         buyer_tel: phone,
@@ -36,12 +49,12 @@ export const initiateKakaoPay = (amount, phone, orderId, accessToken) => {
             .post(
               "/api/order/",
               {
-                order_res_pk: 1,
-                order_request: 1, // 상태에서 요청사항 가져오기
-                payment_method: 1, // 상태에서 결제수단 가져오기
-                order_phone: 1,
-                order_address: 1, // 주소 합치기
-                menu_pk: [3],
+                order_res_pk: id,
+                order_request: request, // 상태에서 요청사항 가져오기
+                payment_method: "카카오페이", // 상태에서 결제수단 가져오기
+                order_phone: phone,
+                order_address: `${locationData.geocodeAddress} ${addressDetail}`, // 주소 합치기
+                menu_pk: menuPkArray,
               },
               {
                 headers: {

@@ -33,6 +33,13 @@ const PaymentPage = () => {
     setMenuPkArray(menuPkArray);
   }, [id]);
 
+  useEffect(() => {
+    if (!locationData || !locationData.geocodeAddress) {
+      alert("주소 정보를 불러올 수 없습니다. 다시 시도해 주세요.");
+      navigate(-1); // 이전 페이지로 이동
+    }
+  }, [locationData, navigate]);
+
   const calculateTotalPrice = item => {
     return item.menu_price * item.quantity;
   };
@@ -68,6 +75,10 @@ const PaymentPage = () => {
           phone,
           id, // 주문 ID
           accessToken, // 인증 토큰
+          request,
+          locationData,
+          addressDetail,
+          menuPkArray,
         );
         alert("결제 완료: " + orderId);
 
