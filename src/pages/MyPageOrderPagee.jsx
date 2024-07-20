@@ -8,6 +8,8 @@ import NotLogin from "../components/common/mypage/NotLogin";
 import { Alert } from "@mui/material";
 import LoadingSpinner from "../components/common/LoadingSpinner";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import OrderListHeader from "../components/user/mypage/OrderListHeader";
 
 const MyPageOrderPagee = () => {
   const [reviewOpen, setReviewOpen] = useState(false);
@@ -115,7 +117,7 @@ const MyPageOrderPagee = () => {
       <Mypage />
       {orders.length > 0 || orderNow ? (
         <div className="mypage-box">
-          <div>주문중인 리스트</div>
+          <OrderListHeader />
           {orderNow && orderNow.length > 0 ? (
             <div className="order-list-gap">
               {orderNow.map(order => (

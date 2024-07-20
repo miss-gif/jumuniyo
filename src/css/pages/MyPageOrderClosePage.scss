@@ -1,0 +1,27 @@
+.mypage-wrap {
+  .order-list-header {
+    display: flex;
+    // justify-content: space-between; // 링크들을 양쪽으로 배치
+    padding: 10px; // 상하 여백을 추가
+    background-color: #f9f9f9; // 배경색 추가
+    border-bottom: 1px solid #ddd; // 헤더 아래에 얇은 테두리 추가
+  }
+
+  .header-menu {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 120px;
+    height: 40px; // 버튼 높이 설정
+    border-bottom: 2px solid transparent; // 기본 상태의 테두리
+    text-align: center;
+    color: #333; // 텍스트 색상
+    text-decoration: none; // 링크 밑줄 제거
+    font-size: 16px; // 글자 크기
+
+    &:hover {
+      border-bottom: 2px solid $mainColor; // 호버 시 테두리 색상 변경
+      color: $mainColor; // 호버 시 텍스트 색상 변경
+    }
+  }
+}

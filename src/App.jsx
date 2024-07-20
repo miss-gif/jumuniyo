@@ -40,6 +40,7 @@ import OrdersAccepted from "./components/ceo/OrdersAccepted";
 import OrdersHistory from "./components/ceo/OrdersHistory";
 import LoginTest from "./pages/LoginTest";
 import Test3 from "./pages/Test3";
+import MyPageOrderClosePage from "./pages/MyPageOrderClosePage";
 
 // gmu 테스트
 const getCookie = name => {
@@ -93,6 +94,10 @@ function App() {
               <Route path="/mypage" element={<MyPage />} />
               <Route path="/mypage/order/:id" element={<MyPageOrderPage />} />
               <Route path="/mypage/ordere" element={<MyPageOrderPagee />} />
+              <Route
+                path="/mypage/orderclose"
+                element={<MyPageOrderClosePage />}
+              />
               <Route path="/mypage/review" element={<MyPageReviewPage />} />
               <Route path="/mypage/address" element={<MyPageAddress />} />
               <Route path="/payment/:id" element={<PaymentPage />} />
