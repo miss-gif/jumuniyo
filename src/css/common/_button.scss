@@ -29,3 +29,10 @@
   background-color: $white;
   border: 1px solid $borderColor;
 }
+
+.btn--cancel {
+  @extend .btn-base;
+  color: $white;
+  background-color: $red;
+  border: 1px solid $borderColor;
+}
