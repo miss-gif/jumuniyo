@@ -1,12 +1,14 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const MyPageOrderPage = () => {
   const { id } = useParams();
   const [orderData, setOrderData] = useState(null);
   const accessToken = useSelector(state => state.user.accessToken);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchOrderData = async () => {
@@ -28,6 +30,28 @@ const MyPageOrderPage = () => {
     fetchOrderData();
   }, [id, accessToken]);
 
+  const onCancelOrder = async () => {
+    try {
+      const response = await axios.put(`/api/order/cancel/list/${id}`, null, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      const data = response.data;
+      if (data.statusCode === 1) {
+        alert("주문 취소되었습니다");
+        // 필요한 경우 상태를 업데이트하거나 리디렉션 처리
+        setOrderData(null);
+        navigate("/");
+      } else {
+        alert("주문 취소에 실패했습니다. 다시 시도해 주세요.");
+      }
+    } catch (error) {
+      console.error("Error cancelling order", error);
+      alert("주문 취소에 실패했습니다. 다시 시도해 주세요.");
+    }
+  };
+
   if (!orderData) {
     return <div>로딩 중...</div>;
   }
@@ -37,7 +61,9 @@ const MyPageOrderPage = () => {
       <div className="mypage-order-content">
         <div className="mypage-order__header">
           <h2 className="mypage-order__title">주문완료</h2>
-          <button className="btn">주문 취소</button>
+          <button className="btn" onClick={onCancelOrder}>
+            주문취소
+          </button>
         </div>
         <div className="mypage-order__contents">
           <div className="주문완료-안내">
