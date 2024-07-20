@@ -16,6 +16,7 @@ const MyPageOrderPagee = () => {
   const [resPk, setResPk] = useState("");
   const [isLogin, setIsLogin] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [orderNow, setOrderNow] = useState(null);
 
   const isOlderThanThreeDays = date => {
     const orderDate = new Date(date);
@@ -54,7 +55,17 @@ const MyPageOrderPagee = () => {
     }
   };
 
+  const getOrderNow = async () => {
+    try {
+      const res = await jwtAxios.get("/api/order/user/list");
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
+    getOrderNow();
     const accessToken = getCookie("accessToken");
     if (!accessToken) {
       setIsLogin(false);
