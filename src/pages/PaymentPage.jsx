@@ -6,18 +6,18 @@ import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 
 const PaymentPage = () => {
+  const userPhone = useSelector(state => state.user.userPhone) || "";
+  const locationData = useSelector(state => state.user.locationData);
+  const accessToken = useSelector(state => state.user.accessToken);
+  const { id } = useParams();
+
   const [request, setRequest] = useState(""); // 요청사항 상태
   const [selectedPayment, setSelectedPayment] = useState(""); // 결제수단 상태
   const [menuPkArray, setMenuPkArray] = useState([]); // 메뉴 PK 배열 상태
   const [order, setOrder] = useState([]); // 주문 상세 정보 상태
   const [addressDetail, setAddressDetail] = useState(""); // 상세주소 상태
-  const [phone, setPhone] = useState(""); // 휴대전화 상태
+  const [phone, setPhone] = useState(userPhone); // 휴대전화 상태
   const [agreement, setAgreement] = useState(false); // 결제 동의 체크 상태
-
-  const userPhone = useSelector(state => state.user.userPhone) || "";
-  const locationData = useSelector(state => state.user.locationData);
-  const accessToken = useSelector(state => state.user.accessToken);
-  const { id } = useParams();
 
   const navigate = useNavigate();
   const restaurantName = sessionStorage.getItem("restaurantName");
