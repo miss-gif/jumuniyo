@@ -1,63 +1,15 @@
-/* eslint-disable no-undef */
+// Header 컴포넌트에서 saveState 호출
 import React, { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 import MenuIcon from "@mui/icons-material/Menu";
 import PersonIcon from "@mui/icons-material/Person";
-import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { Logo } from "../common/Logo";
-import store, { logout, setAccessToken, setTokenMaxAge } from "../../app/store";
-import { removeCookie } from "../../utils/cookie";
-
-// 토큰 갱신 스케줄러 훅
-const useTokenRefreshScheduler = (
-  accessToken,
-  tokenMaxAge,
-  dispatch,
-  navigate,
-) => {
-  useEffect(() => {
-    let interval;
-
-    const scheduleTokenRefresh = async () => {
-      try {
-        const response = await axios.get("/api/access-token", {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        });
-
-        if (response.data.statusCode === 1) {
-          const { accessToken: newAccessToken, TokenMaxAge: newTokenMaxAge } =
-            response.data.resultData;
-          if (newAccessToken) {
-            dispatch(setAccessToken(newAccessToken));
-          }
-          if (newTokenMaxAge) {
-            dispatch(setTokenMaxAge(newTokenMaxAge));
-          }
-
-          // 로컬스토리지 업데이트
-          const currentState = store.getState();
-          currentState.user.accessToken = newAccessToken;
-          currentState.user.tokenMaxAge = newTokenMaxAge;
-          saveState(currentState);
-        } else {
-          console.error("Token extension failed: ", response.data.resultMsg);
-        }
-      } catch (error) {
-        console.error("Error occurred while extending the token: ", error);
-      }
-    };
-
-    // 10분마다 토큰 갱신 시도
-    interval = setInterval(scheduleTokenRefresh, 10 * 60 * 1000);
-
-    return () => clearInterval(interval);
-  }, [dispatch, navigate, accessToken]);
-};
+import { scheduleTokenRefresh } from "../../utils/tokenUtils";
+import { handleLogout } from "../../utils/authUtils";
+import { saveState } from "../../utils/storageUtils"; // 수정된 import
 
 const Header = () => {
   const navigate = useNavigate();
@@ -68,27 +20,13 @@ const Header = () => {
   const userData = useSelector(state => state.user.userData);
   const userNickname = userData ? userData.userNickname : "Guest";
 
-  useTokenRefreshScheduler(accessToken, tokenMaxAge, dispatch, navigate);
+  useEffect(() => {
+    const tokenRefreshInterval = scheduleTokenRefresh(accessToken, dispatch);
+    return () => clearInterval(tokenRefreshInterval);
+  }, [dispatch, accessToken]);
 
-  const handleLogout = async () => {
-    try {
-      const response = await axios.get("/api/sign-out", {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
-
-      // 응답 데이터에서 statusCode를 확인하여 성공 여부 판단
-      if (response.data.statusCode === 1) {
-        dispatch(logout());
-        removeCookie("accessToken");
-        navigate("/login");
-      } else {
-        console.error("Logout failed: ", response.data.resultMsg);
-      }
-    } catch (error) {
-      console.error("Error occurred during logout: ", error);
-    }
+  const handleLogoutClick = () => {
+    handleLogout(accessToken, dispatch, navigate);
   };
 
   return (
@@ -107,7 +45,7 @@ const Header = () => {
                   <Link to="/mypage">마이페이지</Link>
                 </li>
                 <li className="nav__item">
-                  <button onClick={handleLogout}>로그아웃</button>
+                  <button onClick={handleLogoutClick}>로그아웃</button>
                 </li>
               </>
             ) : (
