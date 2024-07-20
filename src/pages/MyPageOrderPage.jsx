@@ -49,7 +49,7 @@ const MyPageOrderPage = () => {
             <div className="mypage-order__section-title">배달정보</div>
             <div className="mypage-order__detail">
               <p className="mypage-order__label">음식점</p>
-              <p className="mypage-order__value">{orderData.resPk}</p>
+              <p className="mypage-order__value">{orderData.resName}</p>
             </div>
             <div className="mypage-order__detail">
               <p className="mypage-order__label">주문번호</p>
