@@ -51,7 +51,26 @@
     }
   }
 }
-.pagination .active {
-  background-color: #007bff;
+.paginationforOrderHistory .active {
+  padding-left: 10px;
+  padding-right: 10px;
+
+  background-color: grey;
+  border-radius: 4px;
   color: white;
+}
+
+.paginationforOrderHistory {
+  margin-top: 10px;
+  margin-bottom: 30px;
+  display: flex;
+  justify-content: center;
+  * {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+  .btnNextandBefore {
+    margin-right: 5px;
+    margin-left: 5px;
+  }
 }

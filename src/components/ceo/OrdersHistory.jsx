@@ -145,7 +145,7 @@ const OrdersHistory = () => {
               <div className="order-header-left-wrap">
                 <div className="order-header-left-content">
                   <div className="order-header-left-content-title">
-                    {order.resPk}번 가게
+                    주문번호: {order.doneOrderPk}
                   </div>
                   <div className="order-header-left-content-text">
                     {order.menuInfoDtos.map((menu, index) => (
@@ -187,8 +187,9 @@ const OrdersHistory = () => {
     }
 
     return (
-      <div className="pagination">
+      <div className="paginationforOrderHistory">
         <button
+          className="btn btnNextandBefore"
           onClick={() => handlePageChange(currentPage - 1)}
           disabled={currentPage === 1}
         >
@@ -204,6 +205,7 @@ const OrdersHistory = () => {
           </button>
         ))}
         <button
+          className="btn btnNextandBefore"
           onClick={() => handlePageChange(currentPage + 1)}
           disabled={currentPage === maxPage}
         >
@@ -262,7 +264,10 @@ const OrdersHistory = () => {
         )}
         {selectedTab === "all" && (
           <div className="all">
-            {renderOrders(allOrders, "전체 주문이 없습니다.")}
+            {renderOrders(
+              allOrders,
+              "아직 주문이 없습니다. 주문을 받아주세요!",
+            )}
           </div>
         )}
       </div>

@@ -17,9 +17,11 @@ const Reviews = () => {
   const [filter, setFilter] = useState("all");
   const [reviewCount, setReviewCount] = useState(0);
   const [replyCount, setReplyCount] = useState(0);
+  const [photoReviewCount, setPhotoReviewCount] = useState(0); // 사진 리뷰 개수 상태 변수 추가
   const [averageRating, setAverageRating] = useState(0);
   const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [error, setError] = useState(null);
+  const [photoOnly, setPhotoOnly] = useState(false); // 사진 리뷰만 보기 상태 변수 추가
 
   useEffect(() => {
     const fetchReviews = async () => {
@@ -67,6 +69,12 @@ const Reviews = () => {
             updatedReviewItems.filter(item => item.answer === "yes").length,
           );
 
+          // 사진 리뷰 개수 계산
+          setPhotoReviewCount(
+            updatedReviewItems.filter(item => item.reviewImgs.length > 0)
+              .length,
+          );
+
           // Calculate average rating
           if (updatedReviewItems.length > 0) {
             const totalRating = updatedReviewItems.reduce(
@@ -99,8 +107,13 @@ const Reviews = () => {
     } else {
       filtered = reviewItems;
     }
+
+    if (photoOnly) {
+      filtered = filtered.filter(item => item.reviewImgs.length > 0);
+    }
+
     setFilteredReviews(filtered);
-  }, [filter, reviewItems]);
+  }, [filter, reviewItems, photoOnly]);
 
   const handleReplyChange = (reviewPk, event) => {
     const newReplies = { ...replies, [reviewPk]: event.target.value };
@@ -162,6 +175,11 @@ const Reviews = () => {
           updatedReviewItems.filter(item => item.answer === "yes").length,
         );
 
+        // 사진 리뷰 개수 업데이트
+        setPhotoReviewCount(
+          updatedReviewItems.filter(item => item.reviewImgs.length > 0).length,
+        );
+
         // Recalculate average rating
         const totalRating = updatedReviewItems.reduce(
           (sum, item) => sum + item.reviewRating,
@@ -209,6 +227,11 @@ const Reviews = () => {
         setFilteredReviews(updatedReviewItems);
         setReplyCount(
           updatedReviewItems.filter(item => item.answer === "yes").length,
+        );
+
+        // 사진 리뷰 개수 업데이트
+        setPhotoReviewCount(
+          updatedReviewItems.filter(item => item.reviewImgs.length > 0).length,
         );
 
         // Recalculate average rating
@@ -300,8 +323,16 @@ const Reviews = () => {
                 <p>
                   사장님댓글 <span>{replyCount}</span> 개
                 </p>
+                <p>
+                  사진리뷰 <span>{photoReviewCount}</span> 개
+                </p>
               </div>
-              <p className="filter__photo-reviews">사진리뷰만</p>
+              <p
+                className="filter__photo-reviews"
+                onClick={() => setPhotoOnly(!photoOnly)} // 클릭 핸들러 추가
+              >
+                사진리뷰만
+              </p>
             </div>
 
             <div className="reviews">

@@ -1,10 +1,15 @@
-.noOrdersMessage {
-  color: #1657bf;
-  display: flex;
-  justify-content: center;
-}
-
 .ceo-home {
+  .noOrdersMessage {
+    color: #1657bf;
+    font-size: 22px;
+    font-weight: 500;
+    margin: 30px 80px 100px;
+  }
+  .noOrdersMessages {
+    display: flex;
+    justify-content: center;
+    color: $white;
+  }
   display: flex;
   .left {
     display: flex;
@@ -57,10 +62,6 @@
     padding: 80px 80px 100px 80px;
 
     .orderedList {
-      .noOrdersMessage {
-        display: flex;
-        align-items: center;
-      }
       .oneOrder {
         .AnOrderHead {
           background-color: $black;

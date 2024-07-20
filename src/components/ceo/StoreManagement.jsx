@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import InfoManagement from "./storemanagement/InfoManagement";
 import CategoryManagement from "./storemanagement/CategoryManagement";
 import MenuManagement from "./storemanagement/MenuManagement";
+import queryString from "query-string"; // query-string 패키지 import
+import LoadingSpinner from "../common/LoadingSpinner";
 
 const StoreManagement = () => {
   const [info, setInfo] = useState({
@@ -24,6 +26,7 @@ const StoreManagement = () => {
   const [modalMessage, setModalMessage] = useState("");
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -54,6 +57,14 @@ const StoreManagement = () => {
 
         setInfo(response.data.resultData);
         setLoading(false);
+
+        // URL 쿼리 파라미터를 확인하여 activeTab 설정
+        const queryParams = queryString.parse(location.search);
+        if (queryParams.tab) {
+          setActiveTab(queryParams.tab);
+        } else if (response.data.resultData.categories.length === 0) {
+          setActiveTab("categoryManagement");
+        }
       } catch (error) {
         console.error("Error fetching store info:", error);
         setError("데이터를 가져오는 중 에러가 발생했습니다.");
@@ -62,7 +73,7 @@ const StoreManagement = () => {
     };
 
     fetchData();
-  }, [navigate]);
+  }, [navigate, location]);
 
   const handleStatusToggle = async () => {
     const newStatus = info.restaurantState === 1 ? 2 : 1;
@@ -102,11 +113,15 @@ const StoreManagement = () => {
 
   const closeModal = () => {
     setShowModal(false);
-    window.location.reload(); // 페이지 새로고침
+    window.location.reload();
   };
 
   if (loading) {
-    return <p>로딩 중...</p>;
+    return (
+      <p>
+        <LoadingSpinner />
+      </p>
+    );
   }
 
   if (error) {
@@ -145,7 +160,10 @@ const StoreManagement = () => {
                 <h2 className="status-title">
                   영업 상태: {info.restaurantState === 1 ? "영업중" : "준비중"}
                 </h2>
-                <button className="status-toggle" onClick={handleStatusToggle}>
+                <button
+                  className="btn status-toggle"
+                  onClick={handleStatusToggle}
+                >
                   {info.restaurantState === 1 ? "영업종료" : "영업시작"}
                 </button>
               </div>
@@ -164,8 +182,11 @@ const StoreManagement = () => {
         {showModal && (
           <div className="modal">
             <div className="modal-content">
-              <p>{modalMessage}</p>
-              <button onClick={closeModal}>확인</button>
+              <h2>{modalMessage}</h2>
+              <br />
+              <button className="btn" onClick={closeModal}>
+                확인
+              </button>
             </div>
           </div>
         )}

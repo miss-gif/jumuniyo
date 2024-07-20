@@ -196,7 +196,7 @@ const Home = () => {
           </button>
           <div className="waiting-orders">
             {noOrders ? (
-              <div className="noOrdersMessage">새 주문이 없습니다.</div>
+              <div className="noOrdersMessages">새 주문이 없습니다.</div>
             ) : (
               orders.map(order => (
                 <div
@@ -307,7 +307,7 @@ const Home = () => {
                 </div>
               </div>
             ) : (
-              <div className="noOrdersMessage">주문을 선택해주세요.</div>
+              <div className="noOrdersMessage">← 주문을 선택해주세요.</div>
             )}
           </div>
         </div>

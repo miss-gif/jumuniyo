@@ -97,6 +97,17 @@ const OrderSummary = ({
       >
         주문하기
       </div>
+      <div
+        className="order-summary__submit-buttonforphone"
+        style={submitButtonStyle}
+        onClick={() => {
+          if (totalAmount > 0) {
+            onOrder(restaurantName);
+          }
+        }}
+      >
+        {totalAmount > 0 ? `${totalAmount}원 주문하기` : "음식을 담아주세요!"}
+      </div>
     </div>
   );
 };

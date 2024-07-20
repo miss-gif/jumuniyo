@@ -79,7 +79,11 @@ const InfoManagement = ({ info, setInfo, setLoading, setError }) => {
     <div className="info-section">
       <h3>로고</h3>
       <img
-        src={`/pic/${info.restaurantPic}`}
+        src={
+          info.restaurantPic
+            ? `/pic/${info.restaurantPic}`
+            : "/images/defaultRes.png"
+        }
         alt="사진에러"
         style={{ width: "80px", height: "44px", marginBottom: "30px" }}
       />
@@ -98,6 +102,8 @@ const InfoManagement = ({ info, setInfo, setLoading, setError }) => {
           로고 수정
         </button>
       )}
+      <br />
+      <br />
       <h3>업체정보</h3>
       <p>
         <h4>영업시간</h4>

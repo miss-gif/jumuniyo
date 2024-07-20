@@ -45,7 +45,7 @@ const OrdersDetail = () => {
         <div className="ceo-orders">
           <div className="mypage-order">
             <div className="mypage-order__contents">
-              <div className="mypage-order__section-titles">배달정보</div>
+              <div className="mypage-order__section-titles">주문정보</div>
               <div className="배달정보-콘텐츠">
                 <div className="mypage-order__detail">
                   <p className="mypage-order__label">주문상태</p>
