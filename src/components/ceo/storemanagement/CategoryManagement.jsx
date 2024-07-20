@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import LoadingSpinner from "../../common/LoadingSpinner";
 
 const CategoryManagement = () => {
   const [categories, setCategories] = useState([]);
@@ -161,7 +162,11 @@ const CategoryManagement = () => {
   };
 
   if (loading) {
-    return <p>로딩 중...</p>;
+    return (
+      <p>
+        <LoadingSpinner />
+      </p>
+    );
   }
 
   if (error) {

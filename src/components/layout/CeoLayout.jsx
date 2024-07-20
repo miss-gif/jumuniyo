@@ -5,6 +5,7 @@ import CeoHeader from "./CeoHeader";
 import Footer from "./Footer";
 import { fetchRestaurantInfo, fetchUserInfo } from "../../api/ceo/ceo";
 import { getCookie } from "../../utils/cookie"; // 쿠키 가져오기 함수 추가
+import ModalForOk from "../ceo/ModalForOk";
 
 const NavButton = ({ path, label, currentPath }) => {
   const navigate = useNavigate();
@@ -24,6 +25,7 @@ const NavButton = ({ path, label, currentPath }) => {
 const CeoLayout = () => {
   const [restaurantInfo, setRestaurantInfo] = useState(null);
   const [userInfo, setUserInfo] = useState(null);
+  const [showModal, setShowModal] = useState(false);
   const location = useLocation();
   const currentPath = location.pathname;
   const navigate = useNavigate();
@@ -40,6 +42,14 @@ const CeoLayout = () => {
       try {
         const data = await fetchRestaurantInfo();
         setRestaurantInfo(data);
+
+        // categories가 비어있고 현재 경로가 store-management가 아닌 경우 모달 창 표시
+        if (
+          data.categories.length === 0 &&
+          currentPath !== "/ceopage/store-management"
+        ) {
+          setShowModal(true);
+        }
       } catch (error) {
         console.error("Failed to fetch restaurant info", error);
       }
@@ -57,7 +67,12 @@ const CeoLayout = () => {
     checkLoginStatus(); // 로그인 상태를 먼저 확인
     getRestaurantInfo();
     getUserInfo();
-  }, [navigate]);
+  }, [navigate, currentPath]);
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+    navigate("/ceopage/store-management");
+  };
 
   const navItems = [
     { path: "/ceopage/home", label: "신규주문" },
@@ -70,6 +85,12 @@ const CeoLayout = () => {
 
   return (
     <>
+      {showModal && (
+        <ModalForOk
+          message="카테고리를 1개 이상 꼭 설정해주세요!"
+          onClose={handleCloseModal}
+        />
+      )}
       <CeoHeader />
       <div className="ceo-page">
         <div className="ceo-page__main">
@@ -77,9 +98,9 @@ const CeoLayout = () => {
             <div className="owner-nav__profile">
               <img
                 src={
-                  userInfo
+                  userInfo && userInfo.userPic !== "user/null"
                     ? `/pic/${userInfo.userPic}`
-                    : "https://picsum.photos/100/"
+                    : "/images/defaultRes.png"
                 }
                 alt="프로필 이미지"
               />

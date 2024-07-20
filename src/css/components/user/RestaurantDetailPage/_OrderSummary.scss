@@ -116,3 +116,28 @@
     border: 1px solid $borderColor;
   }
 }
+
+@media (max-width: 768px) {
+  .order-summary-content {
+    display: none;
+  }
+  .order-summary__submit-button {
+    display: none;
+  }
+  .order-summary__submit-buttonforphone {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
+    padding: 12px;
+    text-align: center;
+    border: 1px solid $borderColor;
+    z-index: 1000;
+  }
+}
+
+@media (min-width: 768px) {
+  .order-summary__submit-buttonforphone {
+    display: none;
+  }
+}

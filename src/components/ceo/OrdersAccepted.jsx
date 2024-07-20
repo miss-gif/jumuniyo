@@ -69,15 +69,19 @@ const OrdersAccepted = () => {
   const [modalMessage, setModalMessage] = useState("");
   const [modalAction, setModalAction] = useState(null);
 
+  const [sortOrder, setSortOrder] = useState("latest");
+
   const loadOrders = async () => {
     try {
       const data = await fetchOrders();
+      let sortedOrders = [];
       if (data.statusCode === -7) {
-        setOrders([]);
+        sortedOrders = [];
       } else {
-        setOrders(Array.isArray(data.resultData) ? data.resultData : " []");
-        console.log("데이터 결과 메세지:", data.resultMsg);
+        sortedOrders = Array.isArray(data.resultData) ? data.resultData : [];
       }
+      setOrders(sortOrders(sortedOrders, sortOrder));
+      console.log("데이터 결과 메세지:", data.resultMsg);
     } catch (error) {
       setError(error);
     }
@@ -90,6 +94,7 @@ const OrdersAccepted = () => {
         await completeOrder(orderPk);
         loadOrders(); // 주문 상태가 변경되면 주문 목록을 다시 로드
         setShowModal(false);
+        setSelectedOrder(null); // 주문 완료 후 상세 정보 창 닫기
       } catch (error) {
         setError(error);
       }
@@ -104,6 +109,7 @@ const OrdersAccepted = () => {
         await cancelOrder(orderPk);
         loadOrders(); // 주문 상태가 변경되면 주문 목록을 다시 로드
         setShowModal(false);
+        setSelectedOrder(null); // 주문 취소 후 상세 정보 창 닫기
       } catch (error) {
         setError(error);
       }
@@ -119,15 +125,45 @@ const OrdersAccepted = () => {
     return Navigate("/login");
   }
 
+  const sortOrders = (orders, order) => {
+    return orders.sort((a, b) => {
+      if (order === "latest") {
+        return new Date(b.createdAt) - new Date(a.createdAt);
+      } else {
+        return new Date(a.createdAt) - new Date(b.createdAt);
+      }
+    });
+  };
+
   return (
     <div className="ceo-home-accepted">
       <div className="left">
         <h1>접수 주문</h1>
+        <div className="sort-buttons">
+          <button
+            className="btn sort-btn"
+            onClick={() => {
+              setSortOrder("latest");
+              setOrders(sortOrders([...orders], "latest"));
+            }}
+          >
+            최신순
+          </button>
+          <button
+            className="btn sort-btn"
+            onClick={() => {
+              setSortOrder("oldest");
+              setOrders(sortOrders([...orders], "oldest"));
+            }}
+          >
+            과거순
+          </button>
+        </div>
         <div className="waiting-orders">
           {error ? (
             <div className="errorMessage">{error}</div>
           ) : orders.length === 0 ? (
-            <div className="noOrdersMessage">주문이 없습니다.</div>
+            <div className="noOrdersMessage">접수된 주문이 없습니다.</div>
           ) : (
             orders.map(order => (
               <div
@@ -226,7 +262,7 @@ const OrdersAccepted = () => {
           </div>
         </div>
       ) : (
-        <div className="noSelectedOrderMessage">주문을 선택해주세요</div>
+        <div className="noSelectedOrderMessage">← 주문을 선택해주세요.</div>
       )}
 
       <ModalForOrdersAccepted
