@@ -5,6 +5,7 @@ import jwtAxios from "../api/user/jwtUtil";
 import { getCookie } from "../utils/cookie";
 import NotLogin from "../components/common/mypage/NotLogin";
 import LoadingSpinner from "../components/common/LoadingSpinner";
+import { Alert } from "@mui/material";
 
 const MyPageAddress = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -20,10 +21,13 @@ const MyPageAddress = () => {
   const [isFirstUser, setIsFirstUser] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [statusCode, setStatusCode] = useState("");
+  const [reviewSubmitted, setReviewSubmitted] = useState(false);
 
   useEffect(() => {
     setIsLoading(true);
     const accessToken = getCookie("accessToken");
+
     if (!accessToken) {
       setIsLogin(false);
       setAddress("로그인 후 이용해주세요");
@@ -33,10 +37,17 @@ const MyPageAddress = () => {
     } else {
       setIsLogin(true);
     }
+    if (reviewSubmitted) {
+      // 리렌더링 동작 또는 다른 작업 수행
+      console.log("Review submitted, component re-rendering");
+      setReviewSubmitted(false); // 상태 초기화
+    }
 
     const getUserAddress = async () => {
       try {
         const res = await jwtAxios.get("/api/address/main-address");
+        setStatusCode(res.data.statusCode);
+
         if (res.data.resultData) {
           const { addrPk, addr1, addr2, addrCoorX, addrCoorY } =
             res.data.resultData;
@@ -56,7 +67,7 @@ const MyPageAddress = () => {
       }
     };
     getUserAddress();
-  }, []);
+  }, [reviewSubmitted]);
 
   const handleAddressSubmit = async () => {
     try {
@@ -69,9 +80,11 @@ const MyPageAddress = () => {
       };
       if (isFirstUser) {
         await jwtAxios.post("/api/address", data);
+        setReviewSubmitted(true);
       } else {
         data.addr_pk = addressPk;
         await jwtAxios.patch("/api/address", data);
+        setReviewSubmitted(true);
       }
     } catch (error) {
       console.log(error);
@@ -117,14 +130,24 @@ const MyPageAddress = () => {
     <div className="mypage-wrap">
       <Mypage />
       <div className="mypage-box">
-        <div className="mypage-title">
-          <div className="mypage-title-box">주소</div>
-          <div>{address}</div>
-        </div>
-        <div className="mypage-title">
-          <div className="mypage-title-box">상세 주소</div>
-          <div>{addressDetail}</div>
-        </div>
+        {statusCode === -2 ? (
+          <>
+            <Alert variant="outlined" severity="info">
+              등록된 주소가 없습니다 주소를 등록해주세요.
+            </Alert>
+          </>
+        ) : (
+          <>
+            <div className="mypage-title">
+              <div className="mypage-title-box">주소</div>
+              <div>{address}</div>
+            </div>
+            <div className="mypage-title">
+              <div className="mypage-title-box">상세 주소</div>
+              <div>{addressDetail}</div>
+            </div>
+          </>
+        )}
 
         <div className="mypage-button-box">
           <button type="button" className="btn" onClick={onModify}>

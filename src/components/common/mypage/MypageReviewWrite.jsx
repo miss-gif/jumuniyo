@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { Rating, TextField } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import jwtAxios from "../../../api/user/jwtUtil";
 
 const MypageReviewWrite = ({
@@ -13,6 +13,7 @@ const MypageReviewWrite = ({
   const [test, setTest] = useState("");
   const [reviewWrite, setReviewWrite] = useState("");
   const [pics, setPics] = useState([]);
+  const [reviewSubmitted, setReviewSubmitted] = useState(false);
 
   // const postReview = async () => {
   //   setReviewOpen(false);
@@ -62,11 +63,20 @@ const MypageReviewWrite = ({
       const res = await jwtAxios.post("/api/rev", data, header);
       if (res.data.statusCode) {
         alert(res.data.resultMsg);
+        setReviewSubmitted(true);
       }
     } catch (error) {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    if (reviewSubmitted) {
+      // 리렌더링 동작 또는 다른 작업 수행
+      console.log("Review submitted, component re-rendering");
+      setReviewSubmitted(false); // 상태 초기화
+    }
+  }, [reviewSubmitted]);
 
   return (
     <div className="modify-modal">
