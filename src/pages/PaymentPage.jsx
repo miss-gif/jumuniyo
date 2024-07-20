@@ -76,6 +76,8 @@ const PaymentPage = () => {
       });
 
       if (res.data.statusCode === 1) {
+        sessionStorage.removeItem(`selectedMenuItems_${id}`);
+        sessionStorage.removeItem("restaurantName");
         alert(res.data.resultMsg);
         navigate(`/mypage/order/${res.data.resultData}`);
       } else {
