@@ -78,12 +78,13 @@ const Header = () => {
         },
       });
 
-      if (response.status === 200) {
+      // 응답 데이터에서 statusCode를 확인하여 성공 여부 판단
+      if (response.data.statusCode === 1) {
         dispatch(logout());
         removeCookie("accessToken");
         navigate("/login");
       } else {
-        console.error("Logout failed: ", response.status);
+        console.error("Logout failed: ", response.data.resultMsg);
       }
     } catch (error) {
       console.error("Error occurred during logout: ", error);

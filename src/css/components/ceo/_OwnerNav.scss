@@ -4,6 +4,7 @@
   background-color: #414b5a;
   color: #fff;
   font-weight: 500;
+  min-height: calc(100vh - 90px);
 
   &__profile {
     display: flex;

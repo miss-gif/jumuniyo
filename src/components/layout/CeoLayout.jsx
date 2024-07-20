@@ -2,10 +2,10 @@
 import React, { useEffect, useState } from "react";
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import CeoHeader from "./CeoHeader";
-import Footer from "./Footer";
 import { fetchRestaurantInfo, fetchUserInfo } from "../../api/ceo/ceo";
 import { getCookie } from "../../utils/cookie"; // 쿠키 가져오기 함수 추가
 import ModalForOk from "../ceo/ModalForOk";
+import FooterMini from "./FooterMini";
 
 const NavButton = ({ path, label, currentPath }) => {
   const navigate = useNavigate();
@@ -134,7 +134,7 @@ const CeoLayout = () => {
             <div className="ceo-page__content">
               <Outlet />
             </div>
-            <Footer />
+            <FooterMini />
           </div>
         </div>
       </div>

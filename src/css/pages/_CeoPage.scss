@@ -55,3 +55,42 @@
     border-radius: 4px;
   }
 }
+
+// 추가 CSS
+.owner-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #2d3539;
+  color: #fff;
+  height: 90px;
+  &__left {
+    width: 200px;
+    display: flex;
+    justify-content: center;
+  }
+
+  &__right {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    font-size: 14px;
+    margin-right: 16px;
+  }
+
+  &__user {
+    font-weight: 500;
+  }
+
+  &__item {
+    padding: 8px;
+  }
+}
+
+.owner-header__logo {
+  display: flex;
+  align-items: center;
+  img {
+    height: 60px;
+  }
+}
