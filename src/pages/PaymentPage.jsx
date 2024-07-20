@@ -1,21 +1,33 @@
-import React from "react";
-import { useSelector } from "react-redux"; // useSelector 임포트
+import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import PaymentSelect from "./user/PaymentSelect";
 import { Checkbox } from "@mui/material";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const PaymentPage = () => {
-  const order = []; // OrderContext 대신 사용할 수 있는 임시 데이터
-  const userPhone = useSelector(state => state.user.userPhone) || ""; // 전화번호 가져오기
-  const locationData = useSelector(state => state.user.locationData);
-  const accessToken = useSelector(state => state.user.accessToken); // 리덕스에서 accessToken 가져오기
+  const [request, setRequest] = useState(""); // 요청사항 상태
+  const [selectedPayment, setSelectedPayment] = useState(""); // 결제수단 상태
+  const [menuPkArray, setMenuPkArray] = useState([]); // 메뉴 PK 배열 상태
+  const [order, setOrder] = useState([]); // 주문 상세 정보 상태
 
-  console.log(locationData);
+  const userPhone = useSelector(state => state.user.userPhone) || "";
+  const locationData = useSelector(state => state.user.locationData);
+  const accessToken = useSelector(state => state.user.accessToken);
+  const { id } = useParams();
 
   const navigate = useNavigate();
-
   const restaurantName = sessionStorage.getItem("restaurantName");
+
+  useEffect(() => {
+    const selectedMenuItems =
+      JSON.parse(sessionStorage.getItem(`selectedMenuItems_${id}`)) || [];
+    setOrder(selectedMenuItems);
+    const menuPkArray = selectedMenuItems.flatMap(item =>
+      Array(item.quantity).fill(item.menu_pk),
+    );
+    setMenuPkArray(menuPkArray);
+  }, [id]);
 
   const calculateTotalPrice = item => {
     return item.menu_price * item.quantity;
@@ -27,18 +39,18 @@ const PaymentPage = () => {
 
   const handlePayment = async () => {
     const data = {
-      order_res_pk: 1,
-      order_request: "요청사항",
-      payment_method: "결제수단 키",
-      order_phone: userPhone, // 저장된 전화번호 사용
+      order_res_pk: id,
+      order_request: request, // 상태에서 요청사항 가져오기
+      payment_method: selectedPayment, // 상태에서 결제수단 가져오기
+      order_phone: userPhone,
       order_address: locationData.geocodeAddress,
-      menu_pk: [92],
+      menu_pk: menuPkArray,
     };
 
     try {
       const res = await axios.post("/api/order/", data, {
         headers: {
-          Authorization: `Bearer ${accessToken}`, // 리덕스에서 가져온 accessToken 사용
+          Authorization: `Bearer ${accessToken}`,
         },
       });
 
@@ -102,10 +114,13 @@ const PaymentPage = () => {
                   id="request"
                   placeholder="요청사항을 남겨주세요."
                   className="payment-page__textarea"
+                  value={request}
+                  onChange={e => setRequest(e.target.value)} // 요청사항 상태 업데이트
                 ></textarea>
               </div>
             </div>
-            <PaymentSelect />
+            <PaymentSelect onPaymentSelect={setSelectedPayment} />
+            {/* 결제수단 선택 전달 */}
             <div className="payment-page__input-wrap none">
               <h3 className="payment-page__subtitle">할인방법 선택</h3>
               <div className="payment-page__coupon ">
@@ -136,7 +151,7 @@ const PaymentPage = () => {
                 <p>
                   {item.menu_name} <span>x {item.quantity}개</span>
                 </p>
-                <p>{calculateTotalPrice(item)}원</p> {/* 계산된 총 가격 표시 */}
+                <p>{calculateTotalPrice(item)}원</p>
               </li>
             ))}
           </ul>
