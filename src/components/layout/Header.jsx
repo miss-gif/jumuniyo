@@ -29,8 +29,9 @@ const useTokenRefreshScheduler = (
           },
         });
 
-        if (response.status === 200) {
-          const { newAccessToken, tokenMaxAge: newTokenMaxAge } = response.data;
+        if (response.data.statusCode === 1) {
+          const { accessToken: newAccessToken, TokenMaxAge: newTokenMaxAge } =
+            response.data.resultData;
           if (newAccessToken) {
             dispatch(setAccessToken(newAccessToken));
           }
@@ -44,7 +45,7 @@ const useTokenRefreshScheduler = (
           currentState.user.tokenMaxAge = newTokenMaxAge;
           saveState(currentState);
         } else {
-          console.error("Token extension failed: ", response.status);
+          console.error("Token extension failed: ", response.data.resultMsg);
         }
       } catch (error) {
         console.error("Error occurred while extending the token: ", error);
