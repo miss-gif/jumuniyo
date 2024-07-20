@@ -10,7 +10,7 @@ import { Logo } from "../common/Logo";
 import { logout, setAccessToken, setTokenMaxAge } from "../../app/store";
 import { removeCookie } from "../../utils/cookie";
 
-// Token 갱신 스케줄러
+// 토큰 갱신 스케줄러 훅
 const useTokenRefreshScheduler = (
   accessToken,
   tokenMaxAge,
@@ -18,70 +18,37 @@ const useTokenRefreshScheduler = (
   navigate,
 ) => {
   useEffect(() => {
-    let timeout;
-    let alertTimeout;
+    let interval;
 
-    const scheduleTokenRefresh = () => {
-      if (tokenMaxAge) {
-        const currentTime = new Date().getTime();
-        const expiryTime = new Date(tokenMaxAge).getTime();
-        const tenMinutes = 10 * 60 * 1000;
-        const fiveMinutes = 5 * 60 * 1000;
-        const timeUntilRefresh = expiryTime - currentTime - tenMinutes;
-        const timeUntilAlert = expiryTime - currentTime - fiveMinutes;
+    const scheduleTokenRefresh = async () => {
+      try {
+        const response = await axios.get("/api/access-token", {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
 
-        if (timeUntilAlert > 0) {
-          alertTimeout = setTimeout(() => {
-            alert("토큰이 만료되기 5분 전입니다. 다시 로그인 해주세요.");
-          }, timeUntilAlert);
-        }
-
-        if (timeUntilRefresh > 0) {
-          timeout = setTimeout(async () => {
-            try {
-              const response = await axios.get("/api/access-token", {
-                headers: {
-                  Authorization: `Bearer ${accessToken}`,
-                },
-              });
-
-              if (response.status === 200) {
-                const { newAccessToken, tokenMaxAge: newTokenMaxAge } =
-                  response.data;
-                if (newAccessToken) {
-                  dispatch(setAccessToken(newAccessToken));
-                }
-                if (newTokenMaxAge) {
-                  dispatch(setTokenMaxAge(newTokenMaxAge));
-                }
-
-                // 새 토큰 만료 시간을 기준으로 다시 스케줄링
-                scheduleTokenRefresh();
-              } else {
-                console.error("Token extension failed: ", response.status);
-              }
-            } catch (error) {
-              console.error(
-                "Error occurred while extending the token: ",
-                error,
-              );
-            }
-          }, timeUntilRefresh);
+        if (response.status === 200) {
+          const { newAccessToken, tokenMaxAge: newTokenMaxAge } = response.data;
+          if (newAccessToken) {
+            dispatch(setAccessToken(newAccessToken));
+          }
+          if (newTokenMaxAge) {
+            dispatch(setTokenMaxAge(newTokenMaxAge));
+          }
         } else {
-          dispatch(logout());
-          removeCookie("accessToken");
-          navigate("/login");
+          console.error("Token extension failed: ", response.status);
         }
+      } catch (error) {
+        console.error("Error occurred while extending the token: ", error);
       }
     };
 
-    scheduleTokenRefresh();
+    // 10분마다 토큰 갱신 시도
+    interval = setInterval(scheduleTokenRefresh, 10 * 60 * 1000);
 
-    return () => {
-      clearTimeout(timeout);
-      clearTimeout(alertTimeout);
-    };
-  }, [dispatch, navigate, tokenMaxAge, accessToken]);
+    return () => clearInterval(interval);
+  }, [dispatch, navigate, accessToken]);
 };
 
 const Header = () => {

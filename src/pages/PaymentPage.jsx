@@ -76,6 +76,8 @@ const PaymentPage = () => {
       });
 
       if (res.data.statusCode === 1) {
+        sessionStorage.removeItem(`selectedMenuItems_${id}`);
+        sessionStorage.removeItem("restaurantName");
         alert(res.data.resultMsg);
         navigate(`/mypage/order/${res.data.resultData}`);
       } else {
@@ -120,7 +122,7 @@ const PaymentPage = () => {
                 <div>
                   <label htmlFor="phone">휴대전화번호</label>
                   <input
-                    type="text"
+                    type="number"
                     id="phone"
                     className="payment-page__input"
                     placeholder="(필수) 휴대전화 번호 입력"
@@ -187,11 +189,11 @@ const PaymentPage = () => {
           </div>
         </div>
         <p className="payment-page__terms">
-          <span>
-            이용약관, 개인정보 수집 및 이용, 개인정보 제3자 제공 , 전자금융거래
-            이용약관, 만 14세 이상 이용자입니다.
-          </span>
           <label className="agreement-checkbox">
+            <span>
+              이용약관, 개인정보 수집 및 이용, 개인정보 제3자 제공 ,
+              전자금융거래 이용약관, 만 14세 이상 이용자입니다.
+            </span>
             결제에 동의합니다.
             <Checkbox
               sx={{ padding: 0 }}
