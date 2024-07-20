@@ -87,7 +87,11 @@ const store = configureStore({
 });
 
 store.subscribe(() => {
-  saveState(store.getState());
+  const state = store.getState();
+  // 로그인 상태인 경우에만 로컬스토리지를 업데이트
+  if (state.user.isLoggedIn) {
+    saveState(state);
+  }
 });
 
 export default store;
