@@ -222,7 +222,7 @@ const OrdersHistory = () => {
         <ul className="tabforchoiceUl">
           <li>
             <button
-              className="btn"
+              className={`btn ${selectedTab === "all" ? "active" : ""}`}
               onClick={() => {
                 setSelectedTab("all");
                 setCurrentPage(1);
@@ -231,7 +231,7 @@ const OrdersHistory = () => {
               전체 주문
             </button>
             <button
-              className="btn"
+              className={`btn ${selectedTab === "accepted" ? "active" : ""}`}
               onClick={() => {
                 setSelectedTab("accepted");
                 setCurrentPage(1);
@@ -240,7 +240,7 @@ const OrdersHistory = () => {
               접수 주문
             </button>
             <button
-              className="btn"
+              className={`btn ${selectedTab === "refused" ? "active" : ""}`}
               onClick={() => {
                 setSelectedTab("refused");
                 setCurrentPage(1);

@@ -279,15 +279,6 @@ const MenuManagement = () => {
   return (
     <>
       <div className="menu-management">
-        <div className="menu-settings">
-          <div className="menu-upper">
-            <div className="menu-add">
-              <button className="btn" onClick={handleOpenModal}>
-                메뉴 추가
-              </button>
-            </div>
-          </div>
-        </div>
         <div className="menu-section">
           <div className="menu-tap">인기 메뉴</div>
 
@@ -344,6 +335,18 @@ const MenuManagement = () => {
               ))}
             </div>
           )}
+        </div>
+        <div className="menu-settings">
+          <div className="menu-upper">
+            <div className="menu-add">
+              <button className="btn" onClick={handleOpenModal}>
+                메뉴 추가
+              </button>
+              <button className="btn" onClick={handleOpenModal}>
+                카테고리 추가
+              </button>
+            </div>
+          </div>
         </div>
       </div>
 

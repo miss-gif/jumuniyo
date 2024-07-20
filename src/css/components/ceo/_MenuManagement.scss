@@ -1,23 +1,9 @@
 .menu-management {
   margin-bottom: 100px;
 
-  .menu-settings {
-    .settings-header {
-      font-size: 2em;
-      padding: 40px 15vw;
-    }
-    .menu-upper {
-      padding: 0px 40px;
-
-      .menu-add {
-        display: flex;
-        justify-content: center;
-      }
-    }
-  }
-
   .menu-section {
     margin-bottom: 100px;
+
     .plsAddMenues {
       display: flex;
       justify-content: center;
@@ -86,7 +72,34 @@
           }
           .status-action {
             display: flex;
+
+            .menu-list-status {
+              display: flex;
+              justify-content: center;
+            }
+            .menu-list-actions {
+              .btn {
+                margin-left: 10px;
+              }
+            }
           }
+        }
+      }
+    }
+  }
+  .menu-settings {
+    .settings-header {
+      font-size: 2em;
+      padding: 40px 15vw;
+    }
+    .menu-upper {
+      padding: 0px 40px;
+
+      .menu-add {
+        display: flex;
+        justify-content: center;
+        .btn {
+          margin: 10px;
         }
       }
     }
