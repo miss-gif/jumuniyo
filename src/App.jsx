@@ -41,6 +41,7 @@ import OrdersHistory from "./components/ceo/OrdersHistory";
 import LoginTest from "./pages/LoginTest";
 import Test3 from "./pages/Test3";
 import MyPageOrderClosePage from "./pages/MyPageOrderClosePage";
+import MyPageOrderCloseDetail from "./components/user/mypage/MyPageOrderCloseDetail";
 
 // gmu 테스트
 const getCookie = name => {
@@ -97,6 +98,10 @@ function App() {
               <Route
                 path="/mypage/orderclose"
                 element={<MyPageOrderClosePage />}
+              />
+              <Route
+                path="/mypage/orderclose/:id"
+                element={<MyPageOrderCloseDetail />}
               />
               <Route path="/mypage/review" element={<MyPageReviewPage />} />
               <Route path="/mypage/address" element={<MyPageAddress />} />

@@ -5,7 +5,7 @@ const MyPageOrderList = ({ reviewOpenModal, order, isOldOrder }) => {
   const navigate = useNavigate();
 
   const orderDetails = doneOrderPk => {
-    navigate(`../../mypage/order/${doneOrderPk}`);
+    navigate(`../../mypage/orderclose/${doneOrderPk}`);
   };
 
   const orderDate = new Date(order.createdAt).toLocaleDateString("ko-KR");
