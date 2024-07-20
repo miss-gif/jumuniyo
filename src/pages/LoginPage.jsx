@@ -31,7 +31,7 @@ const AuthUserPage = () => {
         user_login_type: 1,
       });
 
-      if (response.data.statusCode === 1) {
+      if (response.data.statusCode === 1 || response.data.statusCode === 2) {
         const { resultData } = response.data;
         dispatch(setUserData(resultData));
         dispatch(setUserRole(resultData.userRole));
