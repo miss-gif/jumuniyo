@@ -92,7 +92,7 @@ const OrderSummary = ({
         style={submitButtonStyle}
         onClick={() => {
           onOrder(restaurantName);
-          console.log("주문함");
+          // console.log("주문함");
         }}
       >
         주문하기

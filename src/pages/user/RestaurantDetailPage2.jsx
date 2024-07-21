@@ -47,7 +47,7 @@ const RestaurantDetailPage = () => {
   const isLoggedIn = !!accessToken;
 
   useEffect(() => {
-    console.log("로그인 상태 확인: ", isLoggedIn);
+    // console.log("로그인 상태 확인: ", isLoggedIn);
   }, [isLoggedIn]);
 
   useEffect(() => {
@@ -56,15 +56,15 @@ const RestaurantDetailPage = () => {
         const restaurant = await fetchRestaurantData(id);
         const menu = restaurant.menuList;
         const reviews = await fetchReviewData(id);
-        console.log("가게: ", restaurant);
-        console.log("메뉴: ", menu);
-        console.log("리뷰: ", reviews);
+        // console.log("가게: ", restaurant);
+        // console.log("메뉴: ", menu);
+        // console.log("리뷰: ", reviews);
         setRestaurantData(restaurant);
         setMenuData(menu);
         setReviewData(reviews);
         setLoading(false);
       } catch (err) {
-        console.error("에러: ", err);
+        // console.error("에러: ", err);
         setError(err);
         setLoading(false);
       }
@@ -147,7 +147,7 @@ const RestaurantDetailPage = () => {
   };
 
   const handleOrder = restaurantName => {
-    console.log("주문 시도: isLoggedIn = ", isLoggedIn);
+    // console.log("주문 시도: isLoggedIn = ", isLoggedIn);
     if (!isLoggedIn) {
       setShowLoginModal(true);
       return;

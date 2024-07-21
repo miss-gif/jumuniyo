@@ -25,12 +25,12 @@ const OrdersDetail = () => {
         },
       });
       const data = response.data;
-      console.log("주문 상세 API 응답:", data);
+      //console.log("주문 상세 API 응답:", data);
       if (data.statusCode === 1 || data.statusCode === 2) {
         setOrderDetails(data.resultData);
       }
     } catch (error) {
-      console.error("주문 상세 에러", error);
+      //console.error("주문 상세 에러", error);
     }
   };
 

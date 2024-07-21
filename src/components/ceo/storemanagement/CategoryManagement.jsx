@@ -32,7 +32,7 @@ const CategoryManagement = () => {
           return;
         }
 
-        console.log("Fetching categories with accessToken:", accessToken);
+        //console.log("Fetching categories with accessToken:", accessToken);
 
         const response = await axios.get("/api/owner/restaurant", {
           headers: {
@@ -40,7 +40,7 @@ const CategoryManagement = () => {
           },
         });
 
-        console.log("Categories response:", response.data);
+        // console.log("Categories response:", response.data);
 
         const fetchedCategories = response.data.resultData.categories || [];
         setCategories(fetchedCategories);
@@ -48,7 +48,7 @@ const CategoryManagement = () => {
 
         setLoading(false);
       } catch (error) {
-        console.error("Error fetching categories:", error);
+        //console.error("Error fetching categories:", error);
         setError("카테고리를 불러오는 중 에러가 발생했습니다.");
         setLoading(false);
       }
@@ -72,11 +72,11 @@ const CategoryManagement = () => {
         },
       });
 
-      console.log("All categories response:", response.data);
+      //console.log("All categories response:", response.data);
 
       setAllCategories(response.data.resultData || []);
     } catch (error) {
-      console.error("Error fetching all categories:", error);
+      //console.error("Error fetching all categories:", error);
       setError("모든 카테고리를 불러오는 중 에러가 발생했습니다.");
     }
   };
@@ -131,7 +131,7 @@ const CategoryManagement = () => {
       setCategories(updatedCategories);
       setEditMode(false); // 저장 후 수정 모드 종료
     } catch (error) {
-      console.error("Error saving categories:", error);
+      //console.error("Error saving categories:", error);
       setError("카테고리를 저장하는 중 에러가 발생했습니다.");
     }
   };

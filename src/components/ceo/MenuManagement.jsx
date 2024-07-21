@@ -3,7 +3,6 @@ import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import LoadingSpinner from "../common/LoadingSpinner";
 
-// 쿠키에서 특정 이름의 값을 읽어오는 함수
 const getCookie = name => {
   const value = `; ${document.cookie}`;
   const parts = value.split(`; ${name}=`);
@@ -32,7 +31,7 @@ const MenuManagement = () => {
 
   useEffect(() => {
     const accessToken = getCookie("accessToken");
-    console.log("액세스 토큰: ", accessToken); // 액세스 토큰을 출력하여 확인
+    //console.log("액세스 토큰: ", accessToken); // 액세스 토큰을 출력하여 확인
 
     const fetchMenuData = async () => {
       try {
@@ -42,7 +41,7 @@ const MenuManagement = () => {
           },
         });
 
-        console.log("Response data:", response.data); // 응답 데이터를 확인합니다
+        //console.log("Response data:", response.data); // 응답 데이터를 확인합니다
 
         if (response.data.statusCode === 1) {
           const updatedMenuData = response.data.resultData.map(menu => ({

@@ -36,29 +36,25 @@ const LoginPageforCEO = () => {
       const { resultData } = response.data;
       const { accessToken } = resultData;
 
-      console.log("Server Response:", resultData); // 서버 응답 확인
-      console.log("Access Token:", accessToken); // 디버깅용 로그
+      //console.log("Server Response:", resultData); // 서버 응답 확인
+      //console.log("Access Token:", accessToken); // 디버깅용 로그
 
-      // accessToken을 쿠키에 저장
       document.cookie = `accessToken=${accessToken}; path=/; SameSite=None; Secure`;
 
-      // accessToken을 디코딩하여 userPk 추출
       const decodedToken = jwtDecode(accessToken);
       const signedUser = JSON.parse(decodedToken.signedUser);
       const userPk = signedUser.userPk;
 
-      // userPk를 사용하여 menuResPk 요청
       const menuResResponse = await axios.get(`/api/menu-res/${userPk}`);
       const { menuResPk } = menuResResponse.data;
 
-      // userPk와 menuResPk를 localStorage에 저장
       localStorage.setItem("userPk", userPk);
       localStorage.setItem("menuResPk", menuResPk);
 
       navigate(`/ceopage/menu-management`);
     } catch (error) {
       setError("로그인 중 에러가 발생했습니다. 다시 시도해 주세요.");
-      console.error("로그인 중 에러 발생: ", error);
+      //console.error("로그인 중 에러 발생: ", error);
     } finally {
       setLoading(false);
     }

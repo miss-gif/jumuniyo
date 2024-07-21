@@ -44,7 +44,7 @@ const StoreManagement = () => {
           return;
         }
 
-        console.log("액세스토큰 :", accessToken);
+        //console.log("액세스토큰 :", accessToken);
 
         const response = await axios.get("/api/owner/restaurant", {
           headers: {
@@ -52,12 +52,12 @@ const StoreManagement = () => {
           },
         });
 
-        console.log("가게정보 데이터:", response.data);
+        // console.log("가게정보 데이터:", response.data);
 
         setInfo(response.data.resultData);
         setLoading(false);
       } catch (error) {
-        console.error("Error fetching store info:", error);
+        //console.error("Error fetching store info:", error);
         setError("데이터를 가져오는 중 에러가 발생했습니다.");
         setLoading(false);
       }
@@ -98,7 +98,7 @@ const StoreManagement = () => {
       );
       setShowModal(true);
     } catch (error) {
-      console.error("상태 변경 중 에러 발생: ", error);
+      //console.error("상태 변경 중 에러 발생: ", error);
     }
   };
 
@@ -138,7 +138,7 @@ const StoreManagement = () => {
             메뉴 설정
           </button>
         </div>
-        {console.log("Active tab:", activeTab)}
+        {/* {console.log("Active tab:", activeTab)} */}
         {activeTab === "storeInfo" && (
           <div className="statusborder">
             <div className="statusandInfo">

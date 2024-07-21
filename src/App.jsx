@@ -35,36 +35,15 @@ import OrdersDetail from "./components/ceo/OrdersDetail";
 import LoginPageforCEO from "./components/ceo/LogintestforCeo";
 import { jwtDecode } from "jwt-decode";
 import { OrderProvider } from "./pages/user/OrderContext";
-import Pay from "./components/restaurantdetail/Pay";
 import OrdersAccepted from "./components/ceo/OrdersAccepted";
 import OrdersHistory from "./components/ceo/OrdersHistory";
 import Test3 from "./pages/Test3";
 import MyPageOrderClosePage from "./pages/MyPageOrderClosePage";
 import MyPageOrderCloseDetail from "./components/user/mypage/MyPageOrderCloseDetail";
 
-// gmu 테스트
-const getCookie = name => {
-  const value = `; ${document.cookie}`;
-  const parts = value.split(`; ${name}=`);
-  if (parts.length === 2) return parts.pop().split(";").shift();
-  return null;
-};
-
 // 사업자
 
 function App() {
-  // gmu 테스트
-  const accessToken = getCookie("accessToken");
-  console.log(accessToken);
-
-  let userPk = null;
-  if (accessToken) {
-    const decodedToken = jwtDecode(accessToken);
-    console.log("Decoded Token:", decodedToken);
-    const signedUser = JSON.parse(decodedToken.signedUser);
-    userPk = signedUser.userPk; // userPk 추출
-  }
-
   return (
     <>
       <div className="root-wrap">
@@ -86,7 +65,6 @@ function App() {
                 path="/restaurants/:id"
                 element={<RestaurantDetailPage2 />}
               />
-              <Route path="/pay" element={<Pay />} />
 
               <Route path="/cart" element={<CartPage />} />
               <Route path="/checkout" element={<CheckoutPage />} />

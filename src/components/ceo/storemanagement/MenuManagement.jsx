@@ -31,7 +31,7 @@ const MenuManagement = () => {
 
   useEffect(() => {
     const accessToken = getCookie("accessToken");
-    console.log("액세스 토큰: ", accessToken); // 액세스 토큰을 출력하여 확인
+    //console.log("액세스 토큰: ", accessToken); // 액세스 토큰을 출력하여 확인
 
     const fetchMenuData = async () => {
       try {
@@ -41,7 +41,7 @@ const MenuManagement = () => {
           },
         });
 
-        console.log("Response data:", response.data); // 응답 데이터를 확인합니다
+        //console.log("Response data:", response.data); // 응답 데이터를 확인합니다
 
         if (response.data.statusCode === 1) {
           const updatedMenuData = response.data.resultData.map(menu => ({
@@ -72,6 +72,13 @@ const MenuManagement = () => {
 
   const handleOpenModal = () => {
     setIsEditMode(false);
+    setNewMenuItem({
+      menu_name: "",
+      menu_content: "",
+      menu_price: "",
+      menu_state: 1,
+      img: null,
+    });
     setIsModalOpen(true);
   };
   const handleCloseModal = () => setIsModalOpen(false);
@@ -280,8 +287,6 @@ const MenuManagement = () => {
     <>
       <div className="menu-management">
         <div className="menu-section">
-          <div className="menu-tap">인기 메뉴</div>
-
           {menuData.length === 0 ? (
             <p>메뉴를 추가해주세요.</p>
           ) : (
@@ -323,7 +328,7 @@ const MenuManagement = () => {
                           수정
                         </button>
                         <button
-                          className="btn"
+                          className="btn--cancel"
                           onClick={() => handleOpenDeleteModal(menu.menu_pk)}
                         >
                           삭제
@@ -342,9 +347,9 @@ const MenuManagement = () => {
               <button className="btn" onClick={handleOpenModal}>
                 메뉴 추가
               </button>
-              <button className="btn" onClick={handleOpenModal}>
+              {/* <button className="btn" onClick={handleOpenModal}>
                 카테고리 추가
-              </button>
+              </button> */}
             </div>
           </div>
         </div>
@@ -426,7 +431,7 @@ const MenuManagement = () => {
             </span>
             <h2>메뉴 삭제</h2>
             <p>정말로 이 메뉴를 삭제하시겠습니까?</p>
-            <button className="btn" onClick={handleDeleteMenuItem}>
+            <button className="btn--cancel" onClick={handleDeleteMenuItem}>
               삭제
             </button>
             <button className="btn" onClick={handleCloseDeleteModal}>

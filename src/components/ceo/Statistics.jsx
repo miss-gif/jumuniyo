@@ -20,7 +20,7 @@ const Statistics = () => {
   const [error, setError] = useState("");
   const [selectedYear, setSelectedYear] = useState(new Date());
   const [selectedMonth, setSelectedMonth] = useState(new Date());
-  const [view, setView] = useState("month"); // view 상태 추가
+  const [view, setView] = useState("month");
 
   useEffect(() => {
     const fetchMonthData = async () => {
@@ -79,19 +79,14 @@ const Statistics = () => {
 
           setMonthSalesData(combinedMonthData);
         } else {
-          console.error("Month Sales or Order response is not an array");
-          console.log(
-            "Month Sales Response Data:",
-            monthSalesResponse.data.resultData,
-          );
-          console.log(
-            "Month Order Response Data:",
-            monthOrderResponse.data.resultData,
-          );
+          // console.log(
+          //   "Month Order Response Data:",
+          //   monthOrderResponse.data.resultData,
+          // );
         }
       } catch (error) {
         setError("데이터를 가져오는 중 에러가 발생했습니다.");
-        console.error("데이터 가져오기 에러:", error);
+        //console.error("데이터 가져오기 에러:", error);
       }
     };
 
@@ -131,8 +126,8 @@ const Statistics = () => {
           },
         );
 
-        console.log("Daily Sales Response: ", dailySalesResponse.data);
-        console.log("Daily Order Response: ", dailyOrderResponse.data);
+        //console.log("Daily Sales Response: ", dailySalesResponse.data);
+        //console.log("Daily Order Response: ", dailyOrderResponse.data);
 
         if (
           Array.isArray(dailySalesResponse.data.resultData) &&
@@ -153,22 +148,22 @@ const Statistics = () => {
             };
           });
 
-          console.log("Combined Daily Data: ", combinedDailyData);
+          //console.log("Combined Daily Data: ", combinedDailyData);
           setDailySalesData(combinedDailyData);
         } else {
-          console.error("Daily Sales or Order response is not an array");
-          console.log(
-            "Daily Sales Response Data:",
-            dailySalesResponse.data.resultData,
-          );
-          console.log(
-            "Daily Order Response Data:",
-            dailyOrderResponse.data.resultData,
-          );
+          // //console.error("Daily Sales or Order response is not an array");
+          // //console.log(
+          //   "Daily Sales Response Data:",
+          //   dailySalesResponse.data.resultData,
+          // );
+          // console.log(
+          //   "Daily Order Response Data:",
+          //   dailyOrderResponse.data.resultData,
+          // );
         }
       } catch (error) {
         setError("데이터를 가져오는 중 에러가 발생했습니다.");
-        console.error("데이터 가져오기 에러:", error);
+        //console.error("데이터 가져오기 에러:", error);
       }
     };
 
@@ -248,7 +243,7 @@ const Statistics = () => {
       )}
       {view === "day" && (
         <div>
-          <h3 className="selected-unit">연 월 선택</h3>
+          <h3>연 월 선택</h3>
           <DatePicker
             className="datepicker"
             selected={selectedMonth}
@@ -256,7 +251,7 @@ const Statistics = () => {
             dateFormat="yyyy-MM"
             showMonthYearPicker
           />
-          <h3>일 단위</h3>
+          <h3 className="selected-unit">일 단위</h3>
           <ResponsiveContainer width="100%" height={400}>
             <BarChart
               data={dailySalesData}

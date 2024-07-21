@@ -38,16 +38,16 @@ const OrdersHistory = () => {
         },
       );
       const data = response.data;
-      console.log("완료 API 응답:", data);
+      //console.log("완료 API 응답:", data);
       if (data.statusCode === 1 || data.statusCode === 2) {
         setAcceptedOrders(data.resultData.contents);
         setMaxPage(data.resultData.maxPage);
-        console.log("acceptedOrders:", data.resultData.contents);
+        // console.log("acceptedOrders:", data.resultData.contents);
       } else {
         setAcceptedOrders([]);
       }
     } catch (error) {
-      console.log("완료주문 에러: ", error);
+      //console.log("완료주문 에러: ", error);
       setAcceptedOrders([]);
     }
   };
@@ -64,16 +64,16 @@ const OrdersHistory = () => {
         },
       );
       const data = response.data;
-      console.log("거절 API 응답:", data);
+      //console.log("거절 API 응답:", data);
       if (data.statusCode === 1 || data.statusCode === 2) {
         setRefusedOrders(data.resultData.contents);
         setMaxPage(data.resultData.maxPage);
-        console.log("refusedOrders:", data.resultData.contents);
+        //console.log("refusedOrders:", data.resultData.contents);
       } else {
         setRefusedOrders([]);
       }
     } catch (error) {
-      console.error("거절 주문 에러", error);
+      //console.error("거절 주문 에러", error);
       setRefusedOrders([]);
     }
   };
@@ -123,9 +123,9 @@ const OrdersHistory = () => {
           refusedData.resultData.maxPage,
         ),
       );
-      console.log("allOrders:", allData);
+      // console.log("allOrders:", allData);
     } catch (error) {
-      console.error("전체 주문 에러", error);
+      //console.error("전체 주문 에러", error);
       setAllOrders([]);
     }
   };

@@ -7,12 +7,12 @@ const getCookie = name => {
   const value = `; ${document.cookie}`;
   const parts = value.split(`; ${name}=`);
   if (parts.length === 2) return parts.pop().split(";").shift();
-  return null; // 토큰이 없을 경우 null 반환
+  return null;
 };
 
 const fetchOrders = async () => {
   const accessToken = getCookie("accessToken");
-  console.log("토큰 값: ", accessToken);
+  //console.log("토큰 값: ", accessToken);
   const response = await fetch("/api/order/owner/confirm/list", {
     method: "GET",
     headers: {
@@ -21,7 +21,7 @@ const fetchOrders = async () => {
     },
   });
   const data = await response.json();
-  console.log(data);
+  //console.log(data);
   if (!response.ok) {
     throw new Error(data.resultMsg || "network response not ok");
   }
@@ -94,7 +94,7 @@ const OrdersAccepted = () => {
         sortedOrders = Array.isArray(data.resultData) ? data.resultData : [];
       }
       setOrders(sortOrders(sortedOrders, sortOrder));
-      console.log("데이터 결과 메세지:", data.resultMsg);
+      //console.log("데이터 결과 메세지:", data.resultMsg);
     } catch (error) {
       setError(error);
     }

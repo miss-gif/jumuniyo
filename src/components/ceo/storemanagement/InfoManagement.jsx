@@ -7,6 +7,7 @@ const InfoManagement = ({ info, setInfo, setLoading, setError }) => {
   const [editMode, setEditMode] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
   const [editImageMode, setEditImageMode] = useState(false);
+  const [previewImage, setPreviewImage] = useState(null);
 
   const handleChange = e => {
     const { name, value } = e.target;
@@ -17,7 +18,9 @@ const InfoManagement = ({ info, setInfo, setLoading, setError }) => {
   };
 
   const handleFileChange = e => {
-    setSelectedFile(e.target.files[0]);
+    const file = e.target.files[0];
+    setSelectedFile(file);
+    setPreviewImage(URL.createObjectURL(file));
   };
 
   const handleSave = async () => {
@@ -40,7 +43,6 @@ const InfoManagement = ({ info, setInfo, setLoading, setError }) => {
       alert("정보가 저장되었습니다.");
       setEditMode(false);
     } catch (error) {
-      console.error("정보 저장 중 에러 발생: ", error);
       alert("정보 저장 중 에러가 발생했습니다.");
     }
   };
@@ -69,11 +71,17 @@ const InfoManagement = ({ info, setInfo, setLoading, setError }) => {
 
         alert("이미지가 저장되었습니다.");
         setEditImageMode(false);
+        setPreviewImage(null);
+        window.location.reload(); // 페이지 새로고침
       }
     } catch (error) {
-      console.error("이미지 저장 중 에러 발생: ", error);
       alert("이미지 저장 중 에러가 발생했습니다.");
     }
+  };
+
+  const handleCancelImageEdit = () => {
+    setEditImageMode(false);
+    setPreviewImage(null);
   };
 
   return (
@@ -81,20 +89,35 @@ const InfoManagement = ({ info, setInfo, setLoading, setError }) => {
       <h3>로고</h3>
       <img
         src={
-          info.restaurantPic
-            ? `/pic/${info.restaurantPic}`
-            : "/images/defaultRes.png"
+          previewImage
+            ? previewImage
+            : info.restaurantPic
+              ? `/pic${info.restaurantPic}`
+              : "/images/defaultRes.png"
         }
         alt="사진에러"
-        style={{ width: "80px", height: "44px", marginBottom: "30px" }}
+        style={{
+          width: "100px",
+          height: "100px",
+          objectFit: "cover",
+          marginBottom: "30px",
+        }}
       />
       {editImageMode ? (
         <>
-          <input type="file" onChange={handleFileChange} />
+          <input
+            type="file"
+            id="fileInput"
+            style={{ display: "none" }}
+            onChange={handleFileChange}
+          />
+          <label htmlFor="fileInput" className="btn">
+            이미지 선택
+          </label>
           <button className="btn" onClick={handleImageSave}>
             이미지 저장
           </button>
-          <button className="btn" onClick={() => setEditImageMode(false)}>
+          <button className="btn--cancel" onClick={handleCancelImageEdit}>
             취소
           </button>
         </>
