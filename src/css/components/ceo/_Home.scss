@@ -162,6 +162,9 @@
   display: flex;
   justify-content: space-between !important;
   padding-top: 10px;
+  .acceptBtn {
+    width: 50%;
+  }
 }
 
 .forSpace {

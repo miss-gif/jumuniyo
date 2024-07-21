@@ -2,12 +2,14 @@
 import React, { useState } from "react";
 import axios from "axios";
 import CategoryManagement from "./CategoryManagement";
+import ModalForOk from "../ModalForOk";
 
 const InfoManagement = ({ info, setInfo, setLoading, setError }) => {
   const [editMode, setEditMode] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
   const [editImageMode, setEditImageMode] = useState(false);
   const [previewImage, setPreviewImage] = useState(null);
+  const [modalMessage, setModalMessage] = useState(null);
 
   const handleChange = e => {
     const { name, value } = e.target;
@@ -40,10 +42,10 @@ const InfoManagement = ({ info, setInfo, setLoading, setError }) => {
         },
       });
 
-      alert("정보가 저장되었습니다.");
+      setModalMessage("정보가 저장되었습니다.");
       setEditMode(false);
     } catch (error) {
-      alert("정보 저장 중 에러가 발생했습니다.");
+      setModalMessage("정보 저장 중 에러가 발생했습니다.");
     }
   };
 
@@ -69,19 +71,23 @@ const InfoManagement = ({ info, setInfo, setLoading, setError }) => {
           },
         });
 
-        alert("이미지가 저장되었습니다.");
+        setModalMessage("이미지가 저장되었습니다.");
         setEditImageMode(false);
         setPreviewImage(null);
         window.location.reload(); // 페이지 새로고침
       }
     } catch (error) {
-      alert("이미지 저장 중 에러가 발생했습니다.");
+      setModalMessage("이미지 저장 중 에러가 발생했습니다.");
     }
   };
 
   const handleCancelImageEdit = () => {
     setEditImageMode(false);
     setPreviewImage(null);
+  };
+
+  const closeModal = () => {
+    setModalMessage(null);
   };
 
   return (
@@ -111,7 +117,7 @@ const InfoManagement = ({ info, setInfo, setLoading, setError }) => {
             style={{ display: "none" }}
             onChange={handleFileChange}
           />
-          <label htmlFor="fileInput" className="btn">
+          <label htmlFor="fileInput" className="btn btnforimg">
             이미지 선택
           </label>
           <button className="btn" onClick={handleImageSave}>
@@ -236,6 +242,9 @@ const InfoManagement = ({ info, setInfo, setLoading, setError }) => {
       <br />
       <h3>음식점 카테고리</h3>
       <CategoryManagement />
+      {modalMessage && (
+        <ModalForOk message={modalMessage} onClose={closeModal} />
+      )}
     </div>
   );
 };

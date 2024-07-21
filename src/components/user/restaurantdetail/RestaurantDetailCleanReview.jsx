@@ -8,6 +8,7 @@ const RestaurantDetailCleanReview = ({ resPk, restaurantData }) => {
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [showPhotoReviewsOnly, setShowPhotoReviewsOnly] = useState(false);
 
   useEffect(() => {
     const getReviews = async () => {
@@ -28,6 +29,7 @@ const RestaurantDetailCleanReview = ({ resPk, restaurantData }) => {
   if (error) return <p>에러: {error}</p>;
 
   const roundedReviewScore = Math.round(restaurantData.reviewScore * 100) / 100;
+  const photoReviews = reviews.filter(review => review.pics.length > 0);
 
   return (
     <div className="restaurant-detail">
@@ -38,23 +40,6 @@ const RestaurantDetailCleanReview = ({ resPk, restaurantData }) => {
             {"★".repeat(Math.round(roundedReviewScore))}
           </span>
         </div>
-        {/* <div className="score-items">
-          <div className="score-item score-item--taste">
-            <p className="score-item__title">맛</p>
-            <span className="score-item__icon">★★★★★</span>
-            <p className="score-item__value">4.8</p>
-          </div>
-          <div className="score-item score-item--quantity">
-            <p className="score-item__title">양</p>
-            <span className="score-item__icon">★★★★★</span>
-            <p className="score-item__value">4.8</p>
-          </div>
-          <div className="score-item score-item--delivery">
-            <p className="score-item__title">배달</p>
-            <span className="score-item__icon">★★★★★</span>
-            <p className="score-item__value">4.8</p>
-          </div>
-        </div> */}
       </div>
 
       <div className="review-list">
@@ -67,12 +52,21 @@ const RestaurantDetailCleanReview = ({ resPk, restaurantData }) => {
               사장님댓글{" "}
               <span>{reviews.filter(review => review.reply).length}</span>개
             </p>
+            <p>
+              사진 리뷰 <span>{photoReviews.length}</span>개
+            </p>
           </div>
-          <p className="filter__photo-reviews">사진리뷰만</p>
+          <p
+            className="filter__photo-reviews"
+            onClick={() => setShowPhotoReviewsOnly(!showPhotoReviewsOnly)}
+            style={{ cursor: "pointer" }}
+          >
+            사진리뷰만
+          </p>
         </div>
 
         <ul className="reviews">
-          {reviews.map(review => (
+          {(showPhotoReviewsOnly ? photoReviews : reviews).map(review => (
             <Review key={review.reviewPk} review={review} />
           ))}
         </ul>

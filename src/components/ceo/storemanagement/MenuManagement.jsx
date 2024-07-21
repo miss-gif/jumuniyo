@@ -31,7 +31,6 @@ const MenuManagement = () => {
 
   useEffect(() => {
     const accessToken = getCookie("accessToken");
-    //console.log("액세스 토큰: ", accessToken); // 액세스 토큰을 출력하여 확인
 
     const fetchMenuData = async () => {
       try {
@@ -40,8 +39,6 @@ const MenuManagement = () => {
             Authorization: `Bearer ${accessToken}`,
           },
         });
-
-        //console.log("Response data:", response.data); // 응답 데이터를 확인합니다
 
         if (response.data.statusCode === 1) {
           const updatedMenuData = response.data.resultData.map(menu => ({
@@ -91,6 +88,13 @@ const MenuManagement = () => {
 
   const handleOpenEditModal = menu => {
     setEditMenuItem(menu);
+    setNewMenuItem({
+      menu_name: menu.menu_name,
+      menu_content: menu.menu_content,
+      menu_price: menu.menu_price,
+      menu_state: menu.menu_state,
+      img: null,
+    });
     setIsEditMode(true);
     setIsModalOpen(true);
   };
@@ -124,7 +128,7 @@ const MenuManagement = () => {
         menu_state: newMenuItem.menu_state,
       }),
     );
-    formData.append("pic", newMenuItem.img); // 서버에서 기대하는 필드 이름 'pic'으로 파일 추가
+    formData.append("pic", newMenuItem.img);
 
     try {
       const response = await axios.post("/api/owner/menu", formData, {
@@ -206,6 +210,7 @@ const MenuManagement = () => {
       setError(err.message);
     }
   };
+
   const handleStatusToggle = async menu => {
     const accessToken = getCookie("accessToken");
     const newStatus = menu.menu_state === 1 ? 2 : 1;
@@ -222,7 +227,6 @@ const MenuManagement = () => {
       }),
     );
 
-    // 이미지 파일이 있다면 추가
     if (menu.img) {
       formData.append("pic", menu.img);
     }
@@ -250,6 +254,7 @@ const MenuManagement = () => {
       setError(err.message);
     }
   };
+
   const handleDeleteMenuItem = async () => {
     const accessToken = getCookie("accessToken");
 
@@ -283,6 +288,7 @@ const MenuManagement = () => {
       </p>
     );
   if (error) return <p>Error: {error}</p>;
+
   return (
     <>
       <div className="menu-management">
@@ -301,8 +307,7 @@ const MenuManagement = () => {
                             menu.menu_pic ? menu.menu_pic : "default_image_url"
                           }
                           alt={menu.menu_name}
-                        />{" "}
-                        {/* 이미지 URL을 확인 */}
+                        />
                       </div>
                       <div className="menu-list-oneMenu-tableData">
                         <h3 className="menu-list-name">{menu.menu_name}</h3>
@@ -369,10 +374,7 @@ const MenuManagement = () => {
                   type="text"
                   id="menu_name"
                   name="menu_name"
-                  value={
-                    newMenuItem.menu_name ||
-                    (isEditMode ? editMenuItem.menu_name : "")
-                  }
+                  value={newMenuItem.menu_name}
                   onChange={handleInputChange}
                 />
               </div>
@@ -382,10 +384,7 @@ const MenuManagement = () => {
                   type="text"
                   id="menu_content"
                   name="menu_content"
-                  value={
-                    newMenuItem.menu_content ||
-                    (isEditMode ? editMenuItem.menu_content : "")
-                  }
+                  value={newMenuItem.menu_content}
                   onChange={handleInputChange}
                 />
               </div>
@@ -395,10 +394,7 @@ const MenuManagement = () => {
                   type="text"
                   id="menu_price"
                   name="menu_price"
-                  value={
-                    newMenuItem.menu_price ||
-                    (isEditMode ? editMenuItem.menu_price : "")
-                  }
+                  value={newMenuItem.menu_price}
                   onChange={handleInputChange}
                 />
               </div>

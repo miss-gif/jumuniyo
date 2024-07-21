@@ -21,7 +21,6 @@ import MyPageReviewPage from "./pages/MyPageReviewPage";
 import AdminPage from "./pages/AdminPage";
 import CeoLayout from "./components/layout/CeoLayout";
 import Reviews from "./components/ceo/Reviews";
-import MenuManagement from "./components/ceo/MenuManagement";
 import StoreManagement from "./components/ceo/StoreManagement";
 import Statistics from "./components/ceo/Statistics";
 import AdminLayout from "./components/layout/AdminLayout";
@@ -102,7 +101,6 @@ function App() {
                 path="orders/details/:doneOrderPk"
                 element={<OrdersDetail />}
               />
-              <Route path="menu-management" element={<MenuManagement />} />
               <Route path="reviews" element={<Reviews />} />
               <Route path="store-management" element={<StoreManagement />} />
               <Route path="statistics" element={<Statistics />} />
