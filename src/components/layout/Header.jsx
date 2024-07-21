@@ -26,6 +26,7 @@ const Header = () => {
   }, [dispatch, accessToken]);
 
   const handleLogoutClick = () => {
+    localStorage.removeItem("state");
     handleLogout(accessToken, dispatch, navigate);
   };
 

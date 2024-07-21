@@ -14,7 +14,6 @@ export const handleLogout = async (accessToken, dispatch, navigate) => {
     if (response.data.statusCode === 1) {
       dispatch(logout());
       removeCookie("accessToken");
-      localStorage.removeItem("state");
       navigate("/login");
     } else {
       console.error("Logout failed: ", response.data.resultMsg);
