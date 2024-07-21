@@ -100,7 +100,11 @@ const RestaurantsPage = () => {
               }}
             >
               <img
-                src={restaurant.restaurantPic || "/images/defaultRes.png"}
+                src={
+                  restaurant.restaurantPic
+                    ? `/pic${restaurant.restaurantPic}`
+                    : "/images/defaultRes.png"
+                }
                 alt={`${restaurant.restaurantName} 이미지`}
                 className="restaurant-item__image"
               />
