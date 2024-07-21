@@ -81,15 +81,14 @@ const AuthUserPage = () => {
           setIdCheckOk(false);
           setIsLoading(false);
         }
-        console.log(res);
         setIsLoading(false);
         return res;
       } catch (error) {
-        console.log(error);
+        alert("서버에러입니다.");
         setIsLoading(false);
       }
     } else {
-      alert("아이디 형식을 확인해주세요");
+      alert("아이디는 8자 이상이어야 합니다.");
       setIsLoading(false);
     }
   };
@@ -110,10 +109,13 @@ const AuthUserPage = () => {
         if (res.data.resultMsg === "메일이 발송되었습니다.") {
           setIsEmailCheck(true);
           setIsLoading(false);
+          alert(res.data.resultMsg);
+        } else {
+          alert(res.data.resultMsg);
         }
         return res;
       } catch (error) {
-        console.log(error);
+        alert("서버에러입니다.");
         setIsLoading(false);
       }
     } else {
@@ -150,10 +152,9 @@ const AuthUserPage = () => {
         alert(res.data.resultMsg);
         setEmailCheckOk(true);
       }
-      console.log(res);
       return res;
     } catch (error) {
-      console.log(error);
+      alert("서버에러입니다.");
     } finally {
       setIsLoading(false);
     }
@@ -224,14 +225,6 @@ const AuthUserPage = () => {
       setUserPhoneComplete(true);
     }
 
-    console.log(userIdComplete);
-    console.log(userPwComplete);
-    console.log(userPwCheckComplete);
-    console.log(userEmailComplete);
-    console.log(userImgComplete);
-    console.log(idCheckComplete);
-    console.log(emailCheckComplete);
-
     if (
       userIdComplete &&
       userPwComplete &&
@@ -260,7 +253,7 @@ const AuthUserPage = () => {
         const header = { headers: { "Content-Type": "multipart/form-data" } };
         const res = await axios.post("../api/sign-up", pic, header); // FormData 객체를 직접 전송
         if (res.data.resultData === 1) {
-          alert("회원가입 성공");
+          alert("회원가입 성공 환영합니다.");
           navigate("/login");
         } else {
           alert(res.data.resultMsg);
@@ -268,7 +261,7 @@ const AuthUserPage = () => {
 
         return res;
       } catch (error) {
-        console.log(error);
+        alert("서버에러입니다.");
       }
     }
   };
@@ -287,7 +280,7 @@ const AuthUserPage = () => {
                 fullWidth
                 label="아이디"
                 id="fullWidth"
-                placeholder="아이디를 입력해주세요."
+                placeholder="아이디는 8자 이상이어야 합니다."
                 onChange={e => {
                   setUserId(e.target.value);
                 }}
@@ -370,7 +363,7 @@ const AuthUserPage = () => {
               error={!userPwComplete}
               label="비밀번호"
               type="password"
-              placeholder="비밀번호를 입력해주세요."
+              placeholder="비밀번호는 8자 이상, 특수문자 사용해야합니다."
               onChange={e => {
                 setUserPw(e.target.value);
               }}

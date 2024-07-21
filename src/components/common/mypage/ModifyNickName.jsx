@@ -11,6 +11,7 @@ const ModifyNickName = ({
   editCancel,
   setIsEditNickname,
   isLogIn,
+  getUserInfo,
 }) => {
   const [newNickName, setNewNickName] = useState("");
 
@@ -20,9 +21,16 @@ const ModifyNickName = ({
     };
     try {
       const res = await jwtAxios.patch("/api/update-nickname", data);
+      if (res.data.statusCode === 1) {
+        alert("닉네임 변경 완료");
+        getUserInfo();
+      } else {
+        alert(res.data.resultMsg);
+        getUserInfo();
+      }
       return res;
     } catch (error) {
-      console.log(error);
+      alert("서버에러입니다.");
     }
   };
 
