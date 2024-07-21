@@ -15,6 +15,9 @@ export const notify = ({ type, text }) => {
     case "error":
       toast.error(text);
       break;
+    default:
+      toast(text); // 기본값 처리
+      break;
   }
 };
 
@@ -22,7 +25,7 @@ const ToastManager = () => {
   return (
     <ToastContainer
       position="bottom-right"
-      autoClose={1000}
+      autoClose={2000}
       hideProgressBar={true} // 남은 시간 표시 off
       newestOnTop={false} // 쌓임 순서
       closeOnClick // 클릭 시 닫힘

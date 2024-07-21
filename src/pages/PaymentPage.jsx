@@ -8,8 +8,9 @@ import { initiateKakaoPay } from "../utils/kakaopayUtils";
 
 const PaymentPage = () => {
   const userPhone = useSelector(state => state.user.userPhone) || "";
-  const locationData = useSelector(state => state.user.locationData);
-  const accessToken = useSelector(state => state.user.accessToken);
+  const locationData = useSelector(state => state.user.locationData) || "";
+  const userAddress = useSelector(state => state.user.userAddress) || "";
+  const accessToken = useSelector(state => state.user.accessToken) || "";
   const { id } = useParams();
 
   const [request, setRequest] = useState(""); // 요청사항 상태
@@ -33,12 +34,21 @@ const PaymentPage = () => {
     setMenuPkArray(menuPkArray);
   }, [id]);
 
+  // 주소변경이 없으면 userAddress.addr2 값을 가져옴
   useEffect(() => {
-    if (!locationData || !locationData.geocodeAddress) {
-      alert("주소 정보를 불러올 수 없습니다. 다시 시도해 주세요.");
-      navigate(-1); // 이전 페이지로 이동
+    if (
+      locationData.latitude === userAddress.addrCoorX ||
+      locationData.longitude === userAddress.addrCoorY
+    ) {
+      setAddressDetail(userAddress.addr2);
     }
-  }, [locationData, navigate]);
+  }, [locationData, userAddress]);
+
+  // 추가된 useEffect: locationData와 userAddress 출력
+  // useEffect(() => {
+  //   console.log("locationData:", locationData.latitude);
+  //   console.log("userAddress:", userAddress.addrCoorX);
+  // }, [locationData, userAddress]);
 
   const calculateTotalPrice = item => {
     return item.menu_price * item.quantity;
@@ -49,7 +59,6 @@ const PaymentPage = () => {
   };
 
   const handlePayment = async () => {
-    // 입력 값 검증
     if (!addressDetail.trim()) {
       alert("상세주소를 입력해 주세요.");
       return;
@@ -124,6 +133,24 @@ const PaymentPage = () => {
     }
   };
 
+  // 휴대전화 번호 형식 적용 함수
+  const formatPhoneNumber = value => {
+    // 숫자만 추출
+    const cleaned = ("" + value).replace(/\D/g, "");
+    const match = cleaned.match(/^(\d{3})(\d{3,4})(\d{4})$/);
+    if (match) {
+      return `${match[1]}-${match[2]}-${match[3]}`;
+    }
+    return value;
+  };
+
+  const handleChange = e => {
+    const value = e.target.value;
+    // 숫자만 입력 가능하도록 설정
+    const onlyNums = value.replace(/[^0-9]/g, "");
+    setPhone(formatPhoneNumber(onlyNums));
+  };
+
   return (
     <div className="payment-page">
       <div className="payment-page__section">
@@ -157,12 +184,12 @@ const PaymentPage = () => {
                 <div>
                   <label htmlFor="phone">휴대전화번호</label>
                   <input
-                    type="number"
+                    type="text"
                     id="phone"
                     className="payment-page__input"
                     placeholder="(필수) 휴대전화 번호 입력"
                     value={phone}
-                    onChange={e => setPhone(e.target.value)} // 휴대전화 상태 업데이트
+                    onChange={handleChange}
                   />
                 </div>
               </div>
@@ -184,7 +211,7 @@ const PaymentPage = () => {
             {/* 결제수단 선택 전달 */}
             <div className="payment-page__input-wrap none">
               <h3 className="payment-page__subtitle">할인방법 선택</h3>
-              <div className="payment-page__coupon ">
+              <div className="payment-page__coupon">
                 <label htmlFor="coupon">쿠폰</label>
                 <div className="payment-page__coupon-wrap">
                   <input
@@ -226,8 +253,8 @@ const PaymentPage = () => {
         <p className="payment-page__terms">
           <label className="agreement-checkbox">
             <span>
-              이용약관, 개인정보 수집 및 이용, 개인정보 제3자 제공 ,
-              전자금융거래 이용약관, 만 14세 이상 이용자입니다.
+              이용약관, 개인정보 수집 및 이용, 개인정보 제3자 제공, 전자금융거래
+              이용약관, 만 14세 이상 이용자입니다.
             </span>
             결제에 동의합니다.
             <Checkbox
@@ -240,6 +267,7 @@ const PaymentPage = () => {
         <button
           className="payment-page__button payment-btn"
           onClick={handlePayment}
+          type="submit"
         >
           결제하기
         </button>
