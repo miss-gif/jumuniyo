@@ -124,6 +124,24 @@ const PaymentPage = () => {
     }
   };
 
+  // 휴대전화 번호 형식 적용 함수
+  const formatPhoneNumber = value => {
+    // 숫자만 추출
+    const cleaned = ("" + value).replace(/\D/g, "");
+    const match = cleaned.match(/^(\d{3})(\d{3,4})(\d{4})$/);
+    if (match) {
+      return `${match[1]}-${match[2]}-${match[3]}`;
+    }
+    return value;
+  };
+
+  const handleChange = e => {
+    const value = e.target.value;
+    // 숫자만 입력 가능하도록 설정
+    const onlyNums = value.replace(/[^0-9]/g, "");
+    setPhone(formatPhoneNumber(onlyNums));
+  };
+
   return (
     <div className="payment-page">
       <div className="payment-page__section">
@@ -157,12 +175,12 @@ const PaymentPage = () => {
                 <div>
                   <label htmlFor="phone">휴대전화번호</label>
                   <input
-                    type="number"
+                    type="text"
                     id="phone"
                     className="payment-page__input"
                     placeholder="(필수) 휴대전화 번호 입력"
                     value={phone}
-                    onChange={e => setPhone(e.target.value)} // 휴대전화 상태 업데이트
+                    onChange={handleChange}
                   />
                 </div>
               </div>
