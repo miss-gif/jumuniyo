@@ -23,8 +23,10 @@ const MenuCategory = ({ menuData, onSelectMenuItem }) => {
           {menuData.map((item, index) => (
             <li
               key={index}
-              className="menu-category__item"
-              onClick={() => onSelectMenuItem(item)}
+              className={`menu-category__item ${
+                item.menu_state === 2 ? "disabled" : ""
+              }`}
+              onClick={() => item.menu_state !== 2 && onSelectMenuItem(item)}
             >
               <div className="menu-category__text">
                 <div className="menu-category__name">{item.menu_name}</div>
@@ -32,6 +34,9 @@ const MenuCategory = ({ menuData, onSelectMenuItem }) => {
                   {item.menu_content}
                 </div>
                 <div className="menu-category__price">{item.menu_price}원</div>
+                {item.menu_state === 2 && (
+                  <div className="menu-category__status">준비중입니다.</div>
+                )}
               </div>
               {item.menu_pic && (
                 <div className="menu-category__image">
