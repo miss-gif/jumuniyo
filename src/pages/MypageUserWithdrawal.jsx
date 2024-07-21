@@ -4,7 +4,7 @@ import { Box, TextField } from "@mui/material";
 import jwtAxios from "../api/user/jwtUtil";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { logout } from "../app/store";
+import { logout } from "../app/userSlice";
 
 const MypageUserWithdrawal = () => {
   const [userPwCheck, setUserPwCheck] = useState("");

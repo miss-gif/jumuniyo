@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import MyLocationIcon from "@mui/icons-material/MyLocation";
 import GoogleMaps from "./GoogleMaps";
-import { setLocationData } from "../../app/store";
+import { setLocationData } from "../../app/userSlice";
 
 const LocationSearch = () => {
   const location = useLocation();

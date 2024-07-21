@@ -1,7 +1,6 @@
 // utils/tokenUtils.js
 import axios from "axios";
-import store, { setAccessToken, setTokenMaxAge } from "../app/store";
-import { saveState } from "./storageUtils"; // 로컬스토리지에 상태를 저장하는 유틸리티
+import { setAccessToken, setTokenMaxAge } from "../app/userSlice";
 
 export const scheduleTokenRefresh = (accessToken, dispatch) => {
   return setInterval(
@@ -14,7 +13,7 @@ export const scheduleTokenRefresh = (accessToken, dispatch) => {
         });
 
         if (response.data.statusCode === 1) {
-          const { accessToken: newAccessToken, TokenMaxAge: newTokenMaxAge } =
+          const { accessToken: newAccessToken, tokenMaxAge: newTokenMaxAge } =
             response.data.resultData;
           if (newAccessToken) {
             dispatch(setAccessToken(newAccessToken));
@@ -23,11 +22,7 @@ export const scheduleTokenRefresh = (accessToken, dispatch) => {
             dispatch(setTokenMaxAge(newTokenMaxAge));
           }
 
-          // 로컬스토리지 업데이트
-          const currentState = store.getState();
-          currentState.user.accessToken = newAccessToken;
-          currentState.user.tokenMaxAge = newTokenMaxAge;
-          saveState(currentState);
+          // 상태 업데이트는 redux-persist가 자동으로 처리하므로, 별도로 로컬스토리지에 저장할 필요 없음
         } else {
           console.error("Token extension failed: ", response.data.resultMsg);
         }
