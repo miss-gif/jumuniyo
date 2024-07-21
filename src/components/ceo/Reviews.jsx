@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Navigate } from "react-router-dom";
+import ModalForOk from "./ModalForOk";
 
 const getCookie = name => {
   const value = `; ${document.cookie}`;
@@ -16,11 +17,12 @@ const Reviews = () => {
   const [filter, setFilter] = useState("all");
   const [reviewCount, setReviewCount] = useState(0);
   const [replyCount, setReplyCount] = useState(0);
-  const [photoReviewCount, setPhotoReviewCount] = useState(0); // 사진 리뷰 개수 상태 변수 추가
+  const [photoReviewCount, setPhotoReviewCount] = useState(0);
   const [averageRating, setAverageRating] = useState(0);
   const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [error, setError] = useState(null);
-  const [photoOnly, setPhotoOnly] = useState(false); // 사진 리뷰만 보기 상태 변수 추가
+  const [photoOnly, setPhotoOnly] = useState(false);
+  const [modalMessage, setModalMessage] = useState(null);
 
   useEffect(() => {
     const fetchReviews = async () => {
@@ -64,13 +66,11 @@ const Reviews = () => {
             updatedReviewItems.filter(item => item.answer === "yes").length,
           );
 
-          // 사진 리뷰 개수 계산
           setPhotoReviewCount(
             updatedReviewItems.filter(item => item.reviewImgs.length > 0)
               .length,
           );
 
-          // Calculate average rating
           if (updatedReviewItems.length > 0) {
             const totalRating = updatedReviewItems.reduce(
               (sum, item) => sum + item.reviewRating,
@@ -142,7 +142,7 @@ const Reviews = () => {
       });
 
       if (response.data.statusCode === 1 || response.data.statusCode === 2) {
-        alert("답글이 성공적으로 저장되었습니다.");
+        setModalMessage("답글이 성공적으로 저장되었습니다.");
         const updatedReviewItems = reviewItems.map(item =>
           item.reviewPk === reviewPk
             ? {
@@ -165,12 +165,10 @@ const Reviews = () => {
           updatedReviewItems.filter(item => item.answer === "yes").length,
         );
 
-        // 사진 리뷰 개수 업데이트
         setPhotoReviewCount(
           updatedReviewItems.filter(item => item.reviewImgs.length > 0).length,
         );
 
-        // Recalculate average rating
         const totalRating = updatedReviewItems.reduce(
           (sum, item) => sum + item.reviewRating,
           0,
@@ -178,10 +176,10 @@ const Reviews = () => {
         const avgRating = (totalRating / updatedReviewItems.length).toFixed(1);
         setAverageRating(avgRating);
       } else {
-        alert("답글 저장에 실패했습니다.");
+        setModalMessage("답글 저장에 실패했습니다.");
       }
     } catch (error) {
-      alert("답글 저장 중 오류가 발생했습니다.");
+      setModalMessage("답글 저장 중 오류가 발생했습니다.");
     }
   };
 
@@ -200,7 +198,7 @@ const Reviews = () => {
       );
 
       if (response.data.statusCode === 1 || response.data.statusCode === 2) {
-        alert("답글이 성공적으로 삭제되었습니다.");
+        setModalMessage("답글이 성공적으로 삭제되었습니다.");
         const updatedReviewItems = reviewItems.map(item =>
           item.ceoReply && item.ceoReply.reviewCommentPk === reviewCommentPk
             ? {
@@ -210,18 +208,26 @@ const Reviews = () => {
               }
             : item,
         );
+
+        // replies 상태에서 해당 리뷰의 답글 제거
+        const updatedReplies = { ...replies };
+        const reviewPk = reviewItems.find(
+          item =>
+            item.ceoReply && item.ceoReply.reviewCommentPk === reviewCommentPk,
+        ).reviewPk;
+        delete updatedReplies[reviewPk];
+
+        setReplies(updatedReplies);
         setReviewItems(updatedReviewItems);
         setFilteredReviews(updatedReviewItems);
         setReplyCount(
           updatedReviewItems.filter(item => item.answer === "yes").length,
         );
 
-        // 사진 리뷰 개수 업데이트
         setPhotoReviewCount(
           updatedReviewItems.filter(item => item.reviewImgs.length > 0).length,
         );
 
-        // Recalculate average rating
         const totalRating = updatedReviewItems.reduce(
           (sum, item) => sum + item.reviewRating,
           0,
@@ -229,15 +235,20 @@ const Reviews = () => {
         const avgRating = (totalRating / updatedReviewItems.length).toFixed(1);
         setAverageRating(avgRating);
       } else {
-        alert("답글 삭제에 실패했습니다.");
+        setModalMessage("답글 삭제에 실패했습니다.");
       }
     } catch (error) {
-      alert("답글 삭제 중 오류가 발생했습니다.");
+      setModalMessage("답글 삭제 중 오류가 발생했습니다.");
     }
   };
 
   const enableEdit = reviewPk => {
     setIsEditing({ ...isEditing, [reviewPk]: true });
+    setReplies(prevReplies => ({
+      ...prevReplies,
+      [reviewPk]: reviewItems.find(item => item.reviewPk === reviewPk).ceoReply
+        .content,
+    }));
   };
 
   const renderStars = rating => {
@@ -268,6 +279,10 @@ const Reviews = () => {
           ))}
       </>
     );
+  };
+
+  const closeModal = () => {
+    setModalMessage(null);
   };
 
   if (!isLoggedIn || error) {
@@ -324,7 +339,7 @@ const Reviews = () => {
               </div>
               <p
                 className="filter__photo-reviews"
-                onClick={() => setPhotoOnly(!photoOnly)} // 클릭 핸들러 추가
+                onClick={() => setPhotoOnly(!photoOnly)}
               >
                 사진리뷰만
               </p>
@@ -358,7 +373,7 @@ const Reviews = () => {
                           className="textarea-custom"
                           value={
                             isEditing[item.reviewPk]
-                              ? replies[item.reviewPk] || item.ceoReply.content
+                              ? replies[item.reviewPk]
                               : item.ceoReply.content
                           }
                           onChange={event =>
@@ -419,6 +434,9 @@ const Reviews = () => {
           </div>
         </div>
       </div>
+      {modalMessage && (
+        <ModalForOk message={modalMessage} onClose={closeModal} />
+      )}
     </div>
   );
 };

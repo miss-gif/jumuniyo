@@ -14,7 +14,7 @@ const ModalForOrdersAccepted = ({ show, onClose, onConfirm, message }) => {
         <Button className="btn" onClick={onConfirm}>
           확인
         </Button>
-        <Button className="btn" onClick={onClose}>
+        <Button className="btn--cancel" onClick={onClose}>
           취소
         </Button>
       </div>

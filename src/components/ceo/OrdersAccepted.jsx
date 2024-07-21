@@ -308,13 +308,13 @@ const OrdersAccepted = () => {
                 </div>
                 <div className="acceptOrRefuse">
                   <button
-                    className="btn"
+                    className="btn acceptBtn"
                     onClick={() => handleCompleteOrder(selectedOrder.orderPk)}
                   >
                     완료하기
                   </button>
                   <button
-                    className="btn"
+                    className="btn--cancel"
                     onClick={() => handleCancelOrder(selectedOrder.orderPk)}
                   >
                     취소하기

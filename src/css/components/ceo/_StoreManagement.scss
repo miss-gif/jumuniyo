@@ -92,7 +92,14 @@ $border-radius: 5px;
   .button-wrap {
     padding-top: 20px;
   }
+  .btnforimg {
+    background-color: $black;
+    margin-right: 30px;
+  }
 
+  .btn--cancel {
+    margin-left: 10px;
+  }
   p {
     margin: 10px 0;
 

@@ -262,6 +262,7 @@ const Home = () => {
                       </div>
                     </div>
                   </div>
+
                   <div className="AnOrderRight">
                     <div className="AnOrderInf">
                       <div className="orderCallNumber">
@@ -293,13 +294,13 @@ const Home = () => {
                 </div>
                 <div className="acceptOrRefuse">
                   <button
-                    className="btn"
+                    className="btn acceptBtn"
                     onClick={() => openModal("confirm", orderDetail.orderPk)}
                   >
-                    접수하기
+                    + 접수하기
                   </button>
                   <button
-                    className="btn"
+                    className="btn--cancel"
                     onClick={() => openModal("cancel", orderDetail.orderPk)}
                   >
                     거절하기
