@@ -3,6 +3,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import useCategories from "../../hooks/useCategories";
 import ModalMenuSearch from "../../pages/user/restaurantListPage/ModalMenuSearch.jsx";
 import { useNavigate } from "react-router-dom";
+import LoadingSpinner from "./LoadingSpinner";
 
 const RestaurantsFilters = () => {
   const [isMenuSearchVisible, setMenuSearchVisible] = useState(false);
@@ -35,7 +36,7 @@ const RestaurantsFilters = () => {
     navigate(`/restaurant/category_id=${categoryPk}`);
   };
 
-  if (loading) return <p>로딩 중...</p>;
+  if (loading) return <LoadingSpinner />;
   if (error) return <p>에러 발생: {error}</p>;
 
   return (

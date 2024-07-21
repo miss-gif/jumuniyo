@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
+import LoadingSpinner from "../components/common/LoadingSpinner";
 
 const MyPageOrderPage = () => {
   const { id } = useParams();
@@ -53,7 +54,7 @@ const MyPageOrderPage = () => {
   };
 
   if (!orderData) {
-    return <div>로딩 중...</div>;
+    return <LoadingSpinner />;
   }
 
   return (
