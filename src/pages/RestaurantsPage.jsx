@@ -74,8 +74,8 @@ const RestaurantsPage = () => {
           onChange={handleOrderChange}
         >
           <option value="1">기본 정렬순</option>
-          <option value="2">별점순</option>
-          <option value="3">리뷰 많은순</option>
+          <option value="2">가까운 거리순</option>
+          <option value="3">별점 높은순</option>
         </select>
       </div>
       <h2 className="restaurants-page__title">
@@ -112,7 +112,11 @@ const RestaurantsPage = () => {
                   <div className="restaurant-item__rank-point">
                     <div className="rank-point">
                       <MdOutlineStarPurple500 />
-                      <p>{restaurant.reviewAvgScore || "N/A"}</p>
+                      <p>
+                        {restaurant.reviewAvgScore
+                          ? restaurant.reviewAvgScore.toFixed(1)
+                          : "N/A"}
+                      </p>
                     </div>
                     <p>
                       리뷰 <span>{restaurant.reviewTotalElements}</span>
