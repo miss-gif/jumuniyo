@@ -22,6 +22,8 @@ const MyPageOrderPagee = () => {
   const [orderNow, setOrderNow] = useState(null);
   const navgate = useNavigate();
 
+  const navigate = useNavigate();
+
   const isOlderThanThreeDays = date => {
     const orderDate = new Date(date);
     const currentDate = new Date();
@@ -52,7 +54,7 @@ const MyPageOrderPagee = () => {
         setOrders([]);
       }
     } catch (error) {
-      console.log(error);
+      alert("서버에러입니다.");
       setOrders([]);
     } finally {
       setIsLoading(false);
@@ -64,17 +66,23 @@ const MyPageOrderPagee = () => {
       const res = await jwtAxios.get("/api/order/user/list");
       setOrderNow(res.data.resultData);
     } catch (error) {
-      console.log(error);
+      alert("서버에러입니다.");
     }
   };
 
   const orderCancel = async orderPk => {
     try {
       const res = await jwtAxios.put(`/api/order/cancel/list/${orderPk}`);
+      if (res.data.statusCode === -10) {
+        alert("이미 접수되었습니다. 고객센터로 문의 해주세요.");
+      } else if (res.data.statusCode === 1) {
+        alert("취소 완료 되었습니다.");
+        navigate("/mypage/orderclose");
+      }
       getOrderNow();
       getOrderList();
     } catch (error) {
-      console.log(error);
+      alert("서버에러입니다.");
     }
   };
 
@@ -140,7 +148,7 @@ const MyPageOrderPagee = () => {
                     <div className="order-main">
                       {!order.resPic ? (
                         <img
-                          src={`https://34.64.63.109/pic/default.png`}
+                          src={`https://34.64.63.109/pic/images/defaultRes.png`}
                           className="order-logo"
                           alt="Order Logo"
                         />

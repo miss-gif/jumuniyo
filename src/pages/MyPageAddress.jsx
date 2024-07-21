@@ -38,9 +38,7 @@ const MyPageAddress = () => {
       setIsLogin(true);
     }
     if (reviewSubmitted) {
-      // 리렌더링 동작 또는 다른 작업 수행
-      console.log("Review submitted, component re-rendering");
-      setReviewSubmitted(false); // 상태 초기화
+      setReviewSubmitted(false);
     }
 
     const getUserAddress = async () => {
@@ -61,7 +59,7 @@ const MyPageAddress = () => {
           setIsFirstUser(true);
         }
       } catch (error) {
-        console.log(error);
+        alert("서버에러입니다.");
       } finally {
         setIsLoading(false);
       }
@@ -87,7 +85,7 @@ const MyPageAddress = () => {
         setReviewSubmitted(true);
       }
     } catch (error) {
-      console.log(error);
+      alert("서버에러입니다.");
     }
   };
 

@@ -37,7 +37,7 @@ const MyPage = () => {
       setName(res.data.resultData.userName);
       setUserId(res.data.resultData.userId);
     } catch (error) {
-      console.log(error);
+      alert("서버에러입니다.");
     } finally {
       setIsLoading(false);
     }
@@ -87,7 +87,7 @@ const MyPage = () => {
       getUserInfo();
       return res;
     } catch (error) {
-      console.log(error);
+      alert("서버에러입니다.");
     } finally {
       setIsLoading(false);
     }
@@ -186,6 +186,7 @@ const MyPage = () => {
                   </>
                 ) : (
                   <ModifyPass
+                    getUserInfo={getUserInfo}
                     setPassWord={setPassWord}
                     passWord={passWord}
                     setIsEditPassword={setIsEditPassword}
@@ -195,6 +196,7 @@ const MyPage = () => {
               </div>
             </div>
             <ModifyNickName
+              getUserInfo={getUserInfo}
               isLogIn={isLogIn}
               setNickName={setNickName}
               nickName={nickName}
@@ -204,6 +206,7 @@ const MyPage = () => {
               editCancel={editCancel}
             />
             <ModifyPhone
+              getUserInfo={getUserInfo}
               isLogIn={isLogIn}
               isEditPhoneNumber={isEditPhoneNumber}
               phoneNumber={phoneNumber}

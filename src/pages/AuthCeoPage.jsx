@@ -7,6 +7,7 @@ import AuthImageImport from "../components/layout/AuthImageImport";
 import JoinFooter from "../components/layout/JoinFooter";
 import MyMap from "../components/user/mypage/MyMap";
 import { Logo } from "../components/common/Logo";
+import LoadingSpinner from "../components/common/LoadingSpinner";
 
 const AuthUserPage = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -26,7 +27,6 @@ const AuthUserPage = () => {
   const [userCEOTip, setUserCEOTip] = useState("");
   const [userCEOEvent, setUserCEOEvent] = useState("");
   const [emailCode, setEmailCode] = useState("");
-  const [isEmailCheck, setIsEmailCheck] = useState(false);
 
   // 정규 표현식 참, 거짓 State
   const [userIdComplete, setUserIdComplete] = useState(true);
@@ -35,12 +35,16 @@ const AuthUserPage = () => {
   const [userEmailComplete, setUserEmailComplete] = useState(true);
   const [userPhoneComplete, setUserPhoneComplete] = useState(true);
   const [userImgComplete, setUserImgComplete] = useState(true);
+  const [businessNumberComplete, setBusinessNumberComplete] = useState(true);
 
   // 인증 참, 거짓 State
+  const [isEmailCheck, setIsEmailCheck] = useState(false);
   const [idCheckOk, setIdCheckOk] = useState(false);
   const [idCheckComplete, setIdCheckComplete] = useState(true);
   const [emailCheckOk, setEmailCheckOk] = useState(false);
   const [emailCheckComplete, setEmailCheckComplete] = useState(true);
+
+  const navigate = useNavigate();
 
   // 주소 관련 State
   const [newXValue, setNewXValue] = useState("");
@@ -59,6 +63,7 @@ const AuthUserPage = () => {
   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   const phoneRegex = /^\d{3}-\d{4}-\d{4}$/;
   const imageRegex = /^[\w,\s-]+\.(jpg|jpeg|png|gif|bmp)$/;
+  const businessNumberPattern = /^\d{3}-\d{2}-\d{5}$/;
 
   // 전화번호 형식
   const handleInputChange = e => {
@@ -94,15 +99,14 @@ const AuthUserPage = () => {
         } else {
           setIdCheckOk(false);
         }
-        console.log(res);
         return res;
       } catch (error) {
-        console.log(error);
+        alert("서버에러입니다.");
       } finally {
         setIsLoading(false);
       }
     } else {
-      alert("아이디 형식을 확인해주세요");
+      alert("아이디는 8자 이상이어야 합니다.");
     }
   };
 
@@ -114,45 +118,55 @@ const AuthUserPage = () => {
 
     const isCheckEmail = emailRegex.test(userEmail);
     if (isCheckEmail) {
-      setIsEmailCheck(true);
       try {
         const res = await axios.post("/api/mail/send", data);
+        alert(res.data.resultMsg);
+        setIsLoading(false);
+        if (res.data.resultMsg === "메일이 발송되었습니다.") {
+          setIsEmailCheck(true);
+          setIsLoading(false);
+        }
         return res;
       } catch (error) {
-        console.log(error);
-      } finally {
+        alert("서버에러입니다.");
         setIsLoading(false);
       }
     } else {
       alert("이메일 형식을 확인해주세요.");
+      setIsLoading(false);
     }
   };
 
   const emailCheckCancle = () => {
     setIsEmailCheck(false);
   };
-
+  // 이메일 인증 코드 인증
   const emailCodeCheck = async () => {
     setIsLoading(true);
-    setIsEmailCheck(false);
     const data = {
       email: userEmail,
       authNum: emailCode,
     };
     try {
       const res = await axios.post("/api/mail/auth_check", data);
+      if (res.data.statusCode === 1) {
+        setEmailCheckOk(true);
+        setIsEmailCheck(false);
+      } else {
+        setEmailCheckOk(false);
+        setIsEmailCheck(true);
+      }
       if (res.data.resultData === false) {
         alert(res.data.resultMsg);
-        setEmailCheckOk(false);
+
         return;
       } else if (res.data.resultData === true) {
         alert(res.data.resultMsg);
         setEmailCheckOk(true);
       }
-      console.log(res);
       return res;
     } catch (error) {
-      console.log(error);
+      alert("서버에러입니다.");
     } finally {
       setIsLoading(false);
     }
@@ -166,6 +180,7 @@ const AuthUserPage = () => {
     const isCheckEmail = emailRegex.test(userEmail);
     const isCheckPhone = phoneRegex.test(userPhone);
     const isCheckImgFile = !userImgFile || imageRegex.test(userImgFile.name);
+    const isCheckBusinessNumber = businessNumberPattern.test(userCEONumber);
 
     if (isCheckId === false) {
       alert("아이디는 8자 이상이어야 합니다.");
@@ -223,6 +238,14 @@ const AuthUserPage = () => {
       setUserPhoneComplete(true);
     }
 
+    if (isCheckBusinessNumber === false) {
+      alert("사업자 번호는 nnn-nn-nnnnn의 형식으로 들어와야 합니다.");
+      setBusinessNumberComplete(false);
+      return;
+    } else {
+      setBusinessNumberComplete(true);
+    }
+
     if (
       userIdComplete &&
       userPwComplete &&
@@ -231,7 +254,8 @@ const AuthUserPage = () => {
       userPhoneComplete &&
       userImgComplete &&
       idCheckComplete &&
-      emailCheckComplete
+      // emailCheckComplete &&
+      businessNumberComplete
     ) {
       const pic = new FormData();
 
@@ -262,14 +286,15 @@ const AuthUserPage = () => {
         const header = { headers: { "Content-Type": "multipart/form-data" } };
         const res = await axios.post("/api/owner/sign-up", pic, header); // FormData 객체를 직접 전송
         if (res.data.statusCode === 1) {
-          useNavigate("/login");
+          alert("회원가입 성공 환영합니다.");
+          navigate("/login");
         } else {
           alert(res.data.resultMsg);
         }
 
         return res;
       } catch (error) {
-        console.log(error);
+        alert("서버에러입니다.");
       }
     }
   };
@@ -463,7 +488,7 @@ const AuthUserPage = () => {
               fullWidth
               label="사업자 번호"
               id="fullWidth"
-              placeholder="사업자 번호를 입력해 주세요."
+              placeholder="사업자 번호는 nnn-nn-nnnnn의 형식으로 들어와야 합니다."
               onChange={e => {
                 setUserCEONumber(e.target.value);
               }}
@@ -538,6 +563,7 @@ const AuthUserPage = () => {
         </form>
       </div>
       <JoinFooter />
+      {isLoading ? <LoadingSpinner /> : null}
     </>
   );
 };

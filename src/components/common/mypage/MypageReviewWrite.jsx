@@ -48,7 +48,7 @@ const MypageReviewWrite = ({
         alert(res.data.resultMsg);
       }
     } catch (error) {
-      console.log(error);
+      alert("서버에러입니다.");
     }
   };
 
