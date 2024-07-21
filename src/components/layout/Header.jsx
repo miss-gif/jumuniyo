@@ -64,15 +64,17 @@ const Header = () => {
         <nav className="header-mobile">
           <ul>
             <li>
-              <PersonIcon sx={{ fontSize: 32 }} />
+              <Link to="/mypage" className="flex-center">
+                <PersonIcon sx={{ fontSize: 32 }} />
+              </Link>
             </li>
-            <li>
+            <li className="none">
               <LocationOnIcon sx={{ fontSize: 32 }} />
             </li>
             <li className="header-mobile__alarm none">
               <NotificationsActiveIcon sx={{ fontSize: 32 }} />
             </li>
-            <li>
+            <li className="none">
               <MenuIcon sx={{ fontSize: 42 }} />
             </li>
           </ul>

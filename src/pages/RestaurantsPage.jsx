@@ -4,6 +4,26 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import LoadingSpinner from "../components/common/LoadingSpinner";
+import styled from "styled-components";
+
+const StatusListItem = styled.li`
+  position: relative;
+  background-color: ${props => (props.isClosed ? "#ddd" : "white")};
+  opacity: ${props => (props.isClosed ? ".6" : "1")};
+  cursor: ${props => (props.isClosed ? "auto" : "pointer")};
+
+  &:before {
+    content: ${props => (props.isClosed ? '"준비중"' : "")};
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: red;
+    color: white;
+    padding: 4px 6px;
+    border-radius: 4px;
+    font-size: 12px;
+  }
+`;
 
 const RestaurantsPage = () => {
   const { id } = useParams();
@@ -69,11 +89,14 @@ const RestaurantsPage = () => {
       ) : (
         <ul className="restaurants-page__list">
           {restaurantData.map(restaurant => (
-            <li
+            <StatusListItem
               className="restaurant-item bc"
               key={restaurant.restaurantPk}
+              isClosed={restaurant.restaurantState === 2}
               onClick={() => {
-                navigate(`/restaurants/${restaurant.restaurantPk}`);
+                if (restaurant.restaurantState !== 2) {
+                  navigate(`/restaurants/${restaurant.restaurantPk}`);
+                }
               }}
             >
               <img
@@ -100,7 +123,7 @@ const RestaurantsPage = () => {
                   </div>
                 </div>
               </div>
-            </li>
+            </StatusListItem>
           ))}
         </ul>
       )}

@@ -63,3 +63,7 @@ html {
 .gray {
   color: #999;
 }
+
+.flex-center {
+  @include flex-center;
+}
