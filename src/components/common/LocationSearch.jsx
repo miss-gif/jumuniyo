@@ -31,17 +31,17 @@ const LocationSearch = () => {
   const addrCoorY = userData?.mainAddr?.addrCoorY ?? null;
 
   // 1. 리덕스에 저장된 위치값이 없으면 브라우저가 시작될 때 위치 검색 실행한다.
-  useEffect(() => {
-    const fetchLocation = async () => {
-      if (!locationData.latitude && !locationData.longitude && !isFetching) {
-        setIsFetching(true);
-        await onClickLocationSearch();
-        setIsFetching(false);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchLocation = async () => {
+  //     if (!locationData.latitude && !locationData.longitude && !isFetching) {
+  //       setIsFetching(true);
+  //       await onClickLocationSearch();
+  //       setIsFetching(false);
+  //     }
+  //   };
 
-    fetchLocation();
-  }, [locationData, isFetching]);
+  //   fetchLocation();
+  // }, [locationData, isFetching]);
 
   // 2. 1번 실행 후 latitude, longitude값을 리덕스에 담는다.
   const onClickLocationSearch = async () => {
