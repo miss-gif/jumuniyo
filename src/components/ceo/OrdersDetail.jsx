@@ -65,7 +65,7 @@ const OrdersDetail = () => {
                 <div className="mypage-order__detail">
                   <p className="mypage-order__label">결제수단</p>
                   <p className="mypage-order__value">
-                    현장결제 - 신용카드 결제
+                    {`${orderDetails.paymentMethod}` === "1" ? "카드" : "현금"}
                   </p>
                 </div>
                 <div className="mypage-order__detail">

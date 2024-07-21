@@ -78,11 +78,14 @@ const Home = () => {
   const [modalOrderPk, setModalOrderPk] = useState(null);
   const [modalMessage, setModalMessage] = useState("");
 
+  const formatNumber = num => {
+    return num.toLocaleString();
+  };
+
   const loadOrders = async () => {
     try {
       const data = await fetchOrders();
       if (data.statusCode === -7) {
-        //console.log(data.resultMsg);
         setNoOrders(true);
         setOrders([]);
       } else {
@@ -248,7 +251,9 @@ const Home = () => {
                         <div className="orderedMenuInf" key={index}>
                           <div className="menuName">{menu.menuName}</div>
                           <div className="menuAmount">1</div>
-                          <div className="menuPrice">{menu.menuPrice}</div>
+                          <div className="menuPrice">
+                            {formatNumber(menu.menuPrice)}
+                          </div>
                         </div>
                       ))}
                       <div className="allOrderedMenuInf">
@@ -257,7 +262,7 @@ const Home = () => {
                           {orderDetail.menuInfoList.length}
                         </div>
                         <div className="allMenuPrice">
-                          {orderDetail.orderPrice}
+                          {formatNumber(orderDetail.orderPrice)}
                         </div>
                       </div>
                     </div>

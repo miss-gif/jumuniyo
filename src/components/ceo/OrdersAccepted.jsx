@@ -163,7 +163,9 @@ const OrdersAccepted = () => {
     hours = hours ? hours : 12;
     return `${ampm} ${hours}:${minutes}`;
   };
-
+  const formatNumber = number => {
+    return number.toLocaleString("ko-KR");
+  };
   if (error) {
     return <div>Error: {error.message}</div>;
   }
@@ -263,7 +265,9 @@ const OrdersAccepted = () => {
                         <div className="orderedMenuInf" key={index}>
                           <div className="menuName">{menu.menuName}</div>
                           <div className="menuAmount">1</div>
-                          <div className="menuPrice">{menu.menuPrice}</div>
+                          <div className="menuPrice">
+                            {formatNumber(menu.menuPrice)}
+                          </div>
                         </div>
                       ))}
                       <div className="allOrderedMenuInf">
@@ -272,7 +276,7 @@ const OrdersAccepted = () => {
                           {orderDetail.menuInfoList.length}
                         </div>
                         <div className="allMenuPrice">
-                          {orderDetail.orderPrice}
+                          {formatNumber(orderDetail.orderPrice)}
                         </div>
                       </div>
                     </div>
