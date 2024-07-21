@@ -3,23 +3,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import useCategories from "../../hooks/useCategories";
 import { useNavigate } from "react-router-dom";
-
-const CategoryItem = ({ index, categoryPk, categoryName, onClick }) => (
-  <li className="category__item bc" onClick={onClick}>
-    <p>{categoryName}</p>
-    <img
-      src={`${process.env.PUBLIC_URL}/images/category/category-${String(index + 1).padStart(2, "0")}.png`}
-      alt="Logo"
-    />
-  </li>
-);
-
-CategoryItem.propTypes = {
-  index: PropTypes.number.isRequired,
-  categoryPk: PropTypes.number.isRequired,
-  categoryName: PropTypes.string.isRequired,
-  onClick: PropTypes.func.isRequired,
-};
+import CategoryItem from "./CategoryItem";
 
 const CategoryNavigation = () => {
   const { categories, loading, error } = useCategories();
