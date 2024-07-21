@@ -17,6 +17,7 @@ const PaymentPage = () => {
   const [selectedPayment, setSelectedPayment] = useState(""); // 결제수단 상태
   const [menuPkArray, setMenuPkArray] = useState([]); // 메뉴 PK 배열 상태
   const [order, setOrder] = useState([]); // 주문 상세 정보 상태
+  const [addressDetail1, setAddressDetail1] = useState(""); // 주소 상태
   const [addressDetail, setAddressDetail] = useState(""); // 상세주소 상태
   const [phone, setPhone] = useState(userPhone); // 휴대전화 상태
   const [agreement, setAgreement] = useState(false); // 결제 동의 체크 상태
@@ -34,21 +35,16 @@ const PaymentPage = () => {
     setMenuPkArray(menuPkArray);
   }, [id]);
 
-  // 주소변경이 없으면 userAddress.addr2 값을 가져옴
+  // 주소 변경 시 userAddress.addr1 또는 addr2 값 업데이트
   useEffect(() => {
     if (
-      locationData.latitude === userAddress.addrCoorX ||
+      locationData.latitude === userAddress.addrCoorX &&
       locationData.longitude === userAddress.addrCoorY
     ) {
+      setAddressDetail1(userAddress.addr1);
       setAddressDetail(userAddress.addr2);
     }
   }, [locationData, userAddress]);
-
-  // 추가된 useEffect: locationData와 userAddress 출력
-  // useEffect(() => {
-  //   console.log("locationData:", locationData.latitude);
-  //   console.log("userAddress:", userAddress.addrCoorX);
-  // }, [locationData, userAddress]);
 
   const calculateTotalPrice = item => {
     return item.menu_price * item.quantity;
@@ -108,7 +104,7 @@ const PaymentPage = () => {
       order_request: request, // 상태에서 요청사항 가져오기
       payment_method: selectedPayment, // 상태에서 결제수단 가져오기
       order_phone: phone,
-      order_address: `${locationData.geocodeAddress} ${addressDetail}`, // 주소 합치기
+      order_address: `${addressDetail1} ${addressDetail}`, // 주소 합치기
       menu_pk: menuPkArray,
     };
 
@@ -166,7 +162,7 @@ const PaymentPage = () => {
                     type="text"
                     id="address"
                     className="payment-page__input"
-                    value={locationData.geocodeAddress}
+                    value={addressDetail1 || locationData.geocodeAddress} // 조건에 따라 주소 표시
                     readOnly
                   />
                 </div>
