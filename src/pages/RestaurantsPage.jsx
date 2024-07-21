@@ -76,7 +76,7 @@ const RestaurantsPage = () => {
               }}
             >
               <img
-                src={restaurant.restaurantPic || "https://picsum.photos/200/"}
+                src={restaurant.restaurantPic || "/images/defaultRes.png"}
                 alt={`${restaurant.restaurantName} 이미지`}
                 className="restaurant-item__image"
               />
