@@ -8,8 +8,9 @@ import { initiateKakaoPay } from "../utils/kakaopayUtils";
 
 const PaymentPage = () => {
   const userPhone = useSelector(state => state.user.userPhone) || "";
-  const locationData = useSelector(state => state.user.locationData);
-  const accessToken = useSelector(state => state.user.accessToken);
+  const locationData = useSelector(state => state.user.locationData) || "";
+  const userAddress = useSelector(state => state.user.userAddress) || "";
+  const accessToken = useSelector(state => state.user.accessToken) || "";
   const { id } = useParams();
 
   const [request, setRequest] = useState(""); // 요청사항 상태
@@ -33,6 +34,15 @@ const PaymentPage = () => {
     setMenuPkArray(menuPkArray);
   }, [id]);
 
+  useEffect(() => {
+    if (locationData.geocodeAddress === userAddress.addr1) {
+      setAddressDetail(userAddress.addr2);
+    }
+  }, [locationData, userAddress]);
+
+  console.log("유저", userAddress.addr1);
+  console.log("검색창", locationData.geocodeAddress);
+
   const calculateTotalPrice = item => {
     return item.menu_price * item.quantity;
   };
@@ -42,7 +52,6 @@ const PaymentPage = () => {
   };
 
   const handlePayment = async () => {
-    // 입력 값 검증
     if (!addressDetail.trim()) {
       alert("상세주소를 입력해 주세요.");
       return;
@@ -195,7 +204,7 @@ const PaymentPage = () => {
             {/* 결제수단 선택 전달 */}
             <div className="payment-page__input-wrap none">
               <h3 className="payment-page__subtitle">할인방법 선택</h3>
-              <div className="payment-page__coupon ">
+              <div className="payment-page__coupon">
                 <label htmlFor="coupon">쿠폰</label>
                 <div className="payment-page__coupon-wrap">
                   <input
@@ -237,8 +246,8 @@ const PaymentPage = () => {
         <p className="payment-page__terms">
           <label className="agreement-checkbox">
             <span>
-              이용약관, 개인정보 수집 및 이용, 개인정보 제3자 제공 ,
-              전자금융거래 이용약관, 만 14세 이상 이용자입니다.
+              이용약관, 개인정보 수집 및 이용, 개인정보 제3자 제공, 전자금융거래
+              이용약관, 만 14세 이상 이용자입니다.
             </span>
             결제에 동의합니다.
             <Checkbox
@@ -251,6 +260,7 @@ const PaymentPage = () => {
         <button
           className="payment-page__button payment-btn"
           onClick={handlePayment}
+          type="submit"
         >
           결제하기
         </button>
