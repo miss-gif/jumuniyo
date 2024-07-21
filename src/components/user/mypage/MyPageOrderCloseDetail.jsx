@@ -45,7 +45,6 @@ const MyPageOrderCloseDetail = () => {
       const data = response.data;
       if (data.statusCode === 1) {
         alert("주문 취소되었습니다");
-        // 필요한 경우 상태를 업데이트하거나 리디렉션 처리
         setOrderData(null);
         navigate("/");
       } else {
@@ -65,21 +64,33 @@ const MyPageOrderCloseDetail = () => {
     <div className="mypage-order">
       <div className="mypage-order-content">
         <div className="mypage-order__header">
-          <p className="mypage-order__title">취소완료</p>
-          {!isOrderClosePage && (
+          <p className="mypage-order__title">
+            {orderData.doneOrderState === 1 ? "주문완료" : "취소완료"}
+          </p>
+          {orderData.doneOrderState !== 2 && !isOrderClosePage && (
             <button className="btn" onClick={onCancelOrder}>
               주문취소
             </button>
           )}
         </div>
         <div className="mypage-order__contents">
-          <div className="주문완료-안내">
-            <p className="mypage-order__thanks">주문 취소되었습니다</p>
-            <p className="mypage-order__confirmation">
-              주문이 취소되었으며 고객님의 휴대전화 번호로 주문 확인 문자가 곧
-              발송됩니다
-            </p>
-          </div>
+          {orderData.doneOrderState === 1 ? (
+            <div className="주문완료-안내">
+              <p className="mypage-order__thanks">주문 감사합니다</p>
+              <p className="mypage-order__confirmation">
+                주문 요청이 완료되었으며 고객님의 휴대전화 번호로 주문 확인
+                문자가 곧 발송됩니다
+              </p>
+            </div>
+          ) : (
+            <div className="취소-안내">
+              <p className="mypage-order__thanks">주문 취소되었습니다</p>
+              <p className="mypage-order__confirmation">
+                주문이 취소되었으며 고객님의 휴대전화 번호로 주문 확인 문자가 곧
+                발송됩니다
+              </p>
+            </div>
+          )}
 
           <div className="mypage-order__section">
             <div className="mypage-order__section-title">배달정보</div>
@@ -97,12 +108,14 @@ const MyPageOrderCloseDetail = () => {
                 {new Date(orderData.createdAt).toLocaleString()}
               </p>
             </div>
-            <div className="mypage-order__detail none">
-              <p className="mypage-order__label">배달완료시간</p>
-              <p className="mypage-order__value">
-                {orderData.orderState === 1 ? "배달 완료" : "배달 중"}
-              </p>
-            </div>
+            {orderData.doneOrderState === 1 && (
+              <div className="mypage-order__detail none">
+                <p className="mypage-order__label">배달완료시간</p>
+                <p className="mypage-order__value">
+                  {orderData.orderState === 1 ? "배달 완료" : "배달 중"}
+                </p>
+              </div>
+            )}
           </div>
 
           <div className="mypage-order__section">
