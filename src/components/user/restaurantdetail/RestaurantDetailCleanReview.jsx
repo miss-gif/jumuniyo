@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import Review from "../../common/Review";
 import { fetchReviewData } from "../../../api/restaurantdetail/restaurantDetail";
+import LoadingSpinner from "../../common/LoadingSpinner";
 
 const RestaurantDetailCleanReview = ({ resPk, restaurantData }) => {
   const [reviews, setReviews] = useState([]);
@@ -23,7 +24,7 @@ const RestaurantDetailCleanReview = ({ resPk, restaurantData }) => {
     getReviews();
   }, [resPk]);
 
-  if (loading) return <p>로딩 중</p>;
+  if (loading) return <LoadingSpinner />;
   if (error) return <p>에러: {error}</p>;
 
   const roundedReviewScore = Math.round(restaurantData.reviewScore * 100) / 100;

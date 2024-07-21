@@ -17,7 +17,7 @@ const MyPageReviewPage = () => {
       const res = await jwtAxios.get("/api/rev/list");
       return res.data.resultData;
     } catch (error) {
-      console.log(error);
+      alert("서버에러입니다.");
       return [];
     } finally {
       setIsLoading(false);
@@ -30,7 +30,6 @@ const MyPageReviewPage = () => {
     const aaa = reviewList.map(item => ({
       ...item,
     }));
-    console.log(aaa);
     return aaa;
   };
 

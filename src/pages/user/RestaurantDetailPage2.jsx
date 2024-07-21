@@ -14,6 +14,7 @@ import RestaurantDetailInfo from "../../components/user/restaurantdetail/Restaur
 import OrderSummary from "../../components/user/restaurantdetail/OrderSummary";
 import { OrderContext } from "./OrderContext";
 import LoginModal from "../../components/user/restaurantdetail/LoginModal";
+import LoadingSpinner from "../../components/common/LoadingSpinner";
 
 const saveStateToSessionStorage = (key, state) => {
   sessionStorage.setItem(key, JSON.stringify(state));
@@ -90,7 +91,7 @@ const RestaurantDetailPage = () => {
     };
   }, [id, clearOrder]);
 
-  if (loading) return <p>로딩 중</p>;
+  if (loading) return <LoadingSpinner />;
   if (error) return <p>에러: {error.message}</p>;
   if (!restaurantData) return <p>없는 페이지 입니다.</p>;
 
