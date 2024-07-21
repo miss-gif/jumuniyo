@@ -34,14 +34,21 @@ const PaymentPage = () => {
     setMenuPkArray(menuPkArray);
   }, [id]);
 
+  // 주소변경이 없으면 userAddress.addr2 값을 가져옴
   useEffect(() => {
-    if (locationData.geocodeAddress === userAddress.addr1) {
+    if (
+      locationData.latitude === userAddress.addrCoorX ||
+      locationData.longitude === userAddress.addrCoorY
+    ) {
       setAddressDetail(userAddress.addr2);
     }
   }, [locationData, userAddress]);
 
-  console.log("유저", userAddress.addr1);
-  console.log("검색창", locationData.geocodeAddress);
+  // 추가된 useEffect: locationData와 userAddress 출력
+  // useEffect(() => {
+  //   console.log("locationData:", locationData.latitude);
+  //   console.log("userAddress:", userAddress.addrCoorX);
+  // }, [locationData, userAddress]);
 
   const calculateTotalPrice = item => {
     return item.menu_price * item.quantity;
