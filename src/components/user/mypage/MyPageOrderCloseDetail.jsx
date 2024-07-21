@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 
 const MyPageOrderCloseDetail = () => {
   const { id } = useParams();
@@ -9,6 +9,10 @@ const MyPageOrderCloseDetail = () => {
   const accessToken = useSelector(state => state.user.accessToken);
 
   const navigate = useNavigate();
+  const location = useLocation();
+  const isOrderClosePage = /^\/mypage\/orderclose\/\d+$/.test(
+    location.pathname,
+  );
 
   useEffect(() => {
     const fetchOrderData = async () => {
@@ -60,10 +64,12 @@ const MyPageOrderCloseDetail = () => {
     <div className="mypage-order">
       <div className="mypage-order-content">
         <div className="mypage-order__header">
-          <h2 className="mypage-order__title">주문완료</h2>
-          <button className="btn" onClick={onCancelOrder}>
-            주문취소
-          </button>
+          <p className="mypage-order__title">취소완료</p>
+          {!isOrderClosePage && (
+            <button className="btn" onClick={onCancelOrder}>
+              주문취소
+            </button>
+          )}
         </div>
         <div className="mypage-order__contents">
           <div className="주문완료-안내">
@@ -82,7 +88,7 @@ const MyPageOrderCloseDetail = () => {
             </div>
             <div className="mypage-order__detail">
               <p className="mypage-order__label">주문번호</p>
-              <p className="mypage-order__value">{orderData.orderPk}</p>
+              <p className="mypage-order__value">{id}</p>
             </div>
             <div className="mypage-order__detail">
               <p className="mypage-order__label">주문시간</p>
