@@ -42,7 +42,7 @@ const MyPageOrderPage = () => {
         alert("주문 취소되었습니다");
         // 필요한 경우 상태를 업데이트하거나 리디렉션 처리
         setOrderData(null);
-        navigate("/");
+        navigate("/mypage/orderclose");
       } else {
         alert("주문 취소에 실패했습니다. 다시 시도해 주세요.");
       }
