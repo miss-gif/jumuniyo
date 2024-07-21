@@ -14,7 +14,13 @@
   }
   &__info-image {
     width: 80px;
+    height: 80px;
     border: 1px solid $borderColor;
+    img {
+      width: 78px;
+      height: 78px;
+      object-fit: cover;
+    }
   }
   &__info-details {
     padding: 4px 0;

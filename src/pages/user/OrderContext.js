@@ -28,7 +28,7 @@ const OrderProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    console.log("Current order:", order);
+    // console.log("Current order:", order);
   }, [order]);
 
   return (

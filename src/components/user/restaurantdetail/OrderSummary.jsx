@@ -92,6 +92,7 @@ const OrderSummary = ({
         style={submitButtonStyle}
         onClick={() => {
           onOrder(restaurantName);
+
         }}
       >
         주문하기

@@ -42,7 +42,7 @@ const RestaurantDetailInfo = ({ restaurantData }) => {
           <img
             src={
               restaurantData.restaurantPic
-                ? `/pic/${restaurantData.restaurantPic}`
+                ? `/pic${restaurantData.restaurantPic}`
                 : "/images/defaultRes.png"
             }
             alt={restaurantData.restaurantPic}

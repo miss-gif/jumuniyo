@@ -70,36 +70,41 @@ $border-radius: 5px;
           font-size: 16px;
         }
       }
-      .info-section {
-        h3 {
-          color: #1657bf;
-          border-bottom: 2px solid #1657bf;
-          padding-bottom: 5px;
-          margin-bottom: 10px;
-        }
-        .button-wrap {
-          padding-top: 20px;
-        }
-
-        p {
-          margin: 10px 0;
-
-          h4 {
-            display: inline-block;
-            color: $text-color;
-            font-weight: bold;
-            margin-right: 5px;
-          }
-
-          &:last-of-type {
-            margin-bottom: 0;
-          }
-        }
-      }
     }
   }
 }
 
 .statusborder {
   padding: 0px 0px 100px 0px;
+}
+.info-section {
+  h3 {
+    color: #1657bf;
+    border-bottom: 2px solid #1657bf;
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+  }
+  img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+  }
+  .button-wrap {
+    padding-top: 20px;
+  }
+
+  p {
+    margin: 10px 0;
+
+    h4 {
+      display: inline-block;
+      color: $text-color;
+      font-weight: bold;
+      margin-right: 5px;
+    }
+
+    &:last-of-type {
+      margin-bottom: 0;
+    }
+  }
 }

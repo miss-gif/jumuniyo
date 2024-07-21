@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import testMenu from "../restaurantdetail/testMenu.jpg";
 import { Navigate } from "react-router-dom";
 
 const getCookie = name => {
@@ -31,7 +30,6 @@ const Reviews = () => {
         return;
       }
 
-      console.log("Token: ", accessToken);
       try {
         const response = await axios.get("/api/rev/list", {
           headers: {
@@ -40,14 +38,11 @@ const Reviews = () => {
           },
         });
         const data = response.data;
-        console.log("Response Data: ", data);
 
         if (data.statusCode === 1 || data.statusCode === 2) {
           const updatedReviewItems = data.resultData.map(item => {
             const reviewImgs =
-              item.pics.length > 0
-                ? item.pics.map(pic => `/pic/${pic}`)
-                : [testMenu];
+              item.pics.length > 0 ? item.pics.map(pic => `/pic/${pic}`) : [];
             return {
               ...item,
               reviewImgs: reviewImgs,
@@ -90,7 +85,6 @@ const Reviews = () => {
           }
         }
       } catch (error) {
-        console.error("Fetch error: ", error);
         setError(error);
       }
     };
@@ -135,8 +129,6 @@ const Reviews = () => {
           comment_content: commentContent,
         };
 
-    console.log("Request Payload: ", payload);
-
     try {
       const method = isEdit ? "put" : "post";
       const response = await axios({
@@ -148,8 +140,6 @@ const Reviews = () => {
           Authorization: `Bearer ${accessToken}`,
         },
       });
-
-      console.log("Response: ", response.data);
 
       if (response.data.statusCode === 1 || response.data.statusCode === 2) {
         alert("답글이 성공적으로 저장되었습니다.");
@@ -191,7 +181,6 @@ const Reviews = () => {
         alert("답글 저장에 실패했습니다.");
       }
     } catch (error) {
-      console.error("Reply submit error: ", error);
       alert("답글 저장 중 오류가 발생했습니다.");
     }
   };
@@ -209,8 +198,6 @@ const Reviews = () => {
           },
         },
       );
-
-      console.log("Response: ", response.data);
 
       if (response.data.statusCode === 1 || response.data.statusCode === 2) {
         alert("답글이 성공적으로 삭제되었습니다.");
@@ -245,7 +232,6 @@ const Reviews = () => {
         alert("답글 삭제에 실패했습니다.");
       }
     } catch (error) {
-      console.error("Reply delete error: ", error);
       alert("답글 삭제 중 오류가 발생했습니다.");
     }
   };

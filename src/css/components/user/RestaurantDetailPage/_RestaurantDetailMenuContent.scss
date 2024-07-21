@@ -10,7 +10,6 @@
     left: 50%;
     transform: translate(-50%, -50%);
     font-weight: bold;
-    background: rgba(255, 255, 255, 0.8);
     padding: 10px;
     border-radius: 5px;
     z-index: 2;
@@ -84,7 +83,8 @@
   &__image {
     img {
       width: 100px;
-      height: auto;
+      height: 100px;
+      object-fit: cover;
     }
   }
 }

@@ -82,7 +82,7 @@ const Home = () => {
     try {
       const data = await fetchOrders();
       if (data.statusCode === -7) {
-        console.log(data.resultMsg);
+        //console.log(data.resultMsg);
         setNoOrders(true);
         setOrders([]);
       } else {

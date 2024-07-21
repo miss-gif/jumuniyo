@@ -98,7 +98,7 @@ const CeoLayout = () => {
             <div className="owner-nav__profile">
               <img
                 src={
-                  userInfo && userInfo.userPic !== "user/null"
+                  userInfo && userInfo.userPic !== null
                     ? `/pic/${userInfo.userPic}`
                     : "/images/defaultRes.png"
                 }
