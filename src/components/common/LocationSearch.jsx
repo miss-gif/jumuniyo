@@ -68,8 +68,6 @@ const LocationSearch = () => {
         dispatch(
           setLocationData({ latitude: addrCoorX, longitude: addrCoorY }),
         );
-      } else {
-        onClickLocationSearch();
       }
     }
   }, [addrCoorX, addrCoorY, dispatch, locationData]);
