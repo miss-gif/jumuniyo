@@ -22,7 +22,7 @@ const OwnerHeader = () => {
     <header className="owner-header">
       <div className="owner-header__left">
         <h1 className="owner-header__logo">
-          <Link to="/ceopage/">
+          <Link to="/ceopage/home">
             <img src={process.env.PUBLIC_URL + "/images/logo.png"} alt="Logo" />
           </Link>
         </h1>

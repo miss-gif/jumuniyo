@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
+import LoadingSpinner from "../components/common/LoadingSpinner";
 
 const API_URL = "/api/menu?menu_res_pk=10";
 
@@ -36,7 +37,7 @@ const CeoPage = () => {
   }, []);
 
   if (loading) {
-    return <p>로딩 중...</p>;
+    return <LoadingSpinner />;
   }
 
   if (error) {

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import LoadingSpinner from "../common/LoadingSpinner";
 
 const getCookie = name => {
   const value = `; ${document.cookie}`;
@@ -35,7 +36,7 @@ const OrdersDetail = () => {
   };
 
   if (!orderDetails) {
-    return <div>Loading...</div>;
+    return <LoadingSpinner />;
   }
 
   return (

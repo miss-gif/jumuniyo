@@ -3,6 +3,7 @@ import { MdOutlineStarPurple500 } from "react-icons/md";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import axios from "axios";
+import LoadingSpinner from "../components/common/LoadingSpinner";
 
 const RestaurantsPage = () => {
   const { id } = useParams();
@@ -62,7 +63,7 @@ const RestaurantsPage = () => {
         <span className="search-count">{totalElements}</span>
       </h2>
       {isLoading ? (
-        <p>로딩 중...</p>
+        <LoadingSpinner />
       ) : error ? (
         <p>에러 발생: {error.message}</p>
       ) : (
