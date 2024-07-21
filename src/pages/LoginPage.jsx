@@ -31,17 +31,20 @@ const AuthUserPage = () => {
         user_login_type: 1,
       });
 
-      if (response.data.statusCode === 1) {
+      if (response.data.statusCode === 1 || response.data.statusCode === 2) {
         const { resultData } = response.data;
-        dispatch(setUserData(resultData));
-        dispatch(setUserRole(resultData.userRole));
-        dispatch(setUserAddress(resultData.mainAddr)); // 주소 저장
-        dispatch(setUserPhone(resultData.userPhone)); // 전화번호 저장
-        dispatch(setAccessToken(resultData.accessToken)); // accessToken 저장
-        dispatch(setTokenMaxAge(resultData.tokenMaxAge)); // tokenMaxAge 저장
+
+        // null 값에 대한 예외 처리
+        if (resultData) {
+          dispatch(setUserData(resultData));
+          dispatch(setUserRole(resultData.userRole || "")); // userRole이 없을 경우 빈 문자열로 처리
+          dispatch(setUserAddress(resultData.mainAddr || "")); // mainAddr이 없을 경우 빈 문자열로 처리
+          dispatch(setUserPhone(resultData.userPhone || "")); // userPhone이 없을 경우 빈 문자열로 처리
+          dispatch(setAccessToken(resultData.accessToken || "")); // accessToken이 없을 경우 빈 문자열로 처리
+          dispatch(setTokenMaxAge(resultData.tokenMaxAge || 0)); // tokenMaxAge이 없을 경우 기본값 0으로 처리
+        }
       }
-      setCookie("accessToken", response.data.resultData.accessToken);
-      console.log(response.data.resultData.userRole);
+
       if (
         response.data.resultData.userRole === "ROLE_USER" &&
         response.data.resultData.mainAddr === null
