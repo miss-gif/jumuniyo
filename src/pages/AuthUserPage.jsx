@@ -70,23 +70,27 @@ const AuthUserPage = () => {
     if (isCheckId) {
       try {
         const res = await axios.get(`/api/is-duplicated?user_id=${userId}`);
+
         if (res) {
           alert(res.data.resultMsg);
         }
         if (res.data.statusCode === 1) {
           setIdCheckOk(true);
+          setIsLoading(false);
         } else {
           setIdCheckOk(false);
+          setIsLoading(false);
         }
         console.log(res);
+        setIsLoading(false);
         return res;
       } catch (error) {
         console.log(error);
-      } finally {
         setIsLoading(false);
       }
     } else {
       alert("아이디 형식을 확인해주세요");
+      setIsLoading(false);
     }
   };
 
@@ -102,17 +106,19 @@ const AuthUserPage = () => {
       try {
         const res = await axios.post("/api/mail/send", data);
         alert(res.data.resultMsg);
+        setIsLoading(false);
         if (res.data.resultMsg === "메일이 발송되었습니다.") {
           setIsEmailCheck(true);
+          setIsLoading(false);
         }
         return res;
       } catch (error) {
         console.log(error);
-      } finally {
         setIsLoading(false);
       }
     } else {
       alert("이메일 형식을 확인해주세요.");
+      setIsLoading(false);
     }
   };
 
