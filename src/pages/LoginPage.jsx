@@ -44,6 +44,7 @@ const AuthUserPage = () => {
           dispatch(setTokenMaxAge(resultData.tokenMaxAge || 0)); // tokenMaxAge이 없을 경우 기본값 0으로 처리
         }
       }
+      setCookie("accessToken", response.data.resultData.accessToken);
 
       if (
         response.data.resultData.userRole === "ROLE_USER" &&
