@@ -103,10 +103,12 @@
                 padding-bottom: 10px;
                 margin-bottom: 10px;
                 .menuName {
+                  width: 100px;
                 }
                 .menuAmount {
                 }
                 .menuPrice {
+                  width: 70px;
                 }
               }
 
@@ -114,6 +116,13 @@
                 display: flex;
                 justify-content: space-between;
                 border-top: 2px solid #ccc;
+
+                .title {
+                  width: 100px;
+                }
+                .allMenuPrice {
+                  width: 70px;
+                }
               }
             }
           }
