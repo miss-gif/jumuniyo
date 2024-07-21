@@ -64,8 +64,50 @@ const RestaurantsFilters = () => {
   if (loading) return <LoadingSpinner />;
   if (error) return <p>에러 발생: {error}</p>;
 
+  const MobileFilters = () => {
+    const [isFiltersVisible, setIsFiltersVisible] = useState(false);
+
+    const toggleFilters = () => {
+      setIsFiltersVisible(!isFiltersVisible);
+    };
+
+    return (
+      <div className="mobile-filters">
+        <button onClick={toggleFilters} className="toggle-filters-btn">
+          {isFiltersVisible ? "카테고리 닫기" : "카테고리 열기"}
+        </button>
+        {isFiltersVisible && (
+          <ul className="filters__list">
+            <ListItem
+              className="filters__item"
+              isActive={activeCategory === 0}
+              onClick={onClickLink(0)}
+            >
+              전체보기
+            </ListItem>
+            {categories.map(category => (
+              <ListItem
+                className="filters__item"
+                key={category.categoryPk}
+                isActive={activeCategory === category.categoryPk}
+                onClick={onClickLink(category.categoryPk)}
+              >
+                {category.categoryName}
+              </ListItem>
+            ))}
+            <ModalMenuSearch
+              menuSearchRef={menuSearchRef}
+              isVisible={isMenuSearchVisible}
+            />
+          </ul>
+        )}
+      </div>
+    );
+  };
+
   return (
     <>
+      <MobileFilters />
       <div className="background-color">
         <div className="inner">
           <div className="restaurants-page__filters">

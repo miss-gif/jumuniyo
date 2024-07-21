@@ -78,3 +78,46 @@
     color: #fff;
   }
 }
+
+.mobile-filters {
+  display: none;
+}
+
+@include tablet {
+  .restaurants-page {
+    &__filters {
+      display: none;
+    }
+  }
+
+  .mobile-filters {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .toggle-filters-btn {
+    padding: 10px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    background-color: #f1f1f1;
+    border: none;
+    width: 100%;
+    text-align: center;
+  }
+
+  .filters__list {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+  }
+
+  .filters__item {
+    width: 50%;
+    padding: 8px 20px !important;
+    font-size: 12px !important;
+    font-weight: 500;
+    border-radius: 0 !important;
+  }
+}
