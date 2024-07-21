@@ -12,7 +12,7 @@ import {
   setUserData,
   setUserPhone,
   setUserRole,
-} from "../app/store";
+} from "../app/userSlice";
 import { Logo } from "../components/common/Logo";
 
 const AuthUserPage = () => {

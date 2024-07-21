@@ -38,7 +38,6 @@ import { OrderProvider } from "./pages/user/OrderContext";
 import Pay from "./components/restaurantdetail/Pay";
 import OrdersAccepted from "./components/ceo/OrdersAccepted";
 import OrdersHistory from "./components/ceo/OrdersHistory";
-import LoginTest from "./pages/LoginTest";
 import Test3 from "./pages/Test3";
 import MyPageOrderClosePage from "./pages/MyPageOrderClosePage";
 import MyPageOrderCloseDetail from "./components/user/mypage/MyPageOrderCloseDetail";
@@ -140,7 +139,6 @@ function App() {
             <Route path="*" element={<NotFound />} />
             <Route path="/test" element={<Test />} />
             <Route path="/test3" element={<Test3 />} />
-            <Route path="/login-test" element={<LoginTest />} />
           </Routes>
         </OrderProvider>
       </div>

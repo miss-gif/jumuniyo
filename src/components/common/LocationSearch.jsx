@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import MyLocationIcon from "@mui/icons-material/MyLocation";
 import GoogleMaps from "./GoogleMaps";
-import { setLocationData } from "../../app/store";
+import { setLocationData } from "../../app/userSlice";
 
 const LocationSearch = () => {
   const location = useLocation();
@@ -49,18 +49,15 @@ const LocationSearch = () => {
 
   // 리덕스에서 위치 데이터와 주소 좌표 가져오기
   const locationData = useSelector(state => state.user.locationData);
-  const addrCoorX = useSelector(
-    state => state.user.userData?.mainAddr.addrCoorX,
-  );
-  const addrCoorY = useSelector(
-    state => state.user.userData?.mainAddr.addrCoorY,
-  );
+  const userData = useSelector(state => state.user.userData);
+  const addrCoorX = userData?.mainAddr?.addrCoorX ?? null;
+  const addrCoorY = userData?.mainAddr?.addrCoorY ?? null;
 
   // 3. 로그인 했을 때, 2번 값을 리덕스에서 확인하고, latitude, longitude값이 없으면
   // userData.mainAddr.addrCoorX, userData.mainAddr.addrCoorY 값을 사용하고 리덕스를 업데이트한다.
   useEffect(() => {
     if (!locationData.latitude && !locationData.longitude) {
-      if (addrCoorX && addrCoorY) {
+      if (addrCoorX !== null && addrCoorY !== null) {
         dispatch(
           setLocationData({ latitude: addrCoorX, longitude: addrCoorY }),
         );

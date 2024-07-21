@@ -10,7 +10,7 @@ import Typography from "@mui/material/Typography";
 import parse from "autosuggest-highlight/parse";
 import { debounce } from "@mui/material/utils";
 import { useDispatch, useSelector } from "react-redux";
-import { setLocationData } from "../../app/store";
+import { setLocationData } from "../../app/userSlice";
 
 const GOOGLE_MAPS_API_KEY = "AIzaSyAMR0g0QOUBQiHoZMLjMovMkzjJ7VkUBuU";
 

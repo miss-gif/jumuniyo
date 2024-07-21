@@ -1,7 +1,7 @@
 // utils/authUtils.js
 import axios from "axios";
-import { logout } from "../app/store";
 import { removeCookie } from "./cookie";
+import { logout } from "../app/userSlice";
 
 export const handleLogout = async (accessToken, dispatch, navigate) => {
   try {
