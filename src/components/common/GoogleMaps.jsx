@@ -53,24 +53,30 @@ const GoogleMaps = () => {
   }, []);
 
   useEffect(() => {
+    // 위도와 경도가 모두 제공된 경우에만 실행
     if (locationData.latitude && locationData.longitude) {
+      // 지오코더를 초기화하는 함수
       const initializeGeocoder = () => {
+        // 지오코더 서비스가 아직 초기화되지 않았고, Google Maps API가 로드된 경우에만 실행
         if (!geocoderService.current && window.google) {
           geocoderService.current = new window.google.maps.Geocoder();
         }
 
+        // 전달된 위도와 경도를 float 타입으로 변환하여 객체로 생성
         const latlng = {
           lat: parseFloat(locationData.latitude),
           lng: parseFloat(locationData.longitude),
         };
 
+        // 지오코더 서비스가 초기화된 경우, 지오코딩 요청을 실행
         if (geocoderService.current) {
           geocoderService.current.geocode(
             { location: latlng },
             (results, status) => {
+              // 요청이 성공적이고 결과가 있는 경우
               if (status === "OK" && results[0]) {
-                setValue(results[0]);
-                setInputValue(results[0].formatted_address);
+                setValue(results[0]); // 결과를 상태에 저장
+                setInputValue(results[0].formatted_address); // 포맷된 주소를 입력 값에 저장
 
                 // 리덕스에 지오코딩 주소 값을 저장
                 dispatch(
@@ -81,6 +87,7 @@ const GoogleMaps = () => {
                   }),
                 );
               } else {
+                // 지오코딩 실패 시 콘솔에 에러 메시지 출력
                 console.error("지오코딩에 실패했습니다.");
               }
             },
@@ -88,13 +95,15 @@ const GoogleMaps = () => {
         }
       };
 
+      // Google Maps API가 로드된 경우에만 지오코더 초기화
       if (window.google) {
         initializeGeocoder();
       } else {
+        // Google Maps API가 아직 로드되지 않았을 때 에러 메시지 출력
         console.error("Google Maps API가 아직 로드되지 않았습니다.");
       }
     }
-  }, [locationData.latitude, locationData.longitude, dispatch]);
+  }, [locationData.latitude, locationData.longitude, dispatch]); // 의존성 배열에 있는 값이 변경될 때마다 이 효과 실행
 
   const fetch = useMemo(
     () =>
