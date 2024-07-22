@@ -71,7 +71,13 @@ const LocationSearch = () => {
         );
       }
     }
-  }, [addrCoorX, addrCoorY, dispatch, locationData]);
+  }, [
+    addrCoorX,
+    addrCoorY,
+    dispatch,
+    locationData.latitude,
+    locationData.longitude,
+  ]);
 
   return (
     <div className="location-search">
