@@ -4,6 +4,7 @@
     justify-content: flex-end;
   }
   .filters__select {
+    min-width: 100px;
     width: 20%;
     padding: $padding-1 $padding-2;
     border: 1px solid $borderColor;
