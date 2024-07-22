@@ -54,7 +54,6 @@ const MyPageOrderPagee = () => {
         setOrders([]);
       }
     } catch (error) {
-      alert("서버에러입니다.");
       setOrders([]);
     } finally {
       setIsLoading(false);
@@ -66,7 +65,7 @@ const MyPageOrderPagee = () => {
       const res = await jwtAxios.get("/api/order/user/list");
       setOrderNow(res.data.resultData);
     } catch (error) {
-      alert("서버에러입니다.");
+      console.log(error);
     }
   };
 
