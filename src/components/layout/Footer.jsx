@@ -19,10 +19,10 @@ const Footer = () => {
             <div className="company-info__text">
               <p>대구 중구 중앙대로 394 제일빌딩 5F 506호</p>
               <p>FE : 곽도억, 김민기, 권민욱</p>
-              <p>BE : 이민역, 공영빈, 김동현, 이하늘, 정형우</p>
-              <p>개인정보담당자 : yumuniyo@gmail.com</p>
-              <p>제휴문의 : yumuniyo@gmail.com</p>
-              <p>고객만족센터 : yumuniyo@gmail.com</p>
+              <p>BE : 이민엽, 공영빈, 김동현, 이하늘, 정형우</p>
+              <p>개인정보담당자 : jumuniyo@gmail.com</p>
+              <p>제휴문의 : jumuniyo@gmail.com</p>
+              <p>고객만족센터 : jumuniyo@gmail.com</p>
             </div>
             <div className="service-info">
               <div>
