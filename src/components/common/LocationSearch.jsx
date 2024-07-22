@@ -55,7 +55,6 @@ const LocationSearch = () => {
           setErrorMessage("위치를 가져오는데 실패했습니다: " + error.message);
         },
       );
-      navigate("/restaurant/category_id=0");
     } else {
       setErrorMessage("이 브라우저는 Geolocation을 지원하지 않습니다.");
     }

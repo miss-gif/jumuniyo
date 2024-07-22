@@ -72,18 +72,14 @@ const GoogleMaps = () => {
                 setValue(results[0]);
                 setInputValue(results[0].formatted_address);
 
-                // 상태 업데이트가 필요할 때만 dispatch 호출
-                if (
-                  results[0].formatted_address !== locationData.geocodeAddress
-                ) {
-                  dispatch(
-                    setLocationData({
-                      latitude: latlng.lat,
-                      longitude: latlng.lng,
-                      geocodeAddress: results[0].formatted_address,
-                    }),
-                  );
-                }
+                // 리덕스에 지오코딩 주소 값을 저장
+                dispatch(
+                  setLocationData({
+                    latitude: latlng.lat,
+                    longitude: latlng.lng,
+                    geocodeAddress: results[0].formatted_address,
+                  }),
+                );
               } else {
                 console.error("지오코딩에 실패했습니다.");
               }
@@ -249,11 +245,6 @@ const GoogleMaps = () => {
       }}
     />
   );
-};
-
-GoogleMaps.propTypes = {
-  latitude: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  longitude: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 };
 
 export default GoogleMaps;
