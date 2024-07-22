@@ -109,9 +109,6 @@ const AuthUserPage = () => {
         if (res.data.resultMsg === "메일이 발송되었습니다.") {
           setIsEmailCheck(true);
           setIsLoading(false);
-          alert(res.data.resultMsg);
-        } else {
-          alert(res.data.resultMsg);
         }
         return res;
       } catch (error) {
