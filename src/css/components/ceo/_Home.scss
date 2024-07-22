@@ -38,7 +38,6 @@
       }
 
       .one-order-left {
-        padding-right: 50px;
       }
       .one-order-right {
         display: flex;
@@ -56,7 +55,7 @@
 
   .order-body {
     gap: 20px;
-    padding: 80px 80px 100px 80px;
+    padding: 5vw 5vw 0px 1vw;
 
     .orderedList {
       .oneOrder {
@@ -124,7 +123,6 @@
               border: 1px solid #ccc;
               margin: 8px 0px 0px 0px;
               display: block;
-              width: 30vw;
             }
             .AnOrderInf > div {
               margin-bottom: 16px;
