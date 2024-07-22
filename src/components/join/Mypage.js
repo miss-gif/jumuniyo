@@ -42,8 +42,15 @@ const Mypage = () => {
         onClick={() => navigate("/mypage/ordere")}
         style={{
           backgroundColor:
-            location.pathname === "/mypage/ordere" ? "#333" : "white",
-          color: location.pathname === "/mypage/ordere" ? "white" : "#333",
+            location.pathname === "/mypage/ordere" ||
+            location.pathname === "/mypage/orderclose"
+              ? "#333"
+              : "white",
+          color:
+            location.pathname === "/mypage/ordere" ||
+            location.pathname === "/mypage/orderclose"
+              ? "white"
+              : "#333",
         }}
       >
         주문내역

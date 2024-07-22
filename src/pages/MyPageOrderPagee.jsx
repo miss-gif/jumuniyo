@@ -148,7 +148,7 @@ const MyPageOrderPagee = () => {
                     <div className="order-main">
                       {!order.resPic ? (
                         <img
-                          src={`https://34.64.63.109/pic/images/defaultRes.png`}
+                          src={"/images/defaultRes.png"}
                           className="order-logo"
                           alt="Order Logo"
                         />
