@@ -89,7 +89,7 @@ const MyPageReviewPage = () => {
                           <div key={picIndex} className="review-img-box">
                             <img
                               className="img-size"
-                              src={`https://34.64.63.109/pic/${pic}`}
+                              src={`/pic/${pic}`}
                               alt={`Review ${picIndex}`}
                             />
                           </div>
