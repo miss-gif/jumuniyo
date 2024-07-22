@@ -11,6 +11,11 @@ const LocationSearch = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [errorMessage, setErrorMessage] = useState("");
+  const [renderKey, setRenderKey] = useState(0);
+
+  const forceRender = () => {
+    setRenderKey(prev => prev + 1);
+  };
 
   // 리덕스에서 위치 데이터와 주소 좌표 가져오기
   const locationData = useSelector(state => state.user.locationData);
@@ -35,6 +40,7 @@ const LocationSearch = () => {
           const { latitude, longitude } = position.coords;
           // 추출한 위도와 경도를 Redux 액션을 통해 상태로 저장
           dispatch(setLocationData({ latitude, longitude }));
+          forceRender(); // 강제 렌더링
         },
         // 위치 정보를 가져오는 데 실패한 경우
         error => {
@@ -80,7 +86,7 @@ const LocationSearch = () => {
   };
 
   return (
-    <div className="location-search">
+    <div className="location-search" key={renderKey}>
       {isHomePage && (
         <div>
           <h2>&quot;배달은 역시, 속전속결!&quot;</h2>
