@@ -99,15 +99,17 @@ const RestaurantsPage = () => {
                 }
               }}
             >
-              <img
-                src={
-                  restaurant.restaurantPic
-                    ? `/pic${restaurant.restaurantPic}`
-                    : "/images/defaultRes.png"
-                }
-                alt={`${restaurant.restaurantName} 이미지`}
-                className="restaurant-item__image"
-              />
+              <div className="img-cover">
+                <img
+                  src={
+                    restaurant.restaurantPic
+                      ? `/pic${restaurant.restaurantPic}`
+                      : "/images/defaultRes.png"
+                  }
+                  alt={`${restaurant.restaurantName} 이미지`}
+                  className="restaurant-item__image"
+                />
+              </div>
               <div className="restaurant-item__info">
                 <h3 className="restaurant-item__title">
                   {restaurant.restaurantName}

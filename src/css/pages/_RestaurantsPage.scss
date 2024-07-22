@@ -30,6 +30,8 @@
 
       &__image {
         width: 80px;
+        height: 80px;
+        object-fit: cover;
         border-radius: $border-radius-1;
       }
       &__title {
@@ -62,6 +64,13 @@
 
 .restaurants-page__title {
   padding: $padding-2 0;
+}
+
+.img-cover {
+  max-width: 80px;
+  max-height: 80px;
+  object-fit: cover;
+  overflow: hidden;
 }
 
 @include tablet {
