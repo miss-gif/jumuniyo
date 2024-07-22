@@ -59,7 +59,7 @@ const RestaurantsPage = () => {
     };
 
     fetchRestaurants();
-  }, [id, orderType, locationData]); // orderType이나 locationData가 변경될 때마다 재호출
+  }, [id, orderType, locationData.latitude]); // orderType이나 locationData가 변경될 때마다 재호출
 
   const handleOrderChange = e => {
     setOrderType(e.target.value);
