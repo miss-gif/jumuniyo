@@ -61,7 +61,7 @@ const Header = () => {
             )}
           </ul>
         </nav>
-        <nav className="header-mobile">
+        <nav className="header-mobile none">
           <ul>
             <li>
               <Link to="/mypage" className="flex-center">
