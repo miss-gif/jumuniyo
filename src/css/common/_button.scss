@@ -2,6 +2,10 @@
   padding: $padding-2 $padding-3;
   border-radius: $border-radius-1;
   font-size: 14px;
+  transition: background-color 0.3s ease; /* 호버 효과에 애니메이션을 추가할 경우 */
+  &:hover {
+    background-color: darken($mainColor, 10%);
+  }
 }
 
 // 수정해야하는 코드인데 이미 너무 많이 사용하고 있음
