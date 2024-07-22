@@ -138,7 +138,8 @@ const InfoManagement = ({ info, setInfo, setLoading, setError }) => {
       <p>
         <h4>영업시간</h4>
         {editMode ? (
-          <>
+          <div className="time">
+            <br />
             <input
               type="time"
               name="openTime"
@@ -154,7 +155,7 @@ const InfoManagement = ({ info, setInfo, setLoading, setError }) => {
               onChange={handleChange}
               placeholder="종료 시간"
             />
-          </>
+          </div>
         ) : (
           `${info.openTime} - ${info.closeTime}`
         )}

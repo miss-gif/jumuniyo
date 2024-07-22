@@ -49,10 +49,6 @@
                 height: 80px;
               }
             }
-            .menu-list-status {
-              display: flex;
-              margin: 0 auto;
-            }
 
             .menu-list-oneMenu-tableData {
               display: flex;
@@ -73,11 +69,29 @@
           }
           .status-action {
             display: flex;
-
             .menu-list-status {
               display: flex;
-              justify-content: center;
+              margin: 0 auto;
+              .menu-list-select {
+                font-size: 14px;
+                width: 70px;
+                padding: $padding-1 $padding-2;
+                border: 1px solid $borderColor;
+              }
+              .menu-list-select-soldOut {
+                font-size: 14px;
+                font-weight: 900;
+                width: 70px;
+                padding: $padding-1 $padding-2;
+                border: 1px solid $borderColor;
+                border-color: red;
+                color: red;
+              }
             }
+            // .menu-list-status {
+            //   display: flex;
+            //   justify-content: center;
+            // }
             .menu-list-actions {
               .btn {
                 margin-left: 10px;
