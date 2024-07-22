@@ -318,12 +318,27 @@ const MenuManagement = () => {
 
                     <div className="status-action">
                       <div className="menu-list-status">
-                        <button
+                        {/* <button
                           className="menu-list-select"
                           onClick={() => handleStatusToggle(menu)}
                         >
                           {menu.menu_state === 1 ? "판매중" : "판매중지"}
-                        </button>
+                        </button> */}
+                        {menu.menu_state === 1 ? (
+                          <button
+                            className="menu-list-select"
+                            onClick={() => handleStatusToggle(menu)}
+                          >
+                            판매중
+                          </button>
+                        ) : (
+                          <button
+                            className="menu-list-select-soldOut"
+                            onClick={() => handleStatusToggle(menu)}
+                          >
+                            판매중지
+                          </button>
+                        )}
                       </div>
                       <div className="menu-list-actions">
                         <button
@@ -367,6 +382,7 @@ const MenuManagement = () => {
               &times;
             </span>
             <h2>{isEditMode ? "메뉴 수정" : "새 메뉴 추가"}</h2>
+            <br />
             <form>
               <div className="form-group">
                 <label htmlFor="menu_name">메뉴 이름</label>
