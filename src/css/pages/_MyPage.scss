@@ -5,12 +5,12 @@
 
 .mypage-select {
   display: flex;
-  gap: 12px;
+  gap: 4px;
   flex-direction: column;
   margin-top: 32px;
 
   & button {
-    padding: 16px 32px;
+    padding: 8px 8px;
     border: 1px solid #dbdbdb;
     text-align: center;
     transition:
