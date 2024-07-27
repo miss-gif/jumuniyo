@@ -8,6 +8,7 @@ import JoinFooter from "../components/layout/JoinFooter";
 import MyMap from "../components/user/mypage/MyMap";
 import { Logo } from "../components/common/Logo";
 import LoadingSpinner from "../components/common/LoadingSpinner";
+import Swal from "sweetalert2";
 
 const AuthUserPage = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -91,22 +92,37 @@ const AuthUserPage = () => {
     if (isCheckId) {
       try {
         const res = await axios.get(`/api/is-duplicated?user_id=${userId}`);
-        if (res) {
-          alert(res.data.resultMsg);
-        }
         if (res.data.statusCode === 1) {
+          Swal.fire({
+            icon: "success",
+            title: "좋아요",
+            text: res.data.resultMsg,
+          });
           setIdCheckOk(true);
+          setIsLoading(false);
         } else {
+          Swal.fire({
+            icon: "info",
+            title: "흠...",
+            text: res.data.resultMsg,
+          });
           setIdCheckOk(false);
+          setIsLoading(false);
         }
+
+        setIsLoading(false);
         return res;
       } catch (error) {
         alert("서버에러입니다.");
-      } finally {
         setIsLoading(false);
       }
     } else {
-      alert("아이디는 8자 이상이어야 합니다.");
+      Swal.fire({
+        icon: "warning",
+        title: "이런...",
+        text: "아이디는 8자 이상이어야 합니다.",
+      });
+      setIsLoading(false);
     }
   };
 
@@ -120,11 +136,22 @@ const AuthUserPage = () => {
     if (isCheckEmail) {
       try {
         const res = await axios.post("/api/mail/send", data);
-        alert(res.data.resultMsg);
+
         setIsLoading(false);
         if (res.data.resultMsg === "메일이 발송되었습니다.") {
+          Swal.fire({
+            icon: "success",
+            title: "기다려 주셔서 감사합니다.",
+            text: res.data.resultMsg,
+          });
           setIsEmailCheck(true);
           setIsLoading(false);
+        } else {
+          Swal.fire({
+            icon: "info",
+            title: "아쉽지만...",
+            text: res.data.resultMsg,
+          });
         }
         return res;
       } catch (error) {
@@ -132,7 +159,11 @@ const AuthUserPage = () => {
         setIsLoading(false);
       }
     } else {
-      alert("이메일 형식을 확인해주세요.");
+      Swal.fire({
+        icon: "warning",
+        title: "이런...",
+        text: "이메일 형식을 확인해주세요.",
+      });
       setIsLoading(false);
     }
   };
@@ -140,6 +171,7 @@ const AuthUserPage = () => {
   const emailCheckCancle = () => {
     setIsEmailCheck(false);
   };
+
   // 이메일 인증 코드 인증
   const emailCodeCheck = async () => {
     setIsLoading(true);
@@ -156,12 +188,28 @@ const AuthUserPage = () => {
         setEmailCheckOk(false);
         setIsEmailCheck(true);
       }
+      if (emailCode === "") {
+        Swal.fire({
+          icon: "warning",
+          title: "이런...",
+          text: "빈문자열은 사용할수 없습니다.",
+        });
+        return;
+      }
       if (res.data.resultData === false) {
-        alert(res.data.resultMsg);
+        Swal.fire({
+          icon: "warning",
+          title: "이런...",
+          text: "코드가 다릅니다.",
+        });
 
         return;
       } else if (res.data.resultData === true) {
-        alert(res.data.resultMsg);
+        Swal.fire({
+          icon: "success",
+          title: "감사합니다.",
+          text: res.data.resultMsg,
+        });
         setEmailCheckOk(true);
       }
       return res;
@@ -182,16 +230,12 @@ const AuthUserPage = () => {
     const isCheckImgFile = !userImgFile || imageRegex.test(userImgFile.name);
     const isCheckBusinessNumber = businessNumberPattern.test(userCEONumber);
 
-    if (isCheckId === false) {
-      alert("아이디는 8자 이상이어야 합니다.");
-      setUserIdComplete(false);
-      return;
-    } else {
-      setUserIdComplete(true);
-    }
-
     if (idCheckOk === false) {
-      alert("아이디 중복확인을 해주세요");
+      Swal.fire({
+        icon: "warning",
+        title: "이런...",
+        text: "아이디 중복확인을 해주세요.",
+      });
       setIdCheckComplete(false);
       return;
     } else {
@@ -199,7 +243,11 @@ const AuthUserPage = () => {
     }
 
     if (isCheckEmail === false) {
-      alert("이메일 형식을 확인 해주세요");
+      Swal.fire({
+        icon: "warning",
+        title: "이런...",
+        text: "이메일 형식을 확인 해주세요.",
+      });
       setUserEmailComplete(false);
       return;
     } else {
@@ -207,7 +255,11 @@ const AuthUserPage = () => {
     }
 
     if (emailCheckOk === false) {
-      alert("이메일 인증을 해주세요");
+      Swal.fire({
+        icon: "warning",
+        title: "이런...",
+        text: "이메일 인증을 해주세요.",
+      });
       setEmailCheckComplete(false);
       return;
     } else {
@@ -215,7 +267,11 @@ const AuthUserPage = () => {
     }
 
     if (isCheckPass === false) {
-      alert("비밀번호는 8자 이상, 특수문자 사용해야합니다.");
+      Swal.fire({
+        icon: "warning",
+        title: "이런...",
+        text: "비밀번호는 8자 이상, 특수문자 사용해야합니다.",
+      });
       setUerPwComplete(false);
       return;
     } else {
@@ -223,7 +279,11 @@ const AuthUserPage = () => {
     }
 
     if (isCheckPass2 === false) {
-      alert("비밀번호가 다릅니다.");
+      Swal.fire({
+        icon: "warning",
+        title: "이런...",
+        text: "비밀번호가 다릅니다.",
+      });
       setUserPwCheckComplete(false);
       return;
     } else {
@@ -231,7 +291,11 @@ const AuthUserPage = () => {
     }
 
     if (isCheckPhone === false) {
-      alert("전화번호를 확인해주세요.");
+      Swal.fire({
+        icon: "warning",
+        title: "이런...",
+        text: "전화번호를 확인해주세요.",
+      });
       setUserPhoneComplete(false);
       return;
     } else {
@@ -239,7 +303,11 @@ const AuthUserPage = () => {
     }
 
     if (isCheckBusinessNumber === false) {
-      alert("사업자 번호는 nnn-nn-nnnnn의 형식으로 들어와야 합니다.");
+      Swal.fire({
+        icon: "warning",
+        title: "이런...",
+        text: "사업자 번호는 nnn-nn-nnnnn의 형식으로 들어와야 합니다.",
+      });
       setBusinessNumberComplete(false);
       return;
     } else {
@@ -285,11 +353,19 @@ const AuthUserPage = () => {
       try {
         const header = { headers: { "Content-Type": "multipart/form-data" } };
         const res = await axios.post("/api/owner/sign-up", pic, header); // FormData 객체를 직접 전송
-        if (res.data.statusCode === 1) {
-          alert("회원가입 성공 환영합니다.");
+        if (res.data.resultData === 1) {
+          Swal.fire({
+            icon: "success",
+            title: "이런...",
+            text: "회원가입 성공 환영합니다.",
+          });
           navigate("/login");
         } else {
-          alert(res.data.resultMsg);
+          Swal.fire({
+            icon: "warning",
+            title: "이런...",
+            text: res.data.resultMsg,
+          });
         }
 
         return res;
