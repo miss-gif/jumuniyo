@@ -27,7 +27,6 @@ const MyPage = () => {
   const [passWord, setPassWord] = useState("");
 
   const getUserInfo = async () => {
-    setIsLoading(true);
     try {
       const res = await jwtAxios.get("/api/user-info");
       setImgUrl(res.data.resultData.userPic);
@@ -38,8 +37,6 @@ const MyPage = () => {
       setUserId(res.data.resultData.userId);
     } catch (error) {
       alert("서버에러입니다.");
-    } finally {
-      setIsLoading(false);
     }
   };
 

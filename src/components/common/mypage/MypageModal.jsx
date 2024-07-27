@@ -9,11 +9,24 @@ const MypageModal = ({
   setNewAddressDetail,
   setNewXValue,
   setNewYValue,
-  isFirstUser,
+  addModalOpen,
+  setAddressName,
 }) => {
   return (
     <div className="modify-modal">
-      <h2>주소 수정</h2>
+      {addModalOpen ? <h2>주소 등록</h2> : <h2>주소 수정</h2>}
+
+      <Box>
+        <TextField
+          fullWidth
+          label="주소 이름"
+          id="fullWidth"
+          onChange={e => {
+            setAddressName(e.target.value);
+          }}
+        />
+      </Box>
+
       <Box style={{ alignItems: "center" }}>
         <MyMap
           setNewXValue={setNewXValue}

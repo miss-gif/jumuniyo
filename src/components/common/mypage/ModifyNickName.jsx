@@ -16,10 +16,15 @@ const ModifyNickName = ({
   const [newNickName, setNewNickName] = useState("");
 
   const modifyPassord = async () => {
+    setIsEditNickname(false);
     const data = {
       user_nickname: newNickName,
     };
     try {
+      if (newNickName === "") {
+        alert("공백은 사용할수없습니다.");
+        return;
+      }
       const res = await jwtAxios.patch("/api/update-nickname", data);
       if (res.data.statusCode === 1) {
         alert("닉네임 변경 완료");
@@ -32,12 +37,6 @@ const ModifyNickName = ({
     } catch (error) {
       alert("서버에러입니다.");
     }
-  };
-
-  const editNickname = () => {
-    setIsEditNickname(false);
-    setNickName(newNickName);
-    modifyPassord();
   };
 
   return (
@@ -69,7 +68,7 @@ const ModifyNickName = ({
               </Box>
             </div>
             <div>
-              <button className="btn" onClick={editNickname}>
+              <button className="btn" onClick={modifyPassord}>
                 저장
               </button>
               <button className="btn" onClick={editCancel}>
