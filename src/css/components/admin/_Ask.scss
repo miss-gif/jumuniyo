@@ -1,0 +1,39 @@
+.ask-wrap {
+  padding: 20px;
+  .tap {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #ccc;
+    * {
+      width: 100px;
+      display: flex;
+      justify-content: center;
+    }
+    .tap-title {
+      width: 300px;
+      display: flex;
+      justify-content: center;
+    }
+  }
+  .askList {
+    .oneAsk {
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px solid #ccc;
+      * {
+        width: 100px;
+        display: flex;
+        justify-content: center;
+      }
+      .tap-title {
+        width: 300px;
+        display: inline-block;
+        text-align: center;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        direction: ltr; /* 텍스트를 오른쪽에서 왼쪽으로 읽도록 설정 */
+      }
+    }
+  }
+}
