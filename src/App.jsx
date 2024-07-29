@@ -39,6 +39,11 @@ import OrdersHistory from "./components/ceo/OrdersHistory";
 import Test3 from "./pages/Test3";
 import MyPageOrderClosePage from "./pages/MyPageOrderClosePage";
 import MyPageOrderCloseDetail from "./components/user/mypage/MyPageOrderCloseDetail";
+import Ask from "./components/admin/Ask";
+import AskDetail from "./components/admin/AskDetail";
+import Report from "./components/admin/Report";
+import ReportDetail from "./components/admin/ReportDetail";
+import CategorySetting from "./components/admin/CategorySetting";
 
 // 사업자
 
@@ -109,6 +114,14 @@ function App() {
             {/* 관리자 라우터 */}
             <Route path="/admin" element={<AdminLayout />}>
               <Route path="/admin/" element={<AdminPage />} />
+              <Route path="category-setting" element={<CategorySetting />} />
+              <Route path="ask" element={<Ask />} />
+              <Route path="ask/details/:askPk" element={<AskDetail />} />
+              <Route path="report" element={<Report />} />
+              <Route
+                path="report/details/:reportPk"
+                element={<ReportDetail />}
+              />
             </Route>
 
             {/* 공통 */}
