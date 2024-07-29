@@ -2,6 +2,7 @@
 import { Rating, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
 import jwtAxios from "../../../api/user/jwtUtil";
+import Swal from "sweetalert2";
 
 const MypageReviewWrite = ({
   reviewNo,
@@ -19,12 +20,8 @@ const MypageReviewWrite = ({
     const files = Array.from(e.target.files);
     setPics(files);
   };
-  console.log(pics);
 
   const postReview = async () => {
-    setReviewOpen(false);
-    setSelectedOrderPk(null);
-
     const data = new FormData();
     data.append(
       "p",
@@ -42,13 +39,27 @@ const MypageReviewWrite = ({
     try {
       const header = { headers: { "Content-Type": "multipart/form-data" } };
       const res = await jwtAxios.post("/api/rev", data, header);
-      getOrderNow();
-      getOrderList();
-      if (res.data.statusCode) {
-        alert(res.data.resultMsg);
+      console.log(res.data.statusCode);
+      if (res.data.statusCode === 1) {
+        Swal.fire({
+          icon: "success",
+          title: "기다려 주셔서 감사합니다.",
+          text: res.data.resultMsg,
+        });
+        await getOrderNow();
+        await getOrderList();
+        setReviewOpen(false);
+        setSelectedOrderPk(null);
+      } else {
+        throw new Error(res.data.resultMsg);
       }
     } catch (error) {
-      alert("서버에러입니다.");
+      console.error("Error posting review:", error);
+      Swal.fire({
+        icon: "error",
+        title: "오류 발생",
+        text: "리뷰를 저장하는 동안 오류가 발생했습니다.",
+      });
     }
   };
 

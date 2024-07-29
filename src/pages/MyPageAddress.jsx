@@ -44,8 +44,6 @@ const MyPageAddress = () => {
     }).then(result => {
       if (result.isConfirmed) {
         deleteAddr();
-        fetchUserAddressList();
-        fetchUserAddress();
         Swal.fire({
           title: "삭제완료",
           text: "해당주소는 삭제 되었습니다.",
@@ -91,7 +89,8 @@ const MyPageAddress = () => {
   const deleteAddr = async () => {
     try {
       await jwtAxios.delete(`/api/address?addr_pk=${addressPk}`);
-      window.location.reload(); // Refresh the page
+      fetchUserAddressList();
+      fetchUserAddress();
     } catch (error) {
       alert("서버에러입니다.");
     }
@@ -127,6 +126,7 @@ const MyPageAddress = () => {
         await jwtAxios.patch("/api/address", data);
       }
       setReviewSubmitted(true);
+      fetchUserAddressList();
     } catch (error) {
       alert("서버에러입니다.");
     }
