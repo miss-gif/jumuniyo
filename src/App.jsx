@@ -44,6 +44,8 @@ import AskDetail from "./components/admin/AskDetail";
 import Report from "./components/admin/Report";
 import ReportDetail from "./components/admin/ReportDetail";
 import CategorySetting from "./components/admin/CategorySetting";
+import UserLayout from "./pages/user/layout/UserLayout";
+import MainPage from "./pages/user/main";
 
 // 사업자
 
@@ -92,6 +94,11 @@ function App() {
                 path="/mypage/withdrawal"
                 element={<MypageUserWithdrawal />}
               />
+            </Route>
+
+            {/* 3차용 레이아웃 디자인 */}
+            <Route path="/new" element={<UserLayout />}>
+              <Route index element={<MainPage />} />
             </Route>
 
             {/* 사업자 라우터 */}
