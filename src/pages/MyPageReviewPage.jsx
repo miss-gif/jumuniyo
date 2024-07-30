@@ -1,11 +1,11 @@
 import { Alert, Rating } from "@mui/material";
 import { useEffect, useState } from "react";
+import Swal from "sweetalert2";
 import jwtAxios from "../api/user/jwtUtil";
+import LoadingSpinner from "../components/common/LoadingSpinner";
+import NotLogin from "../components/common/mypage/NotLogin";
 import Mypage from "../components/join/Mypage";
 import { getCookie } from "../utils/cookie";
-import NotLogin from "../components/common/mypage/NotLogin";
-import LoadingSpinner from "../components/common/LoadingSpinner";
-import Swal from "sweetalert2";
 
 const MyPageReviewPage = () => {
   const [reviewItems, setReviewItems] = useState([]);
@@ -39,44 +39,48 @@ const MyPageReviewPage = () => {
   };
 
   const deleteReview = async reviewPk => {
-    Swal.fire({
-      title: "정말 삭제?",
-      text: "되돌릴수 없다는걸 알아두세요 복구 못합니다.",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "네 삭제할래요",
-      cancelButtonText: "아니요",
-    }).then(async result => {
+    try {
+      const result = await Swal.fire({
+        title: "정말 삭제?",
+        text: "되돌릴 수 없다는 걸 알아두세요. 복구 못합니다.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "네 삭제할래요",
+        cancelButtonText: "아니요",
+      });
+
       if (result.isConfirmed) {
         try {
           const res = await jwtAxios.delete(`/api/rev/${reviewPk}`);
           if (res.data.statusCode === 1) {
-            Swal.fire({
+            await Swal.fire({
               icon: "success",
               text: res.data.resultMsg,
             });
             const updatedItems = await updatedReviewItems();
             setReviewItems(updatedItems);
-            return;
+          } else {
+            // 추가적인 오류 처리
+            await Swal.fire({
+              title: "삭제 실패",
+              text: res.data.resultMsg,
+              icon: "error",
+            });
           }
         } catch (error) {
           console.error("서버 에러:", error);
-          Swal.fire({
+          await Swal.fire({
             title: "서버 에러",
             text: "서버에러입니다.",
             icon: "error",
           });
-          return;
         }
-        Swal.fire({
-          title: "삭제완료",
-          text: "해당 주소는 삭제되었습니다.",
-          icon: "success",
-        });
       }
-    });
+    } catch (error) {
+      console.error("Swal 에러:", error);
+    }
   };
 
   useEffect(() => {

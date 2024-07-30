@@ -1,8 +1,8 @@
 /* eslint-disable react/prop-types */
 import { Rating, TextField } from "@mui/material";
-import { useEffect, useState } from "react";
-import jwtAxios from "../../../api/user/jwtUtil";
+import { useState } from "react";
 import Swal from "sweetalert2";
+import jwtAxios from "../../../api/user/jwtUtil";
 
 const MypageReviewWrite = ({
   reviewNo,
@@ -10,9 +10,8 @@ const MypageReviewWrite = ({
   setReviewOpen,
   setSelectedOrderPk,
   getOrderList,
-  getOrderNow,
 }) => {
-  const [test, setTest] = useState("");
+  const [reviewRating, setReviewRation] = useState("");
   const [reviewWrite, setReviewWrite] = useState("");
   const [pics, setPics] = useState([]);
 
@@ -28,7 +27,7 @@ const MypageReviewWrite = ({
       JSON.stringify({
         done_order_pk: doneOrderPk,
         review_contents: reviewWrite,
-        review_rating: test,
+        review_rating: reviewRating, // 더 명확한 변수 이름 사용
       }),
     );
 
@@ -39,28 +38,31 @@ const MypageReviewWrite = ({
     try {
       const header = { headers: { "Content-Type": "multipart/form-data" } };
       const res = await jwtAxios.post("/api/rev", data, header);
-      console.log(res.data.statusCode);
       if (res.data.statusCode === 1) {
         Swal.fire({
           icon: "success",
-          title: "기다려 주셔서 감사합니다.",
+          title: "감사합니다.",
           text: res.data.resultMsg,
         });
-        await getOrderNow();
-        await getOrderList();
-        setReviewOpen(false);
-        setSelectedOrderPk(null);
+        handleSuccess();
       } else {
-        throw new Error(res.data.resultMsg);
+        Swal.fire({
+          icon: "error",
+          title: "오류 발생",
+          text: res.data.resultMsg,
+        });
+        handleSuccess();
       }
     } catch (error) {
-      console.error("Error posting review:", error);
-      Swal.fire({
-        icon: "error",
-        title: "오류 발생",
-        text: "리뷰를 저장하는 동안 오류가 발생했습니다.",
-      });
+      console.error("Error posting review:", error); // 에러 내용을 콘솔에 출력
+      alert("서버에러입니다.");
     }
+  };
+
+  const handleSuccess = () => {
+    getOrderList();
+    setReviewOpen(false);
+    setSelectedOrderPk(null);
   };
 
   return (
@@ -71,7 +73,7 @@ const MypageReviewWrite = ({
         defaultValue={0}
         precision={1}
         onChange={e => {
-          setTest(e.target.value);
+          setReviewRation(e.target.value);
         }}
       />
       <TextField
