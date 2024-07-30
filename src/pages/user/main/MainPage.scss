@@ -1,0 +1,30 @@
+.main-page {
+  &__filter-list {
+    display: flex;
+  }
+}
+
+/* item */
+.main-page {
+  &__list {
+    display: flex;
+    gap: 8px;
+  }
+  &__item {
+    width: calc(100% / 4);
+    border: 1px solid orange;
+  }
+  &__image--background {
+    width: 100%;
+    height: 80px;
+    background-color: orange;
+  }
+  &__store-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  &__review-info {
+    display: flex;
+  }
+}

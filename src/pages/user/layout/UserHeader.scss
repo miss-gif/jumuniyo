@@ -1,0 +1,63 @@
+.user-header {
+  padding: 12px 0;
+  width: 100%;
+  background-color: #fff;
+  .inner {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+  }
+}
+
+.user-header {
+  &__logo {
+  }
+  &__nav {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+  }
+  &__location {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 8px 16px;
+    background-color: #dbdbdb;
+    border-radius: 50px;
+  }
+  &__search {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 8px 16px;
+    background-color: #dbdbdb;
+    border-radius: 50px;
+    flex-grow: 1;
+    .search__input {
+      flex-grow: 1;
+    }
+  }
+  &__cart {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    padding: 8px;
+    background-color: #dbdbdb;
+  }
+  &__auth {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+  }
+}
+
+.auth-btn {
+  padding: 8px 16px;
+  background-color: #dbdbdb;
+  border-radius: 50px;
+}
