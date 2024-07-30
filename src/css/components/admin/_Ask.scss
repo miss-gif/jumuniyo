@@ -1,5 +1,5 @@
 .ask-wrap {
-  padding: 20px;
+  padding: 40px;
   .tap {
     display: flex;
     justify-content: space-between;
@@ -34,6 +34,11 @@
         white-space: nowrap;
         direction: ltr; /* 텍스트를 오른쪽에서 왼쪽으로 읽도록 설정 */
       }
+    }
+  }
+  @media (max-width: 990px) {
+    .tap-title {
+      width: 100px !important;
     }
   }
 }

@@ -34,6 +34,13 @@
         }
       }
     }
+
+    .noListMsg {
+      display: flex;
+      border-top: 1px solid $borderColor;
+      justify-content: center;
+      padding: 20px;
+    }
   }
   .orderListing {
     .tabforchoiceUl {

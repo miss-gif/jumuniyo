@@ -1,5 +1,7 @@
 /* eslint-disable react/prop-types */
 import React from "react";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 
 const RestaurantDetailInfo = ({ restaurantData }) => {
   // 소수 둘째 자리에서 반올림된 reviewScore
@@ -36,6 +38,9 @@ const RestaurantDetailInfo = ({ restaurantData }) => {
     <div className="restaurant-detail-page__info">
       <h2 className="restaurant-detail-page__info-name">
         {restaurantData.restaurantName}
+        <div className="iconforinfo">
+          <FavoriteBorderIcon style={{ color: "red" }} />
+        </div>
       </h2>
       <div className="restaurant-detail-page__info-content">
         <div className="restaurant-detail-page__info-image">
