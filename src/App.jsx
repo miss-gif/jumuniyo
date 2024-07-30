@@ -44,8 +44,12 @@ import AskDetail from "./components/admin/AskDetail";
 import Report from "./components/admin/Report";
 import ReportDetail from "./components/admin/ReportDetail";
 import CategorySetting from "./components/admin/CategorySetting";
+
 import UserLayout from "./pages/user/layout/UserLayout";
 import MainPage from "./pages/user/main";
+
+import Accept from "./components/admin/Accept";
+
 
 // 사업자
 
@@ -129,6 +133,7 @@ function App() {
                 path="report/details/:reportPk"
                 element={<ReportDetail />}
               />
+              <Route path="accept" element={<Accept />} />
             </Route>
 
             {/* 공통 */}

@@ -1,14 +1,14 @@
+import { Alert } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import jwtAxios from "../api/user/jwtUtil";
-import MypageReviewWrite from "../components/common/mypage/MypageReviewWrite";
-import MyPageOrderList from "../components/common/MyPageOrderList";
-import Mypage from "../components/join/Mypage";
-import { getCookie } from "../utils/cookie";
-import NotLogin from "../components/common/mypage/NotLogin";
-import { Alert } from "@mui/material";
 import LoadingSpinner from "../components/common/LoadingSpinner";
+import MyPageOrderList from "../components/common/MyPageOrderList";
+import MypageReviewWrite from "../components/common/mypage/MypageReviewWrite";
+import NotLogin from "../components/common/mypage/NotLogin";
+import Mypage from "../components/join/Mypage";
 import OrderListHeader from "../components/user/mypage/OrderListHeader";
+import { getCookie } from "../utils/cookie";
 
 const MyPageOrderClosePage = () => {
   const [reviewOpen, setReviewOpen] = useState(false);
@@ -47,15 +47,6 @@ const MyPageOrderClosePage = () => {
       setOrders([]);
     } finally {
       setIsLoading(false);
-    }
-  };
-
-  const orderCancel = async orderPk => {
-    try {
-      await jwtAxios.put(`/api/order/cancel/list/${orderPk}`);
-      fetchOrders("/api/done/user/list");
-    } catch (error) {
-      console.error("주문 취소 중 오류 발생:", error);
     }
   };
 

@@ -8,6 +8,7 @@ import ImageImport from "../components/layout/ImageImport";
 import { getCookie } from "../utils/cookie";
 import NotLogin from "../components/common/mypage/NotLogin";
 import LoadingSpinner from "../components/common/LoadingSpinner";
+import { useSelector } from "react-redux";
 
 const MyPage = () => {
   const [isEditNickname, setIsEditNickname] = useState(false);
@@ -25,6 +26,9 @@ const MyPage = () => {
 
   const [nickName, setNickName] = useState("");
   const [passWord, setPassWord] = useState("");
+
+  const accessToken = useSelector(state => state.user.accessToken) || "";
+  console.log(accessToken);
 
   const getUserInfo = async () => {
     try {
