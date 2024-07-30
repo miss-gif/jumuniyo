@@ -25,7 +25,7 @@ const AdminLayout = () => {
   const currentPath = location.pathname;
 
   const navItems = [
-    { path: "/admin/home", label: "사업자 승낙" },
+    { path: "/admin/accept", label: "사업자 승낙" },
     { path: "/admin/category-setting", label: "카테고리 설정" },
     { path: "/admin/ask", label: "고객문의" },
     { path: "/admin/report", label: "고객신고" },
@@ -37,19 +37,12 @@ const AdminLayout = () => {
       <div className="ceo-page">
         <div className="ceo-page__main">
           <div className="owner-nav">
-            {/* <div className="owner-nav__profile">
-              <img
-                src={
-                  userInfo && userInfo.userPic !== null
-                    ? `/pic/${userInfo.userPic}`
-                    : "/images/defaultRes.png"
-                }
-                alt="프로필 이미지"
-              />
-              <p>{restaurantInfo ? restaurantInfo.restaurantName : "닉네임"}</p>
-              <span>통합 매니저</span>
+            <div className="owner-nav__profile">
+              <img src={"/images/defaultRes.png"} alt="프로필 이미지" />
+              {/* <p>{restaurantInfo ? restaurantInfo.restaurantName : "닉네임"}</p> */}
+              <span>통합 관리자</span>
             </div>
-            <div
+            {/* <div
               className="owner-nav__search__status"
               onClick={() => navigate("/ceopage/store-management")}
             >
@@ -58,7 +51,7 @@ const AdminLayout = () => {
                   ? "영업중"
                   : "준비중"
                 : "상태"}
-            </div>*/}
+            </div>*/}{" "}
             <div className="owner-nav__wrap">
               <ul className="owner-nav__list">
                 {navItems.map(({ path, label }) => (

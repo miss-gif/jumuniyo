@@ -254,19 +254,27 @@ const OrdersHistory = () => {
       <div className="ceo-order-content">
         {selectedTab === "accepted" && (
           <div className="accepted">
-            {renderOrders(acceptedOrders, "완료된 주문이 없습니다.")}
+            {renderOrders(
+              acceptedOrders,
+              <div className="noListMsg">완료된 주문이 없습니다.</div>,
+            )}
           </div>
         )}
         {selectedTab === "refused" && (
           <div className="refused">
-            {renderOrders(refusedOrders, "거절된 주문이 없습니다.")}
+            {renderOrders(
+              refusedOrders,
+              <div className="noListMsg">거절된 주문이 없습니다.</div>,
+            )}
           </div>
         )}
         {selectedTab === "all" && (
           <div className="all">
             {renderOrders(
               allOrders,
-              "아직 주문이 없습니다. 주문을 받아주세요!",
+              <div className="noListMsg">
+                아직 주문이 없습니다. 주문을 받아주세요!
+              </div>,
             )}
           </div>
         )}
