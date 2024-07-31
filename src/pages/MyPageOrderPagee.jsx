@@ -7,6 +7,7 @@ import NotLogin from "../components/common/mypage/NotLogin";
 import Mypage from "../components/join/Mypage";
 import OrderListHeader from "../components/user/mypage/OrderListHeader";
 import { getCookie } from "../utils/cookie";
+import Swal from "sweetalert2";
 
 const MyPageOrderPagee = () => {
   const [reviewOpen, setReviewOpen] = useState(false);
@@ -70,15 +71,24 @@ const MyPageOrderPagee = () => {
     try {
       const res = await jwtAxios.put(`/api/order/cancel/list/${orderPk}`);
       if (res.data.statusCode === -10) {
-        alert("이미 접수되었습니다. 고객센터로 문의 해주세요.");
+        Swal.fire({
+          icon: "warning",
+          text: "이미 접수되었습니다. 고객센터로 문의 해주세요.",
+        });
       } else if (res.data.statusCode === 1) {
-        alert("취소 완료 되었습니다.");
+        Swal.fire({
+          icon: "success",
+          text: "취소 완료 되었습니다.",
+        });
         navigate("/mypage/orderclose");
       }
       getOrderNow();
       getOrderList();
     } catch (error) {
-      alert("서버에러입니다.");
+      Swal.fire({
+        icon: "error",
+        text: "서버에러입니다.",
+      });
     }
   };
 

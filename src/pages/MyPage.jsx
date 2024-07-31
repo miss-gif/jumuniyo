@@ -9,6 +9,7 @@ import { getCookie } from "../utils/cookie";
 import NotLogin from "../components/common/mypage/NotLogin";
 import LoadingSpinner from "../components/common/LoadingSpinner";
 import { useSelector } from "react-redux";
+import Swal from "sweetalert2";
 
 const MyPage = () => {
   const [isEditNickname, setIsEditNickname] = useState(false);
@@ -40,7 +41,10 @@ const MyPage = () => {
       setName(res.data.resultData.userName);
       setUserId(res.data.resultData.userId);
     } catch (error) {
-      alert("서버에러입니다.");
+      Swal.fire({
+        icon: "error",
+        text: "서버에러입니다.",
+      });
     }
   };
 
@@ -88,7 +92,10 @@ const MyPage = () => {
       getUserInfo();
       return res;
     } catch (error) {
-      alert("서버에러입니다.");
+      Swal.fire({
+        icon: "error",
+        text: "서버에러입니다.",
+      });
     } finally {
       setIsLoading(false);
     }

@@ -113,7 +113,10 @@ const AuthUserPage = () => {
         setIsLoading(false);
         return res;
       } catch (error) {
-        alert("서버에러입니다.");
+        Swal.fire({
+          icon: "error",
+          text: "서버에러입니다.",
+        });
         setIsLoading(false);
       }
     } else {
@@ -141,7 +144,6 @@ const AuthUserPage = () => {
         if (res.data.resultMsg === "메일이 발송되었습니다.") {
           Swal.fire({
             icon: "success",
-            title: "기다려 주셔서 감사합니다.",
             text: res.data.resultMsg,
           });
           setIsEmailCheck(true);
@@ -149,13 +151,15 @@ const AuthUserPage = () => {
         } else {
           Swal.fire({
             icon: "info",
-            title: "아쉽지만...",
             text: res.data.resultMsg,
           });
         }
         return res;
       } catch (error) {
-        alert("서버에러입니다.");
+        Swal.fire({
+          icon: "error",
+          text: "서버에러입니다.",
+        });
         setIsLoading(false);
       }
     } else {
@@ -214,7 +218,10 @@ const AuthUserPage = () => {
       }
       return res;
     } catch (error) {
-      alert("서버에러입니다.");
+      Swal.fire({
+        icon: "error",
+        text: "서버에러입니다.",
+      });
     } finally {
       setIsLoading(false);
     }
@@ -370,7 +377,10 @@ const AuthUserPage = () => {
 
         return res;
       } catch (error) {
-        alert("서버에러입니다.");
+        Swal.fire({
+          icon: "error",
+          text: "서버에러입니다.",
+        });
       }
     }
   };

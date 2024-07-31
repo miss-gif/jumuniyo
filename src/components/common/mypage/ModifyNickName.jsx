@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import jwtAxios from "../../../api/user/jwtUtil";
 import { Box, TextField } from "@mui/material";
+import Swal from "sweetalert2";
 
 const ModifyNickName = ({
   nickName,
@@ -16,26 +17,38 @@ const ModifyNickName = ({
   const [newNickName, setNewNickName] = useState("");
 
   const modifyPassord = async () => {
-    setIsEditNickname(false);
     const data = {
       user_nickname: newNickName,
     };
     try {
       if (newNickName === "") {
-        alert("공백은 사용할수없습니다.");
+        Swal.fire({
+          icon: "warning",
+          text: "공백은 사용할수없습니다.",
+        });
         return;
       }
+      setIsEditNickname(false);
       const res = await jwtAxios.patch("/api/update-nickname", data);
       if (res.data.statusCode === 1) {
-        alert("닉네임 변경 완료");
+        Swal.fire({
+          icon: "success",
+          text: "닉네임 변경 완료",
+        });
         getUserInfo();
       } else {
-        alert(res.data.resultMsg);
+        Swal.fire({
+          icon: "warning",
+          text: res.data.resultMsg,
+        });
         getUserInfo();
       }
       return res;
     } catch (error) {
-      alert("서버에러입니다.");
+      Swal.fire({
+        icon: "error",
+        text: "서버에러입니다.",
+      });
     }
   };
 

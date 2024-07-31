@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 import LoadingSpinner from "../../common/LoadingSpinner";
+import Swal from "sweetalert2";
 
 const MyPageOrderCloseDetail = () => {
   const { id } = useParams();
@@ -44,15 +45,24 @@ const MyPageOrderCloseDetail = () => {
       });
       const data = response.data;
       if (data.statusCode === 1) {
-        alert("주문 취소되었습니다");
+        Swal.fire({
+          icon: "success",
+          text: "주문 취소되었습니다.",
+        });
         setOrderData(null);
         navigate("/");
       } else {
-        alert("주문 취소에 실패했습니다. 다시 시도해 주세요.");
+        Swal.fire({
+          icon: "warning",
+          text: "주문 취소에 실패했습니다. 다시 시도해 주세요.",
+        });
       }
     } catch (error) {
       console.error("Error cancelling order", error);
-      alert("주문 취소에 실패했습니다. 다시 시도해 주세요.");
+      Swal.fire({
+        icon: "error",
+        text: "주문 취소에 실패했습니다. 다시 시도해 주세요.",
+      });
     }
   };
 

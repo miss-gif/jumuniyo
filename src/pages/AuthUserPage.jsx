@@ -93,7 +93,10 @@ const AuthUserPage = () => {
         setIsLoading(false);
         return res;
       } catch (error) {
-        alert("서버에러입니다.");
+        Swal.fire({
+          icon: "error",
+          text: "서버에러입니다.",
+        });
         setIsLoading(false);
       }
     } else {
@@ -136,7 +139,10 @@ const AuthUserPage = () => {
         }
         return res;
       } catch (error) {
-        alert("서버에러입니다.");
+        Swal.fire({
+          icon: "error",
+          text: "서버에러입니다.",
+        });
         setIsLoading(false);
       }
     } else {
@@ -195,7 +201,10 @@ const AuthUserPage = () => {
       }
       return res;
     } catch (error) {
-      alert("서버에러입니다.");
+      Swal.fire({
+        icon: "error",
+        text: "서버에러입니다.",
+      });
     } finally {
       setIsLoading(false);
     }
@@ -346,7 +355,10 @@ const AuthUserPage = () => {
 
         return res;
       } catch (error) {
-        alert("서버에러입니다.");
+        Swal.fire({
+          icon: "error",
+          text: "서버에러입니다.",
+        });
       }
     }
   };

@@ -55,7 +55,10 @@ const MypageReviewWrite = ({
       }
     } catch (error) {
       console.error("Error posting review:", error); // 에러 내용을 콘솔에 출력
-      alert("서버에러입니다.");
+      Swal.fire({
+        icon: "error",
+        text: "서버에러입니다.",
+      });
     }
   };
 
