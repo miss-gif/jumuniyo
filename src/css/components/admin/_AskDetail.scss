@@ -1,5 +1,5 @@
 .askDetail-wrap {
-  padding: 40px;
+  padding: 120px;
 
   .ask {
     display: flex;
@@ -20,6 +20,8 @@
     }
     .answerContent {
       border: 1px solid black;
+      margin-bottom: 10px;
+
       padding: 10px;
     }
   }

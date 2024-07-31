@@ -49,7 +49,7 @@ import UserLayout from "./pages/user/layout/UserLayout";
 import MainPage from "./pages/user/main";
 
 import Accept from "./components/admin/Accept";
-
+import AcceptDetail from "./components/admin/AcceptDetail";
 
 // 사업자
 
@@ -134,6 +134,7 @@ function App() {
                 element={<ReportDetail />}
               />
               <Route path="accept" element={<Accept />} />
+              <Route path="accept/details" element={<AcceptDetail />} />
             </Route>
 
             {/* 공통 */}
