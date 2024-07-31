@@ -5,6 +5,7 @@ import { Checkbox } from "@mui/material";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { initiateKakaoPay } from "../utils/kakaopayUtils";
+import Swal from "sweetalert2";
 
 const PaymentPage = () => {
   const userPhone = useSelector(state => state.user.userPhone) || "";
@@ -56,19 +57,31 @@ const PaymentPage = () => {
 
   const handlePayment = async () => {
     if (!addressDetail.trim()) {
-      alert("상세주소를 입력해 주세요.");
+      Swal.fire({
+        icon: "warning",
+        text: "상세주소를 입력해 주세요.",
+      });
       return;
     }
     if (!phone.trim()) {
-      alert("휴대전화 번호를 입력해 주세요.");
+      Swal.fire({
+        icon: "warning",
+        text: "휴대전화 번호를 입력해 주세요.",
+      });
       return;
     }
     if (!selectedPayment) {
-      alert("결제수단을 선택해 주세요.");
+      Swal.fire({
+        icon: "warning",
+        text: "결제수단을 선택해 주세요.",
+      });
       return;
     }
     if (!agreement) {
-      alert("결제 동의에 체크해 주세요.");
+      Swal.fire({
+        icon: "warning",
+        text: "결제 동의에 체크해 주세요.",
+      });
       return;
     }
 
@@ -85,7 +98,10 @@ const PaymentPage = () => {
           addressDetail,
           menuPkArray,
         );
-        alert("결제 완료: " + orderId);
+        Swal.fire({
+          icon: "success",
+          text: "결제 완료: " + orderId,
+        });
 
         // 결제 성공 후 이동
         navigate(`/mypage/order/${orderId}`); // 주문 ID를 사용하여 이동
@@ -94,7 +110,10 @@ const PaymentPage = () => {
         sessionStorage.removeItem(`selectedMenuItems_${id}`);
         sessionStorage.removeItem("restaurantName");
       } catch (error) {
-        alert("결제 실패: " + error);
+        Swal.fire({
+          icon: "error",
+          text: "결제 실패: " + error,
+        });
       }
       return;
     }
@@ -118,13 +137,22 @@ const PaymentPage = () => {
       if (res.data.statusCode === 1) {
         sessionStorage.removeItem(`selectedMenuItems_${id}`);
         sessionStorage.removeItem("restaurantName");
-        alert(res.data.resultMsg);
+        Swal.fire({
+          icon: "success",
+          text: res.data.resultMsg,
+        });
         navigate(`/mypage/order/${res.data.resultData}`);
       } else {
-        alert("결제에 실패했습니다. 다시 시도해주세요.");
+        Swal.fire({
+          icon: "warning",
+          text: "결제에 실패했습니다. 다시 시도해주세요.",
+        });
       }
     } catch (error) {
-      alert("결제에 실패했습니다. 다시 시도해주세요.");
+      Swal.fire({
+        icon: "error",
+        text: "결제에 실패했습니다. 다시 시도해주세요.",
+      });
       console.log(error);
     }
   };

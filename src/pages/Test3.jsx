@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 const Test3 = () => {
   const [amount, setAmount] = useState(1000);
@@ -32,15 +33,24 @@ const Test3 = () => {
               amount: data.paid_amount,
             })
             .then(response => {
-              alert("결제 완료: " + response.data.message);
+              Swal.fire({
+                icon: "success",
+                text: "결제 완료: " + response.data.message,
+              });
             })
             .catch(error => {
-              alert("결제 성공 후 처리 중 오류: " + error.message);
+              Swal.fire({
+                icon: "error",
+                text: "결제 성공 후 처리 중 오류: " + error.message,
+              });
             });
         } else {
           msg = "결제 실패";
           msg += "에러 내용: " + data.error_msg;
-          alert(msg);
+          Swal.fire({
+            icon: "error",
+            text: msg,
+          });
         }
       },
     );

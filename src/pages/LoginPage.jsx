@@ -14,6 +14,7 @@ import {
   setUserRole,
 } from "../app/userSlice";
 import { Logo } from "../components/common/Logo";
+import Swal from "sweetalert2";
 
 const AuthUserPage = () => {
   const [userId, setUserId] = useState("");
@@ -24,6 +25,21 @@ const AuthUserPage = () => {
 
   const login = async e => {
     e.preventDefault();
+    if (userId === "") {
+      Swal.fire({
+        icon: "warning",
+        text: "아이디를 입력해주세요.",
+      });
+      return;
+    }
+    if (userPw === "") {
+      Swal.fire({
+        icon: "warning",
+        text: "비밀번호를 입력해주세요.",
+      });
+      return;
+    }
+
     try {
       const response = await axios.post("/api/sign-in", {
         user_id: userId,
@@ -54,14 +70,20 @@ const AuthUserPage = () => {
       } else if (response.data.resultData.userRole === "ROLE_OWNER") {
         navigate("/ceopage/home");
       } else if (response.data.statusCode === 2) {
-        alert(response.data.resultMsg);
+        Swal.fire({
+          icon: "warning",
+          text: response.data.resultMsg,
+        });
         navigate("/login");
       } else {
         navigate("/");
       }
       return response.data;
     } catch (error) {
-      alert("서버에러입니다.");
+      Swal.fire({
+        icon: "error",
+        text: "서버에러입니다.",
+      });
       return error;
     }
   };

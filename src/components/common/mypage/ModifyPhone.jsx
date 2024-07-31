@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import PhoneNumberInput from "../../user/mypage/PhoneNumberInput";
 import jwtAxios from "../../../api/user/jwtUtil";
+import Swal from "sweetalert2";
 
 const ModifyPhone = ({
   isEditPhoneNumber,
@@ -20,10 +21,14 @@ const ModifyPhone = ({
     const isCheckPhone = phoneRegex.test(newPhoneNumber);
 
     if (isCheckPhone === false) {
-      alert("전화번호를 확인해주세요.");
+      Swal.fire({
+        icon: "warning",
+        text: "전화번호를 확인해주세요.",
+      });
       setPhoneNumber(phoneNumber);
       return;
     }
+    setIsEditPhoneNumber(false);
 
     const data = {
       user_phone: newPhoneNumber,
@@ -31,21 +36,29 @@ const ModifyPhone = ({
     try {
       const res = await jwtAxios.patch("/api/update-phone", data);
       if (res.data.statusCode === 1) {
-        alert("전화번호 변경 완료");
+        Swal.fire({
+          icon: "success",
+          text: "전화번호 변경 완료",
+        });
         getUserInfo();
       } else {
-        alert(res.data.resultMsg);
+        Swal.fire({
+          icon: "warning",
+          text: res.data.resultMsg,
+        });
         setPhoneNumber(phoneNumber);
         getUserInfo();
       }
       return res;
     } catch (error) {
-      alert("서버에러입니다.");
+      Swal.fire({
+        icon: "error",
+        text: "서버에러입니다.",
+      });
     }
   };
 
   const editPhoneNumber = () => {
-    setIsEditPhoneNumber(false);
     setPhoneNumber(newPhoneNumber);
     modifyPassord();
   };

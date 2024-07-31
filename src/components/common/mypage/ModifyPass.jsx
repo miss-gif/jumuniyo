@@ -2,6 +2,7 @@
 import { useState } from "react";
 import jwtAxios from "../../../api/user/jwtUtil";
 import { Box, TextField } from "@mui/material";
+import Swal from "sweetalert2";
 
 const ModifyPass = ({ setIsEditPassword, editCancel, getUserInfo }) => {
   const [statePassWord, setStatePassWord] = useState("");
@@ -12,12 +13,37 @@ const ModifyPass = ({ setIsEditPassword, editCancel, getUserInfo }) => {
 
   const modifyPassord = async () => {
     const isCheckPass = passRegex.test(newPassWord);
+    if (statePassWord === "") {
+      Swal.fire({
+        icon: "warning",
+        text: "입력하지 않은칸이 있습니다.",
+      });
+      return;
+    }
+    if (newPassWord === "") {
+      Swal.fire({
+        icon: "warning",
+        text: "입력하지 않은칸이 있습니다.",
+      });
+      return;
+    }
+    if (newPassWordCheck === "") {
+      Swal.fire({
+        icon: "warning",
+        text: "입력하지 않은칸이 있습니다.",
+      });
+      return;
+    }
 
     if (isCheckPass === false) {
-      alert("비밀번호는 8자 이상, 특수문자 사용해야합니다.");
+      Swal.fire({
+        icon: "warning",
+        text: "비밀번호는 8자 이상, 특수문자 사용해야합니다.",
+      });
       getUserInfo();
       return;
     }
+    setIsEditPassword(false);
 
     const data = {
       user_pw: statePassWord,
@@ -27,23 +53,27 @@ const ModifyPass = ({ setIsEditPassword, editCancel, getUserInfo }) => {
     try {
       const res = await jwtAxios.patch("/api/update-pw", data);
       if (res.data.statusCode === 1) {
-        alert("비밀번호 변경을 완료 했습니다.");
+        Swal.fire({
+          icon: "success",
+          text: "비밀번호 변경을 완료 했습니다.",
+        });
         getUserInfo();
       } else {
-        alert(res.data.resultMsg);
+        Swal.fire({
+          icon: "warning",
+          text: res.data.resultMsg,
+        });
         getUserInfo();
       }
       return res;
     } catch (error) {
-      alert("서버에러입니다.");
+      Swal.fire({
+        icon: "error",
+        text: "서버에러입니다.",
+      });
     }
   };
 
-  // 비밀번호 변경하기
-  const editPassword = () => {
-    setIsEditPassword(false);
-    modifyPassord();
-  };
   return (
     <>
       <div className="input-box">
@@ -83,7 +113,12 @@ const ModifyPass = ({ setIsEditPassword, editCancel, getUserInfo }) => {
         </Box>
       </div>
       <div>
-        <button className="btn" onClick={editPassword}>
+        <button
+          className="btn"
+          onClick={() => {
+            modifyPassord();
+          }}
+        >
           저장
         </button>
         <button className="btn" onClick={editCancel}>

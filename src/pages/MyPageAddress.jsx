@@ -60,7 +60,10 @@ const MyPageAddress = () => {
         setAddresses(res.data.resultData);
       }
     } catch (error) {
-      alert("서버에러입니다.");
+      Swal.fire({
+        icon: "error",
+        text: "서버에러입니다.",
+      });
     }
   }, []);
 
@@ -80,7 +83,10 @@ const MyPageAddress = () => {
         setIsFirstUser(true);
       }
     } catch (error) {
-      alert("서버에러입니다.");
+      Swal.fire({
+        icon: "error",
+        text: "서버에러입니다.",
+      });
     } finally {
       setIsLoading(false);
     }
@@ -92,7 +98,10 @@ const MyPageAddress = () => {
       fetchUserAddressList();
       fetchUserAddress();
     } catch (error) {
-      alert("서버에러입니다.");
+      Swal.fire({
+        icon: "error",
+        text: "서버에러입니다.",
+      });
     }
   };
 
@@ -128,7 +137,10 @@ const MyPageAddress = () => {
       setReviewSubmitted(true);
       fetchUserAddressList();
     } catch (error) {
-      alert("서버에러입니다.");
+      Swal.fire({
+        icon: "error",
+        text: "서버에러입니다.",
+      });
     }
   };
 

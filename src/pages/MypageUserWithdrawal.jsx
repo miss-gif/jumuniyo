@@ -5,6 +5,7 @@ import jwtAxios from "../api/user/jwtUtil";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { logout } from "../app/userSlice";
+import Swal from "sweetalert2";
 
 const MypageUserWithdrawal = () => {
   const [userPwCheck, setUserPwCheck] = useState("");
@@ -24,14 +25,20 @@ const MypageUserWithdrawal = () => {
       };
       const res = await jwtAxios.post("/api/delete", data);
       if (res.data.statusCode !== 1) {
-        alert(res.data.resultMsg);
+        Swal.fire({
+          icon: "warning",
+          text: res.data.resultMsg,
+        });
       } else if (res.data.statusCode === 1) {
         dispatch(logout());
         navgate("/");
       }
       return res;
     } catch (error) {
-      alert("서버에러입니다.");
+      Swal.fire({
+        icon: "error",
+        text: "서버에러입니다.",
+      });
     }
   };
 
