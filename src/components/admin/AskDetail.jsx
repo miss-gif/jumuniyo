@@ -18,6 +18,7 @@ const AskDetail = () => {
         <div className="askContent">너 없이 못사는 바본대 어쩌라고</div>
         <div className="answerContent">나보다 좋은사람 나타날 때 까지</div>
       </div>
+      <button className="btn">답변 남기기</button>
     </div>
   );
 };

@@ -1,9 +1,10 @@
 .ask-wrap {
-  padding: 40px;
+  padding: 120px;
   .tap {
     display: flex;
     justify-content: space-between;
     border-bottom: 1px solid #ccc;
+    font-weight: 900;
     * {
       width: 100px;
       display: flex;
@@ -36,7 +37,7 @@
       }
     }
   }
-  @media (max-width: 990px) {
+  @media (max-width: 1244px) {
     .tap-title {
       width: 100px !important;
     }
