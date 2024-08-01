@@ -1,11 +1,11 @@
 import React from "react";
-import Header from "./Header";
 import Footer from "./Footer";
 import { Outlet } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import ToTop from "../common/ToTop";
 import LocationSearch from "../common/LocationSearch";
 import RestaurantsFilters from "../common/RestaurantsFilters";
+import UserHeader from "../../pages/user/layout/UserHeader";
 
 const MY_PAGE_PATHS = ["/restaurant"];
 const RESTAURANTS_PATHS = ["/restaurant"];
@@ -24,7 +24,7 @@ function RootLayout() {
   return (
     <>
       <ToTop />
-      <Header />
+      <UserHeader />
 
       {/* 위치 검색은 홈 페이지 및 마이 페이지에서 사용 */}
       {isHomePage && <LocationSearch />}
