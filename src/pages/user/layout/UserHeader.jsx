@@ -5,6 +5,8 @@ import { IoIosArrowDown, IoIosMenu } from "react-icons/io";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { handleLogout } from "../../../utils/authUtils";
+import AddressModal from "../main/AddressModal";
+import PropTypes from "prop-types";
 
 import "./UserHeader.scss";
 
@@ -49,6 +51,26 @@ const UserHeader = () => {
     handleLogout(accessToken, dispatch, navigate);
   };
 
+  /**
+   * 모달 코드입니다.
+   *
+   */
+
+  const [isModal, setIsModal] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(null);
+
+  const openModal = item => {
+    setSelectedItem(item);
+    setIsModal(true);
+    document.body.style.overflow = "hidden"; // 스크롤 정지
+  };
+
+  const closeModal = () => {
+    setIsModal(false);
+    setSelectedItem(null);
+    document.body.style.overflow = "auto"; // 스크롤 해제
+  };
+
   return (
     <div className="user-header">
       <button className="user-header__menu-btn" onClick={toggleSidebar}>
@@ -58,7 +80,12 @@ const UserHeader = () => {
         <Link to={"/"}>주문이요</Link>
       </div>
       <nav className="user-header__nav">
-        <div className="user-header__location">
+        <div
+          className="user-header__location"
+          onClick={() => {
+            openModal();
+          }}
+        >
           <MdOutlineLocationOn />
           <span>대구 중구</span>
           <IoIosArrowDown />
@@ -96,8 +123,15 @@ const UserHeader = () => {
           )}
         </div>
       </div>
+
+      <AddressModal isOpen={isModal} onRequestClose={closeModal} />
     </div>
   );
+};
+
+AddressModal.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  onRequestClose: PropTypes.func.isRequired,
 };
 
 export default UserHeader;
