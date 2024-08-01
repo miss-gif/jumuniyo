@@ -8,6 +8,18 @@ import { handleLogout } from "../../../utils/authUtils";
 
 import "./UserHeader.scss";
 
+// AuthLinks 컴포넌트 추가
+const AuthLinks = () => (
+  <div className="user-header__auth">
+    <div className="user-header__auth-login auth-btn">
+      <Link to="/login">로그인</Link>
+    </div>
+    <div className="user-header__auth-signup auth-btn">
+      <Link to="/auth">회원가입</Link>
+    </div>
+  </div>
+);
+
 const UserHeader = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -30,9 +42,7 @@ const UserHeader = () => {
     }
   }, [isSidebarOpen, isTransitioning]);
 
-  const toggleSidebar = () => {
-    setSidebarOpen(!isSidebarOpen);
-  };
+  const toggleSidebar = () => setSidebarOpen(prev => !prev);
 
   const handleLogoutClick = () => {
     localStorage.removeItem("state");
@@ -45,7 +55,7 @@ const UserHeader = () => {
         <IoIosMenu fontSize={32} />
       </button>
       <div className="user-header__logo">
-        <a href="/">주문이요</a>
+        <Link to={"/"}>주문이요</Link>
       </div>
       <nav className="user-header__nav">
         <div className="user-header__location">
@@ -62,20 +72,7 @@ const UserHeader = () => {
         </div>
       </nav>
 
-      {isLoggedIn ? (
-        <></>
-      ) : (
-        <>
-          <div className="user-header__auth">
-            <div className="user-header__auth-login auth-btn">
-              <Link to="/login">로그인</Link>
-            </div>
-            <div className="user-header__auth-signup auth-btn">
-              <Link to="/auth">회원가입</Link>
-            </div>
-          </div>
-        </>
-      )}
+      {!isLoggedIn ? <AuthLinks /> : null}
 
       <div
         className={`sidebar-overlay ${isSidebarOpen ? "visible" : ""}`}
@@ -95,16 +92,7 @@ const UserHeader = () => {
               </li>
             </>
           ) : (
-            <>
-              <div className="user-header__auth">
-                <div className="user-header__auth-login auth-btn">
-                  <Link to="/login">로그인</Link>
-                </div>
-                <div className="user-header__auth-signup auth-btn">
-                  <Link to="/auth">회원가입</Link>
-                </div>
-              </div>
-            </>
+            <AuthLinks />
           )}
         </div>
       </div>
