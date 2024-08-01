@@ -1,10 +1,19 @@
-import { Link, useNavigate } from "react-router-dom";
-import JoinFooter from "../components/layout/JoinFooter";
-import { Box, TextField } from "@mui/material";
-import { useState } from "react";
+import {
+  Box,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  TextField,
+  makeStyles,
+  styled,
+} from "@mui/material";
 import axios from "axios";
-import { setCookie } from "../utils/cookie";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 import {
   setAccessToken,
   setTokenMaxAge,
@@ -14,11 +23,66 @@ import {
   setUserRole,
 } from "../app/userSlice";
 import { Logo } from "../components/common/Logo";
-import Swal from "sweetalert2";
+import JoinFooter from "../components/layout/JoinFooter";
+import { setCookie } from "../utils/cookie";
+
+const StyledButton = styled(Button)({
+  backgroundColor: "#3085d6",
+  color: "#fff",
+  "&:hover": {
+    backgroundColor: "#2874a6",
+  },
+  borderRadius: "5px",
+  boxShadow: "0 2px 2px rgba(0, 0, 0, 0.1)",
+  padding: "10px 20px",
+});
+
+const CancelButton = styled(Button)({
+  backgroundColor: "#aaa",
+  color: "#fff",
+  "&:hover": {
+    backgroundColor: "#888",
+  },
+  borderRadius: "5px",
+  boxShadow: "0 2px 2px rgba(0, 0, 0, 0.1)",
+  padding: "10px 20px",
+});
 
 const AuthUserPage = () => {
   const [userId, setUserId] = useState("");
   const [userPw, setUserPw] = useState("");
+  const [findIdIsOpen, setFindIdIsOpen] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleConfirm = () => {
+    if (email === "") {
+      Swal.fire({
+        icon: "warning",
+        text: "이메일 입력해주세요.",
+      });
+    }
+    if (name === "") {
+      Swal.fire({
+        icon: "warning",
+        text: "아이디를 입력해주세요.",
+      });
+    }
+
+    console.log(`입력된 이름: ${name}`);
+    console.log(`입력된 이메일: ${email}`);
+    setOpen(false);
+  };
+
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
@@ -88,6 +152,40 @@ const AuthUserPage = () => {
     }
   };
 
+  const findId = async () => {
+    const { value: formValues } = await Swal.fire({
+      title: "아이디 찾기",
+      html:
+        '<input id="swal-input1" class="swal2-input" placeholder="이름을 입력 해주세요." />' +
+        '<input id="swal-input2" class="swal2-input" type="email" placeholder="이메일을 입력 해주세요." />',
+      focusConfirm: false,
+      preConfirm: () => {
+        return [
+          document.getElementById("swal-input1").value,
+          document.getElementById("swal-input2").value,
+        ];
+      },
+    });
+
+    if (formValues) {
+      const [name, email] = formValues;
+      if (name === "") {
+        Swal.fire({
+          icon: "warning",
+          text: "이름을 입력해주세요.",
+        });
+        return;
+      }
+      if (email === "") {
+        Swal.fire({
+          icon: "warning",
+          text: "이메일을 입력해주세요.",
+        });
+        return;
+      }
+    }
+  };
+
   return (
     <>
       <div className="user-join-wrap">
@@ -127,7 +225,7 @@ const AuthUserPage = () => {
             />
           </Box>
 
-          <div>
+          <div className="login-find">
             <h6
               onClick={() => {
                 navigate("/auth");
@@ -135,7 +233,22 @@ const AuthUserPage = () => {
             >
               회원가입
             </h6>
+            <h6
+              onClick={() => {
+                findId();
+              }}
+            >
+              아이디 찾기
+            </h6>
+            <h6
+              onClick={() => {
+                handleClickOpen();
+              }}
+            >
+              비밀번호 찾기
+            </h6>
           </div>
+
           <button
             type="submit"
             className="btn"
@@ -212,6 +325,40 @@ const AuthUserPage = () => {
             </div>
           </div> */}
         </form>
+
+        <Dialog open={open} onClose={handleClose}>
+          <span className="find-text">아이디 찾기</span>
+          <DialogContent>
+            <TextField
+              autoFocus
+              margin="dense"
+              label="이름"
+              type="text"
+              fullWidth
+              value={name}
+              onChange={e => setName(e.target.value)}
+            />
+            <TextField
+              margin="dense"
+              label="이메일"
+              type="email"
+              fullWidth
+              value={email}
+              onChange={e => setEmail(e.target.value)}
+            />
+          </DialogContent>
+          <DialogActions>
+            <StyledButton onClick={handleConfirm} className={makeStyles.button}>
+              확인
+            </StyledButton>
+            <CancelButton
+              onClick={handleClose}
+              className={makeStyles.cancelButton}
+            >
+              취소
+            </CancelButton>
+          </DialogActions>
+        </Dialog>
       </div>
       <JoinFooter />
     </>
