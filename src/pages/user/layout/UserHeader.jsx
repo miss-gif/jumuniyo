@@ -12,9 +12,9 @@ const UserHeader = () => {
   const toggleSidebar = () => {
     setSidebarOpen(!isSidebarOpen);
     if (!isSidebarOpen) {
-      document.body.style.overflow = "hidden"; // 스크롤 정지
+      document.documentElement.style.overflow = "hidden"; // 스크롤 정지
     } else {
-      document.body.style.overflow = "auto"; // 스크롤 재개
+      document.documentElement.style.overflow = "auto"; // 스크롤 재개
     }
   };
 
