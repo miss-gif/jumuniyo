@@ -95,7 +95,6 @@ const AuthUserPage = () => {
         if (res.data.statusCode === 1) {
           Swal.fire({
             icon: "success",
-            title: "좋아요",
             text: res.data.resultMsg,
           });
           setIdCheckOk(true);
@@ -103,7 +102,6 @@ const AuthUserPage = () => {
         } else {
           Swal.fire({
             icon: "info",
-            title: "흠...",
             text: res.data.resultMsg,
           });
           setIdCheckOk(false);
@@ -122,7 +120,6 @@ const AuthUserPage = () => {
     } else {
       Swal.fire({
         icon: "warning",
-        title: "이런...",
         text: "아이디는 8자 이상이어야 합니다.",
       });
       setIsLoading(false);
@@ -165,7 +162,6 @@ const AuthUserPage = () => {
     } else {
       Swal.fire({
         icon: "warning",
-        title: "이런...",
         text: "이메일 형식을 확인해주세요.",
       });
       setIsLoading(false);
@@ -195,7 +191,6 @@ const AuthUserPage = () => {
       if (emailCode === "") {
         Swal.fire({
           icon: "warning",
-          title: "이런...",
           text: "빈문자열은 사용할수 없습니다.",
         });
         return;
@@ -203,7 +198,6 @@ const AuthUserPage = () => {
       if (res.data.resultData === false) {
         Swal.fire({
           icon: "warning",
-          title: "이런...",
           text: "코드가 다릅니다.",
         });
 
@@ -211,7 +205,6 @@ const AuthUserPage = () => {
       } else if (res.data.resultData === true) {
         Swal.fire({
           icon: "success",
-          title: "감사합니다.",
           text: res.data.resultMsg,
         });
         setEmailCheckOk(true);
@@ -240,7 +233,6 @@ const AuthUserPage = () => {
     if (idCheckOk === false) {
       Swal.fire({
         icon: "warning",
-        title: "이런...",
         text: "아이디 중복확인을 해주세요.",
       });
       setIdCheckComplete(false);
@@ -252,7 +244,6 @@ const AuthUserPage = () => {
     if (isCheckEmail === false) {
       Swal.fire({
         icon: "warning",
-        title: "이런...",
         text: "이메일 형식을 확인 해주세요.",
       });
       setUserEmailComplete(false);
@@ -264,7 +255,6 @@ const AuthUserPage = () => {
     if (emailCheckOk === false) {
       Swal.fire({
         icon: "warning",
-        title: "이런...",
         text: "이메일 인증을 해주세요.",
       });
       setEmailCheckComplete(false);
@@ -276,7 +266,6 @@ const AuthUserPage = () => {
     if (isCheckPass === false) {
       Swal.fire({
         icon: "warning",
-        title: "이런...",
         text: "비밀번호는 8자 이상, 특수문자 사용해야합니다.",
       });
       setUerPwComplete(false);
@@ -288,7 +277,6 @@ const AuthUserPage = () => {
     if (isCheckPass2 === false) {
       Swal.fire({
         icon: "warning",
-        title: "이런...",
         text: "비밀번호가 다릅니다.",
       });
       setUserPwCheckComplete(false);
@@ -300,7 +288,6 @@ const AuthUserPage = () => {
     if (isCheckPhone === false) {
       Swal.fire({
         icon: "warning",
-        title: "이런...",
         text: "전화번호를 확인해주세요.",
       });
       setUserPhoneComplete(false);
@@ -312,7 +299,6 @@ const AuthUserPage = () => {
     if (isCheckBusinessNumber === false) {
       Swal.fire({
         icon: "warning",
-        title: "이런...",
         text: "사업자 번호는 nnn-nn-nnnnn의 형식으로 들어와야 합니다.",
       });
       setBusinessNumberComplete(false);
@@ -363,14 +349,12 @@ const AuthUserPage = () => {
         if (res.data.resultData === 1) {
           Swal.fire({
             icon: "success",
-            title: "이런...",
             text: "회원가입 성공 환영합니다.",
           });
           navigate("/login");
         } else {
           Swal.fire({
             icon: "warning",
-            title: "이런...",
             text: res.data.resultMsg,
           });
         }
