@@ -50,6 +50,7 @@ import MainPage from "./pages/user/main";
 
 import Accept from "./components/admin/Accept";
 import AcceptDetail from "./components/admin/AcceptDetail";
+import MypageReportPage from "./pages/MypageReportPage";
 
 // 사업자
 
@@ -82,6 +83,7 @@ function App() {
               <Route path="/mypage" element={<MyPage />} />
               <Route path="/mypage/order/:id" element={<MyPageOrderPage />} />
               <Route path="/mypage/ordere" element={<MyPageOrderPagee />} />
+              <Route path="/mypage/report" element={<MypageReportPage />} />
               <Route
                 path="/mypage/orderclose"
                 element={<MyPageOrderClosePage />}
