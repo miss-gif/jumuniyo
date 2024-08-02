@@ -7,7 +7,7 @@ const AddressModal = ({ isOpen, onRequestClose }) => {
     <Modal
       isOpen={isOpen}
       onRequestClose={onRequestClose}
-      className="modal"
+      className="react-modal"
       overlayClassName="overlay"
     >
       <div className="modal__content">
@@ -15,7 +15,7 @@ const AddressModal = ({ isOpen, onRequestClose }) => {
           <h2>123</h2>
           <p>111</p>
           <ul className="tag__list"></ul>
-          <button>확인</button>
+          <button onClick={onRequestClose}>확인</button>
         </div>
       </div>
     </Modal>
