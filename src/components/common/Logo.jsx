@@ -13,6 +13,7 @@ export const Logo = () => {
 const StyledLink = styled(Link)`
   display: flex;
   align-items: center;
+  justify-content: center;
   img {
     height: 60px;
   }

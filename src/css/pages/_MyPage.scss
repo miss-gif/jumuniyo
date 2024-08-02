@@ -261,6 +261,7 @@
 .flex-between-box {
   display: flex;
   justify-content: space-between;
+  width: 100%;
 }
 
 @include tablet {
@@ -274,6 +275,11 @@
     & button {
       width: 100%;
     }
+  }
+
+  .flex-between-box {
+    justify-content: center;
+    display: flex;
   }
 
   .address-button-box {

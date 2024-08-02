@@ -65,6 +65,16 @@ const Mypage = () => {
       >
         리뷰내역
       </button>
+      <button
+        onClick={() => navigate("/mypage/report")}
+        style={{
+          backgroundColor:
+            location.pathname === "/mypage/report" ? "#333" : "white",
+          color: location.pathname === "/mypage/report" ? "white" : "#333",
+        }}
+      >
+        문의내역
+      </button>
       {!isLogin ? null : (
         <button
           onClick={() => navigate("/mypage/withdrawal")}
