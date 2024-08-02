@@ -67,11 +67,13 @@
     align-items: center;
     gap: 8px;
   }
+  &__auth.column {
+    flex-direction: column;
+  }
 }
 
 .auth-btn {
   padding: 8px 16px;
-
   border-radius: 50px;
 }
 
@@ -104,6 +106,8 @@
 }
 
 .sidebar {
+  display: flex;
+  flex-direction: column;
   background: white;
   width: 250px;
   height: 100%;

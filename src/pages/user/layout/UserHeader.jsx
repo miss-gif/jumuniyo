@@ -119,7 +119,14 @@ const UserHeader = () => {
               </li>
             </>
           ) : (
-            <AuthLinks />
+            <div className="user-header__auth column">
+              <div className="user-header__auth-login auth-btn">
+                <Link to="/login">로그인</Link>
+              </div>
+              <div className="user-header__auth-signup auth-btn">
+                <Link to="/auth">회원가입</Link>
+              </div>
+            </div>
           )}
         </div>
       </div>
