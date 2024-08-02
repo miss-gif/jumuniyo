@@ -87,12 +87,6 @@ const LocationSearch = () => {
 
   return (
     <div className="location-search" key={renderKey}>
-      {isHomePage && (
-        <div>
-          <h2>&quot;배달은 역시, 속전속결!&quot;</h2>
-          <p>받으실 동 이름으로 검색해주세요</p>
-        </div>
-      )}
       <div className="location-search__group">
         <button
           className="location-search__icon"

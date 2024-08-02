@@ -1,25 +1,107 @@
-.modal {
+.react-modal {
   position: absolute;
-  top: 50%;
+  top: 35%;
   left: 50%;
   transform: translate(-50%, -50%);
   background-color: var(--container-color);
-  padding: 20px;
-  border-radius: 4px;
-  outline: none;
-  color: #fff;
+  color: #333;
+  animation: slide-top 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+
+@keyframes slide-top {
+  0% {
+    transform: translate(-50%, -50%) translateY(20px);
+  }
+  100% {
+    transform: translate(-50%, -50%) translateY(0);
+  }
 }
 
 .overlay {
   position: fixed;
   inset: 0;
   z-index: 9999;
-  background-color: rgba($color: #000000, $alpha: 0.8);
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
-/* 콘텐츠 내용 */
-
 .modal__content {
+  min-width: 500px;
+  min-height: 500px;
+  background-color: #fff;
   display: flex;
+  flex-direction: column;
   gap: 20px;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.modal__title {
+  font-size: 24px;
+}
+
+.modal__tabs {
+  display: flex;
+  border-bottom: 1px solid #ccc;
+  color: #777;
+
+  .tab-button {
+    padding: 10px;
+    flex: 1;
+
+    &.active {
+      font-weight: 500;
+      background-color: #f0f0f0;
+      color: #333;
+    }
+  }
+}
+
+.modal__search {
+  border-radius: 30px;
+  padding: 10px 20px;
+  background-color: #f0f0f0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  input {
+    width: 100%;
+  }
+}
+
+.modal__addresses {
+  background-color: #fff;
+  border-radius: 4px;
+  height: 100%;
+  overflow-y: auto;
+  color: #333;
+}
+
+.modal__content-close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #333;
+}
+.address-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.address-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+}
+.address-name {
+  font-size: 16px;
+  font-weight: 700;
+}
+.address-detail {
+  font-size: 14px;
 }

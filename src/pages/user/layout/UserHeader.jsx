@@ -62,13 +62,13 @@ const UserHeader = () => {
   const openModal = item => {
     setSelectedItem(item);
     setIsModal(true);
-    document.body.style.overflow = "hidden"; // 스크롤 정지
+    document.documentElement.style.overflow = "hidden";
   };
 
   const closeModal = () => {
     setIsModal(false);
     setSelectedItem(null);
-    document.body.style.overflow = "auto"; // 스크롤 해제
+    document.documentElement.style.overflow = "auto";
   };
 
   return (
@@ -119,11 +119,17 @@ const UserHeader = () => {
               </li>
             </>
           ) : (
-            <AuthLinks />
+            <div className="user-header__auth column">
+              <div className="user-header__auth-login auth-btn">
+                <Link to="/login">로그인</Link>
+              </div>
+              <div className="user-header__auth-signup auth-btn">
+                <Link to="/auth">회원가입</Link>
+              </div>
+            </div>
           )}
         </div>
       </div>
-
       <AddressModal isOpen={isModal} onRequestClose={closeModal} />
     </div>
   );

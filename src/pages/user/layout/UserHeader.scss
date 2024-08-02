@@ -1,13 +1,9 @@
 .user-header {
-  position: fixed;
-  top: 0;
-  z-index: 9999;
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 8px;
   padding: 0 40px;
-  width: 100%;
   height: 64px;
   background-color: #fff;
   font-size: 14px;
@@ -67,11 +63,13 @@
     align-items: center;
     gap: 8px;
   }
+  &__auth.column {
+    flex-direction: column;
+  }
 }
 
 .auth-btn {
   padding: 8px 16px;
-
   border-radius: 50px;
 }
 
@@ -104,6 +102,8 @@
 }
 
 .sidebar {
+  display: flex;
+  flex-direction: column;
   background: white;
   width: 250px;
   height: 100%;
