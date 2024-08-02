@@ -62,13 +62,13 @@ const UserHeader = () => {
   const openModal = item => {
     setSelectedItem(item);
     setIsModal(true);
-    document.body.style.overflow = "hidden"; // 스크롤 정지
+    document.documentElement.style.overflow = "hidden";
   };
 
   const closeModal = () => {
     setIsModal(false);
     setSelectedItem(null);
-    document.body.style.overflow = "auto"; // 스크롤 해제
+    document.documentElement.style.overflow = "auto";
   };
 
   return (
