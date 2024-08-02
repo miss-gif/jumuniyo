@@ -45,11 +45,12 @@ const Report = () => {
   ];
   return (
     <div className="ask-wrap">
+      <h1>신고 목록</h1>
       <div className="tap">
         <div className="tap-number">문의 번호</div>
         <div className="tap-title">문의 제목</div>
-        <div className="tap-status">답변여부</div>
-        <div className="tap-completeTime">답변시간</div>
+        <div className="tap-status">처리여부</div>
+        <div className="tap-completeTime">처리시간</div>
         <div className="tap-writer">작성자</div>
         <div className="tap-writeTime">작성날짜</div>
       </div>

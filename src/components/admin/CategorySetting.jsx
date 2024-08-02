@@ -17,9 +17,11 @@ const CategorySetting = () => {
       <div className="categorySetting-wrap">
         <section className="category-header">
           <h1>카테고리 설정</h1>
-          <button className="btn category-add">카테고리 추가</button>
-          <button className="btn category-add">카테고리 수정</button>
-          <button className="btn category-add">카테고리 순서변경</button>
+          <div className="category-button">
+            <button className="btn category-add">카테고리 추가</button>
+            <button className="btn category-add">카테고리 수정</button>
+            <button className="btn category-add">카테고리 순서변경</button>
+          </div>
         </section>
         <section className="category">
           <ul className="category__list">

@@ -46,8 +46,9 @@ const Accept = () => {
   return (
     <>
       <div className="ask-wrap">
+        <h1>사업자 승인 목록</h1>
         <div className="tap">
-          <div className="tap-number">문의 번호</div>
+          <div className="tap-number">번호</div>
           <div className="tap-title">문의 제목</div>
           <div className="tap-status">답변여부</div>
           <div className="tap-completeTime">답변시간</div>

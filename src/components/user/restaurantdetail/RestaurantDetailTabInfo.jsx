@@ -69,6 +69,10 @@ const RestaurantDetailTabInfo = ({ restaurantData }) => {
           </div>
         </div>
       </div>
+      <div className="restaurant-detail-tab-info__wrap">
+        <div className="restaurant-detail-tab-info__title">지도정보</div>
+        <div className="restaurant-detail-tab-info__content"></div>
+      </div>
       <div className="restaurant-detail-tab-info__wrap none">
         <div className="restaurant-detail-tab-info__title">원산지정보</div>
         <div className="restaurant-detail-tab-info__content">
