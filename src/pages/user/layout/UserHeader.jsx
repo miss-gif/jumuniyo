@@ -130,7 +130,6 @@ const UserHeader = () => {
           )}
         </div>
       </div>
-
       <AddressModal isOpen={isModal} onRequestClose={closeModal} />
     </div>
   );
