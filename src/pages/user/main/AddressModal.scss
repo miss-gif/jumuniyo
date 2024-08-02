@@ -4,7 +4,6 @@
   left: 50%;
   transform: translate(-50%, -50%);
   background-color: var(--container-color);
-  padding: 20px;
   border-radius: 4px;
   outline: none;
   color: #fff;
@@ -63,5 +62,16 @@
   border-radius: 4px;
   height: 100%;
   overflow-y: auto;
+  color: #333;
+}
+
+.modal__content-close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   color: #333;
 }

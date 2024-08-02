@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Modal from "react-modal";
 import "./AddressModal.scss";
 import PropTypes from "prop-types";
+import { IoIosClose } from "react-icons/io";
 
 const AddressModal = ({ isOpen, onRequestClose }) => {
   const [activeTab, setActiveTab] = useState("recent");
@@ -43,6 +44,9 @@ const AddressModal = ({ isOpen, onRequestClose }) => {
             <div>등록된 주소 목록</div>
           )}
         </div>
+        <button className="modal__content-close">
+          <IoIosClose fontSize={30} onClick={onRequestClose} />
+        </button>
       </div>
     </Modal>
   );
