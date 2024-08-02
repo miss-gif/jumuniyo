@@ -3,6 +3,7 @@ import React from "react";
 const AskDetail = () => {
   return (
     <div className="askDetail-wrap">
+      <h1>No. 123541</h1>
       <div className="ask">
         <div className="askTitle">이 쿠폰 어떻게 쓰나요?</div>
         <div className="askWriter">

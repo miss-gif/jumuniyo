@@ -45,6 +45,7 @@ const Ask = () => {
   ];
   return (
     <div className="ask-wrap">
+      <h1>문의 목록</h1>
       <div className="tap">
         <div className="tap-number">문의 번호</div>
         <div className="tap-title">문의 제목</div>

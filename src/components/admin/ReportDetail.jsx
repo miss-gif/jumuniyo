@@ -4,6 +4,7 @@ const ReportDetail = () => {
   return (
     <>
       <div className="reportDetail-wrap">
+        <h1>No. 123541</h1>
         <div className="report">
           <div className="reportTitle">이 사람 언행이 부적절 합니다.</div>
           <div className="reportWriter">
