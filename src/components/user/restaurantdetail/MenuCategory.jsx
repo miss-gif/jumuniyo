@@ -10,6 +10,10 @@ const MenuCategory = ({ menuData, onSelectMenuItem }) => {
     setIsOpen(!isOpen);
   };
 
+  const formatPrice = price => {
+    return price.toLocaleString();
+  };
+
   return (
     <div className="menu-category">
       <div className="toggle-category" onClick={toggleMenu}>
@@ -33,7 +37,9 @@ const MenuCategory = ({ menuData, onSelectMenuItem }) => {
                 <div className="menu-category__description">
                   {item.menu_content}
                 </div>
-                <div className="menu-category__price">{item.menu_price}원</div>
+                <div className="menu-category__price">
+                  {formatPrice(item.menu_price)}원
+                </div>
                 {item.menu_state === 2 && (
                   <div className="menu-category__status">준비중입니다.</div>
                 )}
