@@ -28,6 +28,9 @@ const OrderSummary = ({
     cursor: selectedMenuItems.length > 0 ? "pointer" : "default",
   };
 
+  const formatPrice = price => {
+    return price.toLocaleString();
+  };
   return (
     <div className="order-summary">
       <div className="order-summary-content">
@@ -60,7 +63,7 @@ const OrderSummary = ({
                       <CloseIcon />
                     </div>
                     <div className="order-summary__price">
-                      {item.menu_price}원
+                      {formatPrice(item.menu_price)}원{" "}
                     </div>
                   </div>
                   <div className="quantity-count">
@@ -82,7 +85,7 @@ const OrderSummary = ({
           {selectedMenuItems.length > 0 && (
             <div className="order-summary__total-amount">
               <p>총 결제 금액</p>
-              <p>{totalAmount}원</p>
+              <p>{formatPrice(totalAmount)}원</p>
             </div>
           )}
         </div>
@@ -92,7 +95,6 @@ const OrderSummary = ({
         style={submitButtonStyle}
         onClick={() => {
           onOrder(restaurantName);
-
         }}
       >
         주문하기
