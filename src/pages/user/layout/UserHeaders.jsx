@@ -1,3 +1,4 @@
+import Filters from "../../../components/restaurants/Filters";
 import CategoryFilter from "./CategoryFilter";
 import UserHeader from "./UserHeader";
 import "./UserHeaders.scss";
@@ -7,6 +8,7 @@ const UserHeaders = () => {
     <div className="user-headers">
       <UserHeader />
       <CategoryFilter />
+      <Filters />
     </div>
   );
 };
