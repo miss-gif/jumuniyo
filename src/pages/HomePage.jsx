@@ -3,11 +3,15 @@ import NewRestaurantListCarousel from "../components/home/NewRestaurantListCarou
 import RecommendationCarousel from "../components/home/RecommendationCarousel";
 import CategoryNavigation from "../components/home/CategoryNavigation";
 import RecentOrderCarousel from "../components/home/RecentOrderCarousel";
+import MainPage from "./user/main";
 
 const HomePage = () => {
   return (
     <div className="home-page">
-      <CategoryNavigation />
+      <MainPage />
+      <div className="none">
+        <CategoryNavigation />
+      </div>
       <div className="none">
         <section className="section-carousel">
           <h3 className="section__title">

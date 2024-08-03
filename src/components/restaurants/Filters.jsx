@@ -1,13 +1,14 @@
 import React from "react";
+import "./Filters.scss";
 
 const Filters = () => {
   return (
-    <div className="filters">
-      <select className="filters__select">
-        <option value="1">기본 정렬순</option>
-        <option value="2">별점순</option>
-        <option value="3">리뷰 많은순</option>
-      </select>
+    <div className="inner">
+      <ul className="main-page__filter-list">
+        <li className="main-page__filter-item">기본정렬순</li>
+        <li className="main-page__filter-item">가까운거리순</li>
+        <li className="main-page__filter-item">별점높은순</li>
+      </ul>
     </div>
   );
 };
