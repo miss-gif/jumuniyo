@@ -44,8 +44,6 @@ import Test from "./pages/Test";
 import Test3 from "./pages/Test3";
 import { OrderProvider } from "./pages/user/OrderContext";
 import RestaurantDetailPage2 from "./pages/user/RestaurantDetailPage2";
-import UserLayout from "./pages/user/layout/UserLayout";
-import MainPage from "./pages/user/main";
 
 function App() {
   return (
@@ -85,11 +83,6 @@ function App() {
             <Route path="projectinfo" element={<ProjectInfo />} />
           </Route>
 
-          {/* 3차용 레이아웃 */}
-          <Route path="/new" element={<UserLayout />}>
-            <Route index element={<MainPage />} />
-          </Route>
-
           {/* 사업자 */}
           <Route path="/ceopage" element={<CeoLayout />}>
             <Route index element={<CeoPage />} />
@@ -126,8 +119,8 @@ function App() {
 
           {/* 공통 */}
           <Route path="*" element={<NotFound />} />
-          <Route path="/test" element={<Test />} />
-          <Route path="/test3" element={<Test3 />} />
+          <Route path="/toastTest" element={<Test />} />
+          <Route path="/paymentTest" element={<Test3 />} />
         </Routes>
       </div>
     </OrderProvider>
