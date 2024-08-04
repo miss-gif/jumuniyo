@@ -9,7 +9,7 @@ import LoadingSpinner from "../../../components/common/LoadingSpinner";
 
 const StatusListItem = styled.li`
   position: relative;
-  background-color: ${props => (props.isClosed ? "#ddd" : "white")};
+  /* background-color: ${props => (props.isClosed ? "#ddd" : "")}; */
   opacity: ${props => (props.isClosed ? ".6" : "1")};
   cursor: ${props => (props.isClosed ? "auto" : "pointer")};
 
@@ -80,8 +80,7 @@ const RestaurantsPage = () => {
         </select>
       </div>
       <h2 className="restaurants-page__title">
-        주문이요 등록 음식점
-        <span className="search-count">{totalElements}</span>
+        전체보기 (<span className="search-count">{totalElements}</span>)건
       </h2>
       {isLoading ? (
         <LoadingSpinner />
@@ -91,7 +90,7 @@ const RestaurantsPage = () => {
         <ul className="restaurants-page__list">
           {restaurantData.map(restaurant => (
             <StatusListItem
-              className="restaurant-item bc"
+              className="restaurant-item"
               key={restaurant.restaurantPk}
               isClosed={restaurant.restaurantState === 2}
               onClick={() => {
@@ -112,19 +111,18 @@ const RestaurantsPage = () => {
                 />
               </div>
               <div className="restaurant-item__info">
-                <h3 className="restaurant-item__title">
-                  {restaurant.restaurantName}
-                </h3>
+                <div className="restaurant-item__top">
+                  <h3 className="restaurant-item__title">
+                    {restaurant.restaurantName}
+                  </h3>
+                  <div className="rank-point">
+                    {restaurant.reviewAvgScore
+                      ? restaurant.reviewAvgScore.toFixed(1)
+                      : "-"}
+                  </div>
+                </div>
                 <div className="restaurant-item__comment-count">
                   <div className="restaurant-item__rank-point">
-                    <div className="rank-point">
-                      <MdOutlineStarPurple500 />
-                      <p>
-                        {restaurant.reviewAvgScore
-                          ? restaurant.reviewAvgScore.toFixed(1)
-                          : "N/A"}
-                      </p>
-                    </div>
                     <p>
                       리뷰 <span>{restaurant.reviewTotalElements}</span>
                     </p>
