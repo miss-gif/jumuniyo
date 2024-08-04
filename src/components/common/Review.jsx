@@ -4,7 +4,7 @@ import OwnerComment from "./OwnerComment";
 import ModalforReview from "./ModalForReview";
 import ReportModal from "./ReportModal";
 
-const Review = ({ review }) => {
+const Review = ({ review, isLoggedIn, setShowLoginModal }) => {
   const { nickName, reviewContents, reviewRating, pics, createdAt, reply } =
     review;
 
@@ -23,6 +23,10 @@ const Review = ({ review }) => {
   };
 
   const openReportModal = () => {
+    if (!isLoggedIn) {
+      setShowLoginModal(true);
+      return;
+    }
     setIsReportModalOpen(true);
   };
 

@@ -3,6 +3,8 @@ import React, { useState } from "react";
 import axios from "axios";
 import CategoryManagement from "./CategoryManagement";
 import ModalForOk from "../ModalForOk";
+import DaumPostcode from "react-daum-postcode";
+import Modal from "react-modal";
 
 const InfoManagement = ({ info, setInfo, setLoading, setError }) => {
   const [editMode, setEditMode] = useState(false);
@@ -10,6 +12,8 @@ const InfoManagement = ({ info, setInfo, setLoading, setError }) => {
   const [editImageMode, setEditImageMode] = useState(false);
   const [previewImage, setPreviewImage] = useState(null);
   const [modalMessage, setModalMessage] = useState(null);
+  const [isPostOpen, setIsPostOpen] = useState(false);
+  const [detailAddress, setDetailAddress] = useState(info.detailAddress || "");
 
   const handleChange = e => {
     const { name, value } = e.target;
@@ -36,11 +40,15 @@ const InfoManagement = ({ info, setInfo, setLoading, setError }) => {
 
       const accessToken = getCookie("accessToken");
 
-      await axios.put("/api/owner/restaurant", info, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
+      await axios.put(
+        "/api/owner/restaurant",
+        { ...info, addr: `${info.addr} ${detailAddress}` },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
         },
-      });
+      );
 
       setModalMessage("정보가 저장되었습니다.");
       setEditMode(false);
@@ -88,6 +96,28 @@ const InfoManagement = ({ info, setInfo, setLoading, setError }) => {
 
   const closeModal = () => {
     setModalMessage(null);
+  };
+
+  const handleComplete = data => {
+    let fullAddress = data.address;
+    let extraAddress = "";
+
+    if (data.addressType === "R") {
+      if (data.bname !== "") {
+        extraAddress += data.bname;
+      }
+      if (data.buildingName !== "") {
+        extraAddress +=
+          extraAddress !== "" ? `, ${data.buildingName}` : data.buildingName;
+      }
+      fullAddress += extraAddress !== "" ? ` (${extraAddress})` : "";
+    }
+
+    setInfo(prevInfo => ({
+      ...prevInfo,
+      addr: fullAddress,
+    }));
+    setIsPostOpen(false);
   };
 
   return (
@@ -163,15 +193,50 @@ const InfoManagement = ({ info, setInfo, setLoading, setError }) => {
       <p>
         <h4>주소</h4>
         {editMode ? (
-          <input
-            type="text"
-            name="addr"
-            value={info.addr}
-            onChange={handleChange}
-            placeholder="주소"
-          />
+          <>
+            <input
+              type="text"
+              name="addr"
+              value={info.addr}
+              onChange={handleChange}
+              placeholder="주소"
+              readOnly
+            />
+            <button className="btn" onClick={() => setIsPostOpen(true)}>
+              주소 검색
+            </button>
+            <Modal
+              isOpen={isPostOpen}
+              onRequestClose={() => setIsPostOpen(false)}
+              style={{
+                overlay: {
+                  backgroundColor: "rgba(0, 0, 0, 0.5)",
+                },
+                content: {
+                  top: "50%",
+                  left: "50%",
+                  right: "auto",
+                  bottom: "auto",
+                  marginRight: "-50%",
+                  transform: "translate(-50%, -50%)",
+                  width: "500px",
+                  height: "600px",
+                },
+              }}
+            >
+              <DaumPostcode onComplete={handleComplete} autoClose={true} />
+              <button onClick={() => setIsPostOpen(false)}>닫기</button>
+            </Modal>
+            <input
+              type="text"
+              name="detailAddress"
+              value={detailAddress}
+              onChange={e => setDetailAddress(e.target.value)}
+              placeholder="상세주소"
+            />
+          </>
         ) : (
-          info.addr
+          `${info.addr} ${detailAddress}`
         )}
       </p>
       <h3>사업자정보</h3>

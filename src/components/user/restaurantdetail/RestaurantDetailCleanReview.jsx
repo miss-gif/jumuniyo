@@ -1,14 +1,19 @@
 /* eslint-disable react/prop-types */
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Review from "../../common/Review";
 import { fetchReviewData } from "../../../api/restaurantdetail/restaurantDetail";
 import LoadingSpinner from "../../common/LoadingSpinner";
+import { useSelector } from "react-redux";
+import LoginModal from "../../user/restaurantdetail/LoginModal";
 
 const RestaurantDetailCleanReview = ({ resPk, restaurantData }) => {
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showPhotoReviewsOnly, setShowPhotoReviewsOnly] = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const accessToken = useSelector(state => state.user.accessToken);
+  const isLoggedIn = !!accessToken;
 
   useEffect(() => {
     const getReviews = async () => {
@@ -67,10 +72,18 @@ const RestaurantDetailCleanReview = ({ resPk, restaurantData }) => {
 
         <ul className="reviews">
           {(showPhotoReviewsOnly ? photoReviews : reviews).map(review => (
-            <Review key={review.reviewPk} review={review} />
+            <Review
+              key={review.reviewPk}
+              review={review}
+              isLoggedIn={isLoggedIn}
+              setShowLoginModal={setShowLoginModal}
+            />
           ))}
         </ul>
       </div>
+      {showLoginModal && (
+        <LoginModal onClose={() => setShowLoginModal(false)} />
+      )}
     </div>
   );
 };
