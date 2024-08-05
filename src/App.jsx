@@ -45,6 +45,8 @@ import Test from "./pages/Test";
 import Test3 from "./pages/Test3";
 import { OrderProvider } from "./pages/user/OrderContext";
 import RestaurantDetailPage2 from "./pages/user/RestaurantDetailPage2";
+import CeoWithdrawal from "./components/ceo/CeoWithdrawal";
+import MenuManagement from "./components/ceo/MenuManagement";
 
 function App() {
   return (
@@ -97,7 +99,9 @@ function App() {
             />
             <Route path="reviews" element={<Reviews />} />
             <Route path="store-management" element={<StoreManagement />} />
+            <Route path="menu-management" element={<MenuManagement />} />
             <Route path="statistics" element={<Statistics />} />
+            <Route path="withdraw" element={<CeoWithdrawal />} />
           </Route>
 
           {/* 관리자 */}
