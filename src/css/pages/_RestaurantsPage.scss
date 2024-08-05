@@ -1,14 +1,20 @@
+$bc: #f3f3f3;
+
 .restaurants-page {
   .filters {
     display: flex;
-    justify-content: flex-end;
+    gap: 8px;
   }
   .filters__select {
-    min-width: 100px;
-    width: 20%;
-    padding: $padding-1 $padding-2;
-    border: 1px solid $borderColor;
-    font-size: 14px;
+    font-weight: 500;
+    font-size: 12px;
+    padding: 10px 12px;
+    background-color: #f3f3f3;
+    border-radius: 30px;
+    cursor: pointer;
+    &:hover {
+      // background-color: #d3d3d3;
+    }
   }
 
   &__list {
@@ -44,6 +50,7 @@
       &__title {
         font-weight: 400;
         font-size: 16px;
+        max-width: 200px;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
@@ -57,6 +64,11 @@
             content: "|";
             padding: 6px;
             color: $borderColor;
+          }
+          &:last-child {
+            &::after {
+              content: "";
+            }
           }
         }
       }
@@ -93,4 +105,9 @@
   .restaurants-page__list .restaurant-item {
     max-width: 100%;
   }
+}
+
+.filters__select.active {
+  background-color: black;
+  color: white;
 }

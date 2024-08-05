@@ -1,16 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { MdOutlineStarPurple500 } from "react-icons/md";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import axios from "axios";
-// import LoadingSpinner from "../components/common/LoadingSpinner";
 import styled from "styled-components";
 import LoadingSpinner from "../../../components/common/LoadingSpinner";
 
 const StatusListItem = styled.li`
   position: relative;
-  /* background-color: ${props => (props.isClosed ? "#ddd" : "")}; */
-  opacity: ${props => (props.isClosed ? ".6" : "1")};
+  opacity: ${props => (props.isClosed ? ".4" : "1")};
   cursor: ${props => (props.isClosed ? "auto" : "pointer")};
 
   &:before {
@@ -36,7 +33,7 @@ const RestaurantsPage = () => {
   const [totalElements, setTotalElements] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [orderType, setOrderType] = useState(1); // 기본 정렬순
+  const [orderType, setOrderType] = useState("1"); // 기본 정렬순
 
   useEffect(() => {
     const fetchRestaurants = async () => {
@@ -60,7 +57,7 @@ const RestaurantsPage = () => {
     };
 
     fetchRestaurants();
-  }, [id, orderType, locationData.latitude]); // orderType이나 locationData가 변경될 때마다 재호출
+  }, [id, orderType, locationData.latitude]);
 
   const handleOrderChange = e => {
     setOrderType(e.target.value);
@@ -69,15 +66,42 @@ const RestaurantsPage = () => {
   return (
     <div className="restaurants-page">
       <div className="filters">
-        <select
-          className="filters__select"
-          value={orderType}
-          onChange={handleOrderChange}
+        <label
+          className={`filters__select ${orderType === "1" ? "active" : ""}`}
         >
-          <option value="1">기본 정렬순</option>
-          <option value="2">가까운 거리순</option>
-          <option value="3">별점 높은순</option>
-        </select>
+          <input
+            type="radio"
+            name="orderType"
+            value="1"
+            checked={orderType === "1"}
+            onChange={handleOrderChange}
+          />
+          기본 정렬순
+        </label>
+        <label
+          className={`filters__select ${orderType === "2" ? "active" : ""}`}
+        >
+          <input
+            type="radio"
+            name="orderType"
+            value="2"
+            checked={orderType === "2"}
+            onChange={handleOrderChange}
+          />
+          가까운 거리순
+        </label>
+        <label
+          className={`filters__select ${orderType === "3" ? "active" : ""}`}
+        >
+          <input
+            type="radio"
+            name="orderType"
+            value="3"
+            checked={orderType === "3"}
+            onChange={handleOrderChange}
+          />
+          별점 높은순
+        </label>
       </div>
       <h2 className="restaurants-page__title">
         전체보기 (<span className="search-count">{totalElements}</span>)건
