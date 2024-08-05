@@ -1,4 +1,4 @@
-import { Box, TextField } from "@mui/material";
+import { Box, TextField, Typography } from "@mui/material";
 import axios from "axios";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -7,6 +7,25 @@ import JoinFooter from "../components/layout/JoinFooter";
 import { Logo } from "../components/common/Logo";
 import LoadingSpinner from "../components/common/LoadingSpinner";
 import Swal from "sweetalert2";
+import styled from "styled-components";
+
+const Divider = styled(Box)`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 12px 0;
+`;
+
+const Line = styled(Box)`
+  flex: 1;
+  border-bottom: 1px solid #ddd;
+`;
+
+const Text = styled(Typography)`
+  padding: 0 8px;
+  color: #afafaf;
+`;
 
 const AuthUserPage = () => {
   const navigate = useNavigate();
@@ -347,168 +366,181 @@ const AuthUserPage = () => {
 
   return (
     <>
-      <div className="user-join-wrap">
-        <Logo />
-        <h2>일반 회원가입</h2>
-        <div className="line"></div>
-        <form className="user-join-form">
-          <div>
-            <Box style={{ alignItems: "center" }}>
-              <TextField
-                error={!userIdComplete || !idCheckComplete}
-                fullWidth
-                label="아이디"
-                id="fullWidth"
-                placeholder="아이디는 8자 이상이어야 합니다."
-                onChange={e => {
-                  setUserId(e.target.value);
-                }}
-              />
-            </Box>
-            <button
-              type="button"
-              className="btn"
-              onClick={() => {
-                idTest();
-              }}
-            >
-              중복 확인
-            </button>
-          </div>
-          <div>
-            <Box style={{ alignItems: "center" }}>
-              <TextField
-                fullWidth
-                error={!userEmailComplete || !emailCheckComplete}
-                label="이메일"
-                id="fullWidth"
-                placeholder="이메일을 입력해주세요."
-                onChange={e => {
-                  setUserEmail(e.target.value);
-                }}
-                disabled={emailCheckOk}
-              />
-            </Box>
-            {emailCheckOk === true ? null : (
-              <button
-                type="button"
-                className="btn"
-                onClick={() => {
-                  emailCheck();
-                }}
-              >
-                이메일 인증
-              </button>
-            )}
-          </div>
-          {isEmailCheck ? (
-            <>
-              <Box style={{ alignItems: "center" }}>
-                <TextField
-                  fullWidth
-                  label="인증 번호"
-                  id="fullWidth"
-                  placeholder="인증 번호를 입력해주세요."
-                  onChange={e => {
-                    setEmailCode(e.target.value);
-                  }}
-                />
-              </Box>
-              <div style={{ justifyContent: "center" }}>
-                <button
-                  type="button"
-                  className="btn"
-                  onClick={() => {
-                    emailCodeCheck();
-                  }}
-                >
-                  인증
-                </button>
-                <button
-                  type="button"
-                  className="btn"
-                  onClick={() => {
-                    emailCheckCancle();
-                  }}
-                >
-                  취소
-                </button>
+      <div className="login-main">
+        <div className="inner">
+          <div className="user-join-realwrap">
+            <div className="user-join-wrap">
+              <div className="flex-colum">
+                <div className="login-form">
+                  <Logo />
+                  <Divider>
+                    <Line />
+                    <Text>일반 가입</Text>
+                    <Line />
+                  </Divider>
+                  <form className="user-join-form">
+                    <div className="check-button-box">
+                      <Box style={{ alignItems: "center" }}>
+                        <TextField
+                          error={!userIdComplete || !idCheckComplete}
+                          fullWidth
+                          label="아이디"
+                          id="fullWidth"
+                          placeholder="아이디는 8자 이상이어야 합니다."
+                          onChange={e => {
+                            setUserId(e.target.value);
+                          }}
+                        />
+                      </Box>
+                      <button
+                        type="button"
+                        className="btn"
+                        onClick={() => {
+                          idTest();
+                        }}
+                      >
+                        중복 확인
+                      </button>
+                    </div>
+                    <div className="check-button-box">
+                      <Box style={{ alignItems: "center" }}>
+                        <TextField
+                          fullWidth
+                          error={!userEmailComplete || !emailCheckComplete}
+                          label="이메일"
+                          id="fullWidth"
+                          placeholder="이메일을 입력해주세요."
+                          onChange={e => {
+                            setUserEmail(e.target.value);
+                          }}
+                          disabled={emailCheckOk}
+                        />
+                      </Box>
+                      {emailCheckOk === true ? null : (
+                        <button
+                          type="button"
+                          className="btn"
+                          onClick={() => {
+                            emailCheck();
+                          }}
+                        >
+                          이메일 인증
+                        </button>
+                      )}
+                    </div>
+                    {isEmailCheck ? (
+                      <>
+                        <Box style={{ alignItems: "center" }}>
+                          <TextField
+                            fullWidth
+                            label="인증 번호"
+                            id="fullWidth"
+                            placeholder="인증 번호를 입력해주세요."
+                            onChange={e => {
+                              setEmailCode(e.target.value);
+                            }}
+                          />
+                        </Box>
+                        <div style={{ justifyContent: "center" }}>
+                          <button
+                            type="button"
+                            className="btn"
+                            onClick={() => {
+                              emailCodeCheck();
+                            }}
+                          >
+                            인증
+                          </button>
+                          <button
+                            type="button"
+                            className="btn"
+                            onClick={() => {
+                              emailCheckCancle();
+                            }}
+                          >
+                            취소
+                          </button>
+                        </div>
+                      </>
+                    ) : null}
+                    <Box>
+                      <TextField
+                        fullWidth
+                        error={!userPwComplete}
+                        label="비밀번호"
+                        type="password"
+                        placeholder="비밀번호는 8자 이상, 특수문자 사용해야합니다."
+                        onChange={e => {
+                          setUserPw(e.target.value);
+                        }}
+                      />
+                    </Box>
+                    <Box>
+                      <TextField
+                        fullWidth
+                        error={!userPwCheckComplete}
+                        label="비밀번호 확인"
+                        id="fullWidth"
+                        type="password"
+                        placeholder="비밀번호를 한번 더 입력해주세요."
+                        onChange={e => {
+                          setUserPwCheck(e.target.value);
+                        }}
+                      />
+                    </Box>
+                    <Box>
+                      <TextField
+                        fullWidth
+                        label="이름"
+                        id="fullWidth"
+                        placeholder="이름을 입력해주세요."
+                        onChange={e => {
+                          setUserName(e.target.value);
+                        }}
+                      />
+                    </Box>
+                    <Box>
+                      <TextField
+                        fullWidth
+                        label="닉네임"
+                        id="fullWidth"
+                        placeholder="닉네임을 입력해주세요."
+                        onChange={e => {
+                          setUserNickName(e.target.value);
+                        }}
+                      />
+                    </Box>
+                    <Box>
+                      <TextField
+                        fullWidth
+                        error={!userPhoneComplete}
+                        label="전화번호"
+                        id="fullWidth"
+                        value={userPhone}
+                        placeholder="전화번호를 입력해주세요."
+                        onChange={handleInputChange}
+                      />
+                    </Box>
+                    <h3>프로필 사진</h3>
+                    <AuthImageImport setUserImgFile={setUserImgFile} />
+                    <button
+                      type="button"
+                      className="btn"
+                      onClick={e => {
+                        joinMember(e);
+                      }}
+                    >
+                      회원가입
+                    </button>
+                  </form>
+                </div>
+                <JoinFooter />
+                {isLoading ? <LoadingSpinner /> : null}
               </div>
-            </>
-          ) : null}
-          <Box>
-            <TextField
-              fullWidth
-              error={!userPwComplete}
-              label="비밀번호"
-              type="password"
-              placeholder="비밀번호는 8자 이상, 특수문자 사용해야합니다."
-              onChange={e => {
-                setUserPw(e.target.value);
-              }}
-            />
-          </Box>
-          <Box>
-            <TextField
-              fullWidth
-              error={!userPwCheckComplete}
-              label="비밀번호 확인"
-              id="fullWidth"
-              type="password"
-              placeholder="비밀번호를 한번 더 입력해주세요."
-              onChange={e => {
-                setUserPwCheck(e.target.value);
-              }}
-            />
-          </Box>
-          <Box>
-            <TextField
-              fullWidth
-              label="이름"
-              id="fullWidth"
-              placeholder="이름을 입력해주세요."
-              onChange={e => {
-                setUserName(e.target.value);
-              }}
-            />
-          </Box>
-          <Box>
-            <TextField
-              fullWidth
-              label="닉네임"
-              id="fullWidth"
-              placeholder="닉네임을 입력해주세요."
-              onChange={e => {
-                setUserNickName(e.target.value);
-              }}
-            />
-          </Box>
-          <Box>
-            <TextField
-              fullWidth
-              error={!userPhoneComplete}
-              label="전화번호"
-              id="fullWidth"
-              value={userPhone}
-              placeholder="전화번호를 입력해주세요."
-              onChange={handleInputChange}
-            />
-          </Box>
-          <h3>프로필 사진</h3>
-          <AuthImageImport setUserImgFile={setUserImgFile} />
-          <button
-            type="button"
-            className="btn"
-            onClick={e => {
-              joinMember(e);
-            }}
-          >
-            회원가입
-          </button>
-        </form>
+            </div>
+          </div>
+        </div>
       </div>
-      <JoinFooter />
-      {isLoading ? <LoadingSpinner /> : null}
     </>
   );
 };

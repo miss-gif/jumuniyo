@@ -1,14 +1,20 @@
+.login-main {
+  padding: 100px 0 52px;
+}
+
 .social-login {
   display: flex;
   width: 100%;
   justify-content: space-between;
+  flex-direction: column;
+  padding-top: 18px;
+  gap: 8px !important;
 
   & div {
     display: flex;
-    padding: 12px 0px;
+    padding: 8px 0px;
     justify-content: center;
     align-items: center;
-    border: 1px solid #333;
     border-radius: 4px;
     cursor: pointer;
   }
@@ -18,18 +24,19 @@
 }
 
 .social-login-kakao {
-  background: #fee500;
+  background: #e8e8e8;
 }
 
 .social-login-naver {
-  background: #2db400;
+  background: #e8e8e8;
 }
 
 .social-login-google {
-  background: #fff;
+  background: #e8e8e8;
 }
 
 .line {
   width: 100%;
+  margin-top: 8px;
   border-bottom: 1px solid black;
 }
