@@ -2,12 +2,13 @@
 import React, { useEffect } from "react";
 
 const RestaurantDetailTabInfo = ({ restaurantData }) => {
+  const rest_api_key = process.env.REACT_APP_KAKAO_REST_API_KEY;
+
   useEffect(() => {
     const script = document.createElement("script");
 
     script.async = true;
-    script.src =
-      "//dapi.kakao.com/v2/maps/sdk.js?appkey=9edbe7b3fd0db80ce035ac568de04045&autoload=false&libraries=services";
+    script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${rest_api_key}&autoload=false&libraries=services`;
     document.head.appendChild(script);
 
     script.onload = () => {
