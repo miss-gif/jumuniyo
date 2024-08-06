@@ -12,7 +12,7 @@ import { debounce } from "@mui/material/utils";
 import { useDispatch, useSelector } from "react-redux";
 import { setLocationData } from "../../app/userSlice";
 
-const GOOGLE_MAPS_API_KEY = "AIzaSyAMR0g0QOUBQiHoZMLjMovMkzjJ7VkUBuU";
+const GOOGLE_MAPS_API_KEY = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
 
 function loadScript(src, position, id) {
   if (!position) {
