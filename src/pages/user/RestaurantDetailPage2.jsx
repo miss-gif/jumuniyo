@@ -55,17 +55,13 @@ const RestaurantDetailPage = () => {
     const getData = async () => {
       try {
         const restaurant = await fetchRestaurantData(id);
-        const menu = restaurant.menuList;
-        const reviews = await fetchReviewData(id);
-        // console.log("가게: ", restaurant);
-        // console.log("메뉴: ", menu);
-        // console.log("리뷰: ", reviews);
+        const menu = restaurant.menuList || [];
+        const reviews = (await fetchReviewData(id)) || [];
         setRestaurantData(restaurant);
         setMenuData(menu);
         setReviewData(reviews);
         setLoading(false);
       } catch (err) {
-        // console.error("에러: ", err);
         setError(err);
         setLoading(false);
       }
@@ -95,8 +91,9 @@ const RestaurantDetailPage = () => {
   if (error) return <p>에러: {error.message}</p>;
   if (!restaurantData) return <p>없는 페이지 입니다.</p>;
 
-  const menuCount = menuData.length;
-  const reviewCount = reviewData.length;
+  // 데이터가 있는지 확인
+  const menuCount = menuData ? menuData.length : 0;
+  const reviewCount = reviewData ? reviewData.length : 0;
 
   const handleSelectMenuItem = item => {
     setSelectedMenuItems(prevItems => {
@@ -192,7 +189,10 @@ const RestaurantDetailPage = () => {
     <>
       <div className="restaurant-detail-page">
         <div className="restaurant-detail-page__left">
-          <RestaurantDetailInfo restaurantData={restaurantData} />
+          <RestaurantDetailInfo
+            restaurantData={restaurantData}
+            onShowLoginModal={() => setShowLoginModal(true)}
+          />
 
           <div className="restaurant-detail-page__menu">
             <RestaurantDetailHeader

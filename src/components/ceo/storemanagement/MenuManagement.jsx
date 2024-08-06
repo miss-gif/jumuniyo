@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import LoadingSpinner from "../../common/LoadingSpinner";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
 const getCookie = name => {
   const value = `; ${document.cookie}`;
@@ -14,6 +16,7 @@ const MenuManagement = () => {
   const navigate = useNavigate();
 
   const [menuData, setMenuData] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -27,21 +30,25 @@ const MenuManagement = () => {
     menu_price: "",
     menu_state: 1,
     img: null,
+    menu_cat_pk: "", // 추가된 필드
   });
+  const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
+  const [newCategoryName, setNewCategoryName] = useState("");
+  const [openCategories, setOpenCategories] = useState({});
 
   useEffect(() => {
     const accessToken = getCookie("accessToken");
 
     const fetchMenuData = async () => {
       try {
-        const response = await axios.get("/api/owner/menu", {
+        const menuResponse = await axios.get("/api/owner/menu", {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
         });
 
-        if (response.data.statusCode === 1) {
-          const updatedMenuData = response.data.resultData.map(menu => ({
+        if (menuResponse.data.statusCode === 1) {
+          const updatedMenuData = menuResponse.data.resultData.map(menu => ({
             ...menu,
             menu_pic: menu.menu_pic
               ? `/pic/${menu.menu_pic}`
@@ -49,7 +56,19 @@ const MenuManagement = () => {
           }));
           setMenuData(updatedMenuData);
         } else {
-          throw new Error(response.data.resultMsg || "Unknown error");
+          throw new Error(menuResponse.data.resultMsg || "Unknown error");
+        }
+
+        const categoryResponse = await axios.get("/api/menu_category/list", {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+
+        if (categoryResponse.data.statusCode === 1) {
+          setCategories(categoryResponse.data.resultData);
+        } else {
+          throw new Error(categoryResponse.data.resultMsg || "Unknown error");
         }
       } catch (err) {
         setError(err.message);
@@ -75,6 +94,7 @@ const MenuManagement = () => {
       menu_price: "",
       menu_state: 1,
       img: null,
+      menu_cat_pk: "", // 추가된 필드 초기화
     });
     setIsModalOpen(true);
   };
@@ -94,6 +114,7 @@ const MenuManagement = () => {
       menu_price: menu.menu_price,
       menu_state: menu.menu_state,
       img: null,
+      menu_cat_pk: menu.menu_cat_pk || "", // 추가된 필드
     });
     setIsEditMode(true);
     setIsModalOpen(true);
@@ -126,6 +147,7 @@ const MenuManagement = () => {
         menu_content: newMenuItem.menu_content,
         menu_price: newMenuItem.menu_price,
         menu_state: newMenuItem.menu_state,
+        menu_cat_pk: newMenuItem.menu_cat_pk, // 추가된 필드
       }),
     );
     formData.append("pic", newMenuItem.img);
@@ -176,6 +198,7 @@ const MenuManagement = () => {
         menu_content: newMenuItem.menu_content || editMenuItem.menu_content,
         menu_price: newMenuItem.menu_price || editMenuItem.menu_price,
         menu_state: newMenuItem.menu_state || editMenuItem.menu_state,
+        menu_cat_pk: newMenuItem.menu_cat_pk || editMenuItem.menu_cat_pk, // 추가된 필드
       }),
     );
     if (newMenuItem.img) {
@@ -224,6 +247,7 @@ const MenuManagement = () => {
         menu_content: menu.menu_content,
         menu_price: menu.menu_price,
         menu_state: newStatus,
+        menu_cat_pk: menu.menu_cat_pk, // 추가된 필드
       }),
     );
 
@@ -281,6 +305,56 @@ const MenuManagement = () => {
     }
   };
 
+  const handleOpenCategoryModal = () => {
+    setNewCategoryName("");
+    setIsCategoryModalOpen(true);
+  };
+  const handleCloseCategoryModal = () => setIsCategoryModalOpen(false);
+
+  const handleCategoryInputChange = e => {
+    setNewCategoryName(e.target.value);
+  };
+
+  const handleAddCategory = async () => {
+    const accessToken = getCookie("accessToken");
+
+    try {
+      const response = await axios.post(
+        "/api/menu_category",
+        { menuCategoryName: newCategoryName },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+          },
+        },
+      );
+
+      if (response.data.statusCode === 1) {
+        setCategories(prevCategories => [
+          ...prevCategories,
+          {
+            menuCatName: newCategoryName,
+            position: response.data.resultData.position,
+            menuCatPk: response.data.resultData.menuCatPk,
+          },
+        ]);
+        handleCloseCategoryModal();
+      } else {
+        throw new Error(response.data.resultMsg || "Unknown error");
+      }
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+  const toggleCategory = categoryPk => {
+    setOpenCategories(prevState => ({
+      ...prevState,
+      [categoryPk]: !prevState[categoryPk],
+    }));
+  };
+
   if (loading)
     return (
       <p>
@@ -292,86 +366,108 @@ const MenuManagement = () => {
   return (
     <>
       <div className="menu-management">
-        <div className="menu-section">
-          {menuData.length === 0 ? (
-            <p>메뉴를 추가해주세요.</p>
-          ) : (
-            <div className="menu-list">
-              {menuData.map(menu => (
-                <div key={menu.menu_pk} className="menu-list-oneMenu">
-                  <div className="menu-list-oneMenu-table">
-                    <div className="picanddata">
-                      <div className="menu-list-oneMenu-tablePic">
-                        <img
-                          src={
-                            menu.menu_pic ? menu.menu_pic : "default_image_url"
-                          }
-                          alt={menu.menu_name}
-                        />
-                      </div>
-                      <div className="menu-list-oneMenu-tableData">
-                        <h3 className="menu-list-name">{menu.menu_name}</h3>
-                        <p className="menu-list-content">{menu.menu_content}</p>
-                        <p className="menu-list-price">{menu.menu_price}원</p>
-                      </div>
-                    </div>
-
-                    <div className="status-action">
-                      <div className="menu-list-status">
-                        {/* <button
-                          className="menu-list-select"
-                          onClick={() => handleStatusToggle(menu)}
-                        >
-                          {menu.menu_state === 1 ? "판매중" : "판매중지"}
-                        </button> */}
-                        {menu.menu_state === 1 ? (
-                          <button
-                            className="menu-list-select"
-                            onClick={() => handleStatusToggle(menu)}
-                          >
-                            판매중
-                          </button>
-                        ) : (
-                          <button
-                            className="menu-list-select-soldOut"
-                            onClick={() => handleStatusToggle(menu)}
-                          >
-                            판매중지
-                          </button>
-                        )}
-                      </div>
-                      <div className="menu-list-actions">
-                        <button
-                          className="btn"
-                          onClick={() => handleOpenEditModal(menu)}
-                        >
-                          수정
-                        </button>
-                        <button
-                          className="btn--cancel"
-                          onClick={() => handleOpenDeleteModal(menu.menu_pk)}
-                        >
-                          삭제
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
         <div className="menu-settings">
           <div className="menu-upper">
             <div className="menu-add">
               <button className="btn" onClick={handleOpenModal}>
                 메뉴 추가
               </button>
-              {/* <button className="btn" onClick={handleOpenModal}>
+              <button className="btn" onClick={handleOpenCategoryModal}>
                 카테고리 추가
-              </button> */}
+              </button>
             </div>
           </div>
+        </div>
+
+        <div className="menu-section">
+          {categories.map(category => (
+            <div key={category.menuCatPk}>
+              <div
+                className="toggle-category"
+                onClick={() => toggleCategory(category.menuCatPk)}
+              >
+                <h4 className="menu-category__title">{category.menuCatName}</h4>
+                <div className="toggle-category-icon">
+                  {openCategories[category.menuCatPk] ? (
+                    <KeyboardArrowUpIcon />
+                  ) : (
+                    <KeyboardArrowDownIcon />
+                  )}
+                </div>
+              </div>
+              {openCategories[category.menuCatPk] && (
+                <div className="menu-list">
+                  {menuData
+                    .filter(menu => menu.menu_cat_pk === category.menuCatPk)
+                    .map(menu => (
+                      <div key={menu.menu_pk} className="menu-list-oneMenu">
+                        <div className="menu-list-oneMenu-table">
+                          <div className="picanddata">
+                            <div className="menu-list-oneMenu-tablePic">
+                              <img
+                                src={
+                                  menu.menu_pic
+                                    ? menu.menu_pic
+                                    : "default_image_url"
+                                }
+                                alt={menu.menu_name}
+                              />
+                            </div>
+                            <div className="menu-list-oneMenu-tableData">
+                              <h3 className="menu-list-name">
+                                {menu.menu_name}
+                              </h3>
+                              <p className="menu-list-content">
+                                {menu.menu_content}
+                              </p>
+                              <p className="menu-list-price">
+                                {menu.menu_price}원
+                              </p>
+                            </div>
+                          </div>
+
+                          <div className="status-action">
+                            <div className="menu-list-status">
+                              {menu.menu_state === 1 ? (
+                                <button
+                                  className="menu-list-select"
+                                  onClick={() => handleStatusToggle(menu)}
+                                >
+                                  판매중
+                                </button>
+                              ) : (
+                                <button
+                                  className="menu-list-select-soldOut"
+                                  onClick={() => handleStatusToggle(menu)}
+                                >
+                                  판매중지
+                                </button>
+                              )}
+                            </div>
+                            <div className="menu-list-actions">
+                              <button
+                                className="btn"
+                                onClick={() => handleOpenEditModal(menu)}
+                              >
+                                수정
+                              </button>
+                              <button
+                                className="btn--cancel"
+                                onClick={() =>
+                                  handleOpenDeleteModal(menu.menu_pk)
+                                }
+                              >
+                                삭제
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                </div>
+              )}
+            </div>
+          ))}
         </div>
       </div>
 
@@ -415,6 +511,22 @@ const MenuManagement = () => {
                 />
               </div>
               <div className="form-group">
+                <label htmlFor="menu_cat_pk">카테고리</label>
+                <select
+                  id="menu_cat_pk"
+                  name="menu_cat_pk"
+                  value={newMenuItem.menu_cat_pk}
+                  onChange={handleInputChange}
+                >
+                  <option value="">카테고리를 선택하세요</option>
+                  {categories.map(category => (
+                    <option key={category.menuCatPk} value={category.menuCatPk}>
+                      {category.menuCatName}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="form-group">
                 <label htmlFor="img">이미지</label>
                 <input
                   type="file"
@@ -449,6 +561,33 @@ const MenuManagement = () => {
             <button className="btn" onClick={handleCloseDeleteModal}>
               취소
             </button>
+          </div>
+        </div>
+      )}
+
+      {isCategoryModalOpen && (
+        <div className="modal">
+          <div className="modal-content">
+            <span className="close-button" onClick={handleCloseCategoryModal}>
+              &times;
+            </span>
+            <h2>카테고리 추가</h2>
+            <br />
+            <form>
+              <div className="form-group">
+                <label htmlFor="category_name">카테고리 이름</label>
+                <input
+                  type="text"
+                  id="category_name"
+                  name="category_name"
+                  value={newCategoryName}
+                  onChange={handleCategoryInputChange}
+                />
+              </div>
+              <button className="btn" type="button" onClick={handleAddCategory}>
+                추가
+              </button>
+            </form>
           </div>
         </div>
       )}
