@@ -39,15 +39,15 @@ const Mypage = () => {
         내주소
       </button>
       <button
-        onClick={() => navigate("/mypage/ordere")}
+        onClick={() => navigate("/mypage/order")}
         style={{
           backgroundColor:
-            location.pathname === "/mypage/ordere" ||
+            location.pathname === "/mypage/order" ||
             location.pathname === "/mypage/orderclose"
               ? "#333"
               : "white",
           color:
-            location.pathname === "/mypage/ordere" ||
+            location.pathname === "/mypage/order" ||
             location.pathname === "/mypage/orderclose"
               ? "white"
               : "#333",
@@ -66,14 +66,31 @@ const Mypage = () => {
         리뷰내역
       </button>
       <button
-        onClick={() => navigate("/mypage/report")}
+        onClick={() => navigate("/mypage/coupon")}
         style={{
           backgroundColor:
-            location.pathname === "/mypage/report" ? "#333" : "white",
-          color: location.pathname === "/mypage/report" ? "white" : "#333",
+            location.pathname === "/mypage/coupon" ? "#333" : "white",
+          color: location.pathname === "/mypage/coupon" ? "white" : "#333",
         }}
       >
-        문의내역
+        보유쿠폰
+      </button>
+      <button
+        onClick={() => navigate("/mypage/report/list")}
+        style={{
+          backgroundColor:
+            location.pathname === "/mypage/report/list" ||
+            location.pathname === "/mypage/reportpage"
+              ? "#333"
+              : "white",
+          color:
+            location.pathname === "/mypage/report/list" ||
+            location.pathname === "/mypage/reportpage"
+              ? "white"
+              : "#333",
+        }}
+      >
+        고객센터
       </button>
       {!isLogin ? null : (
         <button

@@ -47,6 +47,8 @@ import { OrderProvider } from "./pages/user/OrderContext";
 import RestaurantDetailPage2 from "./pages/user/RestaurantDetailPage2";
 import CeoWithdrawal from "./components/ceo/CeoWithdrawal";
 import MenuManagement from "./components/ceo/MenuManagement";
+import MyPageReportListPage from "./pages/MyPageReportListPage";
+import MyPageCouponPage from "./pages/MyPageCouponPage";
 
 function App() {
   return (
@@ -72,8 +74,9 @@ function App() {
             <Route path="mypage">
               <Route index element={<MyPage />} />
               <Route path="order/:id" element={<MyPageOrderPage />} />
-              <Route path="ordere" element={<MyPageOrderPagee />} />
-              <Route path="report" element={<MypageReportPage />} />
+              <Route path="order" element={<MyPageOrderPagee />} />
+              <Route path="report/list" element={<MyPageReportListPage />} />
+              <Route path="reportpage" element={<MypageReportPage />} />
               <Route path="orderclose">
                 <Route index element={<MyPageOrderClosePage />} />
                 <Route path=":id" element={<MyPageOrderCloseDetail />} />
@@ -81,6 +84,7 @@ function App() {
               <Route path="review" element={<MyPageReviewPage />} />
               <Route path="address" element={<MyPageAddress />} />
               <Route path="withdrawal" element={<MypageUserWithdrawal />} />
+              <Route path="coupon" element={<MyPageCouponPage />} />
             </Route>
             <Route path="payment/:id" element={<PaymentPage />} />
             <Route path="projectinfo" element={<ProjectInfo />} />
