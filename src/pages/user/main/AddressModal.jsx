@@ -6,7 +6,7 @@ import { IoLocationOutline, IoSearchSharp } from "react-icons/io5";
 import Modal from "react-modal";
 import { useSelector } from "react-redux";
 import "./AddressModal.scss";
-import LocationSearch from "../../../components/common/LocationSearch";
+import NewLocationSearch from "./NewLocationSearch";
 
 const AddressModal = ({ isOpen, onRequestClose }) => {
   const [activeTab, setActiveTab] = useState("recent");
@@ -44,11 +44,13 @@ const AddressModal = ({ isOpen, onRequestClose }) => {
     >
       <div className="modal__content">
         <h2 className="modal__title">주소 관리</h2>
-        <div className="modal__search">
+        {/* <div className="modal__search">
           <IoSearchSharp />
           <input type="text" placeholder="주소를 검색하세요" />
+        </div> */}
+        <div className="new-location-search">
+          <NewLocationSearch />
         </div>
-        <LocationSearch />
         <div className="modal__tabs">
           <button
             className={`tab-button ${activeTab === "recent" ? "active" : ""}`}

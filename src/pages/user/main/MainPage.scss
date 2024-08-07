@@ -1,23 +1,16 @@
-.main-page {
-  &__filter-list {
-    display: flex;
-  }
+.main-page__list {
+  margin-bottom: 30px;
 }
 
 /* item */
 .main-page {
   &__list {
-    display: flex;
-    gap: 16px;
   }
 
   &__item {
-    flex: 1;
-    max-width: 25%;
     border: 1px solid #e0e0e0;
     border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     background-color: #ffffff;
     transition: transform 0.2s ease-in-out;
 
@@ -52,18 +45,15 @@
     justify-content: space-between;
     align-items: center;
     font-size: 14px;
-    border-top: 1px solid #e0e0e0;
-    border-bottom: 1px solid #e0e0e0;
-    background-color: #fafafa;
   }
 
   &__store-name {
-    font-weight: bold;
+    font-size: 14px;
   }
 
   &__score {
+    font-size: 14px;
     color: #ff6f61;
-    font-weight: bold;
   }
 
   &__review-info {
@@ -71,7 +61,7 @@
     display: flex;
     justify-content: space-between;
     font-size: 12px;
-    color: #757575;
+    color: #888;
   }
 
   &__review,
@@ -83,7 +73,6 @@
   &__review-count,
   &__owner-review-count {
     margin-left: 4px;
-    font-weight: bold;
     color: #ff6f61;
   }
 }
