@@ -23,74 +23,78 @@ const Reviews = () => {
   const [error, setError] = useState(null);
   const [photoOnly, setPhotoOnly] = useState(false);
   const [modalMessage, setModalMessage] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
-  useEffect(() => {
-    const fetchReviews = async () => {
-      const accessToken = getCookie("accessToken");
-      if (!accessToken) {
-        setIsLoggedIn(false);
-        return;
-      }
+  const fetchReviews = async page => {
+    const accessToken = getCookie("accessToken");
+    if (!accessToken) {
+      setIsLoggedIn(false);
+      return;
+    }
 
-      try {
-        const response = await axios.get("/api/rev/list", {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${accessToken}`,
-          },
+    try {
+      const response = await axios.get(`/api/rev/list/${page}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      const data = response.data;
+
+      if (data.statusCode === 1 || data.statusCode === 2) {
+        const updatedReviewItems = data.resultData.reviewList.map(item => {
+          const reviewImgs =
+            item.pics.length > 0 ? item.pics.map(pic => `/pic/${pic}`) : [];
+          return {
+            ...item,
+            reviewImgs: reviewImgs,
+            ceoReply: item.reply
+              ? {
+                  content: item.reply.commentContents,
+                  writeTime: item.updatedAt,
+                  reviewCommentPk: item.reply.reviewCommentPk,
+                }
+              : null,
+            answer: item.reply ? "yes" : "no",
+          };
         });
-        const data = response.data;
 
-        if (data.statusCode === 1 || data.statusCode === 2) {
-          const updatedReviewItems = data.resultData.map(item => {
-            const reviewImgs =
-              item.pics.length > 0 ? item.pics.map(pic => `/pic/${pic}`) : [];
-            return {
-              ...item,
-              reviewImgs: reviewImgs,
-              ceoReply: item.reply
-                ? {
-                    content: item.reply.commentContents,
-                    writeTime: item.updatedAt,
-                    reviewCommentPk: item.reply.reviewCommentPk,
-                  }
-                : null,
-              answer: item.reply ? "yes" : "no",
-            };
-          });
-          setReviewItems(updatedReviewItems);
-          setFilteredReviews(updatedReviewItems);
-
-          setReviewCount(updatedReviewItems.length);
-          setReplyCount(
+        setReviewItems(prevItems => [...prevItems, ...updatedReviewItems]);
+        setFilteredReviews(prevItems => [...prevItems, ...updatedReviewItems]);
+        setReviewCount(prevCount => prevCount + updatedReviewItems.length);
+        setReplyCount(
+          prevCount =>
+            prevCount +
             updatedReviewItems.filter(item => item.answer === "yes").length,
-          );
-
-          setPhotoReviewCount(
+        );
+        setPhotoReviewCount(
+          prevCount =>
+            prevCount +
             updatedReviewItems.filter(item => item.reviewImgs.length > 0)
               .length,
-          );
+        );
 
-          if (updatedReviewItems.length > 0) {
-            const totalRating = updatedReviewItems.reduce(
-              (sum, item) => sum + item.reviewRating,
-              0,
-            );
-            const avgRating = (totalRating / updatedReviewItems.length).toFixed(
-              1,
-            );
-            setAverageRating(avgRating);
-          } else {
-            setAverageRating(0);
-          }
-        }
-      } catch (error) {
-        setError(error);
+        const totalRating = updatedReviewItems.reduce(
+          (sum, item) => sum + item.reviewRating,
+          0,
+        );
+        const avgRating = (
+          (totalRating + averageRating * reviewItems.length) /
+          (reviewItems.length + updatedReviewItems.length)
+        ).toFixed(1);
+        setAverageRating(avgRating);
+
+        setTotalPages(data.resultData.totalPage);
       }
-    };
+    } catch (error) {
+      setError(error);
+    }
+  };
 
-    fetchReviews();
-  }, []);
+  useEffect(() => {
+    fetchReviews(currentPage);
+  }, [currentPage]);
 
   useEffect(() => {
     let filtered;
@@ -173,7 +177,10 @@ const Reviews = () => {
           (sum, item) => sum + item.reviewRating,
           0,
         );
-        const avgRating = (totalRating / updatedReviewItems.length).toFixed(1);
+        const avgRating = (
+          (totalRating + averageRating * reviewItems.length) /
+          (reviewItems.length + updatedReviewItems.length)
+        ).toFixed(1);
         setAverageRating(avgRating);
       } else {
         setModalMessage("답글 저장에 실패했습니다.");
@@ -209,7 +216,6 @@ const Reviews = () => {
             : item,
         );
 
-        // replies 상태에서 해당 리뷰의 답글 제거
         const updatedReplies = { ...replies };
         const reviewPk = reviewItems.find(
           item =>
@@ -232,7 +238,10 @@ const Reviews = () => {
           (sum, item) => sum + item.reviewRating,
           0,
         );
-        const avgRating = (totalRating / updatedReviewItems.length).toFixed(1);
+        const avgRating = (
+          (totalRating + averageRating * reviewItems.length) /
+          (reviewItems.length + updatedReviewItems.length)
+        ).toFixed(1);
         setAverageRating(avgRating);
       } else {
         setModalMessage("답글 삭제에 실패했습니다.");
@@ -430,10 +439,19 @@ const Reviews = () => {
                   </div>
                 ))}
               </div>
+              {currentPage < totalPages && (
+                <button
+                  className="btn load-more"
+                  onClick={() => setCurrentPage(prevPage => prevPage + 1)}
+                >
+                  더 보기
+                </button>
+              )}
             </div>
           </div>
         </div>
       </div>
+
       {modalMessage && (
         <ModalForOk message={modalMessage} onClose={closeModal} />
       )}
