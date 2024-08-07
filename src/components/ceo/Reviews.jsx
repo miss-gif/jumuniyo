@@ -451,6 +451,7 @@ const Reviews = () => {
           </div>
         </div>
       </div>
+
       {modalMessage && (
         <ModalForOk message={modalMessage} onClose={closeModal} />
       )}
