@@ -78,7 +78,7 @@ const CouponManagement = () => {
           },
         },
       );
-
+      //
       setCoupons(prevCoupons => [...prevCoupons, response.data.resultData]);
       setModalMessage("쿠폰이 성공적으로 추가되었습니다.");
       setShowModal(true);
