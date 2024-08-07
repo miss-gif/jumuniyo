@@ -11,13 +11,18 @@ import PropTypes from "prop-types";
 import "./UserHeader.scss";
 
 // AuthLinks 컴포넌트 추가
-const AuthLinks = () => (
+
+const AuthLinks = ({ closeModal }) => (
   <div className="user-header__auth">
     <div className="user-header__auth-login auth-btn">
-      <Link to="/login">로그인</Link>
+      <Link to="/login" onClick={closeModal}>
+        로그인
+      </Link>
     </div>
     <div className="user-header__auth-signup auth-btn">
-      <Link to="/auth">회원가입</Link>
+      <Link to="/auth" onClick={closeModal}>
+        회원가입
+      </Link>
     </div>
   </div>
 );
@@ -49,6 +54,7 @@ const UserHeader = () => {
   const handleLogoutClick = () => {
     localStorage.removeItem("state");
     handleLogout(accessToken, dispatch, navigate);
+    setSidebarOpen(false);
   };
 
   /**
@@ -112,7 +118,9 @@ const UserHeader = () => {
           {isLoggedIn ? (
             <>
               <li className="nav__item">
-                <Link to="/mypage">마이페이지</Link>
+                <Link to="/mypage" onClick={toggleSidebar}>
+                  마이페이지
+                </Link>
               </li>
               <li className="nav__item">
                 <button onClick={handleLogoutClick}>로그아웃</button>
@@ -121,10 +129,14 @@ const UserHeader = () => {
           ) : (
             <div className="user-header__auth column">
               <div className="user-header__auth-login auth-btn">
-                <Link to="/login">로그인</Link>
+                <Link to="/login" onClick={closeModal}>
+                  로그인
+                </Link>
               </div>
               <div className="user-header__auth-signup auth-btn">
-                <Link to="/auth">회원가입</Link>
+                <Link to="/auth" onClick={closeModal}>
+                  회원가입
+                </Link>
               </div>
             </div>
           )}
