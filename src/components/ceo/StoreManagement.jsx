@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate, useLocation } from "react-router-dom";
 import InfoManagement from "./storemanagement/InfoManagement";
 import MenuManagement from "./storemanagement/MenuManagement";
+import CouponManagement from "./storemanagement/CouponManagement"; // 새로운 컴포넌트 import
 import queryString from "query-string"; // query-string 패키지 import
 import LoadingSpinner from "../common/LoadingSpinner";
 
@@ -137,6 +138,13 @@ const StoreManagement = () => {
           >
             메뉴 설정
           </button>
+
+          <button
+            className={`btn ${activeTab === "couponManagement" ? "active" : ""}`}
+            onClick={() => setActiveTab("couponManagement")}
+          >
+            쿠폰 설정
+          </button>
         </div>
         {/* {console.log("Active tab:", activeTab)} */}
         {activeTab === "storeInfo" && (
@@ -163,6 +171,7 @@ const StoreManagement = () => {
           </div>
         )}
         {activeTab === "menuManagement" && <MenuManagement />}
+        {activeTab === "couponManagement" && <CouponManagement />}
 
         {showModal && (
           <div className="modal">

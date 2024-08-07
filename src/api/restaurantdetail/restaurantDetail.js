@@ -19,9 +19,11 @@ export const fetchMenuData = async id => {
   }
 };
 
-export const fetchReviewData = async resPk => {
+export const fetchReviewData = async (resPk, page = 1) => {
   try {
-    const response = await axios.get(`/api/rev/noauth/${resPk}`);
+    const response = await axios.get(`/api/rev/noauth`, {
+      params: { resPk, page },
+    });
     return response.data.resultData;
   } catch (error) {
     throw new Error(

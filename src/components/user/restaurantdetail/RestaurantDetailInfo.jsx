@@ -1,13 +1,66 @@
 /* eslint-disable react/prop-types */
-import React from "react";
+import React, { useState, useEffect } from "react";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import { useSelector } from "react-redux";
+import axios from "axios";
 
-const RestaurantDetailInfo = ({ restaurantData }) => {
-  // 소수 둘째 자리에서 반올림된 reviewScore
+const RestaurantDetailInfo = ({ restaurantData, onShowLoginModal }) => {
+  const [isFavorited, setIsFavorited] = useState(false);
+  const [showNotLoginAlert, setShowNotLoginAlert] = useState(false); // 경고 메시지 상태 추가
+  const accessToken = useSelector(state => state.user.accessToken);
+  const isLoggedIn = !!accessToken;
+
+  useEffect(() => {
+    // 찜하기 상태 초기화
+    const fetchFavoriteStatus = async () => {
+      try {
+        const response = await axios.get(
+          `/api/follow/status/${restaurantData.restaurantPk}`,
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          },
+        );
+        setIsFavorited(response.data.resultData === 1);
+      } catch (err) {
+        console.error("Failed to fetch favorite status:", err);
+      }
+    };
+
+    if (isLoggedIn) {
+      fetchFavoriteStatus();
+    }
+  }, [isLoggedIn, restaurantData.restaurantPk, accessToken]);
+
+  const handleFavoriteToggle = async () => {
+    if (!isLoggedIn) {
+      setShowNotLoginAlert(true); // 경고 메시지 표시
+      onShowLoginModal();
+      return;
+    }
+
+    try {
+      const response = await axios.put(
+        `/api/follow/toggle/${restaurantData.restaurantPk}`,
+        null,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        },
+      );
+      if (response.data.statusCode === 1) {
+        setIsFavorited(response.data.resultData === 1);
+      }
+    } catch (err) {
+      console.error("Failed to toggle favorite:", err);
+    }
+  };
+
   const roundedReviewScore = Math.round(restaurantData.reviewScore * 100) / 100;
 
-  // reviewScore에 맞춰 별을 생성하는 함수
   const renderStars = score => {
     const fullStars = Math.floor(score);
     const halfStar = score % 1 >= 0.5;
@@ -38,10 +91,15 @@ const RestaurantDetailInfo = ({ restaurantData }) => {
     <div className="restaurant-detail-page__info">
       <h2 className="restaurant-detail-page__info-name">
         {restaurantData.restaurantName}
-        <div className="iconforinfo">
-          <FavoriteBorderIcon style={{ color: "red" }} />
+        <div className="iconforinfo" onClick={handleFavoriteToggle}>
+          {isFavorited ? (
+            <FavoriteIcon style={{ color: "red" }} />
+          ) : (
+            <FavoriteBorderIcon style={{ color: "red" }} />
+          )}
         </div>
       </h2>
+      {showNotLoginAlert} {/* 경고 메시지 컴포넌트 추가 */}
       <div className="restaurant-detail-page__info-content">
         <div className="restaurant-detail-page__info-image">
           <img
