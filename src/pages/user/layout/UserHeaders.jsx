@@ -8,7 +8,8 @@ const UserHeaders = () => {
     <div className="user-headers">
       <UserHeader />
       <CategoryFilter />
-      <Filters />
+
+      {/* <Filters /> */}
     </div>
   );
 };
