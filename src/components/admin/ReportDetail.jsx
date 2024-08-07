@@ -1,47 +1,140 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { useParams, useNavigate } from "react-router-dom";
 
 const ReportDetail = () => {
+  const { report_pk } = useParams();
+  const [reportDetail, setReportDetail] = useState(null);
+  const navigate = useNavigate();
+
+  const getCookie = name => {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(";").shift();
+  };
+
+  useEffect(() => {
+    const fetchDetail = async () => {
+      const accessToken = getCookie("accessToken");
+      if (!accessToken) {
+        console.error("토큰을 찾을 수 없습니다.");
+        return;
+      }
+
+      try {
+        const response = await axios.get(`/api/admin/report/${report_pk}`, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (response.data.statusCode === 1) {
+          setReportDetail(response.data.resultData);
+        } else {
+          console.error("데이터 불러오기 실패:", response.data.resultMsg);
+        }
+      } catch (error) {
+        console.error("데이터 불러오기 중 오류 발생:", error);
+      }
+    };
+
+    fetchDetail();
+  }, [report_pk]);
+
+  const handleDelete = async () => {
+    const accessToken = getCookie("accessToken");
+    if (!accessToken) {
+      console.error("토큰을 찾을 수 없습니다.");
+      return;
+    }
+
+    try {
+      const response = await axios.delete(`/api/admin/report/${report_pk}`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.data.statusCode === 1) {
+        alert("신고가 성공적으로 삭제되었습니다.");
+        navigate("/admin/report"); // 목록 페이지로 이동
+      } else {
+        console.error("신고 삭제 실패:", response.data.resultMsg);
+        alert("신고 삭제에 실패했습니다.");
+      }
+    } catch (error) {
+      console.error("신고 삭제 중 오류 발생:", error);
+      alert("신고 삭제 중 오류가 발생했습니다.");
+    }
+  };
+
+  if (!reportDetail) {
+    return <div>로딩 중...</div>;
+  }
+
   return (
     <>
       <div className="reportDetail-wrap">
-        <h1>No. 123541</h1>
+        <h1>No. {report_pk}</h1>
         <div className="report">
-          <div className="reportTitle">이 사람 언행이 부적절 합니다.</div>
+          <div className="reportTitle">{reportDetail.reportTitle}</div>
           <div className="reportWriter">
             <div className="reportWriter-tab">작성자</div>
-            <div className="reportWriter-value">Alpaka1242</div>
+            <div className="reportWriter-value">
+              {reportDetail.reportNickName}
+            </div>
           </div>
           <div className="reportTime">
             <div className="reportTime-tab">작성날짜</div>
-            <div className="reportTime-value">2024-07-07 13:00</div>
+            <div className="reportTime-value">
+              {new Date(reportDetail.reportCreatedAt).toLocaleString()}
+            </div>
           </div>
         </div>
         <div className="reportContent">
-          <div className="reportWhyContent">
-            매우 부적절한 언행을 사용하였고 아래에 이상한 사진으로 눈을 썩게
-            만들었습니다.
-          </div>
+          <div className="reportWhyContent">{reportDetail.reportContent}</div>
         </div>
         <div className="reported">
-          <div className="reportedTitle">What the hell did u make</div>
           <div className="reportedWriter">
             <div className="reportedWriter-tab">작성자</div>
-            <div className="reportedWriter-value">Alpaka1242</div>
+            <div className="reportedWriter-value">
+              {reportDetail.reviewNickName}
+            </div>
           </div>
           <div className="reportedTime">
             <div className="reportedTime-tab">작성날짜</div>
-            <div className="reportedTime-value">2024-07-07 13:00</div>
+            <div className="reportedTime-value">
+              {new Date(reportDetail.reviewCreatedAt).toLocaleString()}
+            </div>
           </div>
         </div>
         <div className="reportedContent">
           <div className="reportedWhyContent">
-            The food you made is freaking disgusting, you crazy bastard! How can
-            you mess up food like this? Mine would have been much tastier!
+            {reportDetail.reviewContents}
           </div>
         </div>
 
+        <div className="review-images">
+          {reportDetail.reviewPics1 && (
+            <img src={reportDetail.reviewPics1} alt="Review Pic 1" />
+          )}
+          {reportDetail.reviewPics2 && (
+            <img src={reportDetail.reviewPics2} alt="Review Pic 2" />
+          )}
+          {reportDetail.reviewPics3 && (
+            <img src={reportDetail.reviewPics3} alt="Review Pic 3" />
+          )}
+          {reportDetail.reviewPics4 && (
+            <img src={reportDetail.reviewPics4} alt="Review Pic 4" />
+          )}
+        </div>
+
         <div className="buttonforreport">
-          <div className="btn">취소처리</div>
+          <div className="btn" onClick={handleDelete}>
+            취소처리
+          </div>
           <div className="btn">영구정지처리</div>
           <div className="btn">기한부정지처리</div>
         </div>
@@ -52,6 +145,21 @@ const ReportDetail = () => {
             placeholder="정지개월"
             className="reportDetail-modalInput"
           />
+        </div>
+      </div>
+
+      <div className="report-detail">
+        <h1>신고 상세보기</h1>
+        <div>제목: {reportDetail.reportTitle}</div>
+        <div>내용: {reportDetail.reportContent}</div>
+        <div>작성자: {reportDetail.reportNickName}</div>
+        <div>
+          작성일: {new Date(reportDetail.reportCreatedAt).toLocaleString()}
+        </div>
+        <div>리뷰 작성자: {reportDetail.reviewNickName}</div>
+        <div>리뷰 내용: {reportDetail.reviewContents}</div>
+        <div>
+          리뷰 작성일: {new Date(reportDetail.reviewCreatedAt).toLocaleString()}
         </div>
       </div>
     </>

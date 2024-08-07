@@ -5,8 +5,15 @@ import ModalforReview from "./ModalForReview";
 import ReportModal from "./ReportModal";
 
 const Review = ({ review }) => {
-  const { nickName, reviewContents, reviewRating, pics, createdAt, reply } =
-    review;
+  const {
+    nickName,
+    reviewContents,
+    reviewRating,
+    pics,
+    createdAt,
+    reply,
+    reviewPk,
+  } = review;
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
@@ -28,11 +35,6 @@ const Review = ({ review }) => {
 
   const closeReportModal = () => {
     setIsReportModalOpen(false);
-  };
-
-  const handleReportSubmit = reason => {
-    // 신고 사유를 서버로 보내는 로직을 여기에 추가하세요.
-    console.log("신고 사유:", reason);
   };
 
   const roundedRating = Math.round(reviewRating * 100) / 100;
@@ -88,7 +90,7 @@ const Review = ({ review }) => {
       <ReportModal
         isOpen={isReportModalOpen}
         onClose={closeReportModal}
-        onSubmit={handleReportSubmit}
+        reviewPk={reviewPk}
       />
     </li>
   );

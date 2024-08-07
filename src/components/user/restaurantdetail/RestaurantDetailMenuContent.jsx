@@ -7,10 +7,16 @@ const RestaurantDetailMenuContent = ({ menuData, onSelectMenuItem }) => {
   return (
     <div className="restaurant-detail-page__menu-content">
       <div className="carousel hidden">
-        <RestaurantDetailCarousel />
+        {/* <RestaurantDetailCarousel /> */}
       </div>
-      {menuData ? (
-        <MenuCategory menuData={menuData} onSelectMenuItem={onSelectMenuItem} />
+      {menuData && menuData.length > 0 ? (
+        menuData.map((categoryData, index) => (
+          <MenuCategory
+            key={index}
+            categoryData={categoryData}
+            onSelectMenuItem={onSelectMenuItem}
+          />
+        ))
       ) : (
         <p>메뉴가 없습니다.</p>
       )}

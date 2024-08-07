@@ -2,8 +2,6 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import LoadingSpinner from "../../common/LoadingSpinner";
-import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
 const getCookie = name => {
   const value = `; ${document.cookie}`;
@@ -21,6 +19,7 @@ const MenuManagement = () => {
   const [error, setError] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
   const [editMenuItem, setEditMenuItem] = useState(null);
   const [deleteMenuItemId, setDeleteMenuItemId] = useState(null);
@@ -29,46 +28,38 @@ const MenuManagement = () => {
     menu_content: "",
     menu_price: "",
     menu_state: 1,
+    menu_cat_pk: "",
     img: null,
-    menu_cat_pk: "", // 추가된 필드
   });
-  const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
-  const [newCategoryName, setNewCategoryName] = useState("");
-  const [openCategories, setOpenCategories] = useState({});
+  const [newCategory, setNewCategory] = useState("");
 
   useEffect(() => {
     const accessToken = getCookie("accessToken");
 
     const fetchMenuData = async () => {
       try {
-        const menuResponse = await axios.get("/api/owner/menu", {
+        const response = await axios.get("/api/owner/menu", {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
         });
 
-        if (menuResponse.data.statusCode === 1) {
-          const updatedMenuData = menuResponse.data.resultData.map(menu => ({
-            ...menu,
-            menu_pic: menu.menu_pic
-              ? `/pic/${menu.menu_pic}`
-              : "default_image_url",
+        if (response.data.statusCode === 1) {
+          const categories = response.data.resultData;
+          const updatedCategories = categories.map(category => ({
+            ...category,
+            menu: category.menu.map(menu => ({
+              ...menu,
+              menu_pic: menu.menu_pic
+                ? `/pic/${menu.menu_pic}`
+                : "default_image_url",
+            })),
           }));
-          setMenuData(updatedMenuData);
-        } else {
-          throw new Error(menuResponse.data.resultMsg || "Unknown error");
-        }
 
-        const categoryResponse = await axios.get("/api/menu_category/list", {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        });
-
-        if (categoryResponse.data.statusCode === 1) {
-          setCategories(categoryResponse.data.resultData);
+          setCategories(updatedCategories);
+          setMenuData(updatedCategories.map(cat => cat.menu).flat());
         } else {
-          throw new Error(categoryResponse.data.resultMsg || "Unknown error");
+          throw new Error(response.data.resultMsg || "Unknown error");
         }
       } catch (err) {
         setError(err.message);
@@ -93,17 +84,19 @@ const MenuManagement = () => {
       menu_content: "",
       menu_price: "",
       menu_state: 1,
+      menu_cat_pk: "",
       img: null,
-      menu_cat_pk: "", // 추가된 필드 초기화
     });
     setIsModalOpen(true);
   };
+
   const handleCloseModal = () => setIsModalOpen(false);
 
   const handleOpenDeleteModal = menu_pk => {
     setDeleteMenuItemId(menu_pk);
     setIsDeleteModalOpen(true);
   };
+
   const handleCloseDeleteModal = () => setIsDeleteModalOpen(false);
 
   const handleOpenEditModal = menu => {
@@ -113,8 +106,8 @@ const MenuManagement = () => {
       menu_content: menu.menu_content,
       menu_price: menu.menu_price,
       menu_state: menu.menu_state,
+      menu_cat_pk: menu.menu_cat_pk,
       img: null,
-      menu_cat_pk: menu.menu_cat_pk || "", // 추가된 필드
     });
     setIsEditMode(true);
     setIsModalOpen(true);
@@ -147,7 +140,7 @@ const MenuManagement = () => {
         menu_content: newMenuItem.menu_content,
         menu_price: newMenuItem.menu_price,
         menu_state: newMenuItem.menu_state,
-        menu_cat_pk: newMenuItem.menu_cat_pk, // 추가된 필드
+        menu_cat_pk: newMenuItem.menu_cat_pk,
       }),
     );
     formData.append("pic", newMenuItem.img);
@@ -161,13 +154,29 @@ const MenuManagement = () => {
       });
 
       if (response.data.statusCode === 1) {
-        setMenuData(prevMenuData => [
-          ...prevMenuData,
-          {
-            ...response.data.resultData,
-            menu_pic: `/pic/${response.data.resultData.menu_pic}`,
-          },
-        ]);
+        const newMenu = {
+          ...response.data.resultData,
+          menu_pic: `/pic/${response.data.resultData.menu_pic}`,
+        };
+
+        // 상태 업데이트: 깊은 복사를 통해 카테고리 안의 메뉴 상태를 올바르게 업데이트합니다.
+        setCategories(prevCategories => {
+          return prevCategories.map(category => {
+            if (
+              category.menu_category.menu_cat_pk === newMenuItem.menu_cat_pk
+            ) {
+              return {
+                ...category,
+                menu: [...category.menu, newMenu],
+              };
+            }
+            return category;
+          });
+        });
+
+        // 상태 업데이트: 메뉴 데이터 상태를 업데이트합니다.
+        setMenuData(prevMenuData => [...prevMenuData, newMenu]);
+
         handleCloseModal();
       } else {
         throw new Error(response.data.resultMsg || "Unknown error");
@@ -175,15 +184,6 @@ const MenuManagement = () => {
     } catch (err) {
       setError(err.message);
     }
-  };
-
-  const handleStatusChange = (menu_pk, e) => {
-    const newStatus = parseInt(e.target.value, 10);
-    setMenuData(prevMenuData =>
-      prevMenuData.map(menu =>
-        menu.menu_pk === menu_pk ? { ...menu, menu_state: newStatus } : menu,
-      ),
-    );
   };
 
   const handleEditMenuItem = async () => {
@@ -198,7 +198,7 @@ const MenuManagement = () => {
         menu_content: newMenuItem.menu_content || editMenuItem.menu_content,
         menu_price: newMenuItem.menu_price || editMenuItem.menu_price,
         menu_state: newMenuItem.menu_state || editMenuItem.menu_state,
-        menu_cat_pk: newMenuItem.menu_cat_pk || editMenuItem.menu_cat_pk, // 추가된 필드
+        menu_cat_pk: newMenuItem.menu_cat_pk || editMenuItem.menu_cat_pk,
       }),
     );
     if (newMenuItem.img) {
@@ -247,7 +247,6 @@ const MenuManagement = () => {
         menu_content: menu.menu_content,
         menu_price: menu.menu_price,
         menu_state: newStatus,
-        menu_cat_pk: menu.menu_cat_pk, // 추가된 필드
       }),
     );
 
@@ -296,6 +295,14 @@ const MenuManagement = () => {
         setMenuData(prevMenuData =>
           prevMenuData.filter(menu => menu.menu_pk !== deleteMenuItemId),
         );
+        setCategories(prevCategories =>
+          prevCategories.map(category => ({
+            ...category,
+            menu: category.menu.filter(
+              menu => menu.menu_pk !== deleteMenuItemId,
+            ),
+          })),
+        );
         handleCloseDeleteModal();
       } else {
         throw new Error(response.data.resultMsg || "Unknown error");
@@ -306,14 +313,10 @@ const MenuManagement = () => {
   };
 
   const handleOpenCategoryModal = () => {
-    setNewCategoryName("");
     setIsCategoryModalOpen(true);
   };
-  const handleCloseCategoryModal = () => setIsCategoryModalOpen(false);
 
-  const handleCategoryInputChange = e => {
-    setNewCategoryName(e.target.value);
-  };
+  const handleCloseCategoryModal = () => setIsCategoryModalOpen(false);
 
   const handleAddCategory = async () => {
     const accessToken = getCookie("accessToken");
@@ -321,24 +324,26 @@ const MenuManagement = () => {
     try {
       const response = await axios.post(
         "/api/menu_category",
-        { menuCategoryName: newCategoryName },
+        {
+          menuCategoryName: newCategory,
+        },
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,
-            "Content-Type": "application/json",
           },
         },
       );
 
       if (response.data.statusCode === 1) {
-        setCategories(prevCategories => [
-          ...prevCategories,
-          {
-            menuCatName: newCategoryName,
-            position: response.data.resultData.position,
-            menuCatPk: response.data.resultData.menuCatPk,
+        const newCategoryData = {
+          menu_category: {
+            menu_cat_pk: response.data.resultData.menu_cat_pk,
+            menu_cat_name: newCategory,
           },
-        ]);
+          menu: [],
+        };
+
+        setCategories(prevCategories => [...prevCategories, newCategoryData]);
         handleCloseCategoryModal();
       } else {
         throw new Error(response.data.resultMsg || "Unknown error");
@@ -346,13 +351,6 @@ const MenuManagement = () => {
     } catch (err) {
       setError(err.message);
     }
-  };
-
-  const toggleCategory = categoryPk => {
-    setOpenCategories(prevState => ({
-      ...prevState,
-      [categoryPk]: !prevState[categoryPk],
-    }));
   };
 
   if (loading)
@@ -366,40 +364,23 @@ const MenuManagement = () => {
   return (
     <>
       <div className="menu-management">
-        <div className="menu-settings">
-          <div className="menu-upper">
-            <div className="menu-add">
-              <button className="btn" onClick={handleOpenModal}>
-                메뉴 추가
-              </button>
-              <button className="btn" onClick={handleOpenCategoryModal}>
-                카테고리 추가
-              </button>
-            </div>
-          </div>
-        </div>
-
         <div className="menu-section">
-          {categories.map(category => (
-            <div key={category.menuCatPk}>
+          {categories.length === 0 ? (
+            <p>메뉴를 추가해주세요.</p>
+          ) : (
+            categories.map(category => (
               <div
                 className="toggle-category"
-                onClick={() => toggleCategory(category.menuCatPk)}
+                key={category.menu_category.menu_cat_pk}
               >
-                <h4 className="menu-category__title">{category.menuCatName}</h4>
-                <div className="toggle-category-icon">
-                  {openCategories[category.menuCatPk] ? (
-                    <KeyboardArrowUpIcon />
-                  ) : (
-                    <KeyboardArrowDownIcon />
-                  )}
-                </div>
-              </div>
-              {openCategories[category.menuCatPk] && (
+                <h3 className="menu-category__title">
+                  {category.menu_category.menu_cat_name}
+                </h3>
                 <div className="menu-list">
-                  {menuData
-                    .filter(menu => menu.menu_cat_pk === category.menuCatPk)
-                    .map(menu => (
+                  {category.menu.length === 0 ? (
+                    <p>이 카테고리에 메뉴가 없습니다.</p>
+                  ) : (
+                    category.menu.map(menu => (
                       <div key={menu.menu_pk} className="menu-list-oneMenu">
                         <div className="menu-list-oneMenu-table">
                           <div className="picanddata">
@@ -463,11 +444,24 @@ const MenuManagement = () => {
                           </div>
                         </div>
                       </div>
-                    ))}
+                    ))
+                  )}
                 </div>
-              )}
+              </div>
+            ))
+          )}
+        </div>
+        <div className="menu-settings">
+          <div className="menu-upper">
+            <div className="menu-add">
+              <button className="btn" onClick={handleOpenModal}>
+                메뉴 추가
+              </button>
+              <button className="btn" onClick={handleOpenCategoryModal}>
+                카테고리 추가
+              </button>
             </div>
-          ))}
+          </div>
         </div>
       </div>
 
@@ -518,10 +512,15 @@ const MenuManagement = () => {
                   value={newMenuItem.menu_cat_pk}
                   onChange={handleInputChange}
                 >
-                  <option value="">카테고리를 선택하세요</option>
+                  <option value="" disabled>
+                    카테고리를 선택하세요
+                  </option>
                   {categories.map(category => (
-                    <option key={category.menuCatPk} value={category.menuCatPk}>
-                      {category.menuCatName}
+                    <option
+                      key={category.menu_category.menu_cat_pk}
+                      value={category.menu_category.menu_cat_pk}
+                    >
+                      {category.menu_category.menu_cat_name}
                     </option>
                   ))}
                 </select>
@@ -571,17 +570,17 @@ const MenuManagement = () => {
             <span className="close-button" onClick={handleCloseCategoryModal}>
               &times;
             </span>
-            <h2>카테고리 추가</h2>
+            <h2>새 카테고리 추가</h2>
             <br />
             <form>
               <div className="form-group">
-                <label htmlFor="category_name">카테고리 이름</label>
+                <label htmlFor="menuCategoryName">카테고리 이름</label>
                 <input
                   type="text"
-                  id="category_name"
-                  name="category_name"
-                  value={newCategoryName}
-                  onChange={handleCategoryInputChange}
+                  id="menuCategoryName"
+                  name="menuCategoryName"
+                  value={newCategory}
+                  onChange={e => setNewCategory(e.target.value)}
                 />
               </div>
               <button className="btn" type="button" onClick={handleAddCategory}>
