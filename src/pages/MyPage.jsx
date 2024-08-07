@@ -90,6 +90,17 @@ const MyPage = () => {
     try {
       const res = await jwtAxios.patch("/api/update-pic", pic);
       getUserInfo();
+      if (res.data.statusCode === 1) {
+        Swal.fire({
+          icon: "success",
+          text: "프로필 사진 변경 완료",
+        });
+      } else {
+        Swal.fire({
+          icon: "warning",
+          text: res.data.resultMsg,
+        });
+      }
       return res;
     } catch (error) {
       Swal.fire({
