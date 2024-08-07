@@ -210,8 +210,15 @@ const GoogleMaps = () => {
           placeholder="건물명, 도로명, 지번으로 검색하세요."
           fullWidth
           sx={{
+            borderRadius: "0",
+            outline: 0,
             "& .MuiOutlinedInput-notchedOutline": {
-              borderRadius: "0",
+              border: 0,
+              outline: 0,
+            },
+            "& .MuiInputBase-input": {
+              border: 0,
+              outline: 0,
             },
           }}
         />
