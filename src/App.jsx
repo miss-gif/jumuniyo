@@ -19,18 +19,18 @@ import CeoLayout from "./components/layout/CeoLayout";
 import RootLayout from "./components/layout/RootLayout";
 import MyPageOrderCloseDetail from "./components/user/mypage/MyPageOrderCloseDetail";
 import AdminPage from "./pages/AdminPage";
-import AuthCeoPage from "./pages/AuthCeoPage.jsx";
-import AuthPage from "./pages/AuthPage.jsx";
-import AuthUserPage from "./pages/AuthUserPage.jsx";
+import AuthCeoPage from "./pages/AuthCeoPage.tsx";
+import AuthPage from "./pages/AuthPage.tsx";
+import AuthUserPage from "./pages/AuthUserPage.tsx";
 import CartPage from "./pages/CartPage.jsx";
 import CeoPage from "./pages/CeoPage.jsx";
 import CheckoutPage from "./pages/CheckoutPage.jsx";
 import HomePage from "./pages/HomePage.jsx";
-import LoginPage from "./pages/LoginPage.jsx";
-import MyPage from "./pages/MyPage.jsx";
+import LoginPage from "./pages/LoginPage.tsx";
+import MyPage from "./pages/MyPage.tsx";
 import MyPageAddress from "./pages/MyPageAddress";
 import MyPageOrderClosePage from "./pages/MyPageOrderClosePage";
-import MyPageOrderPage from "./pages/MyPageOrderPage.jsx";
+import MyPageOrderPage from "./pages/MyPageOrderPage.tsx";
 import MyPageOrderPagee from "./pages/MyPageOrderPagee";
 import MyPageReviewPage from "./pages/MyPageReviewPage";
 import MypageReportPage from "./pages/MypageReportPage";
@@ -49,6 +49,7 @@ import CeoWithdrawal from "./components/ceo/CeoWithdrawal";
 import MenuManagement from "./components/ceo/MenuManagement";
 import MyPageReportListPage from "./pages/MyPageReportListPage";
 import MyPageCouponPage from "./pages/MyPageCouponPage";
+import MyPageFavoriteListPage from "./pages/MyPageFavoriteListPage";
 
 function App() {
   return (
@@ -85,6 +86,7 @@ function App() {
               <Route path="address" element={<MyPageAddress />} />
               <Route path="withdrawal" element={<MypageUserWithdrawal />} />
               <Route path="coupon" element={<MyPageCouponPage />} />
+              <Route path="favorite" element={<MyPageFavoriteListPage />} />
             </Route>
             <Route path="payment/:id" element={<PaymentPage />} />
             <Route path="projectinfo" element={<ProjectInfo />} />

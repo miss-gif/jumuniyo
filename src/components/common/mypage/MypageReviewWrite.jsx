@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { Rating, TextField } from "@mui/material";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import Swal from "sweetalert2";
 import jwtAxios from "../../../api/user/jwtUtil";
 
@@ -68,6 +68,10 @@ const MypageReviewWrite = ({
     setSelectedOrderPk(null);
   };
 
+  const handleChange = useCallback(e => {
+    setReviewWrite(e.target.value);
+  }, []);
+
   return (
     <div className="modify-modal">
       <h3>리뷰 쓰기</h3>
@@ -85,9 +89,7 @@ const MypageReviewWrite = ({
         multiline
         rows={4}
         defaultValue=""
-        onChange={e => {
-          setReviewWrite(e.target.value);
-        }}
+        onChange={handleChange}
       />
       <input type="file" multiple onChange={handleFilesChange} />
       <div className="mypage-button-box">

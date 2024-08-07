@@ -1,15 +1,33 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import LoadingSpinner from "../components/common/LoadingSpinner";
 import Swal from "sweetalert2";
+import { useSelector } from "react-redux";
+import { RootState } from "./MyPage";
 
-const MyPageOrderPage = () => {
-  const { id } = useParams();
-  const [orderData, setOrderData] = useState(null);
-  const accessToken = useSelector(state => state.user.accessToken);
+interface MenuInfo {
+  menuName: string;
+  menuPrice: number;
+}
 
+interface OrderData {
+  resName: string;
+  orderPk: string;
+  createdAt: string;
+  orderState: number;
+  orderPhone: string;
+  orderAddress: string;
+  orderRequest: string;
+  paymentMethod: string;
+  menuInfoList: MenuInfo[];
+  orderPrice: number;
+}
+
+const MyPageOrderPage: React.FC = () => {
+  const { id } = useParams<{ id: string }>();
+  const [orderData, setOrderData] = useState<OrderData | null>(null);
+  const accessToken = useSelector((state: RootState) => state.user.accessToken);
   const navigate = useNavigate();
 
   useEffect(() => {

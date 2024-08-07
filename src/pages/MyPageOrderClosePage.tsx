@@ -10,23 +10,40 @@ import Mypage from "../components/join/Mypage";
 import OrderListHeader from "../components/user/mypage/OrderListHeader";
 import { getCookie } from "../utils/cookie";
 
-const MyPageOrderClosePage = () => {
-  const [reviewOpen, setReviewOpen] = useState(false);
-  const [orders, setOrders] = useState([]);
-  const [selectedOrderPk, setSelectedOrderPk] = useState(null);
-  const [resPk, setResPk] = useState("");
-  const [isLogin, setIsLogin] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+// 주문 데이터 타입 정의
+interface Order {
+  doneOrderPk: string;
+  createdAt: string;
+  // 주문 데이터에 필요한 다른 속성 추가
+}
+
+// ReviewWriteProps 타입 정의
+interface ReviewWriteProps {
+  getOrderList: () => void;
+  doneOrderPk: string;
+  setReviewOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  reviewNo: () => void;
+  resPk: string;
+  setSelectedOrderPk: React.Dispatch<React.SetStateAction<string | null>>;
+}
+
+const MyPageOrderClosePage: React.FC = () => {
+  const [reviewOpen, setReviewOpen] = useState<boolean>(false);
+  const [orders, setOrders] = useState<Order[]>([]);
+  const [selectedOrderPk, setSelectedOrderPk] = useState<string | null>(null);
+  const [resPk, setResPk] = useState<string>("");
+  const [isLogin, setIsLogin] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const navigate = useNavigate();
 
-  const isOlderThanThreeDays = date => {
+  const isOlderThanThreeDays = (date: string): boolean => {
     const orderDate = new Date(date);
     const threeDaysAgo = new Date();
     threeDaysAgo.setDate(threeDaysAgo.getDate() - 3);
     return orderDate < threeDaysAgo;
   };
 
-  const reviewOpenModal = (doneOrderPk, resPk) => {
+  const reviewOpenModal = (doneOrderPk: string, resPk: string) => {
     setReviewOpen(true);
     setSelectedOrderPk(doneOrderPk);
     setResPk(resPk);
@@ -37,7 +54,7 @@ const MyPageOrderClosePage = () => {
     setSelectedOrderPk(null);
   };
 
-  const fetchOrders = async url => {
+  const fetchOrders = async (url: string) => {
     setIsLoading(true);
     try {
       const res = await jwtAxios.get(url);
@@ -100,7 +117,6 @@ const MyPageOrderClosePage = () => {
                     doneOrderPk={order.doneOrderPk}
                     setReviewOpen={setReviewOpen}
                     reviewNo={reviewNo}
-                    resPk={resPk}
                     setSelectedOrderPk={setSelectedOrderPk}
                   />
                 )}

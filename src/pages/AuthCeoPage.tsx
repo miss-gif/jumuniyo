@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Box, TextField, Typography } from "@mui/material";
+import { Box, TextField, Typography, debounce } from "@mui/material";
 import axios from "axios";
-import { useState } from "react";
+import { ChangeEvent, useCallback, useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AuthImageImport from "../components/layout/AuthImageImport";
 import JoinFooter from "../components/layout/JoinFooter";
@@ -29,49 +29,65 @@ const Text = styled(Typography)`
   color: #afafaf;
 `;
 
-const AuthUserPage = () => {
-  const [isLoading, setIsLoading] = useState(false);
+interface State {
+  gilad: boolean;
+  jason: boolean;
+  antoine: boolean;
+}
+
+interface MyMapProps {
+  setNewXValue: (value: number) => void;
+  setNewYValue: (value: number) => void;
+  setNewAddress: (value: string) => void;
+}
+
+const AuthUserPage: React.FC = () => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
   // 입력 관련 State
-  const [userId, setUserId] = useState("");
-  const [userPw, setUserPw] = useState("");
-  const [userPwCheck, setUserPwCheck] = useState("");
-  const [userName, setUserName] = useState("");
-  const [userNickName, setUserNickName] = useState("");
-  const [userPhone, setUserPhone] = useState("");
-  const [userRestaurantName, setUserRestaurantName] = useState("");
-  const [userCEONumber, setUserCEONumber] = useState("");
-  const [userOpenTime, setUserOpenTime] = useState("");
-  const [userCloseTime, setUserCloseTime] = useState("");
-  const [userImgFile, setUserImgFile] = useState(null);
-  const [userEmail, setUserEmail] = useState("");
-  const [userCEOTip, setUserCEOTip] = useState("");
-  const [userCEOEvent, setUserCEOEvent] = useState("");
-  const [emailCode, setEmailCode] = useState("");
+  const [userId, setUserId] = useState<string>("");
+  const [userPw, setUserPw] = useState<string>("");
+  const [userPwCheck, setUserPwCheck] = useState<string>("");
+  const [userName, setUserName] = useState<string>("");
+  const [userNickName, setUserNickName] = useState<string>("");
+  const [userPhone, setUserPhone] = useState<string>("");
+  const [userRestaurantName, setUserRestaurantName] = useState<string>("");
+  const [userCEONumber, setUserCEONumber] = useState<string>("");
+  const [userOpenTime, setUserOpenTime] = useState<string>("");
+  const [userCloseTime, setUserCloseTime] = useState<string>("");
+  const [userImgFile, setUserImgFile] = useState<File | null>(null);
+  const [userEmail, setUserEmail] = useState<string>("");
+  const [userCEOTip, setUserCEOTip] = useState<string>("");
+  const [userCEOEvent, setUserCEOEvent] = useState<string>("");
+  const [emailCode, setEmailCode] = useState<string>("");
 
   // 정규 표현식 참, 거짓 State
-  const [userIdComplete, setUserIdComplete] = useState(true);
-  const [userPwComplete, setUerPwComplete] = useState(true);
-  const [userPwCheckComplete, setUserPwCheckComplete] = useState(true);
-  const [userEmailComplete, setUserEmailComplete] = useState(true);
-  const [userPhoneComplete, setUserPhoneComplete] = useState(true);
-  const [userImgComplete, setUserImgComplete] = useState(true);
-  const [businessNumberComplete, setBusinessNumberComplete] = useState(true);
+  const [userIdComplete, setUserIdComplete] = useState<boolean>(true);
+  const [userPwComplete, setUerPwComplete] = useState<boolean>(true);
+  const [userPwCheckComplete, setUserPwCheckComplete] = useState<boolean>(true);
+  const [userEmailComplete, setUserEmailComplete] = useState<boolean>(true);
+  const [userPhoneComplete, setUserPhoneComplete] = useState<boolean>(true);
+  const [userImgComplete, setUserImgComplete] = useState<boolean>(true);
+  const [businessNumberComplete, setBusinessNumberComplete] =
+    useState<boolean>(true);
 
   // 인증 참, 거짓 State
-  const [isEmailCheck, setIsEmailCheck] = useState(false);
-  const [idCheckOk, setIdCheckOk] = useState(false);
-  const [idCheckComplete, setIdCheckComplete] = useState(true);
-  const [emailCheckOk, setEmailCheckOk] = useState(false);
-  const [emailCheckComplete, setEmailCheckComplete] = useState(true);
+  const [isEmailCheck, setIsEmailCheck] = useState<boolean>(false);
+  const [idCheckOk, setIdCheckOk] = useState<boolean>(false);
+  const [idCheckComplete, setIdCheckComplete] = useState<boolean>(true);
+  const [emailCheckOk, setEmailCheckOk] = useState<boolean>(false);
+  const [emailCheckComplete, setEmailCheckComplete] = useState<boolean>(true);
 
   const navigate = useNavigate();
 
   // 주소 관련 State
-  const [newXValue, setNewXValue] = useState("");
-  const [newYValue, setNewYValue] = useState("");
-  const [newAddress, setNewAddress] = useState("");
-  const [newAddressDetail, setNewAddressDetail] = useState("");
-  const [state, setState] = useState({
+  const [newXValue, setNewXValue] = useState<string>("");
+  const [newYValue, setNewYValue] = useState<string>("");
+  const [newAddress, setNewAddress] = useState<string>("");
+  const [newAddressDetail, setNewAddressDetail] = useState<string>("");
+
+  // 복수 선택 상태
+  const [state, setState] = useState<State>({
     gilad: false,
     jason: false,
     antoine: false,
@@ -86,12 +102,12 @@ const AuthUserPage = () => {
   const businessNumberPattern = /^\d{3}-\d{2}-\d{5}$/;
 
   // 전화번호 형식
-  const handleInputChange = e => {
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const formattedPhoneNumber = formatPhoneNumber(e.target.value);
     setUserPhone(formattedPhoneNumber);
   };
 
-  const formatPhoneNumber = value => {
+  const formatPhoneNumber = (value: string) => {
     if (!value) return value;
 
     // eslint-disable-next-line react/prop-types
@@ -239,7 +255,7 @@ const AuthUserPage = () => {
     }
   };
 
-  const joinCeo = async event => {
+  const joinCeo = async (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     const isCheckId = idRegex.test(userId);
     const isCheckPass = passRegex.test(userPw);
@@ -359,7 +375,9 @@ const AuthUserPage = () => {
       };
 
       // JSON 객체를 문자열로 변환하지 않고 바로 FormData에 추가
-      pic.append("pic", userImgFile); // 파일(binary) 추가
+      if (userImgFile) {
+        pic.append("pic", userImgFile); // 파일(binary) 추가
+      }
       pic.append("p", JSON.stringify(p)); // JSON 객체 추가
 
       try {
@@ -387,6 +405,10 @@ const AuthUserPage = () => {
       }
     }
   };
+
+  const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setUserCEOEvent(e.target.value);
+  }, []);
 
   return (
     <>
@@ -562,12 +584,10 @@ const AuthUserPage = () => {
                       id="outlined-multiline-static"
                       label="사장님 알림"
                       placeholder="가게 정보에 쓸 내용을 입력해주세요."
-                      onChange={e => {
-                        setUserCEOEvent(e.target.value);
-                      }}
+                      onChange={handleChange}
                       multiline
                       rows={4}
-                      defaultValue=""
+                      value={userCEOEvent}
                     />
                     <Box>
                       <TextField

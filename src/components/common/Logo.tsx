@@ -1,8 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import styled from "@emotion/styled"; // 이모션 styled 함수 import
+import styled from "@emotion/styled";
 
-export const Logo = () => {
+interface LogoProps {
+  style?: React.CSSProperties;
+}
+
+export const Logo: React.FC<LogoProps> = ({ style }) => {
   return (
     <StyledLink to="/">
       <img src={process.env.PUBLIC_URL + "/images/logo.png"} alt="Logo" />

@@ -1,13 +1,13 @@
 import { Box, TextField, Typography } from "@mui/material";
 import axios from "axios";
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { ChangeEvent, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
+import Swal from "sweetalert2";
+import LoadingSpinner from "../components/common/LoadingSpinner";
+import { Logo } from "../components/common/Logo";
 import AuthImageImport from "../components/layout/AuthImageImport";
 import JoinFooter from "../components/layout/JoinFooter";
-import { Logo } from "../components/common/Logo";
-import LoadingSpinner from "../components/common/LoadingSpinner";
-import Swal from "sweetalert2";
-import styled from "styled-components";
 
 const Divider = styled(Box)`
   width: 100%;
@@ -27,34 +27,35 @@ const Text = styled(Typography)`
   color: #afafaf;
 `;
 
-const AuthUserPage = () => {
+const AuthUserPage: React.FC = () => {
   const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
   // 입력 관련 State
-  const [userId, setUserId] = useState("");
-  const [userPw, setUserPw] = useState("");
-  const [userPwCheck, setUserPwCheck] = useState("");
-  const [userName, setUserName] = useState("");
-  const [userNickName, setUserNickName] = useState("");
-  const [userPhone, setUserPhone] = useState("");
-  const [userImgFile, setUserImgFile] = useState(null);
-  const [userEmail, setUserEmail] = useState("");
-  const [emailCode, setEmailCode] = useState("");
-  const [isEmailCheck, setIsEmailCheck] = useState(false);
+  const [userId, setUserId] = useState<string>("");
+  const [userPw, setUserPw] = useState<string>("");
+  const [userPwCheck, setUserPwCheck] = useState<string>("");
+  const [userName, setUserName] = useState<string>("");
+  const [userNickName, setUserNickName] = useState<string>("");
+  const [userPhone, setUserPhone] = useState<string>("");
+  const [userImgFile, setUserImgFile] = useState<File | undefined>(undefined);
+  const [userEmail, setUserEmail] = useState<string>("");
+  const [emailCode, setEmailCode] = useState<string>("");
+  const [isEmailCheck, setIsEmailCheck] = useState<boolean>(false);
 
   // 정규 표현식 참, 거짓 State
-  const [userIdComplete, setUserIdComplete] = useState(true);
-  const [userPwComplete, setUerPwComplete] = useState(true);
-  const [userPwCheckComplete, setUserPwCheckComplete] = useState(true);
-  const [userEmailComplete, setUserEmailComplete] = useState(true);
-  const [userPhoneComplete, setUserPhoneComplete] = useState(true);
-  const [userImgComplete, setUserImgComplete] = useState(false);
+  const [userIdComplete, setUserIdComplete] = useState<boolean>(true);
+  const [userPwComplete, setUserPwComplete] = useState<boolean>(true);
+  const [userPwCheckComplete, setUserPwCheckComplete] = useState<boolean>(true);
+  const [userEmailComplete, setUserEmailComplete] = useState<boolean>(true);
+  const [userPhoneComplete, setUserPhoneComplete] = useState<boolean>(true);
+  const [userImgComplete, setUserImgComplete] = useState<boolean>(false);
 
   // 인증 참, 거짓 State
-  const [idCheckOk, setIdCheckOk] = useState(false);
-  const [idCheckComplete, setIdCheckComplete] = useState(true);
-  const [emailCheckOk, setEmailCheckOk] = useState(false);
-  const [emailCheckComplete, setEmailCheckComplete] = useState(true);
+  const [idCheckOk, setIdCheckOk] = useState<boolean>(false);
+  const [idCheckComplete, setIdCheckComplete] = useState<boolean>(true);
+  const [emailCheckOk, setEmailCheckOk] = useState<boolean>(false);
+  const [emailCheckComplete, setEmailCheckComplete] = useState<boolean>(true);
 
   // 정규 표현식 조건
   const idRegex = /^.{8,}$/;
@@ -64,12 +65,12 @@ const AuthUserPage = () => {
   const imageRegex = /^[\w,\s-]+\.(jpg|jpeg|png|gif|bmp)$/;
 
   // 전화번호 형식
-  const handleInputChange = e => {
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const formattedPhoneNumber = formatPhoneNumber(e.target.value);
     setUserPhone(formattedPhoneNumber);
   };
 
-  const formatPhoneNumber = value => {
+  const formatPhoneNumber = (value: string) => {
     if (!value) return value;
 
     // eslint-disable-next-line react/prop-types
@@ -221,14 +222,14 @@ const AuthUserPage = () => {
     }
   };
 
-  const joinMember = async event => {
+  const joinMember = async (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     const isCheckId = idRegex.test(userId);
     const isCheckPass = passRegex.test(userPw);
     const isCheckPass2 = userPw === userPwCheck;
     const isCheckEmail = emailRegex.test(userEmail);
     const isCheckPhone = phoneRegex.test(userPhone);
-    const isCheckImgFile = !userImgFile || imageRegex.test(userImgFile.name);
+    // const isCheckImgFile = !userImgFile || imageRegex.test(userImgFile.name);
 
     if (isCheckId === false) {
       Swal.fire({
@@ -279,10 +280,10 @@ const AuthUserPage = () => {
         icon: "warning",
         text: "비밀번호는 8자 이상, 특수문자 사용해야합니다.",
       });
-      setUerPwComplete(false);
+      setUserPwComplete(false);
       return;
     } else {
-      setUerPwComplete(true);
+      setUserPwComplete(true);
     }
 
     if (isCheckPass2 === false) {
@@ -321,6 +322,7 @@ const AuthUserPage = () => {
           icon: "warning",
           text: "빈 문자열은 사용할수 없습니다.",
         });
+        return;
       }
 
       const pic = new FormData();
@@ -335,7 +337,9 @@ const AuthUserPage = () => {
       };
 
       // JSON 객체를 문자열로 변환하지 않고 바로 FormData에 추가
-      pic.append("pic", userImgFile); // 파일(binary) 추가
+      if (userImgFile) {
+        pic.append("pic", userImgFile); // 파일(binary) 추가
+      }
       pic.append("p", JSON.stringify(p)); // JSON 객체 추가
 
       try {

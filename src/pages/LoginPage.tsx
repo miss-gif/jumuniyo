@@ -11,7 +11,7 @@ import {
   styled,
 } from "@mui/material";
 import axios from "axios";
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
@@ -67,7 +67,7 @@ const CancelButton = styled(Button)({
   padding: "10px 20px",
 });
 
-const AuthUserPage = () => {
+const AuthUserPage: React.FC = () => {
   const [userId, setUserId] = useState("");
   const [userPw, setUserPw] = useState("");
   const [findIdIsOpen, setFindIdIsOpen] = useState(false);
@@ -106,7 +106,7 @@ const AuthUserPage = () => {
 
   const navigate = useNavigate();
 
-  const login = async e => {
+  const login = async (e: FormEvent) => {
     e.preventDefault();
     if (userId === "") {
       Swal.fire({
@@ -180,8 +180,8 @@ const AuthUserPage = () => {
       focusConfirm: false,
       preConfirm: () => {
         return [
-          document.getElementById("swal-input1").value,
-          document.getElementById("swal-input2").value,
+          // document.getElementById("swal-input1").value,
+          // document.getElementById("swal-input2").value,
         ];
       },
     });
@@ -403,16 +403,10 @@ const AuthUserPage = () => {
                       />
                     </DialogContent>
                     <DialogActions>
-                      <StyledButton
-                        onClick={handleConfirm}
-                        className={makeStyles.button}
-                      >
+                      <StyledButton onClick={handleConfirm} color="primary">
                         확인
                       </StyledButton>
-                      <CancelButton
-                        onClick={handleClose}
-                        className={makeStyles.cancelButton}
-                      >
+                      <CancelButton onClick={handleClose} color="primary">
                         취소
                       </CancelButton>
                     </DialogActions>
