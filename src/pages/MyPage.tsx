@@ -11,7 +11,18 @@ import LoadingSpinner from "../components/common/LoadingSpinner";
 import { useSelector } from "react-redux";
 import Swal from "sweetalert2";
 
-const MyPage = () => {
+export interface UserState {
+  accessToken: string;
+  // 다른 상태 속성 추가 가능
+}
+
+// 전체 상태의 타입 정의
+export interface RootState {
+  user: UserState;
+  // 다른 상태 속성 추가 가능
+}
+
+const MyPage: React.FC = () => {
   const [isEditNickname, setIsEditNickname] = useState(false);
   const [isEditPassword, setIsEditPassword] = useState(false);
   const [isEditImg, setIsEditImg] = useState(false);
@@ -28,7 +39,8 @@ const MyPage = () => {
   const [nickName, setNickName] = useState("");
   const [passWord, setPassWord] = useState("");
 
-  const accessToken = useSelector(state => state.user.accessToken) || "";
+  const accessToken =
+    useSelector((state: RootState) => state.user.accessToken) || "";
   console.log(accessToken);
 
   const getUserInfo = async () => {
@@ -67,7 +79,7 @@ const MyPage = () => {
     }
   }, []);
 
-  const editMode = mode => {
+  const editMode = (mode: string) => {
     setIsEditNickname(mode === "nickname");
     setIsEditPassword(mode === "password");
     setIsEditImg(mode === "img");
@@ -200,8 +212,6 @@ const MyPage = () => {
                 ) : (
                   <ModifyPass
                     getUserInfo={getUserInfo}
-                    setPassWord={setPassWord}
-                    passWord={passWord}
                     setIsEditPassword={setIsEditPassword}
                     editCancel={editCancel}
                   />

@@ -1,9 +1,8 @@
 import { useNavigate } from "react-router-dom";
-import JoinFooter from "../components/layout/JoinFooter";
-import { Link } from "react-router-dom";
 import { Logo } from "../components/common/Logo";
+import JoinFooter from "../components/layout/JoinFooter";
 
-const AuthPage = () => {
+const AuthPage: React.FC = () => {
   const joinNav = useNavigate();
 
   return (

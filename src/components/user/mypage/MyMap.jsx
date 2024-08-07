@@ -184,6 +184,9 @@ export default function MyMap({ setNewYValue, setNewXValue, setNewAddress }) {
   );
 }
 
+// Remove the key from propTypes
 MyMap.propTypes = {
-  key: PropTypes.string.isRequired,
+  setNewXValue: PropTypes.func.isRequired,
+  setNewYValue: PropTypes.func.isRequired,
+  setNewAddress: PropTypes.func.isRequired,
 };

@@ -39,6 +39,16 @@ const Mypage = () => {
         내주소
       </button>
       <button
+        onClick={() => navigate("/mypage/favorite")}
+        style={{
+          backgroundColor:
+            location.pathname === "/mypage/favorite" ? "#333" : "white",
+          color: location.pathname === "/mypage/favorite" ? "white" : "#333",
+        }}
+      >
+        즐겨찾기
+      </button>
+      <button
         onClick={() => navigate("/mypage/order")}
         style={{
           backgroundColor:
