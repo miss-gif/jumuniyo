@@ -17,15 +17,15 @@ const HomePage = () => {
           <h3 className="section__title">
             <span>nickname</span>님을 위한 추천
           </h3>
-          <RecommendationCarousel />
+          {/* <RecommendationCarousel /> */}
         </section>
         <section className="section-carousel">
           <h3 className="section__title">새로 들어왔어요!</h3>
-          <NewRestaurantListCarousel />
+          {/* <NewRestaurantListCarousel /> */}
         </section>
         <section className="section-carousel">
           <h3 className="section__title">최근에 주문한 메뉴</h3>
-          <RecentOrderCarousel />
+          {/* <RecentOrderCarousel /> */}
         </section>
       </div>
     </div>

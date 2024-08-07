@@ -6,13 +6,13 @@ import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import store, { persistor } from "./app/store";
-import { register } from "swiper/element/bundle"; // Swiper 사용 시
+// import { register } from "swiper/element/bundle"; // Swiper 사용 시
 import Modal from "react-modal";
 
 Modal.setAppElement("#root");
 
 // Swiper 요소 등록
-register();
+// register();
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
