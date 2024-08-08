@@ -325,7 +325,7 @@ const MenuManagement = () => {
       const response = await axios.post(
         "/api/menu_category",
         {
-          menuCategoryName: newCategory,
+          menu_category_name: newCategory,
         },
         {
           headers: {
@@ -338,7 +338,7 @@ const MenuManagement = () => {
         const newCategoryData = {
           menu_category: {
             menu_cat_pk: response.data.resultData.menu_cat_pk,
-            menu_cat_name: newCategory,
+            menuCatName: newCategory,
           },
           menu: [],
         };
@@ -366,7 +366,7 @@ const MenuManagement = () => {
       <div className="menu-management">
         <div className="menu-section">
           {categories.length === 0 ? (
-            <p>메뉴를 추가해주세요.</p>
+            <p>먼저 카테고리를 추가해주세요.</p>
           ) : (
             categories.map(category => (
               <div
@@ -374,7 +374,7 @@ const MenuManagement = () => {
                 key={category.menu_category.menu_cat_pk}
               >
                 <h3 className="menu-category__title">
-                  {category.menu_category.menu_cat_name}
+                  {category.menu_category.menuCatName}
                 </h3>
                 <div className="menu-list">
                   {category.menu.length === 0 ? (
@@ -520,7 +520,7 @@ const MenuManagement = () => {
                       key={category.menu_category.menu_cat_pk}
                       value={category.menu_category.menu_cat_pk}
                     >
-                      {category.menu_category.menu_cat_name}
+                      {category.menu_category.menuCatName}
                     </option>
                   ))}
                 </select>

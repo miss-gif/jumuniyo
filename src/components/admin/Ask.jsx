@@ -1,48 +1,56 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Ask = () => {
-  const askItems = [
-    {
-      pk: 1,
-      title: "이 쿠폰 어떻게 쓰는지 아는사람 있나요 없나요 있으면 손들어주삼??",
-      status: "답변완료",
-      completeTime: "23:00",
-      writer: "올빼미",
-      writeTime: "2024-01-01",
-    },
-    {
-      pk: 2,
-      title: "이 쿠폰 어떻게 씀?",
-      status: "답변완료",
-      completeTime: "23:00",
-      writer: "올빼미",
-      writeTime: "2024-01-01",
-    },
-    {
-      pk: 3,
-      title: "이 쿠폰 어떻게 씀?",
-      status: "답변완료",
-      completeTime: "23:00",
-      writer: "올빼미",
-      writeTime: "2024-01-01",
-    },
-    {
-      pk: 4,
-      title: "이 쿠폰 어떻게 씀?",
-      status: "답변완료",
-      completeTime: "23:00",
-      writer: "올빼미",
-      writeTime: "2024-01-01",
-    },
-    {
-      pk: 5,
-      title: "이 쿠폰 어떻게 씀?",
-      status: "답변완료",
-      completeTime: "23:00",
-      writer: "올빼미",
-      writeTime: "2024-01-01",
-    },
-  ];
+  const [askItems, setAskItems] = useState([]);
+  const navigate = useNavigate();
+
+  const getCookie = name => {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(";").shift();
+  };
+  useEffect(() => {
+    const fetchData = async () => {
+      const accessToken = getCookie("accessToken");
+      if (!accessToken) {
+        console.error("토큰을 찾을 수 없습니다.");
+        return;
+      }
+
+      try {
+        const response = await axios.get("/api/admin/inquiry/inquiry_list", {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (response.data.statusCode === 1) {
+          const formattedData = response.data.resultData.map(item => ({
+            pk: item.reportPk,
+            title: item.reportTitle,
+            status: item.reportState === 1 ? "처리완료" : "미완료",
+            completeTime: new Date(item.updatedAt).toLocaleTimeString(),
+            writer: item.reportUserNickName,
+            writeTime: new Date(item.createdAt).toLocaleDateString(),
+          }));
+          setAskItems(formattedData);
+        } else {
+          console.error("데이터 불러오기 실패:", response.data.resultMsg);
+        }
+      } catch (error) {
+        console.error("데이터 불러오기 중 오류 발생:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const handleClick = pk => {
+    navigate(`/admin/ask/details/${pk}`);
+  };
   return (
     <div className="ask-wrap">
       <h1>문의 목록</h1>

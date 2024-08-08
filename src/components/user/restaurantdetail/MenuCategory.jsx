@@ -15,7 +15,7 @@ const MenuCategory = ({ categoryData, onSelectMenuItem }) => {
   return (
     <div className="menu-category">
       <div className="toggle-category" onClick={toggleMenu}>
-        <h4 className="menu-category__title">{menu_category.menu_cat_name}</h4>
+        <h4 className="menu-category__title">{menu_category.menuCatName}</h4>
         <div className="toggle-category-icon">
           {isOpen ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
         </div>
