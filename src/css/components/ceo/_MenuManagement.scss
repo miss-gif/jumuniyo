@@ -3,7 +3,13 @@
 
   .menu-section {
     margin-bottom: 100px;
-
+    .menu-category__title {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px;
+      background-color: $gray;
+      cursor: pointer;
+    }
     .plsAddMenues {
       display: flex;
       justify-content: center;

@@ -321,7 +321,7 @@ const MenuManagement = () => {
       if (response.data.statusCode === 1) {
         const newCategoryData = {
           menu_category: {
-            menu_cat_pk: response.data.resultData.menu_cat_pk,
+            menu_cat_pk: response.data.resultData.menuCatPk,
             menu_cat_name: newCategory,
           },
           menu: [],
