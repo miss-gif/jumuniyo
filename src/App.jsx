@@ -50,6 +50,7 @@ import MenuManagement from "./components/ceo/MenuManagement";
 import MyPageReportListPage from "./pages/MyPageReportListPage";
 import MyPageCouponPage from "./pages/MyPageCouponPage";
 import MyPageFavoriteListPage from "./pages/MyPageFavoriteListPage";
+import IntroPage from "./pages/intro/IntroPage";
 
 function App() {
   return (
@@ -132,6 +133,7 @@ function App() {
           <Route path="*" element={<NotFound />} />
           <Route path="/toastTest" element={<Test />} />
           <Route path="/paymentTest" element={<Test3 />} />
+          <Route path="/1" element={<IntroPage />} />
         </Routes>
       </div>
     </OrderProvider>
