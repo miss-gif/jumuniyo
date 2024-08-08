@@ -35,6 +35,9 @@ const UserHeader = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const [isTransitioning, setTransitioning] = useState(false);
 
+  const userData = useSelector(state => state.user.userData);
+  const userNickname = userData ? userData.userNickname : "Guest";
+
   useEffect(() => {
     if (isSidebarOpen) {
       setTransitioning(true);
@@ -79,9 +82,13 @@ const UserHeader = () => {
 
   return (
     <div className="user-header">
-      <button className="user-header__menu-btn" onClick={toggleSidebar}>
-        <IoIosMenu fontSize={32} />
-      </button>
+      {isLoggedIn ? (
+        <button className="user-header__menu-btn" onClick={toggleSidebar}>
+          <IoIosMenu fontSize={32} />
+        </button>
+      ) : (
+        <></>
+      )}
       <div className="user-header__logo">
         <Link to={"/"}>주문이요</Link>
       </div>
@@ -100,9 +107,14 @@ const UserHeader = () => {
           <IoSearchSharp />
           <input className="search__input" type="text" placeholder="검색창" />
         </div>
-        <div className="user-header__cart">
-          <IoCartOutline fontSize={24} />
-        </div>
+
+        {isLoggedIn ? (
+          <div className="user-header__cart">
+            <IoCartOutline fontSize={24} />
+          </div>
+        ) : (
+          <></>
+        )}
       </nav>
 
       {!isLoggedIn ? <AuthLinks /> : null}
@@ -119,7 +131,28 @@ const UserHeader = () => {
             <>
               <li className="nav__item">
                 <Link to="/mypage" onClick={toggleSidebar}>
-                  마이페이지
+                  <img src="" alt="" />
+                  <div className="">
+                    <div className="">{userNickname}</div>
+                    <Link to="/mypage" onClick={toggleSidebar}>
+                      마이페이지
+                    </Link>
+                  </div>
+                </Link>
+              </li>
+              <li className="nav__item">
+                <Link to="/mypage" onClick={toggleSidebar}>
+                  주문내역
+                </Link>
+              </li>
+              <li className="nav__item">
+                <Link to="/mypage" onClick={toggleSidebar}>
+                  리뷰내역
+                </Link>
+              </li>
+              <li className="nav__item">
+                <Link to="/mypage" onClick={toggleSidebar}>
+                  고객센터
                 </Link>
               </li>
               <li className="nav__item">
@@ -127,18 +160,7 @@ const UserHeader = () => {
               </li>
             </>
           ) : (
-            <div className="user-header__auth column">
-              <div className="user-header__auth-login auth-btn">
-                <Link to="/login" onClick={closeModal}>
-                  로그인
-                </Link>
-              </div>
-              <div className="user-header__auth-signup auth-btn">
-                <Link to="/auth" onClick={closeModal}>
-                  회원가입
-                </Link>
-              </div>
-            </div>
+            <></>
           )}
         </div>
       </div>
