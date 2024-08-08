@@ -50,11 +50,15 @@ const MypageReportDetailPage: React.FC = () => {
               {reportData?.inquiryContent}
             </p>
           </div>
-
           <div className="mypage-order__section">
-            <div className="mypage-order__section-title">답변</div>
-
-            <p className="mypage-order__value">{reportData?.inquiryResponse}</p>
+            {reportData?.inquiryResponse ? (
+              <>
+                <div className="mypage-order__section-title">답변</div>
+                <p className="mypage-order__value">
+                  {reportData?.inquiryResponse}
+                </p>
+              </>
+            ) : null}
           </div>
         </div>
       </div>
