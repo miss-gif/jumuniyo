@@ -33,6 +33,7 @@ const geocoderService = { current: null };
 const GoogleMaps = () => {
   const dispatch = useDispatch();
   const locationData = useSelector(state => state.user.locationData);
+  const searchTerm = useSelector(state => state.user.searchTerm);
 
   const [value, setValue] = useState(null);
   const [inputValue, setInputValue] = useState("");
@@ -104,6 +105,10 @@ const GoogleMaps = () => {
       }
     }
   }, [locationData.latitude, locationData.longitude, dispatch]); // 의존성 배열에 있는 값이 변경될 때마다 이 효과 실행
+
+  useEffect(() => {
+    setValue(searchTerm);
+  }, [value]);
 
   const fetch = useMemo(
     () =>
