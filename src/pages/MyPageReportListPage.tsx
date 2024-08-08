@@ -15,7 +15,6 @@ interface Report {
 
 const MypageReportPage: React.FC = () => {
   const [report, setReport] = useState<Report[]>([]);
-  const [response, setResponse] = useState<string>("");
 
   const navgate = useNavigate();
 
@@ -28,6 +27,32 @@ const MypageReportPage: React.FC = () => {
         icon: "error",
         text: "서버에러입니다.",
       });
+    }
+  };
+
+  const deleteReport = async (reportPk: number) => {
+    const result = await Swal.fire({
+      title: "정말 삭제?",
+      text: "되돌릴 수 없다는 걸 알아두세요. 복구 못합니다.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "네 삭제할래요",
+      cancelButtonText: "아니요",
+    });
+
+    if (result.isConfirmed) {
+      try {
+        const res = await jwtAxios.delete(`/api/user/inquiry/${reportPk}`);
+
+        getReportList();
+      } catch (error) {
+        Swal.fire({
+          icon: "error",
+          text: "서버에러입니다.",
+        });
+      }
     }
   };
 
@@ -50,7 +75,7 @@ const MypageReportPage: React.FC = () => {
               <div key={report.inquiryPk}>
                 <div className="order-list">
                   <div className="order-date">
-                    <div className="flex-between-box">
+                    <div className="flex-between-real-box">
                       <h2>
                         {new Date(report.createdAt).toLocaleDateString("ko-KR")}{" "}
                       </h2>
@@ -64,14 +89,26 @@ const MypageReportPage: React.FC = () => {
                       </div>
                     </div>
                   </div>
-                  <div>제목: {report.inquiryTitle}</div>
-                  <div
-                    className="order-detail-text"
-                    onClick={() => {
-                      reportDetails(report.inquiryPk);
-                    }}
-                  >
-                    문의 상세보기
+                  <div className="flex-between-real-box">
+                    <div>
+                      <div>제목: {report.inquiryTitle}</div>
+                      <div
+                        className="order-detail-text"
+                        onClick={() => {
+                          reportDetails(report.inquiryPk);
+                        }}
+                      >
+                        문의 상세보기
+                      </div>
+                    </div>
+                    <button
+                      className="btn"
+                      onClick={() => {
+                        deleteReport(report.inquiryPk);
+                      }}
+                    >
+                      삭제
+                    </button>
                   </div>
                 </div>
               </div>
