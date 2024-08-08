@@ -3,28 +3,26 @@ import React, { useState } from "react";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
-const MenuCategory = ({ menuData, onSelectMenuItem }) => {
+const MenuCategory = ({ categoryData, onSelectMenuItem }) => {
   const [isOpen, setIsOpen] = useState(true); // 메뉴 카테고리의 펼침 상태
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
 
-  const formatPrice = price => {
-    return price.toLocaleString();
-  };
+  const { menu_category, menu } = categoryData;
 
   return (
     <div className="menu-category">
       <div className="toggle-category" onClick={toggleMenu}>
-        <h4 className="menu-category__title">인기메뉴</h4>
+        <h4 className="menu-category__title">{menu_category.menu_cat_name}</h4>
         <div className="toggle-category-icon">
           {isOpen ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
         </div>
       </div>
       {isOpen && (
         <ul className="menu-category__list">
-          {menuData.map((item, index) => (
+          {menu.map((item, index) => (
             <li
               key={index}
               className={`menu-category__item ${
@@ -37,9 +35,7 @@ const MenuCategory = ({ menuData, onSelectMenuItem }) => {
                 <div className="menu-category__description">
                   {item.menu_content}
                 </div>
-                <div className="menu-category__price">
-                  {formatPrice(item.menu_price)}원
-                </div>
+                <div className="menu-category__price">{item.menu_price}원</div>
                 {item.menu_state === 2 && (
                   <div className="menu-category__status">준비중입니다.</div>
                 )}

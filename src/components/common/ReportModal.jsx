@@ -1,9 +1,12 @@
 /* eslint-disable react/prop-types */
 import React, { useState } from "react";
+import axios from "axios";
+import { useSelector } from "react-redux";
 
-const ReportModal = ({ isOpen, onClose, onSubmit }) => {
+const ReportModal = ({ isOpen, onClose, reviewPk }) => {
   const [reason, setReason] = useState("");
   const [customReason, setCustomReason] = useState("");
+  const accessToken = useSelector(state => state.user.accessToken);
 
   const handleReasonChange = event => {
     setReason(event.target.value);
@@ -16,10 +19,29 @@ const ReportModal = ({ isOpen, onClose, onSubmit }) => {
     setCustomReason(event.target.value);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const reportReason = reason === "직접 입력" ? customReason : reason;
-    onSubmit(reportReason);
-    onClose();
+
+    try {
+      await axios.post(
+        "/api/user/report",
+        {
+          reviewPk,
+          reportTitle: reportReason,
+          reportContent: reportReason,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        },
+      );
+      onClose();
+    } catch (error) {
+      console.error("신고 실패:", error);
+      // 추가적으로 실패 알림을 사용자에게 보여줄 수 있습니다.
+    }
+    console.log("제출완료");
   };
 
   if (!isOpen) return null;

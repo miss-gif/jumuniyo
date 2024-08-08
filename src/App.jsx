@@ -120,7 +120,7 @@ function App() {
             </Route>
             <Route path="report">
               <Route index element={<Report />} />
-              <Route path="details/:reportPk" element={<ReportDetail />} />
+              <Route path="details/:report_pk" element={<ReportDetail />} />
             </Route>
             <Route path="accept">
               <Route index element={<Accept />} />
