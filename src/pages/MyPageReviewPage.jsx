@@ -6,16 +6,19 @@ import LoadingSpinner from "../components/common/LoadingSpinner";
 import NotLogin from "../components/common/mypage/NotLogin";
 import Mypage from "../components/join/Mypage";
 import { getCookie } from "../utils/cookie";
+import MypageReviewWrite from "../components/common/mypage/MypageReviewWrite";
 
 const MyPageReviewPage = () => {
   const [reviewItems, setReviewItems] = useState([]);
   const [isLogin, setIsLogin] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [reviewOpen, setReviewOpen] = useState(false);
+  const [selectedOrderPk, setSelectedOrderPk] = useState("");
 
   const getReview = async () => {
     setIsLoading(true);
     try {
-      const res = await jwtAxios.get("/api/rev/list");
+      const res = await jwtAxios.get(`/api/rev/list/1`);
       return res.data.resultData;
     } catch (error) {
       Swal.fire({
@@ -31,14 +34,19 @@ const MyPageReviewPage = () => {
   const updatedReviewItems = async () => {
     const reviewList = await getReview();
     if (!reviewList) return [];
-    const aaa = reviewList.map(item => ({
+    const aaa = reviewList.reviewList.map(item => ({
       ...item,
     }));
     return aaa;
   };
 
   const editReview = e => {
-    console.log(e);
+    setReviewOpen(true);
+  };
+
+  const reviewNo = () => {
+    setReviewOpen(false);
+    setSelectedOrderPk(null);
   };
 
   const deleteReview = async reviewPk => {
@@ -167,6 +175,15 @@ const MyPageReviewPage = () => {
                         삭제
                       </button>
                     </div>
+                    {reviewOpen && (
+                      <MypageReviewWrite
+                        getOrderList={() => getReview("/api/rev/list/1")}
+                        doneOrderPk={item.doneOrderPk}
+                        setReviewOpen={setReviewOpen}
+                        reviewNo={reviewNo}
+                        setSelectedOrderPk={setSelectedOrderPk}
+                      />
+                    )}
                   </div>
                 </div>
               </div>

@@ -42,14 +42,7 @@ const MyPageAddress = () => {
       confirmButtonText: "네 삭제할래요",
       cancelButtonText: "아니요",
     }).then(result => {
-      if (result.isConfirmed) {
-        deleteAddr();
-        Swal.fire({
-          title: "삭제완료",
-          text: "해당주소는 삭제 되었습니다.",
-          icon: "success",
-        });
-      }
+      deleteAddr();
     });
   };
 
@@ -94,9 +87,20 @@ const MyPageAddress = () => {
 
   const deleteAddr = async () => {
     try {
-      await jwtAxios.delete(`/api/address?addr_pk=${addressPk}`);
+      const res = await jwtAxios.delete(`/api/address?addr_pk=${addressPk}`);
       fetchUserAddressList();
       fetchUserAddress();
+      if (res.data.statusCode === 1) {
+        Swal.fire({
+          icon: "success",
+          text: res.data.resultMsg,
+        });
+      } else {
+        Swal.fire({
+          icon: "warning",
+          text: res.data.resultMsg,
+        });
+      }
     } catch (error) {
       Swal.fire({
         icon: "error",

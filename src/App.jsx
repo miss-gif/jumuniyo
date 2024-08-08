@@ -51,6 +51,7 @@ import MyPageReportListPage from "./pages/MyPageReportListPage";
 import MyPageCouponPage from "./pages/MyPageCouponPage";
 import MyPageFavoriteListPage from "./pages/MyPageFavoriteListPage";
 import IntroPage from "./pages/intro/IntroPage";
+import MypageReportDetailPage from "./pages/MypageReportDetailPage";
 
 function App() {
   return (
@@ -79,6 +80,10 @@ function App() {
               <Route path="order" element={<MyPageOrderPagee />} />
               <Route path="report/list" element={<MyPageReportListPage />} />
               <Route path="reportpage" element={<MypageReportPage />} />
+              <Route
+                path="reportdetail/:id"
+                element={<MypageReportDetailPage />}
+              />
               <Route path="orderclose">
                 <Route index element={<MyPageOrderClosePage />} />
                 <Route path=":id" element={<MyPageOrderCloseDetail />} />
