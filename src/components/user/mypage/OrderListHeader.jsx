@@ -34,8 +34,8 @@ const OrderListHeader = () => {
   return (
     <div className="order-list-header">
       <Link
-        to="/mypage/ordere"
-        css={[linkStyle, location.pathname === "/mypage/ordere" && activeStyle]}
+        to="/mypage/order"
+        css={[linkStyle, location.pathname === "/mypage/order" && activeStyle]}
       >
         주문진행 중
       </Link>

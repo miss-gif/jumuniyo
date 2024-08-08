@@ -41,7 +41,6 @@ const MyPage: React.FC = () => {
 
   const accessToken =
     useSelector((state: RootState) => state.user.accessToken) || "";
-  console.log(accessToken);
 
   const getUserInfo = async () => {
     try {
