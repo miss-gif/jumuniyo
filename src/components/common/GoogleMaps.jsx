@@ -109,7 +109,7 @@ export default function GoogleMaps() {
       onChange={(event, newValue) => {
         setOptions(newValue ? [newValue, ...options] : options);
         setValue(newValue);
-        dispatch(setSearchTerm(newValue)); // Redux의 searchTerm 업데이트
+        dispatch(setSearchTerm(newValue.description)); // Redux의 searchTerm 업데이트
       }}
       onInputChange={(event, newInputValue) => {
         setInputValue(newInputValue);
