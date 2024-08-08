@@ -1,14 +1,15 @@
 /* eslint-disable react/prop-types */
-import React, { useEffect, useState, useMemo, useRef } from "react";
-import PropTypes from "prop-types";
-import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
-import Autocomplete from "@mui/material/Autocomplete";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
+import Autocomplete from "@mui/material/Autocomplete";
+import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
+import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import parse from "autosuggest-highlight/parse";
 import { debounce } from "@mui/material/utils";
+import parse from "autosuggest-highlight/parse";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setSearchTerm } from "../../app/userSlice";
 
 const GOOGLE_MAPS_API_KEY = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
 
@@ -27,11 +28,15 @@ function loadScript(src, position, id) {
 const autocompleteService = { current: null };
 
 export default function GoogleMaps() {
-  const [value, setValue] = useState(null);
-  const [inputValue, setInputValue] = useState("");
+  const dispatch = useDispatch();
+  const searchTerm = useSelector(state => state.user.searchTerm); // Redux에서 searchTerm 읽기
+
+  const [value, setValue] = useState(searchTerm || null);
+  const [inputValue, setInputValue] = useState(""); // 초기값을 Redux의 searchTerm으로 설정
   const [options, setOptions] = useState([]);
   const loaded = useRef(false);
 
+  // Google Maps API 로드 스크립트는 기존 코드 그대로 유지
   if (typeof window !== "undefined" && !loaded.current) {
     if (!document.querySelector("#google-maps")) {
       loadScript(
@@ -40,7 +45,6 @@ export default function GoogleMaps() {
         "google-maps",
       );
     }
-
     loaded.current = true;
   }
 
@@ -105,6 +109,7 @@ export default function GoogleMaps() {
       onChange={(event, newValue) => {
         setOptions(newValue ? [newValue, ...options] : options);
         setValue(newValue);
+        dispatch(setSearchTerm(newValue)); // Redux의 searchTerm 업데이트
       }}
       onInputChange={(event, newInputValue) => {
         setInputValue(newInputValue);
