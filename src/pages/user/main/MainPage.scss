@@ -76,3 +76,42 @@
     color: #ff6f61;
   }
 }
+
+// 스와이퍼 컨트롤러 스타일
+
+.carousel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  &__title {
+    font-size: 24px;
+  }
+
+  &__controller {
+    display: flex;
+    gap: 24px;
+
+    &-all {
+      font-size: 14px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    &-btns {
+      display: flex;
+      gap: 8px;
+    }
+
+    &-prev,
+    &-next {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 30px;
+      background-color: #f3f3f3;
+      border-radius: 50%;
+    }
+  }
+}
