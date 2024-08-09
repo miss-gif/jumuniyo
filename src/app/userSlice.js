@@ -34,14 +34,18 @@ const userSlice = createSlice({
       state.tokenMaxAge = action.payload;
     },
     setLocationData: (state, action) => {
-      state.locationData = action.payload;
+      const { latitude, longitude, geocodeAddress } = action.payload;
+      state.locationData = { latitude, longitude, geocodeAddress };
     },
+
     setSearchTerm: (state, action) => {
-      state.searchTerm = action.payload; // 현재 검색값 설정
+      state.searchTerm = action.payload;
     },
+
     clearSearchTerm: state => {
-      state.searchTerm = ""; // 검색값 초기화
+      state.searchTerm = "";
     },
+
     logout: state => {
       state.userData = null;
       state.userRole = null;
@@ -51,7 +55,7 @@ const userSlice = createSlice({
       state.tokenMaxAge = null;
       state.isLoggedIn = false;
       state.locationData = { latitude: "", longitude: "", geocodeAddress: "" };
-      state.searchTerm = ""; // 로그아웃 시 검색값 초기화
+      state.searchTerm = "";
     },
   },
 });

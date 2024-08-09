@@ -1,0 +1,11 @@
+.user-header__location {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  .wrap {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+}

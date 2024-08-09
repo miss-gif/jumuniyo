@@ -1,0 +1,15 @@
+.user-header {
+  &__cart,
+  &__heart,
+  &__coupon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    padding: 8px;
+    cursor: pointer;
+    &:hover {
+      background-color: #f3f3f3;
+    }
+  }
+}

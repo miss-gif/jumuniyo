@@ -46,17 +46,7 @@
       flex-grow: 1;
     }
   }
-  &__cart {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 50%;
-    padding: 8px;
-    cursor: pointer;
-    &:hover {
-      background-color: #f3f3f3;
-    }
-  }
+
   &__auth {
     display: flex;
     justify-content: space-between;
@@ -81,38 +71,4 @@
 
 .user-header__auth-signup {
   background-color: #f3f3f3;
-}
-
-.sidebar-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  pointer-events: none;
-  z-index: 1000;
-}
-
-.sidebar-overlay.visible {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-.sidebar {
-  display: flex;
-  flex-direction: column;
-  background: white;
-  width: 250px;
-  height: 100%;
-  padding: 20px;
-  box-shadow: 1px 0 10px rgba(0, 0, 0, 0.1);
-  transform: translateX(-100%);
-  transition: transform 0.3s ease; /* 부드러운 애니메이션 추가 */
-}
-
-.sidebar.open {
-  transform: translateX(0); /* 사이드바가 열릴 때의 상태 */
 }
