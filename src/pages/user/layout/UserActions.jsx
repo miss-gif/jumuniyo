@@ -1,17 +1,18 @@
-import React from "react";
-import { FaCartShopping, FaHeart } from "react-icons/fa6";
-import { RiCoupon2Fill } from "react-icons/ri";
+import { AiOutlineShoppingCart } from "react-icons/ai";
+import { FaRegHeart } from "react-icons/fa";
+import { RiCoupon2Line } from "react-icons/ri";
+import "./UserActions.scss";
 
 const UserActions = ({ toggleSidebarRight }) => (
   <>
     <div className="user-header__cart" onClick={toggleSidebarRight}>
-      <FaCartShopping fontSize={24} />
+      <AiOutlineShoppingCart fontSize={24} />
     </div>
     <div className="user-header__heart" onClick={toggleSidebarRight}>
-      <FaHeart fontSize={24} />
+      <FaRegHeart fontSize={24} />
     </div>
     <div className="user-header__coupon" onClick={toggleSidebarRight}>
-      <RiCoupon2Fill fontSize={24} />
+      <RiCoupon2Line fontSize={24} />
     </div>
   </>
 );
