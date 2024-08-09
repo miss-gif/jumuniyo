@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import React, { useState, useEffect } from "react";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
@@ -16,14 +15,14 @@ const RestaurantDetailInfo = ({ restaurantData, onShowLoginModal }) => {
     const fetchFavoriteStatus = async () => {
       try {
         const response = await axios.get(
-          `/api/follow/status/${restaurantData.restaurantPk}`,
+          `/api/restaurant/${restaurantData.restaurantPk}`, // 실제 API 호출 경로를 사용하세요.
           {
             headers: {
               Authorization: `Bearer ${accessToken}`,
             },
           },
         );
-        setIsFavorited(response.data.resultData === 1);
+        setIsFavorited(response.data.resultData.isFollow === 1);
       } catch (err) {
         console.error("Failed to fetch favorite status:", err);
       }
@@ -99,7 +98,8 @@ const RestaurantDetailInfo = ({ restaurantData, onShowLoginModal }) => {
           )}
         </div>
       </h2>
-      {showNotLoginAlert} {/* 경고 메시지 컴포넌트 추가 */}
+      {showNotLoginAlert && <div>로그인이 필요합니다.</div>}{" "}
+      {/* 경고 메시지 컴포넌트 추가 */}
       <div className="restaurant-detail-page__info-content">
         <div className="restaurant-detail-page__info-image">
           <img
