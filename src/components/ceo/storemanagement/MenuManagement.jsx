@@ -32,6 +32,7 @@ const MenuManagement = () => {
     img: null,
   });
   const [newCategory, setNewCategory] = useState("");
+  const [editCategoryItem, setEditCategoryItem] = useState(null); // 카테고리 수정
 
   useEffect(() => {
     const accessToken = getCookie("accessToken");
@@ -130,6 +131,11 @@ const MenuManagement = () => {
   };
 
   const handleAddMenuItem = async () => {
+    if (!newMenuItem.menu_cat_pk) {
+      setError("카테고리를 선택해주세요.");
+      return;
+    }
+
     const accessToken = getCookie("accessToken");
 
     const formData = new FormData();
@@ -159,24 +165,28 @@ const MenuManagement = () => {
           menu_pic: `/pic/${response.data.resultData.menu_pic}`,
         };
 
-        // 상태 업데이트: 깊은 복사를 통해 카테고리 안의 메뉴 상태를 올바르게 업데이트합니다.
         setCategories(prevCategories => {
-          return prevCategories.map(category => {
-            if (
-              category.menu_category.menu_cat_pk === newMenuItem.menu_cat_pk
-            ) {
-              return {
-                ...category,
-                menu: [...category.menu, newMenu],
-              };
-            }
-            return category;
-          });
+          return prevCategories
+            .filter(category => category.menu_category !== null) // null이 아닌 항목만 필터링
+            .map(category => {
+              if (
+                category.menu_category.menu_cat_pk === newMenuItem.menu_cat_pk
+              ) {
+                return {
+                  ...category,
+                  menu: [...category.menu, newMenu],
+                };
+              }
+              return category;
+            });
         });
 
-        // 상태 업데이트: 메뉴 데이터 상태를 업데이트합니다.
-        setMenuData(prevMenuData => [...prevMenuData, newMenu]);
-
+        setMenuData(
+          prevMenuData =>
+            [...prevMenuData, newMenu].filter(
+              menu => menu.menu_cat_pk !== null,
+            ), // null이 아닌 항목만 필터링
+        );
         handleCloseModal();
       } else {
         throw new Error(response.data.resultMsg || "Unknown error");
@@ -312,7 +322,87 @@ const MenuManagement = () => {
     }
   };
 
+  // 카테고리 수정 모달 열기
+  const handleOpenEditCategoryModal = category => {
+    setEditCategoryItem(category);
+    setNewCategory(category.menu_category.menu_cat_name);
+    setIsCategoryModalOpen(true);
+  };
+
+  // 카테고리 수정 처리
+  const handleEditCategory = async () => {
+    const accessToken = getCookie("accessToken");
+
+    try {
+      const response = await axios.patch(
+        "/api/menu_category",
+        {
+          menu_cat_pk: editCategoryItem.menu_category.menu_cat_pk,
+          menu_cat_name: newCategory,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        },
+      );
+
+      if (response.data.statusCode === 1) {
+        setCategories(prevCategories =>
+          prevCategories
+            .filter(category => category.menu_category !== null) // null이 아닌 항목만 필터링
+            .map(category =>
+              category.menu_category.menu_cat_pk ===
+              editCategoryItem.menu_category.menu_cat_pk
+                ? {
+                    ...category,
+                    menu_category: {
+                      ...category.menu_category,
+                      menu_cat_name: newCategory,
+                    },
+                  }
+                : category,
+            ),
+        );
+        handleCloseCategoryModal();
+      } else {
+        throw new Error(response.data.resultMsg || "Unknown error");
+      }
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+  // 카테고리 삭제 처리
+  const handleDeleteCategory = async menu_cat_pk => {
+    const accessToken = getCookie("accessToken");
+
+    try {
+      const response = await axios.delete(`/api/menu_category/${menu_cat_pk}`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+
+      if (response.data.statusCode === 1) {
+        setCategories(prevCategories =>
+          prevCategories
+            .filter(category => category.menu_category !== null) // null이 아닌 항목만 필터링
+            .filter(
+              category => category.menu_category.menu_cat_pk !== menu_cat_pk,
+            ),
+        );
+      } else {
+        throw new Error(response.data.resultMsg || "Unknown error");
+      }
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
   const handleOpenCategoryModal = () => {
+    setEditCategoryItem(null); // 새 카테고리 추가 시 수정 모드 해제
+    setNewCategory(""); // 새 카테고리 이름 초기화
     setIsCategoryModalOpen(true);
   };
 
@@ -338,7 +428,7 @@ const MenuManagement = () => {
         const newCategoryData = {
           menu_category: {
             menu_cat_pk: response.data.resultData.menu_cat_pk,
-            menuCatName: newCategory,
+            menu_cat_name: newCategory,
           },
           menu: [],
         };
@@ -361,6 +451,10 @@ const MenuManagement = () => {
     );
   if (error) return <p>Error: {error}</p>;
 
+  const validCategories = categories.filter(
+    category => category.menu_category !== null,
+  );
+
   return (
     <>
       <div className="menu-management">
@@ -368,87 +462,103 @@ const MenuManagement = () => {
           {categories.length === 0 ? (
             <p>먼저 카테고리를 추가해주세요.</p>
           ) : (
-            categories.map(category => (
-              <div
-                className="toggle-category"
-                key={category.menu_category.menu_cat_pk}
-              >
-                <h3 className="menu-category__title">
-                  {category.menu_category.menuCatName}
-                </h3>
-                <div className="menu-list">
-                  {category.menu.length === 0 ? (
-                    <p>이 카테고리에 메뉴가 없습니다.</p>
-                  ) : (
-                    category.menu.map(menu => (
-                      <div key={menu.menu_pk} className="menu-list-oneMenu">
-                        <div className="menu-list-oneMenu-table">
-                          <div className="picanddata">
-                            <div className="menu-list-oneMenu-tablePic">
-                              <img
-                                src={
-                                  menu.menu_pic
-                                    ? menu.menu_pic
-                                    : "default_image_url"
-                                }
-                                alt={menu.menu_name}
-                              />
+            categories
+              .filter(category => category.menu_category !== null) // null이 아닌 항목만 필터링
+              .map(category => (
+                <div
+                  className="toggle-category"
+                  key={category.menu_category.menu_cat_pk}
+                >
+                  <h3 className="menu-category__title">
+                    {category.menu_category.menu_cat_name}
+                  </h3>
+                  <button
+                    className="btn"
+                    onClick={() => handleOpenEditCategoryModal(category)}
+                  >
+                    수정
+                  </button>
+                  <button
+                    className="btn--cancel"
+                    onClick={() =>
+                      handleDeleteCategory(category.menu_category.menu_cat_pk)
+                    }
+                  >
+                    삭제
+                  </button>
+                  <div className="menu-list">
+                    {category.menu.length === 0 ? (
+                      <p>이 카테고리에 메뉴가 없습니다.</p>
+                    ) : (
+                      category.menu.map(menu => (
+                        <div key={menu.menu_pk} className="menu-list-oneMenu">
+                          <div className="menu-list-oneMenu-table">
+                            <div className="picanddata">
+                              <div className="menu-list-oneMenu-tablePic">
+                                <img
+                                  src={
+                                    menu.menu_pic
+                                      ? menu.menu_pic
+                                      : "default_image_url"
+                                  }
+                                  alt={menu.menu_name}
+                                />
+                              </div>
+                              <div className="menu-list-oneMenu-tableData">
+                                <h3 className="menu-list-name">
+                                  {menu.menu_name}
+                                </h3>
+                                <p className="menu-list-content">
+                                  {menu.menu_content}
+                                </p>
+                                <p className="menu-list-price">
+                                  {menu.menu_price}원
+                                </p>
+                              </div>
                             </div>
-                            <div className="menu-list-oneMenu-tableData">
-                              <h3 className="menu-list-name">
-                                {menu.menu_name}
-                              </h3>
-                              <p className="menu-list-content">
-                                {menu.menu_content}
-                              </p>
-                              <p className="menu-list-price">
-                                {menu.menu_price}원
-                              </p>
-                            </div>
-                          </div>
 
-                          <div className="status-action">
-                            <div className="menu-list-status">
-                              {menu.menu_state === 1 ? (
+                            <div className="status-action">
+                              <div className="menu-list-status">
+                                {menu.menu_state === 1 ? (
+                                  <button
+                                    className="menu-list-select"
+                                    onClick={() => handleStatusToggle(menu)}
+                                  >
+                                    판매중
+                                  </button>
+                                ) : (
+                                  <button
+                                    className="menu-list-select-soldOut"
+                                    onClick={() => handleStatusToggle(menu)}
+                                  >
+                                    판매중지
+                                  </button>
+                                )}
+                              </div>
+                              <div className="menu-list-actions">
                                 <button
-                                  className="menu-list-select"
-                                  onClick={() => handleStatusToggle(menu)}
+                                  className="btn"
+                                  onClick={() => handleOpenEditModal(menu)}
                                 >
-                                  판매중
+                                  수정
                                 </button>
-                              ) : (
                                 <button
-                                  className="menu-list-select-soldOut"
-                                  onClick={() => handleStatusToggle(menu)}
+                                  className="btn--cancel"
+                                  onClick={() =>
+                                    handleOpenDeleteModal(menu.menu_pk)
+                                  }
                                 >
-                                  판매중지
+                                  삭제
                                 </button>
-                              )}
-                            </div>
-                            <div className="menu-list-actions">
-                              <button
-                                className="btn"
-                                onClick={() => handleOpenEditModal(menu)}
-                              >
-                                수정
-                              </button>
-                              <button
-                                className="btn--cancel"
-                                onClick={() =>
-                                  handleOpenDeleteModal(menu.menu_pk)
-                                }
-                              >
-                                삭제
-                              </button>
+                              </div>
                             </div>
                           </div>
                         </div>
-                      </div>
-                    ))
-                  )}
+                      ))
+                    )}
+                  </div>
                 </div>
-              </div>
-            ))
+              ))
           )}
         </div>
         <div className="menu-settings">
@@ -515,14 +625,16 @@ const MenuManagement = () => {
                   <option value="" disabled>
                     카테고리를 선택하세요
                   </option>
-                  {categories.map(category => (
-                    <option
-                      key={category.menu_category.menu_cat_pk}
-                      value={category.menu_category.menu_cat_pk}
-                    >
-                      {category.menu_category.menuCatName}
-                    </option>
-                  ))}
+                  {categories
+                    .filter(category => category.menu_category !== null) // null이 아닌 항목만 필터링
+                    .map(category => (
+                      <option
+                        key={category.menu_category.menu_cat_pk}
+                        value={category.menu_category.menu_cat_pk}
+                      >
+                        {category.menu_category.menu_cat_name}
+                      </option>
+                    ))}
                 </select>
               </div>
               <div className="form-group">
@@ -570,7 +682,7 @@ const MenuManagement = () => {
             <span className="close-button" onClick={handleCloseCategoryModal}>
               &times;
             </span>
-            <h2>새 카테고리 추가</h2>
+            <h2>{editCategoryItem ? "카테고리 수정" : "새 카테고리 추가"}</h2>
             <br />
             <form>
               <div className="form-group">
@@ -583,8 +695,14 @@ const MenuManagement = () => {
                   onChange={e => setNewCategory(e.target.value)}
                 />
               </div>
-              <button className="btn" type="button" onClick={handleAddCategory}>
-                추가
+              <button
+                className="btn"
+                type="button"
+                onClick={
+                  editCategoryItem ? handleEditCategory : handleAddCategory
+                }
+              >
+                {editCategoryItem ? "수정" : "추가"}
               </button>
             </form>
           </div>

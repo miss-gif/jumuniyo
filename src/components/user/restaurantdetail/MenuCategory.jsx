@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import React, { useState } from "react";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
@@ -10,12 +9,18 @@ const MenuCategory = ({ categoryData, onSelectMenuItem }) => {
     setIsOpen(!isOpen);
   };
 
-  const { menu_category, menu } = categoryData;
+  // categoryData에서 menu_category가 null인지 확인
+  const { menu_category, menu } = categoryData || {};
+
+  // menu_category가 null인 경우 처리
+  if (!menu_category) {
+    return null; // 또는 다른 방법으로 이 경우를 처리할 수 있음
+  }
 
   return (
     <div className="menu-category">
       <div className="toggle-category" onClick={toggleMenu}>
-        <h4 className="menu-category__title">{menu_category.menuCatName}</h4>
+        <h4 className="menu-category__title">{menu_category.menu_cat_name}</h4>
         <div className="toggle-category-icon">
           {isOpen ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
         </div>
