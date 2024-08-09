@@ -1,15 +1,16 @@
-import React, { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { IoIosMenu } from "react-icons/io";
-import { Link, useNavigate } from "react-router-dom";
+import { IoSearch } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { handleLogout } from "../../../utils/authUtils";
 import AddressModal from "../main/AddressModal";
 import AuthLinks from "./AuthLinks.jsx";
-import Sidebar from "./Sidebar";
 import LocationSelector from "./LocationSelector";
-import "./UserHeader.scss";
-import UserActions from "./UserActions";
-import { handleLogout } from "../../../utils/authUtils";
+import Sidebar from "./Sidebar";
 import SidebarRight from "./SidebarRight";
+import UserActions from "./UserActions";
+import "./UserHeader.scss";
 
 const UserHeader = () => {
   const navigate = useNavigate();
@@ -78,6 +79,7 @@ const UserHeader = () => {
       <nav className="user-header__nav">
         <LocationSelector searchTerm={searchTerm} openModal={openModal} />
         <div className="user-header__search">
+          <IoSearch fontSize={20} />
           <input className="search__input" type="text" placeholder="검색창" />
         </div>
         {isLoggedIn && <UserActions toggleSidebarRight={toggleSidebarRight} />}
