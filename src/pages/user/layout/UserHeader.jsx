@@ -7,6 +7,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { handleLogout } from "../../../utils/authUtils";
 import AddressModal from "../main/AddressModal";
 import PropTypes from "prop-types";
+import { FaHeart } from "react-icons/fa6";
+import { RiCoupon2Fill } from "react-icons/ri";
+import { FaCartShopping } from "react-icons/fa6";
 
 import "./UserHeader.scss";
 
@@ -111,9 +114,17 @@ const UserHeader = () => {
         </div>
 
         {isLoggedIn ? (
-          <div className="user-header__cart">
-            <IoCartOutline fontSize={24} />
-          </div>
+          <>
+            <div className="user-header__cart">
+              <FaCartShopping fontSize={24} />
+            </div>
+            <div className="user-header__heart">
+              <FaHeart fontSize={24} />
+            </div>
+            <div className="user-header__coupon">
+              <RiCoupon2Fill fontSize={24} />
+            </div>
+          </>
         ) : (
           <></>
         )}
