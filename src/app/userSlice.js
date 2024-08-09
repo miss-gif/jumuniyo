@@ -1,4 +1,3 @@
-// userSlice.js
 import { createSlice } from "@reduxjs/toolkit";
 
 const userSlice = createSlice({
@@ -11,7 +10,8 @@ const userSlice = createSlice({
     accessToken: null,
     tokenMaxAge: null,
     isLoggedIn: false,
-    locationData: { latitude: "", longitude: "", geocodeAddress: "" }, // 지오코딩 주소 추가
+    locationData: { latitude: "", longitude: "", geocodeAddress: "" },
+    searchTerm: "", // 현재 검색값을 저장할 상태 변수 추가
   },
   reducers: {
     setUserData: (state, action) => {
@@ -36,6 +36,12 @@ const userSlice = createSlice({
     setLocationData: (state, action) => {
       state.locationData = action.payload;
     },
+    setSearchTerm: (state, action) => {
+      state.searchTerm = action.payload; // 현재 검색값 설정
+    },
+    clearSearchTerm: state => {
+      state.searchTerm = ""; // 검색값 초기화
+    },
     logout: state => {
       state.userData = null;
       state.userRole = null;
@@ -45,6 +51,7 @@ const userSlice = createSlice({
       state.tokenMaxAge = null;
       state.isLoggedIn = false;
       state.locationData = { latitude: "", longitude: "", geocodeAddress: "" };
+      state.searchTerm = ""; // 로그아웃 시 검색값 초기화
     },
   },
 });
@@ -57,6 +64,8 @@ export const {
   setAccessToken,
   setTokenMaxAge,
   setLocationData,
+  setSearchTerm, // 새로운 액션 export
+  clearSearchTerm, // 새로운 액션 export
   logout,
 } = userSlice.actions;
 

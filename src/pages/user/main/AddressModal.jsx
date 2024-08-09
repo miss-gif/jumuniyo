@@ -2,16 +2,19 @@ import axios from "axios";
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
 import { IoIosClose } from "react-icons/io";
-import { IoLocationOutline, IoSearchSharp } from "react-icons/io5";
+import { IoLocationOutline } from "react-icons/io5";
 import Modal from "react-modal";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import "./AddressModal.scss";
 import NewLocationSearch from "./NewLocationSearch";
+import { setSearchTerm } from "../../../app/userSlice";
 
 const AddressModal = ({ isOpen, onRequestClose }) => {
-  const [activeTab, setActiveTab] = useState("recent");
+  const [activeTab, setActiveTab] = useState("registered");
   const [addresses, setAddresses] = useState([]);
   const accessToken = useSelector(state => state.user.accessToken);
+  const dispatch = useDispatch();
+  const searchTerm = useSelector(state => state.user.searchTerm); // Redux에서 searchTerm 읽기
 
   useEffect(() => {
     if (activeTab === "recent") {
@@ -35,6 +38,15 @@ const AddressModal = ({ isOpen, onRequestClose }) => {
     setActiveTab(tab);
   };
 
+  const onClickSearch = address => {
+    dispatch(setSearchTerm(address.addr1));
+  };
+
+  // 현재 검색위치 확인
+  useEffect(() => {
+    console.log("검색위치", searchTerm);
+  }, [searchTerm]);
+
   return (
     <Modal
       isOpen={isOpen}
@@ -43,35 +55,38 @@ const AddressModal = ({ isOpen, onRequestClose }) => {
       overlayClassName="overlay"
     >
       <div className="modal__content">
-        <h2 className="modal__title">주소 관리</h2>
-        {/* <div className="modal__search">
-          <IoSearchSharp />
-          <input type="text" placeholder="주소를 검색하세요" />
-        </div> */}
+        <h2 className="modal__title">주소 검색</h2>
         <div className="new-location-search">
           <NewLocationSearch />
         </div>
         <div className="modal__tabs">
           <button
-            className={`tab-button ${activeTab === "recent" ? "active" : ""}`}
-            onClick={() => handleTabChange("recent")}
+            className={`tab-button ${activeTab === "registered" ? "active" : ""}`}
+            onClick={() => handleTabChange("registered")}
           >
             등록된 주소
           </button>
           <button
-            className={`tab-button ${activeTab === "registered" ? "active" : ""}`}
-            onClick={() => handleTabChange("registered")}
+            className={`tab-button ${activeTab === "recent" ? "active" : ""}`}
+            onClick={() => handleTabChange("recent")}
           >
             최근 사용한 주소
           </button>
         </div>
 
         <div className="modal__addresses">
-          {activeTab === "recent" ? (
-            <div className="address-list">
+          {activeTab === "registered" ? (
+            <ul className="address-list">
               {addresses.length > 0 ? (
                 addresses.map(address => (
-                  <div key={address.addrPk} className="address-item">
+                  <li
+                    key={address.addrPk}
+                    className="address-item"
+                    onClick={() => {
+                      onClickSearch(address);
+                      console.log("주소가 클릭됨:", address.addr1); // addr1 로그 출력
+                    }}
+                  >
                     <div>
                       <IoLocationOutline fontSize={24} />
                     </div>
@@ -81,12 +96,12 @@ const AddressModal = ({ isOpen, onRequestClose }) => {
                         {address.addr1} {address.addr2}
                       </div>
                     </div>
-                  </div>
+                  </li>
                 ))
               ) : (
                 <div>등록된 주소가 없습니다.</div>
               )}
-            </div>
+            </ul>
           ) : (
             <div>최근 사용한 주소 목록</div>
           )}

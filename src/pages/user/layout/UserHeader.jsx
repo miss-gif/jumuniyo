@@ -38,6 +38,8 @@ const UserHeader = () => {
   const userData = useSelector(state => state.user.userData);
   const userNickname = userData ? userData.userNickname : "Guest";
 
+  const searchTerm = useSelector(state => state.user.searchTerm); // Redux에서 searchTerm 읽기
+
   useEffect(() => {
     if (isSidebarOpen) {
       setTransitioning(true);
@@ -100,7 +102,7 @@ const UserHeader = () => {
           }}
         >
           <MdOutlineLocationOn />
-          <span>대구 중구</span>
+          <span>{searchTerm}</span>
           <IoIosArrowDown />
         </div>
         <div className="user-header__search">

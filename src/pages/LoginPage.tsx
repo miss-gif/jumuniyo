@@ -22,6 +22,7 @@ import {
   setUserData,
   setUserPhone,
   setUserRole,
+  setSearchTerm,
 } from "../app/userSlice";
 import { Logo } from "../components/common/Logo";
 import JoinFooter from "../components/layout/JoinFooter";
@@ -141,6 +142,7 @@ const AuthUserPage: React.FC = () => {
           dispatch(setUserPhone(resultData.userPhone || "")); // userPhone이 없을 경우 빈 문자열로 처리
           dispatch(setAccessToken(resultData.accessToken || "")); // accessToken이 없을 경우 빈 문자열로 처리
           dispatch(setTokenMaxAge(resultData.tokenMaxAge || 0)); // tokenMaxAge이 없을 경우 기본값 0으로 처리
+          dispatch(setSearchTerm(resultData.mainAddr.addr1 || "")); // mainAddr.addr1이 없을 경우 빈 문자열로 처리
         }
       }
       setCookie("accessToken", response.data.resultData.accessToken);
