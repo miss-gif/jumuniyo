@@ -1,15 +1,22 @@
-import React from "react";
-import { MdOutlineLocationOn } from "react-icons/md";
-import { IoIosArrowDown } from "react-icons/io";
 import PropTypes from "prop-types";
+import { IoIosArrowDown } from "react-icons/io";
+import { MdOutlineLocationOn } from "react-icons/md";
+import "./LocationSelector.scss";
 
-const LocationSelector = ({ searchTerm, openModal }) => (
-  <div className="user-header__location" onClick={openModal}>
-    <MdOutlineLocationOn />
-    <span>{searchTerm}</span>
-    <IoIosArrowDown />
-  </div>
-);
+const LocationSelector = ({ searchTerm, openModal }) => {
+  // 대체 텍스트를 여기서 설정
+  const displayText = searchTerm || "주소검색";
+
+  return (
+    <div className="user-header__location" onClick={openModal}>
+      <MdOutlineLocationOn fontSize={16} />
+      <div className="wrap">
+        <span>{displayText}</span>
+        <IoIosArrowDown fontSize={16} />
+      </div>
+    </div>
+  );
+};
 
 LocationSelector.propTypes = {
   searchTerm: PropTypes.string.isRequired,

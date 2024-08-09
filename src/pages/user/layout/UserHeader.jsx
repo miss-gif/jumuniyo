@@ -9,6 +9,7 @@ import LocationSelector from "./LocationSelector";
 import "./UserHeader.scss";
 import UserActions from "./UserActions";
 import { handleLogout } from "../../../utils/authUtils";
+import SidebarRight from "./SidebarRight";
 
 const UserHeader = () => {
   const navigate = useNavigate();
@@ -16,6 +17,7 @@ const UserHeader = () => {
   const isLoggedIn = useSelector(state => state.user.isLoggedIn);
   const accessToken = useSelector(state => state.user.accessToken);
   const [isSidebarOpen, setSidebarOpen] = useState(false);
+  const [isSidebarRightOpen, setSidebarRightOpen] = useState(false); // 오른쪽 사이드바 상태 추가
   const [isTransitioning, setTransitioning] = useState(false);
 
   const userData = useSelector(state => state.user.userData);
@@ -24,7 +26,7 @@ const UserHeader = () => {
   const searchTerm = useSelector(state => state.user.searchTerm);
 
   useEffect(() => {
-    if (isSidebarOpen) {
+    if (isSidebarOpen || isSidebarRightOpen) {
       setTransitioning(true);
       document.documentElement.style.overflow = "hidden";
     } else if (isTransitioning) {
@@ -34,14 +36,16 @@ const UserHeader = () => {
       }, 300);
       return () => clearTimeout(timer);
     }
-  }, [isSidebarOpen, isTransitioning]);
+  }, [isSidebarOpen, isSidebarRightOpen, isTransitioning]);
 
   const toggleSidebar = () => setSidebarOpen(prev => !prev);
+  const toggleSidebarRight = () => setSidebarRightOpen(prev => !prev); // 오른쪽 사이드바 토글 함수 추가
 
   const handleLogoutClick = () => {
     localStorage.removeItem("state");
     handleLogout(accessToken, dispatch, navigate);
     setSidebarOpen(false);
+    setSidebarRightOpen(false); // 로그아웃 시 모든 사이드바 닫기
   };
 
   const [isModal, setIsModal] = useState(false);
@@ -62,9 +66,11 @@ const UserHeader = () => {
   return (
     <div className="user-header">
       {isLoggedIn && (
-        <button className="user-header__menu-btn" onClick={toggleSidebar}>
-          <IoIosMenu fontSize={32} />
-        </button>
+        <>
+          <button className="user-header__menu-btn" onClick={toggleSidebar}>
+            <IoIosMenu fontSize={32} />
+          </button>
+        </>
       )}
       <div className="user-header__logo">
         <Link to={"/"}>주문이요</Link>
@@ -74,7 +80,7 @@ const UserHeader = () => {
         <div className="user-header__search">
           <input className="search__input" type="text" placeholder="검색창" />
         </div>
-        {isLoggedIn && <UserActions />}
+        {isLoggedIn && <UserActions toggleSidebarRight={toggleSidebarRight} />}
       </nav>
 
       {!isLoggedIn && <AuthLinks closeModal={closeModal} />}
@@ -85,6 +91,11 @@ const UserHeader = () => {
         handleLogoutClick={handleLogoutClick}
         userNickname={userNickname}
       />
+      <SidebarRight
+        isSidebarRightOpen={isSidebarRightOpen}
+        toggleSidebarRight={toggleSidebarRight}
+      />
+
       <AddressModal isOpen={isModal} onRequestClose={closeModal} />
     </div>
   );

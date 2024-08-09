@@ -1,0 +1,64 @@
+.sidebar-right-overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: 1000;
+}
+
+.sidebar-right-overlay.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.sidebar-right {
+  position: absolute;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  background: white;
+  width: 250px;
+  height: 100%;
+  padding: 20px;
+  box-shadow: -1px 0 10px rgba(0, 0, 0, 0.1);
+  transform: translateX(100%);
+  transition: transform 0.3s ease;
+}
+
+.sidebar-right.open {
+  transform: translateX(0);
+}
+
+.nav__item {
+  list-style: none;
+  margin-bottom: 15px;
+}
+
+.nav__item img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.nav__item div {
+  display: flex;
+  align-items: center;
+}
+
+.nav__item button {
+  background: none;
+  border: none;
+  font-size: 16px;
+  color: #333;
+  cursor: pointer;
+}
+
+.nav__item button:hover {
+  color: #007bff;
+}
