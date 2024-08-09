@@ -132,15 +132,30 @@ const MyPageAddress = () => {
         addr_coor_x: newXValue,
         addr_coor_y: newYValue,
       };
+      let res;
       if (isFirstUser || addModalOpen) {
-        await jwtAxios.post("/api/address", data);
+        res = await jwtAxios.post("/api/address", data);
       } else {
         data.addr_pk = addressPk;
-        await jwtAxios.patch("/api/address", data);
+        res = await jwtAxios.patch("/api/address", data);
       }
+
+      if (res.data.statusCode === 1) {
+        Swal.fire({
+          icon: "success",
+          text: "주소등록 완료.",
+        });
+      } else {
+        Swal.fire({
+          icon: "warning", // 오류 메시지를 경고로 표시
+          text: res.data.resultMsg,
+        });
+      }
+
       setReviewSubmitted(true);
       fetchUserAddressList();
     } catch (error) {
+      console.error(error); // 에러 로그 추가
       Swal.fire({
         icon: "error",
         text: "서버에러입니다.",
