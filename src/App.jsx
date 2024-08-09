@@ -122,7 +122,7 @@ function App() {
             <Route path="category-setting" element={<CategorySetting />} />
             <Route path="ask">
               <Route index element={<Ask />} />
-              <Route path="details/:askPk" element={<AskDetail />} />
+              <Route path="details/:id" element={<AskDetail />} />
             </Route>
             <Route path="report">
               <Route index element={<Report />} />

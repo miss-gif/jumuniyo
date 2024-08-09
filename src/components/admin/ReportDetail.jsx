@@ -5,6 +5,8 @@ import { useParams, useNavigate } from "react-router-dom";
 const ReportDetail = () => {
   const { report_pk } = useParams();
   const [reportDetail, setReportDetail] = useState(null);
+  const [blockDuration, setBlockDuration] = useState(0);
+  const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
 
   const getCookie = name => {
@@ -68,6 +70,46 @@ const ReportDetail = () => {
       console.error("신고 삭제 중 오류 발생:", error);
       alert("신고 삭제 중 오류가 발생했습니다.");
     }
+  };
+
+  const handleBlockUser = async () => {
+    const accessToken = getCookie("accessToken");
+    if (!accessToken) {
+      console.error("토큰을 찾을 수 없습니다.");
+      return;
+    }
+
+    try {
+      const response = await axios.patch(
+        `/api/admin/report/account_suspension`,
+        {
+          userBlockDate: blockDuration,
+          userPk: reportDetail.reviewUserPk,
+          reportPk: report_pk,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+          },
+        },
+      );
+
+      if (response.data.statusCode === 1) {
+        alert(`유저가 ${blockDuration}일 동안 정지되었습니다.`);
+        navigate("/admin/report"); // 목록 페이지로 이동
+      } else {
+        console.error("유저 정지 실패:", response.data.resultMsg);
+        alert("유저 정지에 실패했습니다.");
+      }
+    } catch (error) {
+      console.error(
+        "유저 정지 중 오류 발생:",
+        error.response?.data || error.message,
+      );
+      alert("유저 정지 중 오류가 발생했습니다.");
+    }
+    setShowModal(false); // 모달 닫기
   };
 
   if (!reportDetail) {
@@ -135,16 +177,9 @@ const ReportDetail = () => {
           <div className="btn" onClick={handleDelete}>
             취소처리
           </div>
-          <div className="btn">영구정지처리</div>
-          <div className="btn">기한부정지처리</div>
-        </div>
-        <div className="reportDetail-modal">
-          <label>정지 기한 설정</label>
-          <input
-            type="number"
-            placeholder="정지개월"
-            className="reportDetail-modalInput"
-          />
+          <div className="btn" onClick={() => setShowModal(true)}>
+            유저 정지
+          </div>
         </div>
       </div>
 
@@ -162,6 +197,23 @@ const ReportDetail = () => {
           리뷰 작성일: {new Date(reportDetail.reviewCreatedAt).toLocaleString()}
         </div>
       </div>
+
+      {showModal && (
+        <div className="modal">
+          <div className="modal-content">
+            <h2>유저 정지</h2>
+            <label>정지 기한 설정 (일)</label>
+            <input
+              type="number"
+              placeholder="정지일수"
+              value={blockDuration}
+              onChange={e => setBlockDuration(Number(e.target.value))}
+            />
+            <button onClick={handleBlockUser}>확인</button>
+            <button onClick={() => setShowModal(false)}>취소</button>
+          </div>
+        </div>
+      )}
     </>
   );
 };

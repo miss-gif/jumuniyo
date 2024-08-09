@@ -35,7 +35,7 @@ const CouponManagement = () => {
           return;
         }
 
-        const response = await axios.get("/api/coupons/가게주인 쿠폰목록조회", {
+        const response = await axios.get("/api/coupons/owner", {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
@@ -64,7 +64,7 @@ const CouponManagement = () => {
       const accessToken = getCookie("accessToken");
 
       const response = await axios.post(
-        "/api/coupons/쿠폰만들기",
+        "/api/coupons",
         {
           ...newCoupon,
           price: parseFloat(newCoupon.price),
