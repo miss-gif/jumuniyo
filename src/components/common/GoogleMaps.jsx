@@ -9,7 +9,7 @@ import { debounce } from "@mui/material/utils";
 import parse from "autosuggest-highlight/parse";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setSearchTerm } from "../../app/userSlice";
+import { setLocationData, setSearchTerm } from "../../app/userSlice";
 
 const GOOGLE_MAPS_API_KEY = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
 
@@ -26,17 +26,17 @@ function loadScript(src, position, id) {
 }
 
 const autocompleteService = { current: null };
+const geocoder = { current: null }; // Geocoder 서비스 객체를 위한 ref
 
 export default function GoogleMaps() {
   const dispatch = useDispatch();
-  const searchTerm = useSelector(state => state.user.searchTerm); // Redux에서 searchTerm 읽기
+  const searchTerm = useSelector(state => state.user.searchTerm);
 
   const [value, setValue] = useState(searchTerm || null);
-  const [inputValue, setInputValue] = useState(""); // 초기값을 Redux의 searchTerm으로 설정
+  const [inputValue, setInputValue] = useState("");
   const [options, setOptions] = useState([]);
   const loaded = useRef(false);
 
-  // Google Maps API 로드 스크립트는 기존 코드 그대로 유지
   if (typeof window !== "undefined" && !loaded.current) {
     if (!document.querySelector("#google-maps")) {
       loadScript(
@@ -93,6 +93,61 @@ export default function GoogleMaps() {
     };
   }, [value, inputValue, fetch]);
 
+  useEffect(() => {
+    if (searchTerm && geocoder.current) {
+      // Google Maps Geocoder API를 사용하여 검색
+      geocoder.current.geocode({ address: searchTerm }, (results, status) => {
+        if (status === "OK" && results[0]) {
+          const location = results[0].geometry.location;
+          const latitude = location.lat();
+          const longitude = location.lng();
+
+          console.log("Latitude:", latitude, "Longitude:", longitude);
+
+          // Redux에 위도와 경도 저장
+          dispatch(setLocationData({ latitude, longitude }));
+        } else {
+          console.error(
+            "Geocode was not successful for the following reason:",
+            status,
+          );
+        }
+      });
+    }
+  }, [searchTerm, dispatch]);
+
+  // 사용자가 주소를 선택할 때 호출되는 함수
+  const handleSelect = async newValue => {
+    setValue(newValue);
+    dispatch(setSearchTerm(newValue.description)); // Redux의 searchTerm 업데이트
+
+    if (!geocoder.current && window.google) {
+      geocoder.current = new window.google.maps.Geocoder();
+    }
+
+    // 선택한 주소의 위도와 경도 값을 가져오기
+    geocoder.current.geocode(
+      { address: newValue.description },
+      (results, status) => {
+        if (status === "OK" && results[0]) {
+          const location = results[0].geometry.location;
+          const latitude = location.lat();
+          const longitude = location.lng();
+
+          console.log("Latitude:", latitude, "Longitude:", longitude);
+
+          // Redux에 위도와 경도 저장
+          dispatch(setLocationData({ latitude, longitude }));
+        } else {
+          console.error(
+            "Geocode was not successful for the following reason:",
+            status,
+          );
+        }
+      },
+    );
+  };
+
   return (
     <Autocomplete
       sx={{ width: "100%" }}
@@ -108,8 +163,9 @@ export default function GoogleMaps() {
       noOptionsText="건물명, 도로명, 지번으로 검색하세요."
       onChange={(event, newValue) => {
         setOptions(newValue ? [newValue, ...options] : options);
-        setValue(newValue);
-        dispatch(setSearchTerm(newValue.description)); // Redux의 searchTerm 업데이트
+        if (newValue) {
+          handleSelect(newValue); // 주소 선택 시 처리
+        }
       }}
       onInputChange={(event, newInputValue) => {
         setInputValue(newInputValue);
