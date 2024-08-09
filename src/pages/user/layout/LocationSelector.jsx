@@ -4,16 +4,24 @@ import { MdOutlineLocationOn } from "react-icons/md";
 import "./LocationSelector.scss";
 
 const LocationSelector = ({ searchTerm, openModal }) => {
-  // 대체 텍스트를 여기서 설정
-  const displayText = searchTerm || "주소검색";
+  // 대체 텍스트 설정
+  let displayText = searchTerm || "위치를 입력하세요";
+
+  // 첫 번째 띄어쓰기 앞의 텍스트 제거
+  const firstSpaceIndex = displayText.indexOf(" ");
+  if (firstSpaceIndex !== -1) {
+    displayText = displayText.slice(firstSpaceIndex + 1);
+  }
+
+  // 텍스트 길이 10자 제한 및 말줄임표 처리
+  const truncatedText =
+    displayText.length > 10 ? `${displayText.slice(0, 10)}...` : displayText;
 
   return (
     <div className="user-header__location" onClick={openModal}>
-      <MdOutlineLocationOn fontSize={16} />
-      <div className="wrap">
-        <span>{displayText}</span>
-        <IoIosArrowDown fontSize={16} />
-      </div>
+      <MdOutlineLocationOn />
+      <span>{truncatedText}</span>
+      <IoIosArrowDown />
     </div>
   );
 };
