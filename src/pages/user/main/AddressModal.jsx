@@ -15,6 +15,7 @@ const AddressModal = ({ isOpen, onRequestClose }) => {
   const accessToken = useSelector(state => state.user.accessToken);
   const dispatch = useDispatch();
   const searchTerm = useSelector(state => state.user.searchTerm); // Redux에서 searchTerm 읽기
+  const locationData = useSelector(state => state.user.locationData); // Redux에서 searchTerm 읽기
 
   useEffect(() => {
     if (activeTab === "recent") {
@@ -44,7 +45,8 @@ const AddressModal = ({ isOpen, onRequestClose }) => {
 
   // 현재 검색위치 확인
   useEffect(() => {
-    console.log("검색위치", searchTerm);
+    console.log("리덕스 위치 : ", searchTerm);
+    console.log("리덕스 위경도 :", locationData);
   }, [searchTerm]);
 
   return (
