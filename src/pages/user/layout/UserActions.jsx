@@ -3,15 +3,19 @@ import { FaRegHeart } from "react-icons/fa";
 import { RiCoupon2Line } from "react-icons/ri";
 import "./UserActions.scss";
 
-const UserActions = ({ toggleSidebarRight }) => (
+const UserActions = ({
+  toggleSidebarCart,
+  toggleSidebarCoupon,
+  toggleSidebarHeart,
+}) => (
   <>
-    <div className="user-header__cart" onClick={toggleSidebarRight}>
+    <div className="user-header__cart" onClick={toggleSidebarCart}>
       <AiOutlineShoppingCart fontSize={24} />
     </div>
-    <div className="user-header__heart" onClick={toggleSidebarRight}>
+    <div className="user-header__heart" onClick={toggleSidebarCoupon}>
       <FaRegHeart fontSize={24} />
     </div>
-    <div className="user-header__coupon" onClick={toggleSidebarRight}>
+    <div className="user-header__coupon" onClick={toggleSidebarHeart}>
       <RiCoupon2Line fontSize={24} />
     </div>
   </>
