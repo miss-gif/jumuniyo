@@ -5,7 +5,7 @@ import "./LocationSelector.scss";
 
 const LocationSelector = ({ searchTerm, openModal }) => {
   // 대체 텍스트 설정
-  let displayText = searchTerm || "위치를 입력하세요";
+  let displayText = searchTerm || "검색 위치를 입력하세요";
 
   // 첫 번째 띄어쓰기 앞의 텍스트 제거
   const firstSpaceIndex = displayText.indexOf(" ");

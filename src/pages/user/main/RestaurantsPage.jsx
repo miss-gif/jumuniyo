@@ -1,3 +1,5 @@
+// 검색결과 페이지
+
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -28,6 +30,7 @@ const RestaurantsPage = () => {
   const navigate = useNavigate();
 
   const locationData = useSelector(state => state.user.locationData);
+  const searchRestaurant = useSelector(state => state.user.searchRestaurant);
 
   const [restaurantData, setRestaurantData] = useState([]);
   const [totalElements, setTotalElements] = useState(0);
@@ -42,8 +45,9 @@ const RestaurantsPage = () => {
 
       const addrX = locationData?.latitude || 0;
       const addrY = locationData?.longitude || 0;
+      const search = searchRestaurant || "";
 
-      const queryString = `${id}&page=1&order_type=${orderType}&addrX=${addrX}&addrY=${addrY}`;
+      const queryString = `${id}&page=1&order_type=${orderType}&addrX=${addrX}&addrY=${addrY}&search=${search}`;
 
       try {
         const response = await axios.get(`/api/restaurant?${queryString}`);

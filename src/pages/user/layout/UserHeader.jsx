@@ -11,6 +11,7 @@ import Sidebar from "./Sidebar";
 import SidebarRight from "./SidebarRight";
 import UserActions from "./UserActions";
 import "./UserHeader.scss";
+import { searchRestaurant } from "../../../app/userSlice";
 
 const UserHeader = () => {
   const navigate = useNavigate();
@@ -25,6 +26,14 @@ const UserHeader = () => {
   const userNickname = userData ? userData.userNickname : "Guest";
 
   const searchTerm = useSelector(state => state.user.searchTerm);
+
+  const searchRestaurantValue = useSelector(
+    state => state.user.searchRestaurant,
+  );
+
+  const handleInputChange = e => {
+    dispatch(searchRestaurant(e.target.value));
+  };
 
   useEffect(() => {
     if (isSidebarOpen || isSidebarRightOpen) {
@@ -80,7 +89,13 @@ const UserHeader = () => {
         <LocationSelector searchTerm={searchTerm} openModal={openModal} />
         <div className="user-header__search">
           <IoSearch fontSize={20} />
-          <input className="search__input" type="text" placeholder="검색창" />
+          <input
+            className="search__input"
+            type="text"
+            placeholder="검색창"
+            value={searchRestaurantValue}
+            onChange={handleInputChange}
+          />
         </div>
         {isLoggedIn && <UserActions toggleSidebarRight={toggleSidebarRight} />}
       </nav>
