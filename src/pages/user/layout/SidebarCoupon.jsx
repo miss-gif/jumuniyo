@@ -11,9 +11,11 @@ const SidebarCoupon = ({ isSidebarCoupon, toggleSidebarCoupon }) => (
       className={`sidebar-right ${isSidebarCoupon ? "open" : ""}`}
       onClick={e => e.stopPropagation()}
     >
-      <li className="nav__item">
-        <button onClick={toggleSidebarCoupon}>쿠폰</button>
-      </li>
+      <ul>
+        <li className="nav__item" onClick={toggleSidebarCoupon}>
+          <button>쿠폰</button>
+        </li>
+      </ul>
     </div>
   </div>
 );

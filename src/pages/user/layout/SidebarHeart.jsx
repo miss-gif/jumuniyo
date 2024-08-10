@@ -60,47 +60,49 @@ const SidebarHeart = ({ isSidebarHeart, toggleSidebarHeart }) => {
         onClick={e => e.stopPropagation()}
       >
         <h2>찜 목록</h2>
-        <li className="nav__item" onClick={toggleSidebarHeart}>
-          <>
-            {restaurants.length > 0 ? (
-              <ul className="restaurants-page__list">
-                {restaurants.map(restaurant => (
-                  <StatusListItem
-                    className="restaurant-item"
-                    key={restaurant.restaurantPk}
-                    isClosed={restaurant.restaurantState === 2}
-                    onClick={() => {
-                      if (restaurant.restaurantState !== 2) {
-                        navigate(`/restaurants/${restaurant.restaurantPk}`); // Navigate 사용
-                      }
-                    }}
-                  >
-                    <div className="img-cover">
-                      <img
-                        src={
-                          restaurant.restaurantPic
-                            ? `/pic${restaurant.restaurantPic}`
-                            : "/images/defaultRes.png"
+        <ul>
+          <li className="nav__item" onClick={toggleSidebarHeart}>
+            <>
+              {restaurants.length > 0 ? (
+                <ul className="restaurants-page__list">
+                  {restaurants.map(restaurant => (
+                    <StatusListItem
+                      className="restaurant-item"
+                      key={restaurant.restaurantPk}
+                      isClosed={restaurant.restaurantState === 2}
+                      onClick={() => {
+                        if (restaurant.restaurantState !== 2) {
+                          navigate(`/restaurants/${restaurant.restaurantPk}`); // Navigate 사용
                         }
-                        alt={`${restaurant.restaurantName} 이미지`}
-                        className="restaurant-item__image"
-                      />
-                    </div>
-                    <div className="restaurant-item__info">
-                      <div className="restaurant-item__top">
-                        <h3 className="restaurant-item__title">
-                          {restaurant.restaurantName}
-                        </h3>
+                      }}
+                    >
+                      <div className="img-cover">
+                        <img
+                          src={
+                            restaurant.restaurantPic
+                              ? `/pic${restaurant.restaurantPic}`
+                              : "/images/defaultRes.png"
+                          }
+                          alt={`${restaurant.restaurantName} 이미지`}
+                          className="restaurant-item__image"
+                        />
                       </div>
-                    </div>
-                  </StatusListItem>
-                ))}
-              </ul>
-            ) : (
-              <div className="result__zero">검색 결과가 없습니다.</div>
-            )}
-          </>
-        </li>
+                      <div className="restaurant-item__info">
+                        <div className="restaurant-item__top">
+                          <h3 className="restaurant-item__title">
+                            {restaurant.restaurantName}
+                          </h3>
+                        </div>
+                      </div>
+                    </StatusListItem>
+                  ))}
+                </ul>
+              ) : (
+                <div className="result__zero">검색 결과가 없습니다.</div>
+              )}
+            </>
+          </li>
+        </ul>
       </div>
     </div>
   );
