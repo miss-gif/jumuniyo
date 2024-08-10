@@ -116,7 +116,7 @@ const RestaurantsPage = () => {
         <p>에러 발생: {error.message}</p>
       ) : (
         <>
-          {restaurantData.length < 0 ? (
+          {restaurantData.length > 0 ? (
             <ul className="restaurants-page__list">
               {restaurantData.map(restaurant => (
                 <StatusListItem
