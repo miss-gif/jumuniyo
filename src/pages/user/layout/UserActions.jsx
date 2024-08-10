@@ -12,10 +12,10 @@ const UserActions = ({
     <div className="user-header__cart" onClick={toggleSidebarCart}>
       <AiOutlineShoppingCart fontSize={24} />
     </div>
-    <div className="user-header__heart" onClick={toggleSidebarCoupon}>
+    <div className="user-header__heart" onClick={toggleSidebarHeart}>
       <FaRegHeart fontSize={24} />
     </div>
-    <div className="user-header__coupon" onClick={toggleSidebarHeart}>
+    <div className="user-header__coupon" onClick={toggleSidebarCoupon}>
       <RiCoupon2Line fontSize={24} />
     </div>
   </>
