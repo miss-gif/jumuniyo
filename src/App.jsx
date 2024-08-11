@@ -114,6 +114,7 @@ function App() {
             <Route path="menu-management" element={<MenuManagement />} />
             <Route path="statistics" element={<Statistics />} />
             <Route path="withdraw" element={<CeoWithdrawal />} />
+            <Route path="logins" element={<LoginPageforCEO />} />
           </Route>
 
           {/* 관리자 */}
