@@ -3,12 +3,15 @@ import { IoIosMenu } from "react-icons/io";
 import { IoSearch } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
+import { searchRestaurant } from "../../../app/userSlice";
 import { handleLogout } from "../../../utils/authUtils";
 import AddressModal from "../main/AddressModal";
 import AuthLinks from "./AuthLinks.jsx";
 import LocationSelector from "./LocationSelector";
 import Sidebar from "./Sidebar";
-import SidebarRight from "./SidebarRight";
+import SidebarCart from "./SidebarCart";
+import SidebarCoupon from "./SidebarCoupon";
+import SidebarHeart from "./SidebarHeart";
 import UserActions from "./UserActions";
 import "./UserHeader.scss";
 
@@ -18,16 +21,33 @@ const UserHeader = () => {
   const isLoggedIn = useSelector(state => state.user.isLoggedIn);
   const accessToken = useSelector(state => state.user.accessToken);
   const [isSidebarOpen, setSidebarOpen] = useState(false);
-  const [isSidebarRightOpen, setSidebarRightOpen] = useState(false); // 오른쪽 사이드바 상태 추가
   const [isTransitioning, setTransitioning] = useState(false);
+  const [isSidebarRightOpen, setSidebarRightOpen] = useState(false);
+  const [isSidebarCart, setSidebarCart] = useState(false);
+  const [isSidebarCoupon, setSidebarCoupon] = useState(false);
+  const [isSidebarHeart, setSidebarHeart] = useState(false);
 
   const userData = useSelector(state => state.user.userData);
   const userNickname = userData ? userData.userNickname : "Guest";
 
   const searchTerm = useSelector(state => state.user.searchTerm);
 
+  const searchRestaurantValue = useSelector(
+    state => state.user.searchRestaurant,
+  );
+
+  const handleInputChange = e => {
+    dispatch(searchRestaurant(e.target.value));
+  };
+
   useEffect(() => {
-    if (isSidebarOpen || isSidebarRightOpen) {
+    if (
+      isSidebarOpen ||
+      isSidebarRightOpen ||
+      isSidebarCart ||
+      isSidebarCoupon ||
+      isSidebarHeart
+    ) {
       setTransitioning(true);
       document.documentElement.style.overflow = "hidden";
     } else if (isTransitioning) {
@@ -37,10 +57,20 @@ const UserHeader = () => {
       }, 300);
       return () => clearTimeout(timer);
     }
-  }, [isSidebarOpen, isSidebarRightOpen, isTransitioning]);
+  }, [
+    isSidebarOpen,
+    isSidebarRightOpen,
+    isTransitioning,
+    isSidebarCart,
+    isSidebarCoupon,
+    isSidebarHeart,
+  ]);
 
   const toggleSidebar = () => setSidebarOpen(prev => !prev);
-  const toggleSidebarRight = () => setSidebarRightOpen(prev => !prev); // 오른쪽 사이드바 토글 함수 추가
+  const toggleSidebarRight = () => setSidebarRightOpen(prev => !prev);
+  const toggleSidebarCart = () => setSidebarCart(prev => !prev);
+  const toggleSidebarCoupon = () => setSidebarCoupon(prev => !prev);
+  const toggleSidebarHeart = () => setSidebarHeart(prev => !prev);
 
   const handleLogoutClick = () => {
     localStorage.removeItem("state");
@@ -80,9 +110,21 @@ const UserHeader = () => {
         <LocationSelector searchTerm={searchTerm} openModal={openModal} />
         <div className="user-header__search">
           <IoSearch fontSize={20} />
-          <input className="search__input" type="text" placeholder="검색창" />
+          <input
+            className="search__input"
+            type="text"
+            placeholder="검색창"
+            value={searchRestaurantValue}
+            onChange={handleInputChange}
+          />
         </div>
-        {isLoggedIn && <UserActions toggleSidebarRight={toggleSidebarRight} />}
+        {isLoggedIn && (
+          <UserActions
+            toggleSidebarCart={toggleSidebarCart}
+            toggleSidebarCoupon={toggleSidebarCoupon}
+            toggleSidebarHeart={toggleSidebarHeart}
+          />
+        )}
       </nav>
 
       {!isLoggedIn && <AuthLinks closeModal={closeModal} />}
@@ -93,9 +135,17 @@ const UserHeader = () => {
         handleLogoutClick={handleLogoutClick}
         userNickname={userNickname}
       />
-      <SidebarRight
-        isSidebarRightOpen={isSidebarRightOpen}
-        toggleSidebarRight={toggleSidebarRight}
+      <SidebarCart
+        isSidebarCart={isSidebarCart}
+        toggleSidebarCart={toggleSidebarCart}
+      />
+      <SidebarCoupon
+        isSidebarCoupon={isSidebarCoupon}
+        toggleSidebarCoupon={toggleSidebarCoupon}
+      />
+      <SidebarHeart
+        isSidebarHeart={isSidebarHeart}
+        toggleSidebarHeart={toggleSidebarHeart}
       />
 
       <AddressModal isOpen={isModal} onRequestClose={closeModal} />

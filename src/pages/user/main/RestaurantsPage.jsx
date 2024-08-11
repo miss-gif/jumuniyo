@@ -1,3 +1,5 @@
+// 검색결과 페이지
+
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -28,6 +30,7 @@ const RestaurantsPage = () => {
   const navigate = useNavigate();
 
   const locationData = useSelector(state => state.user.locationData);
+  const searchRestaurant = useSelector(state => state.user.searchRestaurant);
 
   const [restaurantData, setRestaurantData] = useState([]);
   const [totalElements, setTotalElements] = useState(0);
@@ -42,8 +45,9 @@ const RestaurantsPage = () => {
 
       const addrX = locationData?.latitude || 0;
       const addrY = locationData?.longitude || 0;
+      const search = searchRestaurant || "";
 
-      const queryString = `${id}&page=1&order_type=${orderType}&addrX=${addrX}&addrY=${addrY}`;
+      const queryString = `${id}&page=1&order_type=${orderType}&addrX=${addrX}&addrY=${addrY}&search=${search}`;
 
       try {
         const response = await axios.get(`/api/restaurant?${queryString}`);
@@ -111,54 +115,62 @@ const RestaurantsPage = () => {
       ) : error ? (
         <p>에러 발생: {error.message}</p>
       ) : (
-        <ul className="restaurants-page__list">
-          {restaurantData.map(restaurant => (
-            <StatusListItem
-              className="restaurant-item"
-              key={restaurant.restaurantPk}
-              isClosed={restaurant.restaurantState === 2}
-              onClick={() => {
-                if (restaurant.restaurantState !== 2) {
-                  navigate(`/restaurants/${restaurant.restaurantPk}`);
-                }
-              }}
-            >
-              <div className="img-cover">
-                <img
-                  src={
-                    restaurant.restaurantPic
-                      ? `/pic${restaurant.restaurantPic}`
-                      : "/images/defaultRes.png"
-                  }
-                  alt={`${restaurant.restaurantName} 이미지`}
-                  className="restaurant-item__image"
-                />
-              </div>
-              <div className="restaurant-item__info">
-                <div className="restaurant-item__top">
-                  <h3 className="restaurant-item__title">
-                    {restaurant.restaurantName}
-                  </h3>
-                  <div className="rank-point">
-                    {restaurant.reviewAvgScore
-                      ? restaurant.reviewAvgScore.toFixed(1)
-                      : "-"}
+        <>
+          {restaurantData.length > 0 ? (
+            <ul className="restaurants-page__list">
+              {restaurantData.map(restaurant => (
+                <StatusListItem
+                  className="restaurant-item"
+                  key={restaurant.restaurantPk}
+                  isClosed={restaurant.restaurantState === 2}
+                  onClick={() => {
+                    if (restaurant.restaurantState !== 2) {
+                      navigate(`/restaurants/${restaurant.restaurantPk}`);
+                    }
+                  }}
+                >
+                  <div className="img-cover">
+                    <img
+                      src={
+                        restaurant.restaurantPic
+                          ? `/pic${restaurant.restaurantPic}`
+                          : "/images/defaultRes.png"
+                      }
+                      alt={`${restaurant.restaurantName} 이미지`}
+                      className="restaurant-item__image"
+                    />
                   </div>
-                </div>
-                <div className="restaurant-item__comment-count">
-                  <div className="restaurant-item__rank-point">
-                    <p>
-                      리뷰 <span>{restaurant.reviewTotalElements}</span>
-                    </p>
-                    <p className="none">
-                      사장님댓글 <span>11643</span>
-                    </p>
+                  <div className="restaurant-item__info">
+                    <div className="restaurant-item__top">
+                      <h3 className="restaurant-item__title">
+                        {restaurant.restaurantName}
+                      </h3>
+                      <div className="rank-point">
+                        {restaurant.reviewAvgScore
+                          ? restaurant.reviewAvgScore.toFixed(1)
+                          : "-"}
+                      </div>
+                    </div>
+                    <div className="restaurant-item__comment-count">
+                      <div className="restaurant-item__rank-point">
+                        <p>
+                          리뷰 <span>{restaurant.reviewTotalElements}</span>
+                        </p>
+                        <p className="none">
+                          사장님댓글 <span>11643</span>
+                        </p>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-            </StatusListItem>
-          ))}
-        </ul>
+                </StatusListItem>
+              ))}
+            </ul>
+          ) : (
+            <>
+              <div className="result__zero">검색 결과가 없습니다.</div>
+            </>
+          )}
+        </>
       )}
     </div>
   );

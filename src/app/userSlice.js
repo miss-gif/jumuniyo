@@ -11,7 +11,8 @@ const userSlice = createSlice({
     tokenMaxAge: null,
     isLoggedIn: false,
     locationData: { latitude: "", longitude: "", geocodeAddress: "" },
-    searchTerm: "", // 현재 검색값을 저장할 상태 변수 추가
+    searchTerm: "",
+    searchRestaurant: "", // 새로운 상태 변수 추가
   },
   reducers: {
     setUserData: (state, action) => {
@@ -37,13 +38,18 @@ const userSlice = createSlice({
       const { latitude, longitude, geocodeAddress } = action.payload;
       state.locationData = { latitude, longitude, geocodeAddress };
     },
-
     setSearchTerm: (state, action) => {
       state.searchTerm = action.payload;
     },
 
+    // 새로운 액션 추가
+    searchRestaurant: (state, action) => {
+      state.searchRestaurant = action.payload;
+    },
+
     clearSearchTerm: state => {
       state.searchTerm = "";
+      state.searchRestaurant = ""; // clear 할 때 이 상태도 초기화
     },
 
     logout: state => {
@@ -56,6 +62,7 @@ const userSlice = createSlice({
       state.isLoggedIn = false;
       state.locationData = { latitude: "", longitude: "", geocodeAddress: "" };
       state.searchTerm = "";
+      state.searchRestaurant = ""; // 로그아웃 시 이 상태도 초기화
     },
   },
 });
@@ -68,8 +75,9 @@ export const {
   setAccessToken,
   setTokenMaxAge,
   setLocationData,
-  setSearchTerm, // 새로운 액션 export
-  clearSearchTerm, // 새로운 액션 export
+  setSearchTerm,
+  searchRestaurant, // 새로운 액션 export
+  clearSearchTerm,
   logout,
 } = userSlice.actions;
 

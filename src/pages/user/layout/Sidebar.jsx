@@ -17,35 +17,34 @@ const Sidebar = ({
       className={`sidebar ${isSidebarOpen ? "open" : ""}`}
       onClick={e => e.stopPropagation()}
     >
-      <li className="nav__item">
-        <Link to="/mypage" onClick={toggleSidebar}>
-          <img src="" alt="" />
+      <ul>
+        <li className="nav__item">
           <div>
-            <div>{userNickname}</div>
+            <img src="" alt="" />
             <Link to="/mypage" onClick={toggleSidebar}>
-              마이페이지
+              <div>{userNickname}</div>
             </Link>
           </div>
-        </Link>
-      </li>
-      <li className="nav__item">
-        <Link to="/mypage" onClick={toggleSidebar}>
-          주문내역
-        </Link>
-      </li>
-      <li className="nav__item">
-        <Link to="/mypage" onClick={toggleSidebar}>
-          리뷰내역
-        </Link>
-      </li>
-      <li className="nav__item">
-        <Link to="/mypage" onClick={toggleSidebar}>
-          고객센터
-        </Link>
-      </li>
-      <li className="nav__item">
-        <button onClick={handleLogoutClick}>로그아웃</button>
-      </li>
+        </li>
+        <li className="nav__item">
+          <Link to="/mypage" onClick={toggleSidebar}>
+            주문내역
+          </Link>
+        </li>
+        <li className="nav__item">
+          <Link to="/mypage" onClick={toggleSidebar}>
+            리뷰내역
+          </Link>
+        </li>
+        <li className="nav__item">
+          <Link to="/mypage" onClick={toggleSidebar}>
+            고객센터
+          </Link>
+        </li>
+        <li className="nav__item">
+          <button onClick={handleLogoutClick}>로그아웃</button>
+        </li>
+      </ul>
     </div>
   </div>
 );

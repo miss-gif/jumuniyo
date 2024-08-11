@@ -233,7 +233,7 @@ const PaymentPage = () => {
             </div>
             <PaymentSelect onPaymentSelect={setSelectedPayment} />
             {/* 결제수단 선택 전달 */}
-            <div className="payment-page__input-wrap none">
+            <div className="payment-page__input-wrap">
               <h3 className="payment-page__subtitle">할인방법 선택</h3>
               <div className="payment-page__coupon">
                 <label htmlFor="coupon">쿠폰</label>

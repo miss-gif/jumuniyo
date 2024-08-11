@@ -31,14 +31,14 @@ const PaymentSelect = ({ onPaymentSelect }) => {
           <h4>현장결제</h4>
           <div className="payment-page__onsite-payment">
             <button
-              className={`payment-page__button ${selectedPayment === "신용카드" ? "btn--active" : "btn--default"}`}
-              onClick={event => handlePaymentSelect(event, "신용카드")}
+              className={`payment-page__button ${selectedPayment === "2" ? "btn--active" : "btn--default"}`}
+              onClick={event => handlePaymentSelect(event, "2")}
             >
               신용카드
             </button>
             <button
-              className={`payment-page__button ${selectedPayment === "현금" ? "btn--active" : "btn--default"}`}
-              onClick={event => handlePaymentSelect(event, "현금")}
+              className={`payment-page__button ${selectedPayment === "1" ? "btn--active" : "btn--default"}`}
+              onClick={event => handlePaymentSelect(event, "1")}
             >
               현금
             </button>
