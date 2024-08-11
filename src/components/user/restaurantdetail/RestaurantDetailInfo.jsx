@@ -6,7 +6,9 @@ import axios from "axios";
 
 const RestaurantDetailInfo = ({ restaurantData, onShowLoginModal }) => {
   const [isFavorited, setIsFavorited] = useState(false);
-  const [showNotLoginAlert, setShowNotLoginAlert] = useState(false); // 경고 메시지 상태 추가
+  const [showNotLoginAlert, setShowNotLoginAlert] = useState(false);
+  const [coupons, setCoupons] = useState([]);
+  const [receivedCoupons, setReceivedCoupons] = useState([]); // 유저가 가진 쿠폰 ID를 저장
   const accessToken = useSelector(state => state.user.accessToken);
   const isLoggedIn = !!accessToken;
 
@@ -15,7 +17,7 @@ const RestaurantDetailInfo = ({ restaurantData, onShowLoginModal }) => {
     const fetchFavoriteStatus = async () => {
       try {
         const response = await axios.get(
-          `/api/restaurant/${restaurantData.restaurantPk}`, // 실제 API 호출 경로를 사용하세요.
+          `/api/restaurant/${restaurantData.restaurantPk}`,
           {
             headers: {
               Authorization: `Bearer ${accessToken}`,
@@ -33,9 +35,52 @@ const RestaurantDetailInfo = ({ restaurantData, onShowLoginModal }) => {
     }
   }, [isLoggedIn, restaurantData.restaurantPk, accessToken]);
 
+  useEffect(() => {
+    // 유저가 가진 쿠폰 목록 가져오기
+    const fetchUserCoupons = async () => {
+      try {
+        const response = await axios.get(`/api/coupons/user`, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+        if (response.data.statusCode === 1) {
+          const userCouponIds = response.data.resultData.map(
+            coupon => coupon.couponId,
+          );
+          setReceivedCoupons(userCouponIds); // 받은 쿠폰 ID를 저장
+        }
+      } catch (err) {
+        console.error("Failed to fetch user coupons:", err);
+      }
+    };
+
+    if (isLoggedIn) {
+      fetchUserCoupons();
+    }
+  }, [isLoggedIn, accessToken]);
+
+  useEffect(() => {
+    // 쿠폰 데이터 가져오기
+    const fetchCoupons = async () => {
+      try {
+        const response = await axios.get(
+          `/api/coupons/${restaurantData.restaurantPk}`,
+        );
+        if (response.data.statusCode === 1) {
+          setCoupons(response.data.resultData);
+        }
+      } catch (err) {
+        console.error("Failed to fetch coupons:", err);
+      }
+    };
+
+    fetchCoupons();
+  }, [restaurantData.restaurantPk]);
+
   const handleFavoriteToggle = async () => {
     if (!isLoggedIn) {
-      setShowNotLoginAlert(true); // 경고 메시지 표시
+      setShowNotLoginAlert(true);
       onShowLoginModal();
       return;
     }
@@ -55,6 +100,32 @@ const RestaurantDetailInfo = ({ restaurantData, onShowLoginModal }) => {
       }
     } catch (err) {
       console.error("Failed to toggle favorite:", err);
+    }
+  };
+
+  const handleCouponClick = async couponId => {
+    if (receivedCoupons.includes(couponId)) {
+      return; // 이미 발급된 쿠폰이면 아무 작업도 하지 않음
+    }
+
+    if (!isLoggedIn) {
+      setShowNotLoginAlert(true);
+      onShowLoginModal();
+      return;
+    }
+
+    try {
+      const response = await axios.post(`/api/coupons/${couponId}`, null, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      if (response.data.statusCode === 1) {
+        setReceivedCoupons([...receivedCoupons, couponId]); // 발급된 쿠폰 ID를 배열에 추가
+        alert("쿠폰을 받았습니다!");
+      }
+    } catch (err) {
+      console.error("Failed to receive coupon:", err);
     }
   };
 
@@ -87,44 +158,90 @@ const RestaurantDetailInfo = ({ restaurantData, onShowLoginModal }) => {
   };
 
   return (
-    <div className="restaurant-detail-page__info">
-      <h2 className="restaurant-detail-page__info-name">
-        {restaurantData.restaurantName}
-        <div className="iconforinfo" onClick={handleFavoriteToggle}>
-          {isFavorited ? (
-            <FavoriteIcon style={{ color: "red" }} />
-          ) : (
-            <FavoriteBorderIcon style={{ color: "red" }} />
-          )}
-        </div>
-      </h2>
-      {showNotLoginAlert && <div>로그인이 필요합니다.</div>}{" "}
-      {/* 경고 메시지 컴포넌트 추가 */}
-      <div className="restaurant-detail-page__info-content">
-        <div className="restaurant-detail-page__info-image">
-          <img
-            src={
-              restaurantData.restaurantPic
-                ? `/pic${restaurantData.restaurantPic}`
-                : "/images/defaultRes.png"
-            }
-            alt={restaurantData.restaurantPic}
-          />
-        </div>
-        <div className="restaurant-detail-page__info-details">
-          <div className="restaurant-detail-page__info-rating">
-            <span>{renderStars(roundedReviewScore)}</span>
-            <p>{roundedReviewScore}</p>
+    <>
+      <div className="restaurant-detail-page__info">
+        <h2 className="restaurant-detail-page__info-name">
+          {restaurantData.restaurantName}
+          <div className="iconforinfo" onClick={handleFavoriteToggle}>
+            {isFavorited ? (
+              <FavoriteIcon style={{ color: "red" }} />
+            ) : (
+              <FavoriteBorderIcon style={{ color: "red" }} />
+            )}
           </div>
-          <p className="restaurant-detail-page__info-payment">
-            <span className="gray">결제</span> 신용카드, 현금, 웹 결제
-          </p>
+        </h2>
+        {showNotLoginAlert && <div>로그인이 필요합니다.</div>}
+        <div className="restaurant-detail-page__info-content">
+          <div className="restaurant-detail-page__info-image">
+            <img
+              src={
+                restaurantData.restaurantPic
+                  ? `/pic${restaurantData.restaurantPic}`
+                  : "/images/defaultRes.png"
+              }
+              alt={restaurantData.restaurantPic}
+            />
+          </div>
+          <div className="restaurant-detail-page__info-details">
+            <div className="restaurant-detail-page__info-rating">
+              <span>{renderStars(roundedReviewScore)}</span>
+              <p>{roundedReviewScore}</p>
+            </div>
+            <p className="restaurant-detail-page__info-payment">
+              <span className="gray">결제</span> 신용카드, 현금, 웹 결제
+            </p>
+          </div>
+        </div>
+
+        <p className="restaurant-detail-page__info-notice">
+          <span>가게 소개: </span> {restaurantData.restaurantDesc}
+        </p>
+        <div className="couponForResDetail">
+          {coupons.map(coupon => (
+            <div
+              key={coupon.id}
+              className={`oneCoupon ${receivedCoupons.includes(coupon.id) ? "disabled" : ""}`}
+              onClick={() => handleCouponClick(coupon.id)}
+              style={{
+                pointerEvents: receivedCoupons.includes(coupon.id)
+                  ? "none"
+                  : "auto",
+                opacity: receivedCoupons.includes(coupon.id) ? 0.5 : 1,
+                position: "relative",
+                cursor: receivedCoupons.includes(coupon.id)
+                  ? "default"
+                  : "pointer",
+              }}
+            >
+              {receivedCoupons.includes(coupon.id) && (
+                <div
+                  style={{
+                    position: "absolute",
+                    top: "30%",
+                    left: "50%",
+                    transform: "translateX(-50%)",
+                    backgroundColor: "rgba(255, 0, 0, 0.8)",
+                    color: "#fff",
+                    padding: "5px 10px",
+                    borderRadius: "5px",
+                    zIndex: 10,
+                    fontSize: "0.9em",
+                  }}
+                >
+                  이미 받으신 쿠폰입니다.
+                </div>
+              )}
+              <div className="couponTitle">{coupon.name}</div>
+              <div className="couponContent">{coupon.content}</div>
+              <div className="discount">{coupon.price}원</div>
+              <div className="minOrder">
+                최소 주문 금액: {coupon.minOrderAmount}원
+              </div>
+            </div>
+          ))}
         </div>
       </div>
-      <p className="restaurant-detail-page__info-notice">
-        <span>가게 소개: </span> {restaurantData.restaurantDesc}
-      </p>
-    </div>
+    </>
   );
 };
 

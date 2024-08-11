@@ -1,0 +1,64 @@
+.couponForResDetail {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.oneCoupon {
+  background: #fff;
+  border: 2px dashed #ff5722;
+  border-radius: 10px;
+  padding: 16px;
+  width: 250px;
+  position: relative;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-family: "Arial", sans-serif;
+  text-align: center;
+}
+
+.couponTitle {
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #ff5722;
+  margin-bottom: 8px;
+}
+
+.couponContent {
+  font-size: 1em;
+  margin-bottom: 16px;
+  color: #333;
+}
+
+.discount {
+  font-size: 1.5em;
+  font-weight: bold;
+  color: #4caf50;
+  margin-bottom: 12px;
+}
+
+.minOrder {
+  font-size: 0.9em;
+  color: #888;
+}
+
+.oneCoupon:before,
+.oneCoupon:after {
+  content: "";
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background: #fff;
+  border-radius: 50%;
+  border: 2px dashed #ff5722;
+}
+
+.oneCoupon:before {
+  top: -10px;
+  left: calc(50% - 10px);
+}
+
+.oneCoupon:after {
+  bottom: -10px;
+  left: calc(50% - 10px);
+}
