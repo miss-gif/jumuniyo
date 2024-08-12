@@ -1,20 +1,53 @@
 import React, { useState } from "react";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import OptionModal from "./OptionModal";
+import axios from "axios";
 
 const MenuCategory = ({ categoryData, onSelectMenuItem }) => {
   const [isOpen, setIsOpen] = useState(true); // 메뉴 카테고리의 펼침 상태
+  const [selectedMenuItem, setSelectedMenuItem] = useState(null); // 모달에 전달할 선택된 메뉴
+  const [isModalOpen, setIsModalOpen] = useState(false); // 모달 열기/닫기 상태
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
 
-  // categoryData에서 menu_category가 null인지 확인
+  const fetchOptions = async menu_pk => {
+    try {
+      const response = await axios.get(`/api/menu/option/${menu_pk}`);
+      const resultData = response.data.resultData;
+      return resultData;
+    } catch (error) {
+      console.error("옵션 데이터를 불러오는 데 실패했습니다.", error);
+      return [];
+    }
+  };
+
+  const handleMenuClick = async item => {
+    if (item.menu_state !== 2) {
+      const options = await fetchOptions(item.menu_pk);
+      if (options.length > 0) {
+        setSelectedMenuItem(item);
+        setIsModalOpen(true); // 옵션이 있으면 모달 열기
+      } else {
+        onSelectMenuItem(item); // 옵션이 없으면 바로 OrderSummary로 이동
+      }
+    }
+  };
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleOptionConfirm = menuItemWithOptions => {
+    onSelectMenuItem(menuItemWithOptions);
+  };
+
   const { menu_category, menu } = categoryData || {};
 
-  // menu_category가 null인 경우 처리
   if (!menu_category) {
-    return null; // 또는 다른 방법으로 이 경우를 처리할 수 있음
+    return null;
   }
 
   return (
@@ -33,7 +66,7 @@ const MenuCategory = ({ categoryData, onSelectMenuItem }) => {
               className={`menu-category__item ${
                 item.menu_state === 2 ? "disabled" : ""
               }`}
-              onClick={() => item.menu_state !== 2 && onSelectMenuItem(item)}
+              onClick={() => handleMenuClick(item)}
             >
               <div className="menu-category__text">
                 <div className="menu-category__name">{item.menu_name}</div>
@@ -54,6 +87,12 @@ const MenuCategory = ({ categoryData, onSelectMenuItem }) => {
           ))}
         </ul>
       )}
+      <OptionModal
+        open={isModalOpen}
+        onClose={handleModalClose}
+        menuItem={selectedMenuItem}
+        onConfirm={handleOptionConfirm}
+      />
     </div>
   );
 };

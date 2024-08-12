@@ -1,7 +1,12 @@
-/* eslint-disable react/prop-types */
-import React from "react";
+import React, { useState, useEffect } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import DeleteIcon from "@mui/icons-material/Delete";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import Button from "@mui/material/Button";
 
 const OrderSummary = ({
   selectedMenuItems,
@@ -11,9 +16,20 @@ const OrderSummary = ({
   onClearAll,
   onOrder,
   restaurantName,
+  restaurantState, // 가게 상태를 받아옴
 }) => {
+  const [open, setOpen] = useState(false);
+
   const totalAmount = selectedMenuItems.reduce(
-    (sum, item) => sum + item.menu_price * item.quantity,
+    (sum, item) =>
+      sum +
+      item.menu_price * item.quantity +
+      (item.selectedOptions
+        ? Object.values(item.selectedOptions).reduce(
+            (optionSum, option) => optionSum + option.optionPrice,
+            0,
+          ) * item.quantity
+        : 0),
     0,
   );
 
@@ -31,6 +47,29 @@ const OrderSummary = ({
   const formatPrice = price => {
     return price.toLocaleString();
   };
+
+  const handleOrderClick = () => {
+    if (restaurantState === 2) {
+      // 준비중일 때
+      setOpen(true);
+      document.body.style.overflow = "hidden"; // 스크롤 잠금
+    } else {
+      onOrder(restaurantName);
+    }
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    document.body.style.overflow = "auto"; // 스크롤 해제
+  };
+
+  useEffect(() => {
+    return () => {
+      // 컴포넌트 언마운트 시 스크롤 해제
+      document.body.style.overflow = "auto";
+    };
+  }, []);
+
   return (
     <div className="order-summary">
       <div className="order-summary-content">
@@ -53,6 +92,18 @@ const OrderSummary = ({
               <div key={index}>
                 <div className="order-summary__content">
                   {item.menu_name}: {item.menu_content} (수량: {item.quantity})
+                  {item.selectedOptions && (
+                    <div className="order-summary__options">
+                      {Object.entries(item.selectedOptions).map(
+                        ([optionPk, option]) => (
+                          <div key={optionPk}>
+                            {option.optionName}: +
+                            {formatPrice(option.optionPrice)}원
+                          </div>
+                        ),
+                      )}
+                    </div>
+                  )}
                 </div>
                 <div className="order-summary__price-quantity">
                   <div className="order-summary__wrap">
@@ -90,26 +141,42 @@ const OrderSummary = ({
           )}
         </div>
       </div>
-      <div
+      <button
         className="order-summary__submit-button"
         style={submitButtonStyle}
-        onClick={() => {
-          onOrder(restaurantName);
-        }}
+        onClick={handleOrderClick}
+        disabled={selectedMenuItems.length === 0}
       >
         주문하기
-      </div>
-      <div
+      </button>
+      <button
         className="order-summary__submit-buttonforphone"
         style={submitButtonStyle}
-        onClick={() => {
-          if (totalAmount > 0) {
-            onOrder(restaurantName);
-          }
-        }}
+        onClick={handleOrderClick}
+        disabled={totalAmount === 0}
       >
         {totalAmount > 0 ? `${totalAmount}원 주문하기` : "음식을 담아주세요!"}
-      </div>
+      </button>
+
+      {/* 준비중입니다 모달 */}
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{"알림"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            아직 준비중입니다.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary" autoFocus>
+            확인
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };
