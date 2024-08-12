@@ -23,6 +23,7 @@ import {
   setUserPhone,
   setUserRole,
   setSearchTerm,
+  setLocationData,
 } from "../app/userSlice";
 import { Logo } from "../components/common/Logo";
 import JoinFooter from "../components/layout/JoinFooter";
@@ -146,6 +147,13 @@ const AuthUserPage: React.FC = () => {
           dispatch(setTokenMaxAge(resultData.tokenMaxAge || 0));
           dispatch(
             setSearchTerm(resultData.mainAddr ? resultData.mainAddr.addr1 : ""),
+          );
+          dispatch(
+            setLocationData({
+              latitude: resultData.mainAddr.addrCoorX,
+              longitude: resultData.mainAddr.addrCoorY,
+              geocodeAddress: "",
+            }),
           );
         }
       }

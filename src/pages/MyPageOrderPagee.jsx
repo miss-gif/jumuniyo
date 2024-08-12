@@ -101,7 +101,6 @@ const MyPageOrderPagee = () => {
       return;
     } else {
       setIsLogin(true);
-      getOrderList();
     }
   }, []);
 
@@ -134,7 +133,7 @@ const MyPageOrderPagee = () => {
           <OrderListHeader />
           {orderNow && orderNow.length > 0 ? (
             <div className="order-list-gap">
-              {orderNow.map(order => (
+              {orderNow?.map(order => (
                 <div key={order.doneOrderPk}>
                   <div className="order-list">
                     <div className="order-date">
