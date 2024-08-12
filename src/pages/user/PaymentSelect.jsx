@@ -20,8 +20,8 @@ const PaymentSelect = ({ onPaymentSelect }) => {
           </h4>
           <div className="payment-page__mobile-payment">
             <button
-              className={`payment-page__button ${selectedPayment === "카카오페이" ? "btn--active" : "btn--default"}`}
-              onClick={event => handlePaymentSelect(event, "카카오페이")}
+              className={`payment-page__button ${selectedPayment === "3" ? "btn--active" : "btn--default"}`}
+              onClick={event => handlePaymentSelect(event, "3")}
             >
               카카오페이
             </button>
