@@ -79,7 +79,6 @@ const CeoLayout = () => {
     { path: "/ceopage/orders-accepted", label: "접수주문" },
     { path: "/ceopage/reviews", label: "리뷰관리" },
     { path: "/ceopage/store-management", label: "매장관리" },
-    { path: "/ceopage/menu-management", label: "메뉴관리" },
     { path: "/ceopage/orders-history", label: "주문내역" },
     { path: "/ceopage/statistics", label: "통계" },
     { path: "/ceopage/withdraw", label: "탈퇴" },

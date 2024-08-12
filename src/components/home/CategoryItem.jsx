@@ -7,12 +7,18 @@ import LoadingSpinner from "../common/LoadingSpinner";
 // Lazy load Image component
 const Image = lazy(() => import("./Image"));
 
-const CategoryItem = ({ index, categoryPk, categoryName, onClick }) => (
+const CategoryItem = ({
+  index,
+  categoryPk,
+  categoryName,
+  onClick,
+  categoryPic,
+}) => (
   <li className="category__item bc" onClick={onClick}>
     <p>{categoryName}</p>
     <React.Suspense fallback={<LoadingSpinner />}>
       <Image
-        src={`/images/category/category-${String(index + 1).padStart(2, "0")}.png`}
+        src={`/pic${categoryPic}`}
         alt="Logo"
         className="category__image"
       />
