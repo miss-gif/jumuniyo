@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { IoIosMenu } from "react-icons/io";
 import { IoSearch } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
@@ -18,35 +18,50 @@ import "./UserHeader.scss";
 const UserHeader = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const isLoggedIn = useSelector(state => state.user.isLoggedIn);
-  const accessToken = useSelector(state => state.user.accessToken);
-  const [isSidebarOpen, setSidebarOpen] = useState(false);
+
+  // 통합된 상태 관리
+  const [sidebarState, setSidebarState] = useState({
+    isOpen: false,
+    isRightOpen: false,
+    isCartOpen: false,
+    isCouponOpen: false,
+    isHeartOpen: false,
+  });
+
   const [isTransitioning, setTransitioning] = useState(false);
-  const [isSidebarRightOpen, setSidebarRightOpen] = useState(false);
-  const [isSidebarCart, setSidebarCart] = useState(false);
-  const [isSidebarCoupon, setSidebarCoupon] = useState(false);
-  const [isSidebarHeart, setSidebarHeart] = useState(false);
+  const [isModal, setIsModal] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [onSearch, setOnSearch] = useState(false);
 
-  const userData = useSelector(state => state.user.userData);
+  // Redux 상태 통합
+  const {
+    isLoggedIn,
+    accessToken,
+    userData,
+    searchTerm,
+    searchRestaurant: searchRestaurantValue,
+  } = useSelector(state => ({
+    isLoggedIn: state.user.isLoggedIn,
+    accessToken: state.user.accessToken,
+    userData: state.user.userData,
+    searchTerm: state.user.searchTerm,
+    searchRestaurant: state.user.searchRestaurant,
+  }));
+
   const userNickname = userData ? userData.userNickname : "Guest";
-
-  const searchTerm = useSelector(state => state.user.searchTerm);
-
-  const searchRestaurantValue = useSelector(
-    state => state.user.searchRestaurant,
-  );
 
   const handleInputChange = e => {
     dispatch(searchRestaurant(e.target.value));
   };
 
+  // 상태 변경에 따른 UI 반응
   useEffect(() => {
     if (
-      isSidebarOpen ||
-      isSidebarRightOpen ||
-      isSidebarCart ||
-      isSidebarCoupon ||
-      isSidebarHeart
+      sidebarState.isOpen ||
+      sidebarState.isRightOpen ||
+      sidebarState.isCartOpen ||
+      sidebarState.isCouponOpen ||
+      sidebarState.isHeartOpen
     ) {
       setTransitioning(true);
       document.documentElement.style.overflow = "hidden";
@@ -57,30 +72,52 @@ const UserHeader = () => {
       }, 300);
       return () => clearTimeout(timer);
     }
-  }, [
-    isSidebarOpen,
-    isSidebarRightOpen,
-    isTransitioning,
-    isSidebarCart,
-    isSidebarCoupon,
-    isSidebarHeart,
-  ]);
+  }, [sidebarState, isTransitioning]);
 
-  const toggleSidebar = () => setSidebarOpen(prev => !prev);
-  const toggleSidebarRight = () => setSidebarRightOpen(prev => !prev);
-  const toggleSidebarCart = () => setSidebarCart(prev => !prev);
-  const toggleSidebarCoupon = () => setSidebarCoupon(prev => !prev);
-  const toggleSidebarHeart = () => setSidebarHeart(prev => !prev);
+  // useCallback을 사용한 리렌더링 최적화
+  const toggleSidebar = useCallback(() => {
+    setSidebarState(prevState => ({ ...prevState, isOpen: !prevState.isOpen }));
+  }, []);
+
+  const toggleSidebarRight = useCallback(() => {
+    setSidebarState(prevState => ({
+      ...prevState,
+      isRightOpen: !prevState.isRightOpen,
+    }));
+  }, []);
+
+  const toggleSidebarCart = useCallback(() => {
+    setSidebarState(prevState => ({
+      ...prevState,
+      isCartOpen: !prevState.isCartOpen,
+    }));
+  }, []);
+
+  const toggleSidebarCoupon = useCallback(() => {
+    setSidebarState(prevState => ({
+      ...prevState,
+      isCouponOpen: !prevState.isCouponOpen,
+    }));
+  }, []);
+
+  const toggleSidebarHeart = useCallback(() => {
+    setSidebarState(prevState => ({
+      ...prevState,
+      isHeartOpen: !prevState.isHeartOpen,
+    }));
+  }, []);
 
   const handleLogoutClick = () => {
     localStorage.removeItem("state");
     handleLogout(accessToken, dispatch, navigate);
-    setSidebarOpen(false);
-    setSidebarRightOpen(false); // 로그아웃 시 모든 사이드바 닫기
+    setSidebarState({
+      isOpen: false,
+      isRightOpen: false,
+      isCartOpen: false,
+      isCouponOpen: false,
+      isHeartOpen: false,
+    }); // 로그아웃 시 모든 사이드바 닫기
   };
-
-  const [isModal, setIsModal] = useState(false);
-  const [selectedItem, setSelectedItem] = useState(null);
 
   const openModal = item => {
     setSelectedItem(item);
@@ -92,6 +129,11 @@ const UserHeader = () => {
     setIsModal(false);
     setSelectedItem(null);
     document.documentElement.style.overflow = "auto";
+  };
+
+  const clickSearch = () => {
+    setOnSearch(prev => !prev);
+    console.log("onSearch", onSearch);
   };
 
   return (
@@ -117,6 +159,7 @@ const UserHeader = () => {
             value={searchRestaurantValue}
             onChange={handleInputChange}
           />
+          <button onClick={clickSearch}>검색</button>
         </div>
         {isLoggedIn && (
           <UserActions
@@ -126,25 +169,24 @@ const UserHeader = () => {
           />
         )}
       </nav>
-
       {!isLoggedIn && <AuthLinks closeModal={closeModal} />}
 
       <Sidebar
-        isSidebarOpen={isSidebarOpen}
+        isSidebarOpen={sidebarState.isOpen}
         toggleSidebar={toggleSidebar}
         handleLogoutClick={handleLogoutClick}
         userNickname={userNickname}
       />
       <SidebarCart
-        isSidebarCart={isSidebarCart}
+        isSidebarCart={sidebarState.isCartOpen}
         toggleSidebarCart={toggleSidebarCart}
       />
       <SidebarCoupon
-        isSidebarCoupon={isSidebarCoupon}
+        isSidebarCoupon={sidebarState.isCouponOpen}
         toggleSidebarCoupon={toggleSidebarCoupon}
       />
       <SidebarHeart
-        isSidebarHeart={isSidebarHeart}
+        isSidebarHeart={sidebarState.isHeartOpen}
         toggleSidebarHeart={toggleSidebarHeart}
       />
 
