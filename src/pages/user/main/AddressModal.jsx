@@ -5,9 +5,9 @@ import { IoIosClose } from "react-icons/io";
 import { IoLocationOutline } from "react-icons/io5";
 import Modal from "react-modal";
 import { useDispatch, useSelector } from "react-redux";
+import { setSearchTerm } from "../../../app/userSlice";
 import "./AddressModal.scss";
 import NewLocationSearch from "./NewLocationSearch";
-import { setSearchTerm } from "../../../app/userSlice";
 
 const AddressModal = ({ isOpen, onRequestClose }) => {
   const [activeTab, setActiveTab] = useState("registered");
@@ -18,21 +18,19 @@ const AddressModal = ({ isOpen, onRequestClose }) => {
   const locationData = useSelector(state => state.user.locationData); // Redux에서 searchTerm 읽기
 
   useEffect(() => {
-    if (activeTab === "recent") {
-      const fetchAddresses = async () => {
-        try {
-          const response = await axios.get("/api/address/list", {
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-            },
-          });
-          setAddresses(response.data.resultData);
-        } catch (error) {
-          console.error("주소 목록을 불러오는 데 실패했습니다.", error);
-        }
-      };
-      fetchAddresses();
-    }
+    const fetchAddresses = async () => {
+      try {
+        const response = await axios.get("/api/address/list", {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+        setAddresses(response.data.resultData);
+      } catch (error) {
+        console.error("주소 목록을 불러오는 데 실패했습니다.", error);
+      }
+    };
+    fetchAddresses();
   }, [activeTab, accessToken]);
 
   const handleTabChange = tab => {
