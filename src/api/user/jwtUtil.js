@@ -1,11 +1,13 @@
 import axios from "axios";
 import { getCookie, setCookie } from "../../utils/cookie";
+import store from "../../app/store";
 
 const jwtAxios = axios.create();
-// Request Intercepter
-// Access Token 활용하기
+
+// Request Interceptor
 const beforeReq = config => {
-  let accessToken = getCookie("accessToken");
+  const state = store.getState(); // Redux store에서 현재 상태 가져오기
+  const accessToken = state.user.accessToken || "";
   if (!accessToken) {
     return Promise.reject({
       response: { data: { error: "Login 하셔서 인증받으세요." } },
@@ -23,12 +25,11 @@ const failReq = err => {
 // axios의 intercepter 적용
 jwtAxios.interceptors.request.use(beforeReq, failReq);
 
-// Reponse
+// Response Interceptor
 const beforeRes = async res => {
-  const respose = await axios.get("/api/auth/access-token");
-  setCookie("accessToken", respose.data.accessToken);
-  return respose.config;
+  const response = await axios.get("/api/auth/access-token");
+  setCookie("accessToken", response.data.accessToken);
+  return response.config;
 };
 
-// axios의 intercepter 적용
 export default jwtAxios;
