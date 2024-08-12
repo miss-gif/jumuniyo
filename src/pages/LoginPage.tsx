@@ -137,12 +137,16 @@ const AuthUserPage: React.FC = () => {
         // null 값에 대한 예외 처리
         if (resultData) {
           dispatch(setUserData(resultData));
-          dispatch(setUserRole(resultData.userRole || "")); // userRole이 없을 경우 빈 문자열로 처리
-          dispatch(setUserAddress(resultData.mainAddr || "")); // mainAddr이 없을 경우 빈 문자열로 처리
-          dispatch(setUserPhone(resultData.userPhone || "")); // userPhone이 없을 경우 빈 문자열로 처리
-          dispatch(setAccessToken(resultData.accessToken || "")); // accessToken이 없을 경우 빈 문자열로 처리
-          dispatch(setTokenMaxAge(resultData.tokenMaxAge || 0)); // tokenMaxAge이 없을 경우 기본값 0으로 처리
-          dispatch(setSearchTerm(resultData.mainAddr.addr1 || "")); // mainAddr.addr1이 없을 경우 빈 문자열로 처리
+          dispatch(setUserRole(resultData.userRole || ""));
+          dispatch(
+            setUserAddress(resultData.mainAddr ? resultData.mainAddr : ""),
+          );
+          dispatch(setUserPhone(resultData.userPhone || ""));
+          dispatch(setAccessToken(resultData.accessToken || ""));
+          dispatch(setTokenMaxAge(resultData.tokenMaxAge || 0));
+          dispatch(
+            setSearchTerm(resultData.mainAddr ? resultData.mainAddr.addr1 : ""),
+          );
         }
       }
       setCookie("accessToken", response.data.resultData.accessToken);
@@ -154,6 +158,8 @@ const AuthUserPage: React.FC = () => {
         navigate("/mypage/address");
       } else if (response.data.resultData.userRole === "ROLE_OWNER") {
         navigate("/ceopage/home");
+      } else if (response.data.resultData.userRole === "ROLE_ADMIN") {
+        navigate("/admin");
       } else if (response.data.statusCode === 2) {
         Swal.fire({
           icon: "warning",
