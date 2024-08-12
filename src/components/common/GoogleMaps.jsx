@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import Autocomplete from "@mui/material/Autocomplete";
 import Box from "@mui/material/Box";
@@ -28,7 +27,7 @@ function loadScript(src, position, id) {
 const autocompleteService = { current: null };
 const geocoder = { current: null }; // Geocoder 서비스 객체를 위한 ref
 
-export default function GoogleMaps() {
+export default function GoogleMaps({ onRequestClose }) {
   const dispatch = useDispatch();
   const searchTerm = useSelector(state => state.user.searchTerm);
 
@@ -146,6 +145,9 @@ export default function GoogleMaps() {
         }
       },
     );
+
+    // 검색 결과를 선택한 후 드롭다운을 닫기 위해 onRequestClose 호출
+    onRequestClose();
   };
 
   return (

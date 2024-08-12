@@ -8,7 +8,7 @@ import { IoSearchSharp } from "react-icons/io5";
 // import GoogleMaps from "./GoogleMaps";
 // import { setLocationData } from "../../app/userSlice";
 
-const NewLocationSearch = () => {
+const NewLocationSearch = ({ onRequestClose }) => {
   const location = useLocation();
   const isHomePage = location.pathname === "/";
   const navigate = useNavigate();
@@ -83,11 +83,6 @@ const NewLocationSearch = () => {
     locationData.longitude, // 위치 데이터의 경도
   ]);
 
-  // 검색 버튼 기능
-  const onClickSearch = () => {
-    navigate("/restaurant/category_id=0");
-  };
-
   return (
     <div className="" key={renderKey}>
       <div className="새로운서치">
@@ -102,6 +97,7 @@ const NewLocationSearch = () => {
           <GoogleMaps
             latitude={locationData.latitude}
             longitude={locationData.longitude}
+            onRequestClose={onRequestClose}
           />
           {/* <button className="location-search__btn" onClick={onClickSearch}>
             검색

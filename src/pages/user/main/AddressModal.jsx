@@ -61,7 +61,7 @@ const AddressModal = ({ isOpen, onRequestClose }) => {
       <div className="modal__content">
         <h2 className="modal__title">주소 검색</h2>
         <div className="new-location-search">
-          <NewLocationSearch />
+          <NewLocationSearch onRequestClose={onRequestClose} />
         </div>
         <div className="modal__tabs">
           <button
