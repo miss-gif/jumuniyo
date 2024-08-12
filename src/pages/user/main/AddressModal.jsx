@@ -16,6 +16,7 @@ const AddressModal = ({ isOpen, onRequestClose }) => {
   const dispatch = useDispatch();
   const searchTerm = useSelector(state => state.user.searchTerm); // Redux에서 searchTerm 읽기
   const locationData = useSelector(state => state.user.locationData); // Redux에서 searchTerm 읽기
+  const isLoggedIn = useSelector(state => state.user.isLoggedIn);
 
   useEffect(() => {
     const fetchAddresses = async () => {
@@ -30,8 +31,11 @@ const AddressModal = ({ isOpen, onRequestClose }) => {
         console.error("주소 목록을 불러오는 데 실패했습니다.", error);
       }
     };
-    fetchAddresses();
-  }, [activeTab, accessToken]);
+
+    if (isLoggedIn) {
+      fetchAddresses();
+    }
+  }, [isLoggedIn, activeTab, accessToken]);
 
   const handleTabChange = tab => {
     setActiveTab(tab);
