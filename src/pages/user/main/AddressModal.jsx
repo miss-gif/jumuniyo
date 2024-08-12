@@ -88,6 +88,7 @@ const AddressModal = ({ isOpen, onRequestClose }) => {
                     className="address-item"
                     onClick={() => {
                       onClickSearch(address);
+                      onRequestClose();
                       console.log("주소가 클릭됨:", address.addr1); // addr1 로그 출력
                     }}
                   >

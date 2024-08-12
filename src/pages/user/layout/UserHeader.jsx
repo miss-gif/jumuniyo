@@ -79,13 +79,6 @@ const UserHeader = () => {
     setSidebarState(prevState => ({ ...prevState, isOpen: !prevState.isOpen }));
   }, []);
 
-  const toggleSidebarRight = useCallback(() => {
-    setSidebarState(prevState => ({
-      ...prevState,
-      isRightOpen: !prevState.isRightOpen,
-    }));
-  }, []);
-
   const toggleSidebarCart = useCallback(() => {
     setSidebarState(prevState => ({
       ...prevState,
@@ -149,7 +142,11 @@ const UserHeader = () => {
         <Link to={"/"}>주문이요</Link>
       </div>
       <nav className="user-header__nav">
-        <LocationSelector searchTerm={searchTerm} openModal={openModal} />
+        <LocationSelector
+          searchTerm={searchTerm}
+          openModal={openModal}
+          setIsModal={setIsModal}
+        />
         <div className="user-header__search">
           <IoSearch fontSize={20} />
           <input
