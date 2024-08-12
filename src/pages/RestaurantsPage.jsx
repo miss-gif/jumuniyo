@@ -8,12 +8,12 @@ import styled from "styled-components";
 
 const StatusListItem = styled.li`
   position: relative;
-  background-color: ${props => (props.isClosed ? "#ddd" : "white")};
-  opacity: ${props => (props.isClosed ? ".6" : "1")};
-  cursor: ${props => (props.isClosed ? "auto" : "pointer")};
+  background-color: ${props => (props.isclosed ? "#ddd" : "white")};
+  opacity: ${props => (props.isclosed ? ".6" : "1")};
+  cursor: ${props => (props.isclosed ? "auto" : "pointer")};
 
   &:before {
-    content: ${props => (props.isClosed ? '"준비중"' : "")};
+    content: ${props => (props.isclosed ? '"준비중"' : "")};
     position: absolute;
     top: 10px;
     right: 10px;
@@ -92,7 +92,7 @@ const RestaurantsPage = () => {
             <StatusListItem
               className="restaurant-item bc"
               key={restaurant.restaurantPk}
-              isClosed={restaurant.restaurantState === 2}
+              isclosed={restaurant.restaurantState === 2}
               onClick={() => {
                 if (restaurant.restaurantState !== 2) {
                   navigate(`/restaurants/${restaurant.restaurantPk}`);

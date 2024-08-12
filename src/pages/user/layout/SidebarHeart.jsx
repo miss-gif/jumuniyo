@@ -7,11 +7,11 @@ import "./SidebarRight.scss";
 
 const StatusListItem = styled.li`
   position: relative;
-  opacity: ${props => (props.isClosed ? ".4" : "1")};
-  cursor: ${props => (props.isClosed ? "auto" : "pointer")};
+  opacity: ${props => (props.isclosed ? ".4" : "1")};
+  cursor: ${props => (props.isclosed ? "auto" : "pointer")};
 
   &:before {
-    content: ${props => (props.isClosed ? '"준비중"' : "")};
+    content: ${props => (props.isclosed ? '"준비중"' : "")};
     position: absolute;
     top: 10px;
     right: 10px;
@@ -69,7 +69,7 @@ const SidebarHeart = ({ isSidebarHeart, toggleSidebarHeart }) => {
                     <StatusListItem
                       className="restaurant-item"
                       key={restaurant.restaurantPk}
-                      isClosed={restaurant.restaurantState === 2}
+                      isclosed={restaurant.restaurantState === 2}
                       onClick={() => {
                         if (restaurant.restaurantState !== 2) {
                           navigate(`/restaurants/${restaurant.restaurantPk}`); // Navigate 사용
