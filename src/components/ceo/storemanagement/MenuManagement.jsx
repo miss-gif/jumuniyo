@@ -471,21 +471,26 @@ const MenuManagement = () => {
                 >
                   <h3 className="menu-category__title">
                     {category.menu_category.menu_cat_name}
+                    <div className="menu-category__title-btn">
+                      <button
+                        className="btn"
+                        onClick={() => handleOpenEditCategoryModal(category)}
+                      >
+                        수정
+                      </button>
+                      <button
+                        className="btn--cancel"
+                        onClick={() =>
+                          handleDeleteCategory(
+                            category.menu_category.menu_cat_pk,
+                          )
+                        }
+                      >
+                        삭제
+                      </button>
+                    </div>
                   </h3>
-                  <button
-                    className="btn"
-                    onClick={() => handleOpenEditCategoryModal(category)}
-                  >
-                    수정
-                  </button>
-                  <button
-                    className="btn--cancel"
-                    onClick={() =>
-                      handleDeleteCategory(category.menu_category.menu_cat_pk)
-                    }
-                  >
-                    삭제
-                  </button>
+
                   <div className="menu-list">
                     {category.menu.length === 0 ? (
                       <p>이 카테고리에 메뉴가 없습니다.</p>

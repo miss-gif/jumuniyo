@@ -1,6 +1,45 @@
-import React from "react";
+import axios from "axios";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Accept = () => {
+  const [acceptItems, setAcceptItems] = useState([]);
+  const navigate = useNavigate();
+
+  const getCookie = name => {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(";").shift();
+  };
+  const fetchData = async url => {
+    const accessToken = getCookie("accessToken");
+    if (!accessToken) {
+      console.error("토큰을 찾을 수 없습니다.");
+      return;
+    }
+    try {
+      const response = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.data.statusCode === 1) {
+        const formattedData = response.data.resultData.map(item => ({
+          pk: item.inquiryPk,
+          title: item.inquiryTitle,
+          status: item.inquiryState === 2 ? "답변완료" : "미완료",
+          completeTime: new Date(item.createdAt).toLocaleTimeString(),
+        }));
+        setAcceptItems(formattedData);
+      } else {
+        console.error("데이터 불러오기 실패:", response.data.resultMsg);
+      }
+    } catch (error) {
+      console.error("데이터 불러오기 중 오류 발생:", error);
+    }
+  };
   const askItems = [
     {
       pk: 1,

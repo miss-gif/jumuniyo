@@ -111,82 +111,86 @@ const CouponManagement = () => {
   }
 
   return (
-    <div className="coupon-management">
-      <h2>쿠폰 관리</h2>
-      <button className="btn" onClick={() => setShowAddForm(!showAddForm)}>
-        쿠폰 추가하기
-      </button>
-      {showAddForm && (
-        <div className="add-coupon-form">
-          <input
-            type="text"
-            placeholder="이름"
-            value={newCoupon.name}
-            onChange={e => setNewCoupon({ ...newCoupon, name: e.target.value })}
-          />
-          <input
-            type="text"
-            placeholder="내용"
-            value={newCoupon.content}
-            onChange={e =>
-              setNewCoupon({ ...newCoupon, content: e.target.value })
-            }
-          />
-          <input
-            type="number"
-            placeholder="가격"
-            value={newCoupon.price}
-            onChange={e =>
-              setNewCoupon({ ...newCoupon, price: e.target.value })
-            }
-          />
-          <input
-            type="number"
-            placeholder="최소 주문 금액"
-            value={newCoupon.minOrderAmount}
-            onChange={e =>
-              setNewCoupon({ ...newCoupon, minOrderAmount: e.target.value })
-            }
-          />
-          <button onClick={handleAddCoupon}>추가</button>
-        </div>
-      )}
-      <table>
-        <thead>
-          <tr>
-            <th>쿠폰 ID</th>
-            <th>이름</th>
-            <th>내용</th>
-            <th>가격</th>
-            <th>생성 날짜</th>
-            <th>최소 주문 금액</th>
-          </tr>
-        </thead>
-        <tbody>
-          {coupons.map(coupon => (
-            <tr key={coupon.id}>
-              <td>{coupon.id}</td>
-              <td>{coupon.name}</td>
-              <td>{coupon.content}</td>
-              <td>{coupon.price}</td>
-              <td>{new Date(coupon.createdAt).toLocaleString()}</td>
-              <td>{coupon.minOrderAmount || "N/A"}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-
-      {showModal && (
-        <div className="modal">
-          <div className="modal-content">
-            <h2>{modalMessage}</h2>
-            <br />
-            <button className="btn" onClick={closeModal}>
-              확인
-            </button>
+    <div className="coupon-wrap">
+      <div className="coupon-management">
+        <h2>쿠폰 관리</h2>
+        <button className="btn" onClick={() => setShowAddForm(!showAddForm)}>
+          쿠폰 추가하기
+        </button>
+        {showAddForm && (
+          <div className="add-coupon-form">
+            <input
+              type="text"
+              placeholder="이름"
+              value={newCoupon.name}
+              onChange={e =>
+                setNewCoupon({ ...newCoupon, name: e.target.value })
+              }
+            />
+            <input
+              type="text"
+              placeholder="내용"
+              value={newCoupon.content}
+              onChange={e =>
+                setNewCoupon({ ...newCoupon, content: e.target.value })
+              }
+            />
+            <input
+              type="number"
+              placeholder="가격"
+              value={newCoupon.price}
+              onChange={e =>
+                setNewCoupon({ ...newCoupon, price: e.target.value })
+              }
+            />
+            <input
+              type="number"
+              placeholder="최소 주문 금액"
+              value={newCoupon.minOrderAmount}
+              onChange={e =>
+                setNewCoupon({ ...newCoupon, minOrderAmount: e.target.value })
+              }
+            />
+            <button onClick={handleAddCoupon}>추가</button>
           </div>
-        </div>
-      )}
+        )}
+        <table>
+          <thead>
+            <tr>
+              <th>쿠폰 ID</th>
+              <th>이름</th>
+              <th>내용</th>
+              <th>가격</th>
+              <th>생성 날짜</th>
+              <th>최소 주문 금액</th>
+            </tr>
+          </thead>
+          <tbody>
+            {coupons.map(coupon => (
+              <tr key={coupon.id}>
+                <td>{coupon.id}</td>
+                <td>{coupon.name}</td>
+                <td>{coupon.content}</td>
+                <td>{coupon.price}</td>
+                <td>{new Date(coupon.createdAt).toLocaleString()}</td>
+                <td>{coupon.minOrderAmount || "N/A"}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+
+        {showModal && (
+          <div className="modal">
+            <div className="modal-content">
+              <h2>{modalMessage}</h2>
+              <br />
+              <button className="btn" onClick={closeModal}>
+                확인
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

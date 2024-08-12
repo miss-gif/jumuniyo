@@ -25,13 +25,19 @@ const CategorySetting = () => {
         </section>
         <section className="category">
           <ul className="category__list">
-            <CategoryItem index={0} categoryPk={0} categoryName="전체보기" />
+            <CategoryItem
+              index={0}
+              categoryPk={0}
+              categoryName="전체보기"
+              categoryPic="/images/category/category-01.png"
+            />
             {categories.map((category, index) => (
               <CategoryItem
                 key={category.categoryPk}
                 index={index + 1} // 인덱스를 1부터 시작
                 categoryPk={category.categoryPk}
                 categoryName={category.categoryName}
+                categoryPic={category.categoryPic}
               />
             ))}
           </ul>

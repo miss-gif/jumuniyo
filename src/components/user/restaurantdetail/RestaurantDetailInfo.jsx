@@ -170,7 +170,7 @@ const RestaurantDetailInfo = ({ restaurantData, onShowLoginModal }) => {
             )}
           </div>
         </h2>
-        {showNotLoginAlert && <div>로그인이 필요합니다.</div>}
+        {showNotLoginAlert}
         <div className="restaurant-detail-page__info-content">
           <div className="restaurant-detail-page__info-image">
             <img
