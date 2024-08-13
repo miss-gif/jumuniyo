@@ -124,7 +124,7 @@ const MyPageOrderClosePage: React.FC = () => {
             );
           })
         ) : (
-          <div className="null-item">
+          <div className="mypage-box">
             <Alert variant="outlined" severity="info">
               주문내역이 없습니다.
             </Alert>

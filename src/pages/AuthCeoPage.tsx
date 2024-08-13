@@ -364,6 +364,7 @@ const AuthUserPage: React.FC = () => {
         coor_x: newXValue,
         coor_y: newYValue,
         restaurant_name: userRestaurantName,
+        auth_num: emailCode,
         user_id: userId,
         addr: newAddress,
         close_time: userCloseTime,

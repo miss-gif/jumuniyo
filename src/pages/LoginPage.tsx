@@ -133,7 +133,8 @@ const AuthUserPage: React.FC = () => {
       });
 
       if (response.data.statusCode === 1 || response.data.statusCode === 2) {
-        const { resultData } = response.data;
+        const { resultData } = response.data.resultData;
+        console.log(resultData);
 
         // null 값에 대한 예외 처리
         if (resultData) {
@@ -158,26 +159,29 @@ const AuthUserPage: React.FC = () => {
         }
       }
       setCookie("accessToken", response.data.resultData.accessToken);
-
       if (
         response.data.resultData.userRole === "ROLE_USER" &&
         response.data.resultData.mainAddr === null
       ) {
         navigate("/mypage/address");
+        return;
       } else if (response.data.resultData.userRole === "ROLE_OWNER") {
         navigate("/ceopage/home");
+        return;
       } else if (response.data.resultData.userRole === "ROLE_ADMIN") {
         navigate("/admin");
+        return;
       } else if (response.data.statusCode === 2) {
         Swal.fire({
           icon: "warning",
           text: response.data.resultMsg,
         });
         navigate("/login");
+        return;
       } else {
         navigate("/");
+        return;
       }
-      return response.data;
     } catch (error) {
       Swal.fire({
         icon: "error",

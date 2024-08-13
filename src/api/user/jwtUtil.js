@@ -1,13 +1,14 @@
 import axios from "axios";
-import { getCookie, setCookie } from "../../utils/cookie";
 import store from "../../app/store";
+import { setCookie } from "../../utils/cookie";
 
 const jwtAxios = axios.create();
 
 // Request Interceptor
 const beforeReq = config => {
-  const state = store.getState(); // Redux store에서 현재 상태 가져오기
-  const accessToken = state.user.accessToken || "";
+  const state = store.getState();
+  const accessToken = state.user.accessToken;
+  console.log(state.user.accessToken);
   if (!accessToken) {
     return Promise.reject({
       response: { data: { error: "Login 하셔서 인증받으세요." } },
