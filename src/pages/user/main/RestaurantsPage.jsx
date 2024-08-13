@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 import styled from "styled-components";
 import LoadingSpinner from "../../../components/common/LoadingSpinner";
+import useDebounce from "../../../hooks/useDebounce";
 
 const StatusListItem = styled.li`
   position: relative;
@@ -38,6 +39,9 @@ const RestaurantsPage = () => {
   const [error, setError] = useState(null);
   const [orderType, setOrderType] = useState("1"); // 기본 정렬순
 
+  // 커스텀 훅 사용으로 지연 검색
+  const debouncedSearchTerm = useDebounce(searchRestaurant, 500);
+
   useEffect(() => {
     const fetchRestaurants = async () => {
       setIsLoading(true);
@@ -61,7 +65,7 @@ const RestaurantsPage = () => {
     };
 
     fetchRestaurants();
-  }, [id, orderType, locationData.latitude, searchRestaurant]);
+  }, [id, orderType, locationData.latitude, debouncedSearchTerm]);
 
   const handleOrderChange = e => {
     setOrderType(e.target.value);
