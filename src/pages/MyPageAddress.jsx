@@ -123,7 +123,7 @@ const MyPageAddress = () => {
     setIsLogin(true);
     fetchUserAddressList();
     fetchUserAddress();
-  }, [fetchUserAddress, fetchUserAddressList, reviewSubmitted]);
+  }, []);
 
   const handleAddressSubmit = async () => {
     try {
@@ -137,9 +137,17 @@ const MyPageAddress = () => {
       let res;
       if (isFirstUser || addModalOpen) {
         res = await jwtAxios.post("/api/address", data);
+        if (res) {
+          fetchUserAddressList();
+          fetchUserAddress();
+        }
       } else {
         data.addr_pk = addressPk;
         res = await jwtAxios.patch("/api/address", data);
+        if (res) {
+          fetchUserAddressList();
+          fetchUserAddress();
+        }
       }
 
       if (res.data.statusCode === 1) {

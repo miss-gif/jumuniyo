@@ -162,7 +162,7 @@ const AuthUserPage: React.FC = () => {
       const userRole = response.data.resultData.userRole;
       const mainAddr = response.data.resultData.mainAddr;
 
-      if (userRole === "ROLE_USER" && !mainAddr) {
+      if (response.data.statusCode === 2) {
         navigate("/mypage/address");
         return;
       } else if (userRole === "ROLE_OWNER") {
@@ -171,7 +171,7 @@ const AuthUserPage: React.FC = () => {
       } else if (userRole === "ROLE_ADMIN") {
         navigate("/admin");
         return;
-      } else if (response.data.statusCode === 2) {
+      } else if (response.data.statusCode === -2) {
         Swal.fire({
           icon: "warning",
           text: response.data.resultMsg,
