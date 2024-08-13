@@ -162,25 +162,20 @@ const AuthUserPage: React.FC = () => {
       const userRole = response.data.resultData.userRole;
       const mainAddr = response.data.resultData.mainAddr;
 
-      if (response.data.statusCode === 2) {
-        navigate("/mypage/address");
-        return;
-      } else if (userRole === "ROLE_OWNER") {
+      if (userRole === "ROLE_OWNER") {
         navigate("/ceopage/home");
-        return;
       } else if (userRole === "ROLE_ADMIN") {
         navigate("/admin");
-        return;
+      } else if (response.data.statusCode === 2) {
+        navigate("/mypage/address");
       } else if (response.data.statusCode === -2) {
         Swal.fire({
           icon: "warning",
           text: response.data.resultMsg,
         });
         navigate("/login");
-        return;
       } else {
         navigate("/");
-        return;
       }
     } catch (error) {
       Swal.fire({

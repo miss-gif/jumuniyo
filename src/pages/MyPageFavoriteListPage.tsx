@@ -100,7 +100,7 @@ const MyPageFavoriteListPage: React.FC = () => {
                         />
                       ) : (
                         <img
-                          src={`/pic${fav.restaurantPic}`}
+                          src={`${fav.restaurantPic}`}
                           className="order-logo"
                           alt="Order Logo"
                         />
