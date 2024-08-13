@@ -61,7 +61,7 @@ const RestaurantsPage = () => {
     };
 
     fetchRestaurants();
-  }, [id, orderType, locationData.latitude]);
+  }, [id, orderType, locationData.latitude, searchRestaurant]);
 
   const handleOrderChange = e => {
     setOrderType(e.target.value);
