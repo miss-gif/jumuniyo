@@ -27,6 +27,7 @@ const SidebarHeart = ({ isSidebarHeart, toggleSidebarHeart }) => {
   const [restaurants, setRestaurants] = useState([]);
   const accessToken = useSelector(state => state.user.accessToken);
   const navigate = useNavigate(); // useNavigate 훅 추가
+  const isLoggedIn = useSelector(state => state.user.isLoggedIn);
 
   useEffect(() => {
     const fetchFollowedRestaurants = async () => {
@@ -47,7 +48,9 @@ const SidebarHeart = ({ isSidebarHeart, toggleSidebarHeart }) => {
       }
     };
 
-    fetchFollowedRestaurants();
+    if (isLoggedIn) {
+      fetchFollowedRestaurants();
+    }
   }, [accessToken]);
 
   return (
