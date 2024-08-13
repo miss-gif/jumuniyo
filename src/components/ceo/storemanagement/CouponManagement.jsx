@@ -97,6 +97,33 @@ const CouponManagement = () => {
   const closeModal = () => {
     setShowModal(false);
   };
+  const handleDeleteCoupon = async couponId => {
+    try {
+      const getCookie = name => {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(";").shift();
+        return null;
+      };
+
+      const accessToken = getCookie("accessToken");
+
+      await axios.delete(`/api/coupons/${couponId}?couponId=${couponId}`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+
+      // 쿠폰 목록에서 삭제된 쿠폰 제거
+      setCoupons(prevCoupons =>
+        prevCoupons.filter(coupon => coupon.id !== couponId),
+      );
+      setModalMessage("쿠폰이 성공적으로 삭제되었습니다.");
+      setShowModal(true);
+    } catch (error) {
+      setError("쿠폰을 삭제하는 중 에러가 발생했습니다.");
+    }
+  };
 
   if (loading) {
     return (
@@ -111,7 +138,7 @@ const CouponManagement = () => {
   }
 
   return (
-    <div className="coupon-wrap">
+    <div className="coupon-wrapforstore">
       <div className="coupon-management">
         <h2>쿠폰 관리</h2>
         <button className="btn" onClick={() => setShowAddForm(!showAddForm)}>
@@ -163,6 +190,7 @@ const CouponManagement = () => {
               <th>가격</th>
               <th>생성 날짜</th>
               <th>최소 주문 금액</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -174,6 +202,11 @@ const CouponManagement = () => {
                 <td>{coupon.price}</td>
                 <td>{new Date(coupon.createdAt).toLocaleString()}</td>
                 <td>{coupon.minOrderAmount || "N/A"}</td>
+                <td>
+                  <button onClick={() => handleDeleteCoupon(coupon.id)}>
+                    삭제
+                  </button>
+                </td>
               </tr>
             ))}
           </tbody>

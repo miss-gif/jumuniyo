@@ -34,6 +34,52 @@ const MenuManagement = () => {
   const [newCategory, setNewCategory] = useState("");
   const [editCategoryItem, setEditCategoryItem] = useState(null); // 카테고리 수정
 
+  const [menuOptions, setMenuOptions] = useState({});
+
+  const [newOption, setNewOption] = useState({
+    optionName: "",
+    optionPrice: "",
+  });
+
+  const [editOption, setEditOption] = useState({
+    optionPk: null,
+    optionName: "",
+    optionPrice: "",
+  });
+
+  //모달
+  const [isOptionModalOpen, setIsOptionModalOpen] = useState(false);
+  const [selectedMenuOptions, setSelectedMenuOptions] = useState([]);
+  const [selectedMenuPk, setSelectedMenuPk] = useState(null);
+
+  const handleOpenOptionModal = async menu_pk => {
+    setSelectedMenuPk(menu_pk);
+    const accessToken = getCookie("accessToken");
+
+    try {
+      const response = await axios.get(`/api/menu/option/${menu_pk}`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+
+      if (response.data.statusCode === 1) {
+        setSelectedMenuOptions(response.data.resultData);
+        setIsOptionModalOpen(true);
+      } else {
+        throw new Error(response.data.resultMsg || "Unknown error");
+      }
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+  const handleCloseOptionModal = () => {
+    setIsOptionModalOpen(false);
+    setSelectedMenuOptions([]);
+    setSelectedMenuPk(null);
+  };
+
   useEffect(() => {
     const accessToken = getCookie("accessToken");
 
@@ -455,6 +501,181 @@ const MenuManagement = () => {
     category => category.menu_category !== null,
   );
 
+  // 카테고리 순서 바꾸 기
+  const handleReorderCategory = async (menu_cat_pk, position) => {
+    const accessToken = getCookie("accessToken");
+
+    try {
+      const response = await axios.patch(
+        "/api/menu_category/position",
+        {
+          menu_cat_pk,
+          position,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        },
+      );
+
+      if (response.data.statusCode === 1) {
+        setCategories(prevCategories => {
+          // 순서 변경 로직 적용
+          const updatedCategories = [...prevCategories];
+          const movedCategory = updatedCategories.find(
+            category => category.menu_category.menu_cat_pk === menu_cat_pk,
+          );
+
+          // 기존 위치에서 제거
+          updatedCategories.splice(updatedCategories.indexOf(movedCategory), 1);
+
+          // 새로운 위치에 삽입
+          updatedCategories.splice(position - 1, 0, movedCategory);
+
+          return updatedCategories;
+        });
+      } else {
+        throw new Error(response.data.resultMsg || "Unknown error");
+      }
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+  const handleFetchOptions = async menu_pk => {
+    const accessToken = getCookie("accessToken");
+
+    try {
+      const response = await axios.get(`/api/menu/option/${menu_pk}`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+
+      if (response.data.statusCode === 1) {
+        setMenuOptions(prevOptions => ({
+          ...prevOptions,
+          [menu_pk]: response.data.resultData,
+        }));
+      } else {
+        throw new Error(response.data.resultMsg || "Unknown error");
+      }
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+  const handleAddOption = async menu_pk => {
+    const accessToken = getCookie("accessToken");
+
+    try {
+      const response = await axios.post(
+        "/api/menu/option/owner",
+        {
+          optionMenuPk: menu_pk,
+          optionName: newOption.optionName,
+          optionPrice: parseInt(newOption.optionPrice, 10),
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        },
+      );
+
+      if (response.data.statusCode === 1) {
+        // 성공적으로 추가된 옵션을 상태에 반영
+        setMenuOptions(prevOptions => ({
+          ...prevOptions,
+          [menu_pk]: [
+            ...(prevOptions[menu_pk] || []),
+            response.data.resultData,
+          ],
+        }));
+        // 옵션 입력 필드 초기화
+        setNewOption({ optionName: "", optionPrice: "" });
+      } else {
+        throw new Error(response.data.resultMsg || "Unknown error");
+      }
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+  // 옵션 수정 함수
+  const handleEditOption = option => {
+    setEditOption({
+      optionPk: option.optionPk,
+      optionName: option.optionName,
+      optionPrice: option.optionPrice,
+    });
+  };
+
+  const handleUpdateOption = async menu_pk => {
+    const accessToken = getCookie("accessToken");
+
+    try {
+      const response = await axios.put(
+        "/api/menu/option/owner",
+        {
+          optionPk: editOption.optionPk,
+          optionName: editOption.optionName,
+          optionPrice: parseInt(editOption.optionPrice, 10),
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        },
+      );
+
+      if (response.data.statusCode === 1) {
+        setMenuOptions(prevOptions => ({
+          ...prevOptions,
+          [menu_pk]: prevOptions[menu_pk].map(option =>
+            option.optionPk === editOption.optionPk
+              ? response.data.resultData
+              : option,
+          ),
+        }));
+        setEditOption({ optionPk: null, optionName: "", optionPrice: "" });
+      } else {
+        throw new Error(response.data.resultMsg || "Unknown error");
+      }
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+  // 옵션 삭제 함수
+  const handleDeleteOption = async (optionPk, menu_pk) => {
+    const accessToken = getCookie("accessToken");
+
+    try {
+      const response = await axios.delete(
+        `/api/menu/option/owner/${optionPk}`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        },
+      );
+
+      if (response.data.statusCode === 1) {
+        setMenuOptions(prevOptions => ({
+          ...prevOptions,
+          [menu_pk]: prevOptions[menu_pk].filter(
+            option => option.optionPk !== optionPk,
+          ),
+        }));
+      } else {
+        throw new Error(response.data.resultMsg || "Unknown error");
+      }
+    } catch (err) {
+      setError(err.message);
+    }
+  };
   return (
     <>
       <div className="menu-management">
@@ -463,15 +684,48 @@ const MenuManagement = () => {
             <p>먼저 카테고리를 추가해주세요.</p>
           ) : (
             categories
-              .filter(category => category.menu_category !== null) // null이 아닌 항목만 필터링
-              .map(category => (
+              .filter(category => category.menu_category !== null)
+              .map((category, index) => (
                 <div
                   className="toggle-category"
                   key={category.menu_category.menu_cat_pk}
                 >
                   <h3 className="menu-category__title">
-                    {category.menu_category.menu_cat_name}
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                      }}
+                    >
+                      {category.menu_category.menu_cat_name}
+                    </div>
                     <div className="menu-category__title-btn">
+                      <button
+                        className="btn"
+                        onClick={() =>
+                          handleReorderCategory(
+                            category.menu_category.menu_cat_pk,
+                            index > 0 ? index : 1,
+                          )
+                        }
+                        disabled={index === 0}
+                      >
+                        ▲
+                      </button>
+                      <button
+                        className="btn"
+                        onClick={() =>
+                          handleReorderCategory(
+                            category.menu_category.menu_cat_pk,
+                            index + 2 < categories.length
+                              ? index + 2
+                              : categories.length,
+                          )
+                        }
+                        disabled={index === categories.length - 1}
+                      >
+                        ▼
+                      </button>
                       <button
                         className="btn"
                         onClick={() => handleOpenEditCategoryModal(category)}
@@ -493,7 +747,15 @@ const MenuManagement = () => {
 
                   <div className="menu-list">
                     {category.menu.length === 0 ? (
-                      <p>이 카테고리에 메뉴가 없습니다.</p>
+                      <p
+                        style={{
+                          padding: "40px",
+                          display: "flex",
+                          justifyContent: "center",
+                        }}
+                      >
+                        이 카테고리에 아직 메뉴가 없습니다.
+                      </p>
                     ) : (
                       category.menu.map(menu => (
                         <div key={menu.menu_pk} className="menu-list-oneMenu">
@@ -554,6 +816,14 @@ const MenuManagement = () => {
                                   }
                                 >
                                   삭제
+                                </button>
+                                <button
+                                  className="btn"
+                                  onClick={() =>
+                                    handleOpenOptionModal(menu.menu_pk)
+                                  }
+                                >
+                                  옵션 보기
                                 </button>
                               </div>
                             </div>
@@ -631,7 +901,7 @@ const MenuManagement = () => {
                     카테고리를 선택하세요
                   </option>
                   {categories
-                    .filter(category => category.menu_category !== null) // null이 아닌 항목만 필터링
+                    .filter(category => category.menu_category !== null)
                     .map(category => (
                       <option
                         key={category.menu_category.menu_cat_pk}
@@ -710,6 +980,104 @@ const MenuManagement = () => {
                 {editCategoryItem ? "수정" : "추가"}
               </button>
             </form>
+          </div>
+        </div>
+      )}
+
+      {isOptionModalOpen && (
+        <div className="modal">
+          <div className="modal-content">
+            <span className="close-button" onClick={handleCloseOptionModal}>
+              &times;
+            </span>
+            <h2>옵션 관리</h2>
+            <ul>
+              {selectedMenuOptions.map(option => (
+                <li key={option.optionPk}>
+                  {editOption.optionPk === option.optionPk ? (
+                    <div>
+                      <input
+                        type="text"
+                        value={editOption.optionName}
+                        onChange={e =>
+                          setEditOption(prev => ({
+                            ...prev,
+                            optionName: e.target.value,
+                          }))
+                        }
+                      />
+                      <input
+                        type="number"
+                        value={editOption.optionPrice}
+                        onChange={e =>
+                          setEditOption(prev => ({
+                            ...prev,
+                            optionPrice: e.target.value,
+                          }))
+                        }
+                      />
+                      <button
+                        onClick={() => handleUpdateOption(selectedMenuPk)}
+                      >
+                        저장
+                      </button>
+                      <button
+                        onClick={() =>
+                          setEditOption({
+                            optionPk: null,
+                            optionName: "",
+                            optionPrice: "",
+                          })
+                        }
+                      >
+                        취소
+                      </button>
+                    </div>
+                  ) : (
+                    <div>
+                      {option.optionName} - {option.optionPrice}원
+                      <button onClick={() => handleEditOption(option)}>
+                        수정
+                      </button>
+                      <button
+                        onClick={() =>
+                          handleDeleteOption(option.optionPk, selectedMenuPk)
+                        }
+                      >
+                        삭제
+                      </button>
+                    </div>
+                  )}
+                </li>
+              ))}
+            </ul>
+            <div>
+              <input
+                type="text"
+                placeholder="옵션 이름"
+                value={newOption.optionName}
+                onChange={e =>
+                  setNewOption(prev => ({
+                    ...prev,
+                    optionName: e.target.value,
+                  }))
+                }
+              />
+              <input
+                type="number"
+                placeholder="옵션 가격"
+                value={newOption.optionPrice}
+                onChange={e =>
+                  setNewOption(prev => ({
+                    ...prev,
+                    optionPrice: e.target.value,
+                  }))
+                }
+              />
+              <button onClick={() => handleAddOption(selectedMenuPk)}>
+                옵션 추가
+              </button>
+            </div>
           </div>
         </div>
       )}

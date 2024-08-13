@@ -98,11 +98,16 @@ const RestaurantDetailPage = () => {
   const handleSelectMenuItem = item => {
     setSelectedMenuItems(prevItems => {
       const existingItem = prevItems.find(
-        menuItem => menuItem.menu_pk === item.menu_pk,
+        menuItem =>
+          menuItem.menu_pk === item.menu_pk &&
+          JSON.stringify(menuItem.selectedOptions) ===
+            JSON.stringify(item.selectedOptions),
       );
       if (existingItem) {
         return prevItems.map(menuItem =>
-          menuItem.menu_pk === item.menu_pk
+          menuItem.menu_pk === item.menu_pk &&
+          JSON.stringify(menuItem.selectedOptions) ===
+            JSON.stringify(item.selectedOptions)
             ? { ...menuItem, quantity: menuItem.quantity + 1 }
             : menuItem,
         );
@@ -214,6 +219,7 @@ const RestaurantDetailPage = () => {
             onClearAll={handleClearAll}
             onOrder={handleOrder}
             restaurantName={restaurantData.restaurantName}
+            restaurantState={restaurantData.restaurantState}
           />
         </div>
       </div>
