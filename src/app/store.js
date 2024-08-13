@@ -1,8 +1,7 @@
-// store.js
 import { configureStore } from "@reduxjs/toolkit";
 import { persistStore, persistReducer } from "redux-persist";
-import storage from "redux-persist/es/storage/session"; // 세션 스토리지 사용
-import userReducer from "./userSlice"; // 사용자 슬라이스 파일
+import storage from "redux-persist/es/storage/session";
+import userReducer from "./userSlice";
 
 const persistConfig = {
   key: "root",
@@ -15,6 +14,12 @@ const store = configureStore({
   reducer: {
     user: persistedReducer,
   },
+  middleware: getDefaultMiddleware =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: ["persist/PERSIST", "persist/REHYDRATE"],
+      },
+    }),
 });
 
 export const persistor = persistStore(store);

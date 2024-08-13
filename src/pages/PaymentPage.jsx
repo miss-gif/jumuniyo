@@ -124,7 +124,13 @@ const PaymentPage = () => {
       payment_method: selectedPayment, // 상태에서 결제수단 가져오기
       order_phone: phone,
       order_address: `${addressDetail1} ${addressDetail}`, // 주소 합치기
-      menu_pk: menuPkArray,
+      menu: order.map(item => ({
+        menu_pk: item.menu_pk,
+        menu_count: item.quantity,
+        menu_option_pk: item.menu_option_pk || [],
+      })), // 메뉴 데이터 구조 변경
+      use_mileage: 0, // 마일리지 0으로 하드코딩
+      coupon: null, // 쿠폰 값은 null로 설정
     };
 
     try {
@@ -137,11 +143,15 @@ const PaymentPage = () => {
       if (res.data.statusCode === 1) {
         sessionStorage.removeItem(`selectedMenuItems_${id}`);
         sessionStorage.removeItem("restaurantName");
+
+        // `order_pk` 값을 사용하여 경로 설정
+        const orderPk = res.data.resultData.order_pk;
+
         Swal.fire({
           icon: "success",
           text: res.data.resultMsg,
         });
-        navigate(`/mypage/order/${res.data.resultData}`);
+        navigate(`/mypage/order/${orderPk}`); // orderPk를 사용하여 이동
       } else {
         Swal.fire({
           icon: "warning",
