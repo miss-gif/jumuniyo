@@ -64,7 +64,7 @@ const InfoManagement = ({ info, setInfo, setLoading, setError }) => {
         const formData = new FormData();
         formData.append("file", selectedFile);
 
-        await axios.post("/api/owner/restaurant/pic", formData, {
+        await axios.post("/api/owner/restaurant", formData, {
           headers: {
             Authorization: `Bearer ${accessToken}`,
             "Content-Type": "multipart/form-data",
@@ -98,7 +98,7 @@ const InfoManagement = ({ info, setInfo, setLoading, setError }) => {
           previewImage
             ? previewImage
             : info.restaurantPic
-              ? `/pic${info.restaurantPic}`
+              ? `${info.restaurantPic}`
               : "/images/defaultRes.png"
         }
         alt="사진에러"

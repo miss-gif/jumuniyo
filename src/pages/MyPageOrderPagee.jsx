@@ -159,7 +159,7 @@ const MyPageOrderPagee = () => {
                         />
                       ) : (
                         <img
-                          src={`/pic${order.resPic}`}
+                          src={`${order.resPic}`}
                           className="order-logo"
                           alt="Order Logo"
                         />

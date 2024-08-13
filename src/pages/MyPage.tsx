@@ -155,9 +155,9 @@ const MyPage: React.FC = () => {
                 {!isEditImg ? (
                   <>
                     {imgUrl ? (
-                      <img src={`/pic/${imgUrl}`} alt="profile-img" />
+                      <img src={`/${imgUrl}`} alt="profile-img" />
                     ) : (
-                      <img src={`/pic/default.png`} alt="profile-img" />
+                      <img src={`/default.png`} alt="profile-img" />
                     )}
                     <button className="btn" onClick={() => editMode("img")}>
                       변경

@@ -11,7 +11,7 @@ const MyPageOrderList = ({ reviewOpenModal, order, isOldOrder }) => {
   const orderDate = new Date(order.createdAt).toLocaleDateString("ko-KR");
   const orderState = order.doneOrderState === 2 ? "취소" : "완료";
   const orderImage = order.resPic
-    ? `/pic${order.resPic}`
+    ? `${order.resPic}`
     : "/images/defaultRes.png";
   const menuInfo = order.menuInfoDtos[0].menuName;
   const additionalMenus = order.menuInfoDtos.length - 1;

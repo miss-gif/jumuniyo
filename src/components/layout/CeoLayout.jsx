@@ -100,7 +100,7 @@ const CeoLayout = () => {
               <img
                 src={
                   userInfo && userInfo.userPic !== null
-                    ? `/pic/${userInfo.userPic}`
+                    ? `/${userInfo.userPic}`
                     : "/images/defaultRes.png"
                 }
                 alt="프로필 이미지"

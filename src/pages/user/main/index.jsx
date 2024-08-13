@@ -50,7 +50,7 @@ const SwiperCarousel = memo(
               <div className="main-page__image main-page__image--background">
                 <div className="main-page__store-img__cover">
                   <img
-                    src={`/pic/${item.restaurantPic}`}
+                    src={`${item.restaurantPic}`}
                     alt={item.restaurantName}
                   />
                 </div>
@@ -108,11 +108,11 @@ const MainPage = () => {
     };
 
     fetchData(
-      `/api/restaurant/coupon?addrX=${locationData.latitude}&addrY=${locationData.longitude}`,
+      `/api/restaurant/coupon?addrX=${locationData.longitude}&addrY=${locationData.latitude}`,
       setCoupons,
     );
     fetchData(
-      `/api/restaurant/new10?addrX=${locationData.latitude}&addrY=${locationData.longitude}`,
+      `/api/restaurant/new10?addrX=${locationData.longitude}&addrY=${locationData.latitude}`,
       setNewStores,
     );
   }, [locationData]);

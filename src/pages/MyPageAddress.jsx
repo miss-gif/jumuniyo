@@ -8,6 +8,7 @@ import MypageModal from "../components/common/mypage/MypageModal";
 import NotLogin from "../components/common/mypage/NotLogin";
 import Mypage from "../components/join/Mypage";
 import { getCookie } from "../utils/cookie";
+import { setLocationData, setUserAddress } from "../app/userSlice";
 
 const MyPageAddress = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -43,7 +44,9 @@ const MyPageAddress = () => {
       confirmButtonText: "네 삭제할래요",
       cancelButtonText: "아니요",
     }).then(result => {
-      deleteAddr();
+      if (result.isConfirmed) {
+        deleteAddr();
+      }
     });
   };
 
@@ -155,14 +158,14 @@ const MyPageAddress = () => {
           icon: "success",
           text: "주소등록 완료.",
         });
-        // dispatch(setUserAddress(newAddress ? newAddress : ""));
-        // dispatch(
-        //   setLocationData({
-        //     latitude: newXValue,
-        //     longitude: newYValue,
-        //     geocodeAddress: "",
-        //   }),
-        // );
+        dispatch(setUserAddress(newAddress));
+        dispatch(
+          setLocationData({
+            latitude: newXValue,
+            longitude: newYValue,
+            geocodeAddress: "",
+          }),
+        );
       } else {
         Swal.fire({
           icon: "warning",

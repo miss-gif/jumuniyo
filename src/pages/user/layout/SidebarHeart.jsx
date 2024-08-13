@@ -80,7 +80,7 @@ const SidebarHeart = ({ isSidebarHeart, toggleSidebarHeart }) => {
                         <img
                           src={
                             restaurant.restaurantPic
-                              ? `/pic${restaurant.restaurantPic}`
+                              ? `${restaurant.restaurantPic}`
                               : "/images/defaultRes.png"
                           }
                           alt={`${restaurant.restaurantName} 이미지`}

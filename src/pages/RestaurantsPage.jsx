@@ -42,8 +42,8 @@ const RestaurantsPage = () => {
       setIsLoading(true);
       setError(null);
 
-      const addrX = locationData?.latitude || 0;
-      const addrY = locationData?.longitude || 0;
+      const addrX = locationData?.longitude || 0;
+      const addrY = locationData?.latitude || 0;
 
       const queryString = `${id}&page=1&order_type=${orderType}&addrX=${addrX}&addrY=${addrY}`;
 
@@ -103,7 +103,7 @@ const RestaurantsPage = () => {
                 <img
                   src={
                     restaurant.restaurantPic
-                      ? `/pic${restaurant.restaurantPic}`
+                      ? `${restaurant.restaurantPic}`
                       : "/images/defaultRes.png"
                   }
                   alt={`${restaurant.restaurantName} 이미지`}
