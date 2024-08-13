@@ -74,7 +74,7 @@ const MyPageCouponPage = () => {
                         />
                       ) : (
                         <img
-                          src={`/pic${couponList.restaurantPic}`}
+                          src={`${couponList.restaurantPic}`}
                           className="order-logo"
                           alt="Order Logo"
                         />

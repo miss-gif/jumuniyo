@@ -67,7 +67,7 @@ const Review = ({ review }) => {
           {pics.map((pic, index) => (
             <img
               key={index}
-              src={`/pic/${pic}`}
+              src={`/${pic}`}
               alt={`review pic ${index + 1}`}
               className="review__image"
               style={{ width: "200px", height: "100px", cursor: "pointer" }}
@@ -81,7 +81,7 @@ const Review = ({ review }) => {
 
       <ModalforReview isOpen={isModalOpen} onClose={closeModal}>
         <img
-          src={`/pic/${selectedImage}`}
+          src={`/${selectedImage}`}
           alt="Original"
           style={{ width: "500px", height: "100%" }}
         />

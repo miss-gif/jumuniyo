@@ -50,7 +50,7 @@ const SwiperCarousel = memo(
               <div className="main-page__image main-page__image--background">
                 <div className="main-page__store-img__cover">
                   <img
-                    src={`/pic/${item.restaurantPic}`}
+                    src={`${item.restaurantPic}`}
                     alt={item.restaurantName}
                   />
                 </div>

@@ -80,7 +80,7 @@ const MenuCategory = ({ categoryData, onSelectMenuItem }) => {
               </div>
               {item.menu_pic && (
                 <div className="menu-category__image">
-                  <img src={`/pic/${item.menu_pic}`} alt={item.menu_pic} />
+                  <img src={`/${item.menu_pic}`} alt={item.menu_pic} />
                 </div>
               )}
             </li>

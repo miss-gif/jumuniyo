@@ -51,7 +51,7 @@ const MenuManagement = () => {
             menu: category.menu.map(menu => ({
               ...menu,
               menu_pic: menu.menu_pic
-                ? `/pic/${menu.menu_pic}`
+                ? `/${menu.menu_pic}`
                 : "default_image_url",
             })),
           }));
@@ -156,7 +156,7 @@ const MenuManagement = () => {
       if (response.data.statusCode === 1) {
         const newMenu = {
           ...response.data.resultData,
-          menu_pic: `/pic/${response.data.resultData.menu_pic}`,
+          menu_pic: `/${response.data.resultData.menu_pic}`,
         };
 
         setCategories(prevCategories =>
@@ -212,7 +212,7 @@ const MenuManagement = () => {
               ? {
                   ...menu,
                   ...response.data.resultData,
-                  menu_pic: `/pic/${response.data.resultData.menu_pic}`,
+                  menu_pic: `/${response.data.resultData.menu_pic}`,
                 }
               : menu,
           ),
