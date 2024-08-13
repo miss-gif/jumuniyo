@@ -108,14 +108,16 @@ const MainPage = () => {
       }
     };
 
-    fetchData(
-      `/api/restaurant/coupon?addrX=${locationData.longitude}&addrY=${locationData.latitude}`,
-      setCoupons,
-    );
-    fetchData(
-      `/api/restaurant/new10?addrX=${locationData.longitude}&addrY=${locationData.latitude}`,
-      setNewStores,
-    );
+    if (isLoggedIn) {
+      fetchData(
+        `/api/restaurant/coupon?addrX=${locationData.longitude}&addrY=${locationData.latitude}`,
+        setCoupons,
+      );
+      fetchData(
+        `/api/restaurant/new10?addrX=${locationData.longitude}&addrY=${locationData.latitude}`,
+        setNewStores,
+      );
+    }
   }, [locationData]);
 
   const handlePrev = () => swiperRef.current?.slidePrev();
