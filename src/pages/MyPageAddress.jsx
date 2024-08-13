@@ -1,14 +1,13 @@
-import { useEffect, useState, useCallback } from "react";
-import MypageModal from "../components/common/mypage/MypageModal";
-import Mypage from "../components/join/Mypage";
-import jwtAxios from "../api/user/jwtUtil";
-import { getCookie } from "../utils/cookie";
-import NotLogin from "../components/common/mypage/NotLogin";
-import LoadingSpinner from "../components/common/LoadingSpinner";
 import { Alert } from "@mui/material";
+import { useCallback, useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import Swal from "sweetalert2";
-import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import jwtAxios from "../api/user/jwtUtil";
+import LoadingSpinner from "../components/common/LoadingSpinner";
+import MypageModal from "../components/common/mypage/MypageModal";
+import NotLogin from "../components/common/mypage/NotLogin";
+import Mypage from "../components/join/Mypage";
+import { getCookie } from "../utils/cookie";
 
 const MyPageAddress = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -30,6 +29,8 @@ const MyPageAddress = () => {
   const [addressName, setAddressName] = useState("");
   const [refreshKey, setRefreshKey] = useState(0);
   const [selectAddrPk, setSelectAddrPk] = useState("");
+
+  const dispatch = useDispatch();
 
   const showSwal = () => {
     Swal.fire({
@@ -60,7 +61,7 @@ const MyPageAddress = () => {
     }
   }, []);
 
-  const fetchUserAddress = useCallback(async () => {
+  const fetchUserAddress = async () => {
     try {
       const res = await jwtAxios.get("/api/address/main-address");
       if (res.data.resultData) {
@@ -76,6 +77,7 @@ const MyPageAddress = () => {
         setIsFirstUser(true);
       }
     } catch (error) {
+      console.log("ㅎㅇ?");
       Swal.fire({
         icon: "error",
         text: "서버에러입니다.",
@@ -83,7 +85,7 @@ const MyPageAddress = () => {
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  };
 
   const deleteAddr = async () => {
     try {
@@ -145,17 +147,26 @@ const MyPageAddress = () => {
           icon: "success",
           text: "주소등록 완료.",
         });
+        // dispatch(setUserAddress(newAddress ? newAddress : ""));
+        // dispatch(
+        //   setLocationData({
+        //     latitude: newXValue,
+        //     longitude: newYValue,
+        //     geocodeAddress: "",
+        //   }),
+        // );
       } else {
         Swal.fire({
-          icon: "warning", // 오류 메시지를 경고로 표시
+          icon: "warning",
           text: res.data.resultMsg,
         });
       }
 
       setReviewSubmitted(true);
       fetchUserAddressList();
+      return;
     } catch (error) {
-      console.error(error); // 에러 로그 추가
+      console.error("서버 오류:", error); // 오류 메시지 출력
       Swal.fire({
         icon: "error",
         text: "서버에러입니다.",

@@ -334,6 +334,7 @@ const AuthUserPage: React.FC = () => {
         user_nickname: userNickName,
         user_phone: userPhone,
         user_email: userEmail,
+        auth_num: emailCode,
       };
 
       // JSON 객체를 문자열로 변환하지 않고 바로 FormData에 추가

@@ -113,7 +113,7 @@ const MyPageReviewPage = () => {
       ) : isLoading ? (
         <LoadingSpinner />
       ) : reviewItems.length === 0 ? (
-        <div className="null-item">
+        <div className="mypage-box">
           <Alert variant="outlined" severity="info">
             리뷰내역이 없습니다.
           </Alert>
