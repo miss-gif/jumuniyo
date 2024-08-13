@@ -8,7 +8,6 @@ const jwtAxios = axios.create();
 const beforeReq = config => {
   const state = store.getState();
   const accessToken = state.user.accessToken;
-  console.log(state.user.accessToken);
   if (!accessToken) {
     return Promise.reject({
       response: { data: { error: "Login 하셔서 인증받으세요." } },

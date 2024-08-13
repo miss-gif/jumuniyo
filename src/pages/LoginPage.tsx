@@ -110,6 +110,7 @@ const AuthUserPage: React.FC = () => {
 
   const login = async (e: FormEvent) => {
     e.preventDefault();
+
     if (userId === "") {
       Swal.fire({
         icon: "warning",
@@ -117,6 +118,7 @@ const AuthUserPage: React.FC = () => {
       });
       return;
     }
+
     if (userPw === "") {
       Swal.fire({
         icon: "warning",
@@ -133,42 +135,40 @@ const AuthUserPage: React.FC = () => {
       });
 
       if (response.data.statusCode === 1 || response.data.statusCode === 2) {
-        const { resultData } = response.data.resultData;
-        console.log(resultData);
+        const resultData = response.data.resultData; // 구조 분해 할당 대신 직접 접근
 
-        // null 값에 대한 예외 처리
         if (resultData) {
           dispatch(setUserData(resultData));
           dispatch(setUserRole(resultData.userRole || ""));
-          dispatch(
-            setUserAddress(resultData.mainAddr ? resultData.mainAddr : ""),
-          );
+          dispatch(setUserAddress(resultData.mainAddr || ""));
           dispatch(setUserPhone(resultData.userPhone || ""));
           dispatch(setAccessToken(resultData.accessToken || ""));
           dispatch(setTokenMaxAge(resultData.tokenMaxAge || 0));
-          dispatch(
-            setSearchTerm(resultData.mainAddr ? resultData.mainAddr.addr1 : ""),
-          );
+          dispatch(setSearchTerm(resultData.mainAddr?.addr1 || ""));
           dispatch(
             setLocationData({
-              latitude: resultData.mainAddr.addrCoorX,
-              longitude: resultData.mainAddr.addrCoorY,
+              latitude: resultData.mainAddr?.addrCoorX || 0,
+              longitude: resultData.mainAddr?.addrCoorY || 0,
               geocodeAddress: "",
             }),
           );
         }
       }
+
+      // accessToken을 쿠키에 저장
       setCookie("accessToken", response.data.resultData.accessToken);
-      if (
-        response.data.resultData.userRole === "ROLE_USER" &&
-        response.data.resultData.mainAddr === null
-      ) {
+
+      // 사용자 역할에 따라 다른 경로로 이동
+      const userRole = response.data.resultData.userRole;
+      const mainAddr = response.data.resultData.mainAddr;
+
+      if (userRole === "ROLE_USER" && !mainAddr) {
         navigate("/mypage/address");
         return;
-      } else if (response.data.resultData.userRole === "ROLE_OWNER") {
+      } else if (userRole === "ROLE_OWNER") {
         navigate("/ceopage/home");
         return;
-      } else if (response.data.resultData.userRole === "ROLE_ADMIN") {
+      } else if (userRole === "ROLE_ADMIN") {
         navigate("/admin");
         return;
       } else if (response.data.statusCode === 2) {
