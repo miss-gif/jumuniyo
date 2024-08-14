@@ -17,7 +17,11 @@ const CategoryItem = ({
   <li className="category__item bc" onClick={onClick}>
     <p>{categoryName}</p>
     <React.Suspense fallback={<LoadingSpinner />}>
-      <Image src={`${categoryPic}`} alt="Logo" className="category__image" />
+      <Image
+        src={`/pic${categoryPic}`}
+        alt="Logo"
+        className="category__image"
+      />
     </React.Suspense>
   </li>
 );

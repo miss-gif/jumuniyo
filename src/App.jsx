@@ -131,7 +131,7 @@ function App() {
             </Route>
             <Route path="accept">
               <Route index element={<Accept />} />
-              <Route path="details" element={<AcceptDetail />} />
+              <Route path="details/:resPk" element={<AcceptDetail />} />
             </Route>
           </Route>
 
