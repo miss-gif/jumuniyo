@@ -63,7 +63,11 @@ const SwiperCarousel = memo(
                 >
                   <div className="main-page__store-img__cover">
                     <img
-                      src={`${item.restaurantPic}`}
+                      src={
+                        item.restaurantPic
+                          ? `${item.restaurantPic}`
+                          : "/images/defaultRes.png"
+                      }
                       alt={item.restaurantName}
                     />
                   </div>
@@ -104,15 +108,23 @@ const MainPage = () => {
   const { locationData } = useSelector(state => state.user);
   const [coupons, setCoupons] = useState([]);
   const [newStores, setNewStores] = useState([]);
+  const [recentOrders, setRecentOrders] = useState([]);
+  const [heartStores, setHeartStores] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const isLoggedIn = useSelector(state => state.user.isLoggedIn);
+
+  const accessToken = useSelector(state => state.user.accessToken);
 
   useEffect(() => {
     const fetchData = async (url, setData) => {
       setLoading(true);
       try {
-        const response = await axios.get(url);
+        const response = await axios.get(url, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
         const list = response.data?.resultData?.list || [];
         setData(list);
       } catch (err) {
@@ -134,6 +146,11 @@ const MainPage = () => {
         `/api/restaurant/new10?addrX=${addrX}&addrY=${addrY}`,
         setNewStores,
       );
+      fetchData(
+        `/api/restaurant/recent?addrX=${addrX}&addrY=${addrY}`,
+        setRecentOrders,
+      );
+      fetchData(`/api/restaurant/followed`, setHeartStores);
     }
   }, [locationData]);
 
@@ -161,8 +178,8 @@ const MainPage = () => {
         swiperRef={swiperRef}
       />
       <SwiperCarousel
-        title="최근 주문한 상점(스웨거 문제)"
-        data={newStores}
+        title="최근 주문한 상점"
+        data={recentOrders}
         loading={loading}
         error={error}
         onPrev={handlePrev}
@@ -170,8 +187,8 @@ const MainPage = () => {
         swiperRef={swiperRef}
       />
       <SwiperCarousel
-        title="찜한 상점(작업대기)"
-        data={newStores}
+        title="찜한 상점"
+        data={heartStores}
         loading={loading}
         error={error}
         onPrev={handlePrev}
