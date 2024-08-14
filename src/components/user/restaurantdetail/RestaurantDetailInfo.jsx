@@ -176,7 +176,7 @@ const RestaurantDetailInfo = ({ restaurantData, onShowLoginModal }) => {
             <img
               src={
                 restaurantData.restaurantPic
-                  ? `${restaurantData.restaurantPic}`
+                  ? `/pic${restaurantData.restaurantPic}`
                   : "/images/defaultRes.png"
               }
               alt={restaurantData.restaurantPic}
