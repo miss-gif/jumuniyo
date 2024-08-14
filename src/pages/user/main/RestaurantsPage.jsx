@@ -51,6 +51,7 @@ const RestaurantsPage = () => {
       const addrY = locationData?.latitude || 0;
       const search = searchRestaurant || "";
 
+      // 위도, 경도 순서 변경
       const queryString = `${id}&page=1&order_type=${orderType}&addrX=${addrX}&addrY=${addrY}&search=${search}`;
 
       try {
