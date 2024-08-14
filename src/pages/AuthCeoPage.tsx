@@ -338,10 +338,10 @@ const AuthUserPage: React.FC = () => {
       setUserPhoneComplete(true);
     }
 
-    if (isCheckBusinessNumber === false) {
+    if (isCheckBusiness === false) {
       Swal.fire({
         icon: "warning",
-        text: "사업자 번호는 nnn-nn-nnnnn의 형식으로 들어와야 합니다.",
+        text: "사업자번호 인증을 해주세요.",
       });
       setBusinessNumberComplete(false);
       return;
