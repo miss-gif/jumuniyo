@@ -28,6 +28,7 @@ import {
 import { Logo } from "../components/common/Logo";
 import JoinFooter from "../components/layout/JoinFooter";
 import { setCookie } from "../utils/cookie";
+import jwtAxios from "../api/user/jwtUtil";
 
 const Divider = styled(Box)`
   width: 100%;
@@ -76,6 +77,8 @@ const AuthUserPage: React.FC = () => {
   const [open, setOpen] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [code, setCode] = useState("");
+  const [isEmailOn, setIsEmailOn] = useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -85,7 +88,7 @@ const AuthUserPage: React.FC = () => {
     setOpen(false);
   };
 
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
     if (email === "") {
       Swal.fire({
         icon: "warning",
@@ -96,6 +99,21 @@ const AuthUserPage: React.FC = () => {
       Swal.fire({
         icon: "warning",
         text: "아이디를 입력해주세요.",
+      });
+    }
+
+    const data = {
+      user_name: name,
+      user_email: email,
+      auth_num: "인증번호 재인증",
+    };
+
+    try {
+      const res = await jwtAxios.post("/api/find/id", data);
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        text: "서버 오류",
       });
     }
 
@@ -164,6 +182,8 @@ const AuthUserPage: React.FC = () => {
 
       if (userRole === "ROLE_OWNER") {
         navigate("/ceopage/home");
+      } else if (response.data.statusCode === 1) {
+        navigate("/");
       } else if (userRole === "ROLE_ADMIN") {
         navigate("/admin");
       } else if (response.data.statusCode === 2) {
@@ -173,9 +193,11 @@ const AuthUserPage: React.FC = () => {
           icon: "warning",
           text: response.data.resultMsg,
         });
-        navigate("/login");
       } else {
-        navigate("/");
+        Swal.fire({
+          icon: "warning",
+          text: response.data.resultMsg,
+        });
       }
     } catch (error) {
       Swal.fire({
@@ -217,6 +239,21 @@ const AuthUserPage: React.FC = () => {
         });
         return;
       }
+    }
+  };
+
+  const handleEmailCheck = async () => {
+    setIsEmailOn(true);
+    const data = {
+      email: email,
+    };
+    try {
+      const res = await jwtAxios.post("/api/mail/send", data);
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        text: "서버에러입니다.",
+      });
     }
   };
 
@@ -416,7 +453,25 @@ const AuthUserPage: React.FC = () => {
                         value={email}
                         onChange={e => setEmail(e.target.value)}
                       />
+                      <button
+                        className="btn"
+                        onClick={() => {
+                          handleEmailCheck();
+                        }}
+                      >
+                        인증
+                      </button>
                     </DialogContent>
+                    {isEmailOn && (
+                      <TextField
+                        margin="dense"
+                        label="인증번호"
+                        type="number"
+                        fullWidth
+                        value={code}
+                        onChange={e => setCode(e.target.value)}
+                      />
+                    )}
                     <DialogActions>
                       <StyledButton onClick={handleConfirm} color="primary">
                         확인
