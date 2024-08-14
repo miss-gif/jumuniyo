@@ -86,8 +86,8 @@ const PaymentPage = () => {
     }
 
     if (selectedPayment === "3") {
+      // 카카오페이 결제
       try {
-        // 카카오페이 결제 요청
         const order_pk = await initiateKakaoPay(
           calculateTotalOrderPrice(),
           phone,
