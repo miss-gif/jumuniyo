@@ -108,13 +108,16 @@ const MainPage = () => {
       }
     };
 
+    const addrX = locationData?.longitude || 0;
+    const addrY = locationData?.latitude || 0;
+
     if (isLoggedIn) {
       fetchData(
-        `/api/restaurant/coupon?addrX=${locationData.longitude}&addrY=${locationData.latitude}`,
+        `/api/restaurant/coupon?addrX=${addrX}&addrY=${addrY}`,
         setCoupons,
       );
       fetchData(
-        `/api/restaurant/new10?addrX=${locationData.longitude}&addrY=${locationData.latitude}`,
+        `/api/restaurant/new10?addrX=${addrX}&addrY=${addrY}`,
         setNewStores,
       );
     }

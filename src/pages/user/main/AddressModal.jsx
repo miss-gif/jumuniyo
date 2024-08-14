@@ -49,7 +49,7 @@ const AddressModal = ({ isOpen, onRequestClose }) => {
   useEffect(() => {
     console.log("리덕스 위치 : ", searchTerm);
     console.log("리덕스 위경도 :", locationData);
-  }, [searchTerm]);
+  }, [searchTerm, locationData]);
 
   return (
     <Modal
