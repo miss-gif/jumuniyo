@@ -50,8 +50,12 @@ const MyPageCouponPage = () => {
                 <div className="order-list">
                   <div className="order-date">
                     <div className="flex-between-real-box">
-                      <div>
-                        <div>{couponList.resName}</div>
+                      <div className="coupon-img"></div>
+                      <div className="flex-center-column ">
+                        <h3>{couponList.resName}</h3>
+                        <h2 className="coupon-price">
+                          쿠폰금액: {couponList.price}
+                        </h2>
                       </div>
                       <button
                         className="btn"
@@ -62,24 +66,6 @@ const MyPageCouponPage = () => {
                       >
                         주문하러 가기
                       </button>
-                    </div>
-                  </div>
-                  <div className="flex-between-real-box">
-                    <div className="order-main">
-                      {/* {!couponList.restaurantPic ? (
-                        <img
-                          src={"/images/defaultRes.png"}
-                          className="order-logo"
-                          alt="Order Logo"
-                        />
-                      ) : (
-                        <img
-                          src={`${couponList.restaurantPic}`}
-                          className="order-logo"
-                          alt="Order Logo"
-                        />
-                      )} */}
-                      <div>쿠폰금액: {couponList.price}</div>
                     </div>
                   </div>
                 </div>

@@ -81,15 +81,6 @@ const MyPageFavoriteListPage: React.FC = () => {
             {favorite.map(fav => (
               <div key={fav.restaurantPk}>
                 <div className="order-list">
-                  <div className="order-date">
-                    <div className="flex-between-real-box">
-                      <div>
-                        <div>
-                          {fav.restaurantState === 2 ? "준비중" : "운영중"}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
                   <div className="flex-between-real-box">
                     <div className="order-main">
                       {!fav.restaurantPic ? (
@@ -105,25 +96,34 @@ const MyPageFavoriteListPage: React.FC = () => {
                           alt="Order Logo"
                         />
                       )}
-                      <div>{fav.restaurantName}</div>
+                      <div>
+                        <h3>
+                          {fav.restaurantState === 2 ? "준비중" : "운영중"}
+                        </h3>
+                        {fav.restaurantName}
+                      </div>
                     </div>
-                    <ToggleButton
-                      value="check"
-                      selected={selectedItems[fav.restaurantPk] || false}
-                      onChange={() => {
-                        deleteFavorite(fav.restaurantPk);
-                      }}
-                    >
-                      <Favorite />
-                    </ToggleButton>
+
+                    <div className="flex-center">
+                      <button
+                        className="btn"
+                        onClick={() => {
+                          navigate(`/restaurants/${fav.restaurantPk}`);
+                        }}
+                      >
+                        주문하러 가기
+                      </button>
+                      <ToggleButton
+                        value="check"
+                        selected={selectedItems[fav.restaurantPk] || false}
+                        onChange={() => {
+                          deleteFavorite(fav.restaurantPk);
+                        }}
+                      >
+                        <Favorite />
+                      </ToggleButton>
+                    </div>
                   </div>
-                  <button
-                    onClick={() => {
-                      navigate(`/restaurants/${fav.restaurantPk}`);
-                    }}
-                  >
-                    주문하러 가기
-                  </button>
                 </div>
               </div>
             ))}

@@ -86,6 +86,11 @@ const AuthUserPage: React.FC = () => {
   const [newAddress, setNewAddress] = useState<string>("");
   const [newAddressDetail, setNewAddressDetail] = useState<string>("");
 
+  useEffect(() => {
+    console.log("이건 X값", newXValue);
+    console.log("이건 Y값", newYValue);
+  }, [newXValue]);
+
   // 복수 선택 상태
   const [state, setState] = useState<State>({
     gilad: false,
@@ -407,9 +412,51 @@ const AuthUserPage: React.FC = () => {
     }
   };
 
+  const formatBusinessNumber = (value: string): string => {
+    const cleaned = value.replace(/\D/g, "");
+
+    const formatted = cleaned.replace(
+      /^(\d{3})(\d{0,2})(\d{0,5}).*/,
+      (match, p1, p2, p3) => {
+        let result = p1;
+        if (p2) result += `-${p2}`;
+        if (p3) result += `-${p3}`;
+        return result;
+      },
+    );
+
+    return formatted;
+  };
+
+  const handleBusinessNumberChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const formattedValue = formatBusinessNumber(e.target.value);
+    setUserCEONumber(formattedValue);
+  };
+
   const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setUserCEOEvent(e.target.value);
   }, []);
+
+  const APIKey = process.env.REACT_APP_DATA_KR_API_KEY;
+
+  const checkBusinessNumber = async () => {
+    try {
+      const data = {
+        b_no: [userCEONumber],
+      };
+      const res = await axios.post(
+        `https://api.odcloud.kr/api/nts-businessman/v1/status?serviceKey=${APIKey}`,
+        data,
+      );
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        text: "서버에러입니다.",
+      });
+    }
+  };
 
   return (
     <>
@@ -606,10 +653,9 @@ const AuthUserPage: React.FC = () => {
                         fullWidth
                         label="사업자 번호"
                         id="fullWidth"
-                        placeholder="사업자 번호는 nnn-nn-nnnnn의 형식으로 들어와야 합니다."
-                        onChange={e => {
-                          setUserCEONumber(e.target.value);
-                        }}
+                        placeholder="사업자 번호를 입력해주세요"
+                        value={userCEONumber}
+                        onChange={handleBusinessNumberChange}
                       />
                     </Box>
 
@@ -686,6 +732,13 @@ const AuthUserPage: React.FC = () => {
             </div>
           </div>
         </div>
+        <button
+          onClick={() => {
+            checkBusinessNumber();
+          }}
+        >
+          인증
+        </button>
       </div>
     </>
   );
