@@ -36,6 +36,7 @@ export const initiateKakaoPay = (
         buyer_tel: phone,
       },
       function (data) {
+        console.log("결제 응답:", data); // 응답을 확인
         let msg;
         if (data.success) {
           msg = "결제 완료";
@@ -51,10 +52,12 @@ export const initiateKakaoPay = (
               {
                 order_res_pk: id,
                 order_request: request, // 상태에서 요청사항 가져오기
-                payment_method: "카카오페이", // 상태에서 결제수단 가져오기
+                payment_method: "3", // 상태에서 결제수단 가져오기
                 order_phone: phone,
                 order_address: `${locationData.geocodeAddress} ${addressDetail}`, // 주소 합치기
                 menu_pk: menuPkArray,
+                use_mileage: 0,
+                coupon: null,
               },
               {
                 headers: {

@@ -85,10 +85,10 @@ const PaymentPage = () => {
       return;
     }
 
-    if (selectedPayment === "카카오페이") {
+    if (selectedPayment === "3") {
       try {
         // 카카오페이 결제 요청
-        const orderId = await initiateKakaoPay(
+        const order_pk = await initiateKakaoPay(
           calculateTotalOrderPrice(),
           phone,
           id, // 주문 ID
@@ -98,22 +98,30 @@ const PaymentPage = () => {
           addressDetail,
           menuPkArray,
         );
-        Swal.fire({
-          icon: "success",
-          text: "결제 완료: " + orderId,
-        });
 
-        // 결제 성공 후 이동
-        navigate(`/mypage/order/${orderId}`); // 주문 ID를 사용하여 이동
+        console.log("받아온 order_pk:", order_pk); // order_pk 확인용 로그
 
-        // 결제 성공 후 세션 저장소 데이터 삭제
-        sessionStorage.removeItem(`selectedMenuItems_${id}`);
-        sessionStorage.removeItem("restaurantName");
+        if (order_pk) {
+          Swal.fire({
+            icon: "success",
+            text: "결제 완료: " + order_pk,
+          });
+
+          // 결제 성공 후 이동
+          navigate(`/mypage/order/${order_pk}`); // 주문 ID를 사용하여 이동
+
+          // 결제 성공 후 세션 저장소 데이터 삭제
+          sessionStorage.removeItem(`selectedMenuItems_${id}`);
+          sessionStorage.removeItem("restaurantName");
+        } else {
+          throw new Error("결제 완료 후 order_pk를 받지 못했습니다.");
+        }
       } catch (error) {
         Swal.fire({
           icon: "error",
-          text: "결제 실패: " + error,
+          text: "결제 실패: " + error.message,
         });
+        console.error("결제 오류:", error);
       }
       return;
     }
