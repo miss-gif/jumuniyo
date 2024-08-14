@@ -92,6 +92,7 @@ const MainPage = () => {
   const [newStores, setNewStores] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const isLoggedIn = useSelector(state => state.user.isLoggedIn);
 
   useEffect(() => {
     const fetchData = async (url, setData) => {
@@ -107,20 +108,22 @@ const MainPage = () => {
       }
     };
 
-    fetchData(
-      `/api/restaurant/coupon?addrX=${locationData.longitude}&addrY=${locationData.latitude}`,
-      setCoupons,
-    );
-    fetchData(
-      `/api/restaurant/new10?addrX=${locationData.longitude}&addrY=${locationData.latitude}`,
-      setNewStores,
-    );
+    if (isLoggedIn) {
+      fetchData(
+        `/api/restaurant/coupon?addrX=${locationData.longitude}&addrY=${locationData.latitude}`,
+        setCoupons,
+      );
+      fetchData(
+        `/api/restaurant/new10?addrX=${locationData.longitude}&addrY=${locationData.latitude}`,
+        setNewStores,
+      );
+    }
   }, [locationData]);
 
   const handlePrev = () => swiperRef.current?.slidePrev();
   const handleNext = () => swiperRef.current?.slideNext();
 
-  return (
+  return isLoggedIn ? (
     <div className="main-page">
       <SwiperCarousel
         title="쿠폰 이벤트 진행중"
@@ -159,6 +162,8 @@ const MainPage = () => {
         swiperRef={swiperRef}
       />
     </div>
+  ) : (
+    <>비로그인 출력화면</>
   );
 };
 
