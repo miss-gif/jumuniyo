@@ -169,7 +169,9 @@ const MyPageOrderPagee = () => {
                         <div>
                           <div>{order.resName}</div>
                           <div className="order-date">
-                            {order.menuName[0]} 외 {order.menuName.length - 1}개{" "}
+                            {order.menuName && order.menuName.length > 0
+                              ? `${order.menuName[0]} 외 ${order.menuName.length - 1}개`
+                              : "메뉴가 없습니다"}
                             {order.orderPrice.toLocaleString("ko-KR")}원
                           </div>
                         </div>
