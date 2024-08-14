@@ -98,7 +98,7 @@ const InfoManagement = ({ info, setInfo, setLoading, setError }) => {
           previewImage
             ? previewImage
             : info.restaurantPic
-              ? `${info.restaurantPic}`
+              ? `/pic${info.restaurantPic}`
               : "/images/defaultRes.png"
         }
         alt="사진에러"
