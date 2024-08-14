@@ -7,79 +7,93 @@ import "swiper/css";
 import { Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "./MainPage.scss";
+import { useNavigate } from "react-router";
 
 const SwiperCarousel = memo(
-  ({ title, data, loading, error, onPrev, onNext, swiperRef }) => (
-    <div className="carousel">
-      <div className="carousel-header">
-        <h3 className="carousel-header__title">{title}</h3>
-        <div className="carousel-header__controller">
-          <div className="carousel-header__controller-all">See all</div>
-          <div className="carousel-header__controller-btns">
-            <button
-              className="carousel-header__controller-prev"
-              onClick={onPrev}
-            >
-              <MdNavigateBefore />
-            </button>
-            <button
-              className="carousel-header__controller-next"
-              onClick={onNext}
-            >
-              <MdNavigateNext />
-            </button>
+  ({ title, data, loading, error, onPrev, onNext, swiperRef }) => {
+    const navigate = useNavigate(); // useHistory 훅 사용
+
+    const handleClick = restaurantPk => {
+      navigate(`/restaurants/${restaurantPk}`); // 해당 경로로 이동
+    };
+
+    return (
+      <div className="carousel">
+        <div className="carousel-header">
+          <h3 className="carousel-header__title">{title}</h3>
+          <div className="carousel-header__controller">
+            <div className="carousel-header__controller-all">See all</div>
+            <div className="carousel-header__controller-btns">
+              <button
+                className="carousel-header__controller-prev"
+                onClick={onPrev}
+              >
+                <MdNavigateBefore />
+              </button>
+              <button
+                className="carousel-header__controller-next"
+                onClick={onNext}
+              >
+                <MdNavigateNext />
+              </button>
+            </div>
           </div>
         </div>
+        {loading ? (
+          <div>Loading...</div>
+        ) : error ? (
+          <div>Error: {error}</div>
+        ) : data.length > 0 ? (
+          <Swiper
+            onBeforeInit={swiper => {
+              swiperRef.current = swiper;
+            }}
+            slidesPerView={4}
+            spaceBetween={10}
+            modules={[Navigation]}
+            className="mySwiper main-page__list"
+          >
+            {data.map(item => (
+              <SwiperSlide key={item.restaurantPk} className="main-page__item">
+                <div
+                  className="main-page__image main-page__image--background"
+                  onClick={() => {
+                    handleClick(item.restaurantPk);
+                  }}
+                >
+                  <div className="main-page__store-img__cover">
+                    <img
+                      src={`${item.restaurantPic}`}
+                      alt={item.restaurantName}
+                    />
+                  </div>
+                  <div className="main-page__toggle-heart">
+                    <IoIosHeartEmpty />
+                  </div>
+                </div>
+                <div className="main-page__store-info">
+                  <div className="main-page__store-name">
+                    {item.restaurantName}
+                  </div>
+                  <div className="main-page__score">{item.reviewAvgScore}</div>
+                </div>
+                <div className="main-page__review-info">
+                  <div className="main-page__review">
+                    리뷰
+                    <span className="main-page__review-count">
+                      {item.reviewTotalElements}
+                    </span>
+                  </div>
+                </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        ) : (
+          <div>No data available</div>
+        )}
       </div>
-      {loading ? (
-        <div>Loading...</div>
-      ) : error ? (
-        <div>Error: {error}</div>
-      ) : data.length > 0 ? (
-        <Swiper
-          onBeforeInit={swiper => {
-            swiperRef.current = swiper;
-          }}
-          slidesPerView={4}
-          spaceBetween={10}
-          modules={[Navigation]}
-          className="mySwiper main-page__list"
-        >
-          {data.map(item => (
-            <SwiperSlide key={item.restaurantPk} className="main-page__item">
-              <div className="main-page__image main-page__image--background">
-                <div className="main-page__store-img__cover">
-                  <img
-                    src={`${item.restaurantPic}`}
-                    alt={item.restaurantName}
-                  />
-                </div>
-                <div className="main-page__toggle-heart">
-                  <IoIosHeartEmpty />
-                </div>
-              </div>
-              <div className="main-page__store-info">
-                <div className="main-page__store-name">
-                  {item.restaurantName}
-                </div>
-                <div className="main-page__score">{item.reviewAvgScore}</div>
-              </div>
-              <div className="main-page__review-info">
-                <div className="main-page__review">
-                  리뷰
-                  <span className="main-page__review-count">
-                    {item.reviewTotalElements}
-                  </span>
-                </div>
-              </div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
-      ) : (
-        <div>No data available</div>
-      )}
-    </div>
-  ),
+    );
+  },
 );
 
 SwiperCarousel.displayName = "SwiperCarousel";
