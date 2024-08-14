@@ -282,6 +282,49 @@
   }
 }
 
+.coupon-img {
+  background-image: url("../../../public/images/vecteezy_discount-coupon-icon-sign-design_9342079.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.coupon-price {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+
+  & .btn {
+    height: 80%;
+  }
+}
+
+.flex-center-column {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  & h3 {
+    font-size: 20px;
+  }
+
+  & h2 {
+    font-size: 16px;
+  }
+}
+
 @include tablet {
   .mypage-wrap {
     display: block;
@@ -289,9 +332,10 @@
 
   .mypage-select {
     flex-direction: row;
+    flex-wrap: wrap;
 
     & button {
-      width: 100%;
+      width: 86px;
     }
   }
 

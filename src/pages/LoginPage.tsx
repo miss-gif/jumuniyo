@@ -1,13 +1,12 @@
 import {
   Box,
   Button,
+  Collapse,
   Dialog,
   DialogActions,
   DialogContent,
-  DialogTitle,
   TextField,
   Typography,
-  makeStyles,
   styled,
 } from "@mui/material";
 import axios from "axios";
@@ -17,18 +16,18 @@ import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import {
   setAccessToken,
+  setLocationData,
+  setSearchTerm,
   setTokenMaxAge,
   setUserAddress,
   setUserData,
   setUserPhone,
   setUserRole,
-  setSearchTerm,
-  setLocationData,
 } from "../app/userSlice";
 import { Logo } from "../components/common/Logo";
-import JoinFooter from "../components/layout/JoinFooter";
 import { setCookie } from "../utils/cookie";
 import jwtAxios from "../api/user/jwtUtil";
+import LoadingSpinner from "../components/common/LoadingSpinner";
 
 const Divider = styled(Box)`
   width: 100%;
@@ -70,25 +69,65 @@ const CancelButton = styled(Button)({
   padding: "10px 20px",
 });
 
-const AuthUserPage: React.FC = () => {
+const LoginPage: React.FC = () => {
   const [userId, setUserId] = useState("");
   const [userPw, setUserPw] = useState("");
   const [findIdIsOpen, setFindIdIsOpen] = useState(false);
   const [open, setOpen] = useState(false);
+  const [pwOpen, setPwOpen] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [code, setCode] = useState("");
+  const [id, setId] = useState("");
+  const [newPw, setNewPw] = useState("");
+  const [newPwCheck, setNewPwCheck] = useState("");
   const [isEmailOn, setIsEmailOn] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [emailSuccess, setEmailSuccess] = useState(false);
+  const [emailCheckOpen, setEmailCheckOpen] = useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
+    setIsEmailOn(false);
+    setName("");
+    setEmail("");
+    setCode("");
+    setId("");
+    setNewPw("");
+    setNewPwCheck("");
+    setIsEmailOn(false);
+    setEmailSuccess(false);
+    setEmailCheckOpen(false);
+  };
+
+  const hadleClickPwOpen = () => {
+    setPwOpen(true);
+    setIsEmailOn(false);
+    setName("");
+    setEmail("");
+    setCode("");
+    setId("");
+    setNewPw("");
+    setNewPwCheck("");
+    setIsEmailOn(false);
+    setEmailSuccess(false);
+    setEmailCheckOpen(false);
   };
 
   const handleClose = () => {
     setOpen(false);
+    setIsEmailOn(false);
+    setPwOpen(false);
   };
 
-  const handleConfirm = async () => {
+  const findPw = async () => {
+    setIsLoading(true);
+    if (id === "") {
+      Swal.fire({
+        icon: "warning",
+        text: "아이디를 입력해주세요.",
+      });
+    }
     if (email === "") {
       Swal.fire({
         icon: "warning",
@@ -98,23 +137,89 @@ const AuthUserPage: React.FC = () => {
     if (name === "") {
       Swal.fire({
         icon: "warning",
-        text: "아이디를 입력해주세요.",
+        text: "이름을 입력해주세요.",
       });
     }
 
     const data = {
       user_name: name,
       user_email: email,
-      auth_num: "인증번호 재인증",
+      user_id: id,
+      auth_num: code,
+      user_pw: newPw,
+      user_pw_confirm: newPwCheck,
     };
 
     try {
-      const res = await jwtAxios.post("/api/find/id", data);
+      const res = await axios.post("/api/find/pw", data);
+      if (res.data.statusCode === -6) {
+        Swal.fire({
+          icon: "warning",
+          text: res.data.resultMsg,
+        });
+      }
+      if (res.data.statusCode === 1) {
+        Swal.fire({
+          icon: "success",
+          text: res.data.resultMsg,
+        });
+        setPwOpen(false);
+      }
     } catch (error) {
       Swal.fire({
         icon: "error",
         text: "서버 오류",
       });
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleConfirm = async () => {
+    setIsLoading(true);
+    if (email === "") {
+      Swal.fire({
+        icon: "warning",
+        text: "이메일 입력해주세요.",
+      });
+    }
+    if (name === "") {
+      Swal.fire({
+        icon: "warning",
+        text: "이름을 입력해주세요.",
+      });
+    }
+
+    const data = {
+      user_name: name,
+      user_email: email,
+      auth_num: code,
+    };
+
+    try {
+      const res = await axios.post("/api/find/id", data);
+      if (res.data.statusCode === -6) {
+        Swal.fire({
+          icon: "warning",
+          text: res.data.resultMsg,
+        });
+      }
+      if (res.data.statusCode === 1) {
+        Swal.fire({
+          icon: "success",
+          text: res.data.resultData,
+          title: res.data.resultMsg,
+        });
+        setFindIdIsOpen(false);
+      }
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        text: "서버 오류",
+      });
+    } finally {
+      setIsLoading(false);
     }
 
     console.log(`입력된 이름: ${name}`);
@@ -208,47 +313,52 @@ const AuthUserPage: React.FC = () => {
     }
   };
 
-  const findId = async () => {
-    const { value: formValues } = await Swal.fire({
-      title: "아이디 찾기",
-      html:
-        '<input id="swal-input1" class="swal2-input" placeholder="이름을 입력 해주세요." />' +
-        '<input id="swal-input2" class="swal2-input" type="email" placeholder="이메일을 입력 해주세요." />',
-      focusConfirm: false,
-      preConfirm: () => {
-        return [
-          // document.getElementById("swal-input1").value,
-          // document.getElementById("swal-input2").value,
-        ];
-      },
-    });
-
-    if (formValues) {
-      const [name, email] = formValues;
-      if (name === "") {
-        Swal.fire({
-          icon: "warning",
-          text: "이름을 입력해주세요.",
-        });
-        return;
-      }
-      if (email === "") {
-        Swal.fire({
-          icon: "warning",
-          text: "이메일을 입력해주세요.",
-        });
-        return;
-      }
-    }
-  };
-
   const handleEmailCheck = async () => {
-    setIsEmailOn(true);
+    setIsLoading(true);
     const data = {
       email: email,
     };
     try {
-      const res = await jwtAxios.post("/api/mail/send", data);
+      const res = await axios.post("/api/mail/find", data);
+      if (res.data.statusCode === -6) {
+        Swal.fire({
+          icon: "warning",
+          text: res.data.resultMsg,
+        });
+      }
+      if (res.data.statusCode === 1) {
+        setIsEmailOn(true);
+        setEmailCheckOpen(true);
+
+        Swal.fire({
+          icon: "success",
+          text: res.data.resultMsg,
+        });
+      }
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        text: "서버에러입니다.",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleEmailCode = async () => {
+    try {
+      const data = {
+        email: email,
+        authNum: code,
+      };
+      const res = await axios.post("/api/mail/auth_check", data);
+      if (res.data.statusCode === 1) {
+        setEmailSuccess(true);
+        Swal.fire({
+          icon: "success",
+          text: res.data.resultMsg,
+        });
+      }
     } catch (error) {
       Swal.fire({
         icon: "error",
@@ -322,7 +432,7 @@ const AuthUserPage: React.FC = () => {
                       <div>
                         <h6
                           onClick={() => {
-                            findId();
+                            handleClickOpen();
                           }}
                         >
                           아이디 찾기
@@ -330,7 +440,7 @@ const AuthUserPage: React.FC = () => {
                         <h5>·</h5>
                         <h6
                           onClick={() => {
-                            handleClickOpen();
+                            hadleClickPwOpen();
                           }}
                         >
                           비밀번호 찾기
@@ -348,12 +458,12 @@ const AuthUserPage: React.FC = () => {
                       로그인
                     </button>
 
-                    {/*  */}
                     <Divider>
                       <Line />
                       <Text>소셜 로그인</Text>
                       <Line />
                     </Divider>
+
                     <div className="소셜로그인">
                       <div className="로그인">
                         <div className="아이콘">
@@ -433,9 +543,11 @@ const AuthUserPage: React.FC = () => {
                     {/*  */}
                   </form>
 
-                  <Dialog open={open} onClose={handleClose}>
+                  <Dialog open={open} onClose={handleClose} sx={{ zIndex: 1 }}>
                     <span className="find-text">아이디 찾기</span>
-                    <DialogContent>
+                    <DialogContent sx={{ width: "100%" }}>
+                      {" "}
+                      {/* DialogContent에 공통된 너비를 적용 */}
                       <TextField
                         autoFocus
                         margin="dense"
@@ -453,27 +565,127 @@ const AuthUserPage: React.FC = () => {
                         value={email}
                         onChange={e => setEmail(e.target.value)}
                       />
-                      <button
-                        className="btn"
-                        onClick={() => {
-                          handleEmailCheck();
-                        }}
-                      >
-                        인증
-                      </button>
+                      <Collapse in={isEmailOn}>
+                        <TextField
+                          margin="dense"
+                          label="인증번호"
+                          type="string"
+                          fullWidth
+                          value={code}
+                          onChange={e => setCode(e.target.value)}
+                        />
+                      </Collapse>
+                      {!isEmailOn && (
+                        <button
+                          className="btn"
+                          onClick={() => {
+                            handleEmailCheck();
+                          }}
+                        >
+                          인증
+                        </button>
+                      )}
                     </DialogContent>
-                    {isEmailOn && (
-                      <TextField
-                        margin="dense"
-                        label="인증번호"
-                        type="number"
-                        fullWidth
-                        value={code}
-                        onChange={e => setCode(e.target.value)}
-                      />
-                    )}
                     <DialogActions>
                       <StyledButton onClick={handleConfirm} color="primary">
+                        확인
+                      </StyledButton>
+                      <CancelButton onClick={handleClose} color="primary">
+                        취소
+                      </CancelButton>
+                    </DialogActions>
+                  </Dialog>
+
+                  <Dialog
+                    open={pwOpen}
+                    onClose={handleClose}
+                    sx={{ zIndex: 1 }}
+                  >
+                    <span className="find-text">비밀번호 찾기</span>
+                    <DialogContent sx={{ width: "100%" }}>
+                      {" "}
+                      {/* DialogContent에 동일한 너비 적용 */}
+                      <TextField
+                        autoFocus
+                        margin="dense"
+                        label="아이디"
+                        type="text"
+                        fullWidth
+                        value={id}
+                        onChange={e => setId(e.target.value)}
+                      />
+                      <TextField
+                        margin="dense"
+                        label="이름"
+                        type="text"
+                        fullWidth
+                        value={name}
+                        onChange={e => setName(e.target.value)}
+                      />
+                      <TextField
+                        margin="dense"
+                        label="이메일"
+                        type="email"
+                        disabled={emailCheckOpen}
+                        fullWidth
+                        value={email}
+                        onChange={e => setEmail(e.target.value)}
+                      />
+                      {!emailSuccess ? (
+                        <Collapse in={isEmailOn}>
+                          <TextField
+                            margin="dense"
+                            label="인증번호"
+                            type="string"
+                            fullWidth
+                            value={code}
+                            onChange={e => setCode(e.target.value)}
+                          />
+                        </Collapse>
+                      ) : null}
+                      {emailSuccess === true ? (
+                        <>
+                          <TextField
+                            margin="dense"
+                            label="새로운 비밀번호"
+                            type="password"
+                            fullWidth
+                            value={newPw}
+                            onChange={e => setNewPw(e.target.value)}
+                          />
+                          <TextField
+                            margin="dense"
+                            label="새로운 비밀번호 확인"
+                            type="password"
+                            fullWidth
+                            value={newPwCheck}
+                            onChange={e => setNewPwCheck(e.target.value)}
+                          />
+                        </>
+                      ) : null}
+                      {!isEmailOn && (
+                        <button
+                          className="btn"
+                          onClick={() => {
+                            handleEmailCheck();
+                          }}
+                        >
+                          인증
+                        </button>
+                      )}
+                      {emailCheckOpen && !emailSuccess ? (
+                        <button
+                          className="btn"
+                          onClick={() => {
+                            handleEmailCode();
+                          }}
+                        >
+                          인증하기
+                        </button>
+                      ) : null}
+                    </DialogContent>
+                    <DialogActions>
+                      <StyledButton onClick={findPw} color="primary">
                         확인
                       </StyledButton>
                       <CancelButton onClick={handleClose} color="primary">
@@ -487,8 +699,9 @@ const AuthUserPage: React.FC = () => {
           </div>
         </div>
       </div>
+      {isLoading && <LoadingSpinner />}
     </>
   );
 };
 
-export default AuthUserPage;
+export default LoginPage;

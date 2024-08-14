@@ -108,8 +108,8 @@ export default function MyMap({ setNewYValue, setNewXValue, setNewAddress }) {
           if (status === window.google.maps.places.PlacesServiceStatus.OK) {
             console.log("Latitude:", place.geometry.location.lat());
             console.log("Longitude:", place.geometry.location.lng());
-            setNewXValue(place.geometry.location.lat());
-            setNewYValue(place.geometry.location.lng());
+            setNewXValue(place.geometry.location.lng());
+            setNewYValue(place.geometry.location.lat());
           }
         },
       );
