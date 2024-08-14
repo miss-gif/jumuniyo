@@ -765,7 +765,7 @@ const MenuManagement = () => {
                                 <img
                                   src={
                                     menu.menu_pic
-                                      ? menu.menu_pic
+                                      ? `/pic${menu.menu_pic}`
                                       : "default_image_url"
                                   }
                                   alt={menu.menu_name}
