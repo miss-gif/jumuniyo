@@ -152,18 +152,17 @@ const LoginPage: React.FC = () => {
 
     try {
       const res = await axios.post("/api/find/pw", data);
-      if (res.data.statusCode === -6) {
-        Swal.fire({
-          icon: "warning",
-          text: res.data.resultMsg,
-        });
-      }
       if (res.data.statusCode === 1) {
         Swal.fire({
           icon: "success",
           text: res.data.resultMsg,
         });
         setPwOpen(false);
+      } else {
+        Swal.fire({
+          icon: "warning",
+          text: res.data.resultMsg,
+        });
       }
     } catch (error) {
       Swal.fire({

@@ -77,8 +77,10 @@ const AuthUserPage: React.FC = () => {
   const [idCheckComplete, setIdCheckComplete] = useState<boolean>(true);
   const [emailCheckOk, setEmailCheckOk] = useState<boolean>(false);
   const [emailCheckComplete, setEmailCheckComplete] = useState<boolean>(true);
+  const [isCheckBusiness, setIsCheckBusiness] = useState<boolean>(false);
 
   const navigate = useNavigate();
+  const APIKey = process.env.REACT_APP_DATA_KR_API_KEY;
 
   // 주소 관련 State
   const [newXValue, setNewXValue] = useState<string>("");
@@ -439,22 +441,40 @@ const AuthUserPage: React.FC = () => {
     setUserCEOEvent(e.target.value);
   }, []);
 
-  const APIKey = process.env.REACT_APP_DATA_KR_API_KEY;
-
   const checkBusinessNumber = async () => {
+    setIsLoading(true);
     try {
       const data = {
-        b_no: [userCEONumber],
+        b_no: [userCEONumber.replace(/-/g, "")],
       };
       const res = await axios.post(
         `https://api.odcloud.kr/api/nts-businessman/v1/status?serviceKey=${APIKey}`,
         data,
       );
+      if (res.data.data[0].b_stt_cd === "01") {
+        setIsCheckBusiness(true);
+        Swal.fire({
+          icon: "success",
+          text: "인증완료 되었습니다.",
+        });
+      } else if (res.data.data[0].b_stt_cd === "02") {
+        Swal.fire({
+          icon: "warning",
+          text: "쉬고있는 사업자는 등록할 수 없습니다.",
+        });
+      } else {
+        Swal.fire({
+          icon: "warning",
+          text: "존재하지 않는 사업자 입니다.",
+        });
+      }
     } catch (error) {
       Swal.fire({
         icon: "error",
-        text: "서버에러입니다.",
+        text: "서버에러라고.",
       });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -648,16 +668,30 @@ const AuthUserPage: React.FC = () => {
                         }}
                       />
                     </Box>
-                    <Box>
-                      <TextField
-                        fullWidth
-                        label="사업자 번호"
-                        id="fullWidth"
-                        placeholder="사업자 번호를 입력해주세요"
-                        value={userCEONumber}
-                        onChange={handleBusinessNumberChange}
-                      />
-                    </Box>
+                    <div className="check-button-box">
+                      <Box>
+                        <TextField
+                          fullWidth
+                          label="사업자 번호"
+                          id="fullWidth"
+                          placeholder="사업자 번호를 입력해주세요"
+                          value={userCEONumber}
+                          onChange={handleBusinessNumberChange}
+                          disabled={isCheckBusiness}
+                        />
+                        {!isCheckBusiness && (
+                          <button
+                            type="button"
+                            className="btn"
+                            onClick={() => {
+                              checkBusinessNumber();
+                            }}
+                          >
+                            사업자 확인
+                          </button>
+                        )}
+                      </Box>
+                    </div>
 
                     <div>
                       <Box style={{ alignItems: "center" }}>
@@ -727,19 +761,12 @@ const AuthUserPage: React.FC = () => {
                   </form>
                 </div>
                 <JoinFooter />
-                {isLoading ? <LoadingSpinner /> : null}
               </div>
             </div>
           </div>
         </div>
-        <button
-          onClick={() => {
-            checkBusinessNumber();
-          }}
-        >
-          인증
-        </button>
       </div>
+      {isLoading ? <LoadingSpinner /> : null}
     </>
   );
 };
