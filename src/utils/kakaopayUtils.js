@@ -37,25 +37,21 @@ export const initiateKakaoPay = (
       },
       function (data) {
         console.log("결제 응답:", data); // 응답을 확인
-        let msg;
         if (data.success) {
-          msg = "결제 완료";
-          msg += "// 결제 수단 : Kakao";
-          msg += "// 상점 거래ID : " + data.merchant_uid;
-          msg += "// 결제 금액 : " + data.paid_amount;
-          msg += "// 구매자 이름 : " + data.buyer_name;
-
-          // 서버에 결제 완료 정보를 전송하고 응답을 받아 주문 ID를 반환
           axios
             .post(
               "/api/order/",
               {
                 order_res_pk: id,
-                order_request: request, // 상태에서 요청사항 가져오기
-                payment_method: "3", // 상태에서 결제수단 가져오기
+                order_request: request,
+                payment_method: "3", // 결제수단을 '카카오페이'로 설정
                 order_phone: phone,
-                order_address: `${locationData.geocodeAddress} ${addressDetail}`, // 주소 합치기
-                menu_pk: menuPkArray,
+                order_address: `${locationData.geocodeAddress} ${addressDetail}`,
+                menu: menuPkArray.map(pk => ({
+                  menu_pk: pk, // 메뉴 PK
+                  menu_count: 1, // 각 메뉴의 수량 (필요에 따라 수정)
+                  menu_option_pk: [], // 옵션 (필요에 따라 설정)
+                })),
                 use_mileage: 0,
                 coupon: null,
               },
@@ -65,14 +61,21 @@ export const initiateKakaoPay = (
                 },
               },
             )
-            .then(response => resolve(response.data.resultData)) // 주문 ID 반환
-            .catch(error =>
-              reject("결제 성공 후 처리 중 오류: " + error.message),
-            );
+            .then(response => {
+              const resultData = response.data.resultData;
+              console.log("서버 응답:", resultData);
+
+              if (response.data.statusCode === 1) {
+                resolve(resultData.order_pk); // 주문 ID 반환
+              } else {
+                reject("서버에서 처리에 실패했습니다.");
+              }
+            })
+            .catch(error => {
+              reject("결제 성공 후 처리 중 오류: " + error.message);
+            });
         } else {
-          msg = "결제 실패";
-          msg += "에러 내용: " + data.error_msg;
-          reject(msg);
+          reject("결제 실패: " + data.error_msg);
         }
       },
     );
