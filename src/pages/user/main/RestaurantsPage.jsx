@@ -52,7 +52,7 @@ const RestaurantsPage = () => {
       const search = searchRestaurant || "";
 
       // 위도, 경도 순서 변경
-      const queryString = `${id}&page=1&order_type=${orderType}&addrX=${addrX}&addrY=${addrY}&search=${search}`;
+      const queryString = `${id}&page=1&order_type=${orderType}&addrX=${addrY}&addrY=${addrX}&search=${search}`;
 
       try {
         const response = await axios.get(`/api/restaurant?${queryString}`);
