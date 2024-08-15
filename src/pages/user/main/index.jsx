@@ -103,7 +103,12 @@ const SwiperCarousel = memo(
 SwiperCarousel.displayName = "SwiperCarousel";
 
 const MainPage = () => {
-  const swiperRef = useRef(null);
+  const swiperRefs = {
+    coupons: useRef(null),
+    newStores: useRef(null),
+    recentOrders: useRef(null),
+    heartStores: useRef(null),
+  };
   const dispatch = useDispatch();
   const { locationData } = useSelector(state => state.user);
   const [coupons, setCoupons] = useState([]);
@@ -154,9 +159,6 @@ const MainPage = () => {
     }
   }, [locationData]);
 
-  const handlePrev = () => swiperRef.current?.slidePrev();
-  const handleNext = () => swiperRef.current?.slideNext();
-
   return isLoggedIn ? (
     <div className="main-page">
       <SwiperCarousel
@@ -164,36 +166,36 @@ const MainPage = () => {
         data={coupons}
         loading={loading}
         error={error}
-        onPrev={handlePrev}
-        onNext={handleNext}
-        swiperRef={swiperRef}
+        onPrev={() => swiperRefs.coupons.current?.slidePrev()}
+        onNext={() => swiperRefs.coupons.current?.slideNext()}
+        swiperRef={swiperRefs.coupons}
       />
       <SwiperCarousel
         title="최근 입점한 상점"
         data={newStores}
         loading={loading}
         error={error}
-        onPrev={handlePrev}
-        onNext={handleNext}
-        swiperRef={swiperRef}
+        onPrev={() => swiperRefs.newStores.current?.slidePrev()}
+        onNext={() => swiperRefs.newStores.current?.slideNext()}
+        swiperRef={swiperRefs.newStores}
       />
       <SwiperCarousel
         title="최근 주문한 상점"
         data={recentOrders}
         loading={loading}
         error={error}
-        onPrev={handlePrev}
-        onNext={handleNext}
-        swiperRef={swiperRef}
+        onPrev={() => swiperRefs.recentOrders.current?.slidePrev()}
+        onNext={() => swiperRefs.recentOrders.current?.slideNext()}
+        swiperRef={swiperRefs.recentOrders}
       />
       <SwiperCarousel
         title="찜한 상점"
         data={heartStores}
         loading={loading}
         error={error}
-        onPrev={handlePrev}
-        onNext={handleNext}
-        swiperRef={swiperRef}
+        onPrev={() => swiperRefs.heartStores.current?.slidePrev()}
+        onNext={() => swiperRefs.heartStores.current?.slideNext()}
+        swiperRef={swiperRefs.heartStores}
       />
     </div>
   ) : (
