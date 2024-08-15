@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { IoIosMenu } from "react-icons/io";
 import { IoSearch } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
@@ -31,7 +31,6 @@ const UserHeader = () => {
   const [isTransitioning, setTransitioning] = useState(false);
   const [isModal, setIsModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
-  const [onSearch, setOnSearch] = useState(false);
 
   // Redux 상태 통합
   const {
@@ -125,8 +124,7 @@ const UserHeader = () => {
   };
 
   const clickSearch = () => {
-    setOnSearch(prev => !prev);
-    console.log("onSearch", onSearch);
+    navigate("/restaurant/category_id=0");
   };
 
   return (
@@ -156,7 +154,9 @@ const UserHeader = () => {
             value={searchRestaurantValue}
             onChange={handleInputChange}
           />
-          <button onClick={clickSearch}>검색</button>
+          <button type="submit" onClick={clickSearch}>
+            검색
+          </button>
         </div>
         {isLoggedIn && (
           <UserActions
