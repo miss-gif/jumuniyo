@@ -1,18 +1,26 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const Ask = () => {
-  const [askItems, setAskItems] = useState([]);
+interface AskItem {
+  pk: number;
+  title: string;
+  status: string;
+  completeTime: string;
+}
+
+const Ask: React.FC = () => {
+  const [askItems, setAskItems] = useState<AskItem[]>([]);
   const navigate = useNavigate();
 
-  const getCookie = name => {
+  const getCookie = (name: string): string | undefined => {
     const value = `; ${document.cookie}`;
     const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) return parts.pop().split(";").shift();
+    if (parts.length === 2) return parts.pop()?.split(";").shift();
   };
 
-  const fetchData = async url => {
+  const fetchData = async (url: string) => {
     const accessToken = getCookie("accessToken");
     if (!accessToken) {
       console.error("토큰을 찾을 수 없습니다.");
@@ -27,7 +35,7 @@ const Ask = () => {
       });
 
       if (response.data.statusCode === 1) {
-        const formattedData = response.data.resultData.map(item => ({
+        const formattedData = response.data.resultData.map((item: any) => ({
           pk: item.inquiryPk,
           title: item.inquiryTitle,
           status: item.inquiryState === 2 ? "답변완료" : "미완료",
@@ -46,11 +54,11 @@ const Ask = () => {
     fetchData("/api/admin/inquiry/inquiry_list");
   }, []);
 
-  const handleClick = pk => {
+  const handleClick = (pk: number) => {
     navigate(`/admin/ask/details/${pk}`);
   };
 
-  const handleFilterClick = filter => {
+  const handleFilterClick = (filter: string) => {
     let url = "/api/admin/inquiry/inquiry_list";
     if (filter === "unfinished") {
       url = "/api/admin/inquiry/inquiry_list_unfinished";

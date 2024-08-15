@@ -160,6 +160,11 @@ const RestaurantDetailPage = () => {
       addOrderItem(item);
     });
 
+    // 옵션 추가돼서 추가해봄
+    sessionStorage.setItem(
+      "selectedMenuItems",
+      JSON.stringify(selectedMenuItems),
+    );
     sessionStorage.setItem("restaurantName", restaurantName);
 
     navigate(`/payment/${id}`, {

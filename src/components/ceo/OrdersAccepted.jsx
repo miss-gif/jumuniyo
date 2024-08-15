@@ -12,7 +12,6 @@ const getCookie = name => {
 
 const fetchOrders = async () => {
   const accessToken = getCookie("accessToken");
-  //console.log("토큰 값: ", accessToken);
   const response = await fetch("/api/order/owner/confirm/list", {
     method: "GET",
     headers: {
@@ -21,7 +20,6 @@ const fetchOrders = async () => {
     },
   });
   const data = await response.json();
-  //console.log(data);
   if (!response.ok) {
     throw new Error(data.resultMsg || "network response not ok");
   }
@@ -94,7 +92,6 @@ const OrdersAccepted = () => {
         sortedOrders = Array.isArray(data.resultData) ? data.resultData : [];
       }
       setOrders(sortOrders(sortedOrders, sortOrder));
-      //console.log("데이터 결과 메세지:", data.resultMsg);
     } catch (error) {
       setError(error);
     }
@@ -163,16 +160,13 @@ const OrdersAccepted = () => {
     hours = hours ? hours : 12;
     return `${ampm} ${hours}:${minutes}`;
   };
+
   const formatNumber = number => {
+    if (typeof number !== "number") {
+      return "0"; // 기본값으로 0을 반환하거나, 필요에 따라 다른 값을 반환
+    }
     return number.toLocaleString("ko-KR");
   };
-  if (error) {
-    return <div>Error: {error.message}</div>;
-  }
-
-  if (error) {
-    return Navigate("/login");
-  }
 
   const sortOrders = (orders, order) => {
     return orders.sort((a, b) => {
@@ -183,6 +177,16 @@ const OrdersAccepted = () => {
       }
     });
   };
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
+
+  if (error) {
+    return <Navigate to="/login" />;
+  }
+
+  console.log("데이터 :", orderDetail);
 
   return (
     <>
@@ -218,14 +222,16 @@ const OrdersAccepted = () => {
               orders.map(order => (
                 <div
                   key={order.orderPk}
-                  className={`one-order ${selectedOrder && selectedOrder.orderPk === order.orderPk ? "selected" : ""}`}
+                  className={`one-order ${
+                    selectedOrder && selectedOrder.orderPk === order.orderPk
+                      ? "selected"
+                      : ""
+                  }`}
                   onClick={() => setSelectedOrder(order)}
                 >
                   <div className="one-order-left">
                     <div className="order-number">No. {order.orderPk}</div>
-                    <div className="order-menus-number">
-                      메뉴 {order.menuName.length}개
-                    </div>
+                    <div className="order-menus-number">{order.orderPrice}</div>
                   </div>
                   <div className="one-order-right">
                     <div className="order-time">
@@ -261,19 +267,44 @@ const OrdersAccepted = () => {
                     </div>
                     <div className="orderedMenu">
                       <h2>주문내역</h2>
-                      {orderDetail.menuInfoList.map((menu, index) => (
-                        <div className="orderedMenuInf" key={index}>
-                          <div className="menuName">{menu.menuName}</div>
-                          <div className="menuAmount">1</div>
-                          <div className="menuPrice">
-                            {formatNumber(menu.menuPrice)}
+                      {orderDetail.menuList &&
+                      orderDetail.menuList.length > 0 ? (
+                        orderDetail.menuList.map((menu, index) => (
+                          <div className="orderedMenuInf" key={index}>
+                            <div className="menuName">
+                              {menu.order_menu_name}
+                            </div>
+                            <div className="menuAmount">
+                              {menu.order_menu_count}
+                            </div>
+                            <div className="menuPrice">
+                              {formatNumber(menu.order_menu_price)}
+                            </div>
+                            {menu.menu_options &&
+                              menu.menu_options.length > 0 && (
+                                <div className="menuOptions">
+                                  <h3>옵션</h3>
+                                  {menu.menu_options.map((option, optIndex) => (
+                                    <div key={optIndex} className="menuOption">
+                                      <div className="optionName">
+                                        {option.option_name}
+                                      </div>
+                                      <div className="optionPrice">
+                                        {formatNumber(option.option_price)}
+                                      </div>
+                                    </div>
+                                  ))}
+                                </div>
+                              )}
                           </div>
-                        </div>
-                      ))}
+                        ))
+                      ) : (
+                        <div>메뉴 정보가 없습니다.</div>
+                      )}
                       <div className="allOrderedMenuInf">
                         <div className="title">총주문</div>
                         <div className="allMenuAmount">
-                          {orderDetail.menuInfoList.length}
+                          {orderDetail.menuInfoList?.length || 0}
                         </div>
                         <div className="allMenuPrice">
                           {formatNumber(orderDetail.orderPrice)}

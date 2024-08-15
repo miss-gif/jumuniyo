@@ -16,7 +16,7 @@ const OrderSummary = ({
   onClearAll,
   onOrder,
   restaurantName,
-  restaurantState, // 가게 상태를 받아옴
+  restaurantState,
 }) => {
   const [open, setOpen] = useState(false);
 
@@ -65,7 +65,6 @@ const OrderSummary = ({
 
   useEffect(() => {
     return () => {
-      // 컴포넌트 언마운트 시 스크롤 해제
       document.body.style.overflow = "auto";
     };
   }, []);
@@ -114,7 +113,17 @@ const OrderSummary = ({
                       <CloseIcon />
                     </div>
                     <div className="order-summary__price">
-                      {formatPrice(item.menu_price)}원{" "}
+                      {formatPrice(
+                        item.menu_price +
+                          (item.selectedOptions
+                            ? Object.values(item.selectedOptions).reduce(
+                                (optionSum, option) =>
+                                  optionSum + option.optionPrice,
+                                0,
+                              )
+                            : 0),
+                      )}
+                      원{" "}
                     </div>
                   </div>
                   <div className="quantity-count">
