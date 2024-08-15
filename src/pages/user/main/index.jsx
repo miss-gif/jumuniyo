@@ -139,15 +139,15 @@ const MainPage = () => {
 
     if (isLoggedIn) {
       fetchData(
-        `/api/restaurant/coupon?addrX=${addrX}&addrY=${addrY}`,
+        `/api/restaurant/coupon?addrX=${addrY}&addrY=${addrX}`,
         setCoupons,
       );
       fetchData(
-        `/api/restaurant/new10?addrX=${addrX}&addrY=${addrY}`,
+        `/api/restaurant/new10?addrX=${addrY}&addrY=${addrX}`,
         setNewStores,
       );
       fetchData(
-        `/api/restaurant/recent?addrX=${addrX}&addrY=${addrY}`,
+        `/api/restaurant/recent?addrX=${addrY}&addrY=${addrX}`,
         setRecentOrders,
       );
       fetchData(`/api/restaurant/followed`, setHeartStores);
