@@ -49,6 +49,8 @@ const AddressModal = ({ isOpen, onRequestClose }) => {
   useEffect(() => {
     console.log("리덕스 위치 : ", searchTerm);
     console.log("리덕스 위경도 :", locationData);
+    console.log("리덕스 latitude :", locationData.latitude);
+    console.log("리덕스 longitude :", locationData.longitude);
   }, [searchTerm, locationData]);
 
   return (

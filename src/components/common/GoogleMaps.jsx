@@ -30,7 +30,7 @@ const geocoder = { current: null }; // Geocoder 서비스 객체를 위한 ref
 export default function GoogleMaps({ onRequestClose }) {
   const dispatch = useDispatch();
   const searchTerm = useSelector(state => state.user.searchTerm);
-
+  const { locationData } = useSelector(state => state.user);
   const [value, setValue] = useState(searchTerm || null);
   const [inputValue, setInputValue] = useState("");
   const [options, setOptions] = useState([]);
@@ -54,6 +54,14 @@ export default function GoogleMaps({ onRequestClose }) {
       }, 400),
     [],
   );
+
+  // 현재 검색위치 확인
+  useEffect(() => {
+    console.log("리덕스 위치 : ", searchTerm);
+    console.log("리덕스 위경도 :", locationData);
+    console.log("리덕스 latitude :", locationData.latitude);
+    console.log("리덕스 longitude :", locationData.longitude);
+  }, [searchTerm, locationData]);
 
   useEffect(() => {
     let active = true;
@@ -98,13 +106,13 @@ export default function GoogleMaps({ onRequestClose }) {
       geocoder.current.geocode({ address: searchTerm }, (results, status) => {
         if (status === "OK" && results[0]) {
           const location = results[0].geometry.location;
-          const latitude = location.lat();
-          const longitude = location.lng();
+          const bbb = location.lat();
+          const aaa = location.lng();
 
-          console.log("Latitude:", latitude, "Longitude:", longitude);
+          console.log("location.lat:", aaa, "location.lng:", bbb);
 
           // Redux에 위도와 경도 저장
-          dispatch(setLocationData({ latitude, longitude }));
+          dispatch(setLocationData({ latitude: aaa, longitude: bbb }));
         } else {
           console.error(
             "Geocode was not successful for the following reason:",
@@ -123,28 +131,6 @@ export default function GoogleMaps({ onRequestClose }) {
     if (!geocoder.current && window.google) {
       geocoder.current = new window.google.maps.Geocoder();
     }
-
-    // 선택한 주소의 위도와 경도 값을 가져오기
-    geocoder.current.geocode(
-      { address: newValue.description },
-      (results, status) => {
-        if (status === "OK" && results[0]) {
-          const location = results[0].geometry.location;
-          const latitude = location.lat();
-          const longitude = location.lng();
-
-          console.log("Latitude:", latitude, "Longitude:", longitude);
-
-          // Redux에 위도와 경도 저장
-          dispatch(setLocationData({ latitude, longitude }));
-        } else {
-          console.error(
-            "Geocode was not successful for the following reason:",
-            status,
-          );
-        }
-      },
-    );
 
     // 검색 결과를 선택한 후 드롭다운을 닫기 위해 onRequestClose 호출
     onRequestClose();

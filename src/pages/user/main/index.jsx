@@ -22,7 +22,7 @@ const SwiperCarousel = memo(
         <div className="carousel-header">
           <h3 className="carousel-header__title">{title}</h3>
           <div className="carousel-header__controller">
-            <div className="carousel-header__controller-all">See all</div>
+            {/* <div className="carousel-header__controller-all">See all</div> */}
             <div className="carousel-header__controller-btns">
               <button
                 className="carousel-header__controller-prev"
@@ -162,7 +162,7 @@ const MainPage = () => {
   return isLoggedIn ? (
     <div className="main-page">
       <SwiperCarousel
-        title="쿠폰 이벤트 진행중"
+        title="쿠폰 이벤트 진행 중인 상점"
         data={coupons}
         loading={loading}
         error={error}

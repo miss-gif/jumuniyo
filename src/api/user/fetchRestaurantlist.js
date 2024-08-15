@@ -1,19 +1,13 @@
 import axios from "axios";
+import { useSelector } from "react-redux";
 
-// 로컬 스토리지에서 위치 정보 가져오기
-const locationData = JSON.parse(localStorage.getItem("locationData")) || {};
+const { locationData } = useSelector(state => state.user);
 
-// 위도 및 경도 값이 비어있는지 확인
-const isValidLocation = locationData.latitude && locationData.longitude;
-
-// 유효한 위치 정보가 없으면 기본값(대구) 사용, 있으면 로컬 스토리지 값 사용
-const {
-  latitude = isValidLocation ? locationData.latitude : null,
-  longitude = isValidLocation ? locationData.longitude : null,
-} = locationData;
+const addrX = locationData?.longitude || 0;
+const addrY = locationData?.latitude || 0;
 
 // API URL 생성 (위도, 경도 포함)
-const API_URL = `/api/restaurant?category_id=0&page=1&order_type=1&addrX=${latitude}&addrY=${longitude}`;
+const API_URL = `/api/restaurant?category_id=0&page=1&order_type=1&addrX=${addrY}&addrY=${addrX}`;
 
 export const fetchRestaurantlist = async () => {
   try {
