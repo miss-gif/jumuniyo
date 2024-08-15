@@ -68,8 +68,8 @@ const fetchOrderDetail = async orderPk => {
 const Home = () => {
   const navigate = useNavigate();
   const [orders, setOrders] = useState([]);
-  const [selectedOrder, setSelectedOrder] = useState(null);
   const [orderDetail, setOrderDetail] = useState(null);
+  const [selectedOrder, setSelectedOrder] = useState(null);
   const [error, setError] = useState(null);
   const [noOrders, setNoOrders] = useState(false);
   const [selectedOrderPk, setSelectedOrderPk] = useState(null);
@@ -100,7 +100,8 @@ const Home = () => {
   const loadOrderDetail = async orderPk => {
     try {
       const data = await fetchOrderDetail(orderPk);
-      if (data.statusCode === 1) {
+      console.log("Full Response Data:", data);
+      if (data.statusCode === 1 && data.resultData) {
         setOrderDetail(data.resultData);
       } else {
         setOrderDetail(null);
@@ -203,7 +204,9 @@ const Home = () => {
             ) : (
               orders.map(order => (
                 <div
-                  className={`one-order ${selectedOrderPk === order.orderPk ? "selected" : ""}`}
+                  className={`one-order ${
+                    selectedOrderPk === order.orderPk ? "selected" : ""
+                  }`}
                   key={order.orderPk}
                   onClick={() => {
                     setSelectedOrder(order);
@@ -213,7 +216,7 @@ const Home = () => {
                   <div className="one-order-left">
                     <div className="order-number">No. {order.orderPk}</div>
                     <div className="order-menus-number">
-                      메뉴 {order.menuName.length}개
+                      {order.orderPrice}원
                     </div>
                   </div>
                   <div className="one-order-right">
@@ -247,15 +250,24 @@ const Home = () => {
                     </div>
                     <div className="orderedMenu">
                       <h2>주문내역</h2>
-                      {orderDetail.menuInfoList.map((menu, index) => (
-                        <div className="orderedMenuInf" key={index}>
-                          <div className="menuName">{menu.menuName}</div>
-                          <div className="menuAmount">1</div>
-                          <div className="menuPrice">
-                            {formatNumber(menu.menuPrice)}
+                      {orderDetail &&
+                      orderDetail.menuInfoList &&
+                      orderDetail.menuInfoList.length > 0 ? (
+                        orderDetail.menuInfoList.map((menu, index) => (
+                          <div className="orderedMenuInf" key={index}>
+                            <div className="menuName">{menu.menuName}</div>
+                            <div className="menuAmount">
+                              {1}{" "}
+                              {/* 주문 수량이 정보에 없으므로 임의로 1로 설정 */}
+                            </div>
+                            <div className="menuPrice">
+                              {formatNumber(menu.menuPrice)}
+                            </div>
                           </div>
-                        </div>
-                      ))}
+                        ))
+                      ) : (
+                        <div>주문 내역이 없습니다.</div>
+                      )}
                       <div className="allOrderedMenuInf">
                         <div className="title">총주문</div>
                         <div className="allMenuAmount">

@@ -16,6 +16,12 @@ const OptionModal = ({ open, onClose, menuItem, onConfirm }) => {
     }
   }, [menuItem]);
 
+  useEffect(() => {
+    if (open) {
+      setSelectedOptions({}); // 모달이 열릴 때 선택된 옵션 초기화
+    }
+  }, [open]);
+
   const fetchOptions = async menu_pk => {
     try {
       const response = await axios.get(`/api/menu/option/${menu_pk}`);
