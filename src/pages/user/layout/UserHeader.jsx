@@ -129,13 +129,9 @@ const UserHeader = () => {
 
   return (
     <div className="user-header">
-      {isLoggedIn && (
-        <>
-          <button className="user-header__menu-btn" onClick={toggleSidebar}>
-            <IoIosMenu fontSize={32} />
-          </button>
-        </>
-      )}
+      <button className="user-header__menu-btn" onClick={toggleSidebar}>
+        <IoIosMenu fontSize={32} />
+      </button>
       <div className="user-header__logo">
         <Link to={"/"}>주문이요</Link>
       </div>
@@ -158,13 +154,11 @@ const UserHeader = () => {
             검색
           </button>
         </div>
-        {isLoggedIn && (
-          <UserActions
-            toggleSidebarCart={toggleSidebarCart}
-            toggleSidebarCoupon={toggleSidebarCoupon}
-            toggleSidebarHeart={toggleSidebarHeart}
-          />
-        )}
+        <UserActions
+          toggleSidebarCart={toggleSidebarCart}
+          toggleSidebarCoupon={toggleSidebarCoupon}
+          toggleSidebarHeart={toggleSidebarHeart}
+        />
       </nav>
       {!isLoggedIn && <AuthLinks closeModal={closeModal} />}
 
