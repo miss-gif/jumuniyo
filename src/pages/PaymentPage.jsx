@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useSelector } from "react-redux";
 import PaymentSelect from "./user/PaymentSelect";
 import { Checkbox } from "@mui/material";
@@ -17,37 +17,43 @@ const PaymentPage = () => {
 
   const [request, setRequest] = useState(""); // 요청사항 상태
   const [selectedPayment, setSelectedPayment] = useState(""); // 결제수단 상태
-  const [menuPkArray, setMenuPkArray] = useState([]); // 메뉴 PK 배열 상태
-  const [order, setOrder] = useState([]); // 주문 상세 정보 상태
   const [addressDetail1, setAddressDetail1] = useState(""); // 주소 상태
-  const [addressDetail, setAddressDetail] = useState(""); // 상세주소 상태
+  const [addressDetail, setAddressDetail2] = useState(""); // 상세주소 상태
   const [phone, setPhone] = useState(userPhone); // 휴대전화 상태
   const [agreement, setAgreement] = useState(false); // 결제 동의 체크 상태
 
   const navigate = useNavigate();
   const restaurantName = sessionStorage.getItem("restaurantName");
 
-  useEffect(() => {
-    console.log(selectedMenuItems);
-  }, [selectedMenuItems]);
-
-  // menu_res_pk 값이 useParams로 얻은 id 값과 일치하는 객체들만 필터링
-  const filteredMenuItems = selectedMenuItems.filter(
-    item => item.menu_res_pk === parseInt(id, 10), // id와 item.menu_res_pk를 비교
-  );
-
-  // 리덕스에서 가져온 값을 필터링하여 order 상태로 설정
-  useEffect(() => {
-    const filteredMenuItems = selectedMenuItems.filter(
+  // 메뉴 필터링
+  const filteredMenuItems = useMemo(() => {
+    return selectedMenuItems.filter(
       item => item.menu_res_pk === parseInt(id, 10),
     );
-    setOrder(filteredMenuItems);
+  }, [selectedMenuItems, id]);
 
-    const menuPkArray = filteredMenuItems.flatMap(item =>
+  // 메뉴 PK 배열 생성
+  const menuPkArray = useMemo(() => {
+    return filteredMenuItems.flatMap(item =>
       Array(item.quantity).fill(item.menu_pk),
     );
-    setMenuPkArray(menuPkArray);
-  }, [selectedMenuItems, id]);
+  }, [filteredMenuItems]);
+
+  // 총 금액 계산
+  const totalAmount = useMemo(() => {
+    return filteredMenuItems.reduce(
+      (sum, item) =>
+        sum +
+        item.menu_price * item.quantity +
+        (item.selectedOptions
+          ? Object.values(item.selectedOptions).reduce(
+              (optionSum, option) => optionSum + option.optionPrice,
+              0,
+            ) * item.quantity
+          : 0),
+      0,
+    );
+  }, [filteredMenuItems]);
 
   // 주소 변경 시 userAddress.addr1 또는 addr2 값 업데이트
   useEffect(() => {
@@ -56,60 +62,60 @@ const PaymentPage = () => {
       locationData.longitude === userAddress.addrCoorY
     ) {
       setAddressDetail1(userAddress.addr1);
-      setAddressDetail(userAddress.addr2);
+      setAddressDetail2(userAddress.addr2);
     }
-  }, [locationData, userAddress]);
+  }, [
+    locationData.latitude,
+    locationData.longitude,
+    userAddress.addrCoorX,
+    userAddress.addrCoorY,
+    userAddress.addr1,
+    userAddress.addr2,
+  ]);
 
-  const calculateTotalPrice = item => {
-    return item.menu_price * item.quantity;
-  };
-
-  const totalAmount = filteredMenuItems.reduce(
-    (sum, item) =>
-      sum +
-      item.menu_price * item.quantity +
-      (item.selectedOptions
-        ? Object.values(item.selectedOptions).reduce(
-            (optionSum, option) => optionSum + option.optionPrice,
-            0,
-          ) * item.quantity
-        : 0),
-    0,
-  );
-
+  // 총 주문 금액 계산
   const calculateTotalOrderPrice = () => {
-    return order.reduce((total, item) => total + calculateTotalPrice(item), 0);
+    return filteredMenuItems.reduce(
+      (total, item) => total + item.menu_price * item.quantity,
+      0,
+    );
   };
 
-  const handlePayment = async () => {
+  // 결제 정보 검증 함수
+  const validatePaymentInfo = () => {
     if (!addressDetail.trim()) {
       Swal.fire({
         icon: "warning",
         text: "상세주소를 입력해 주세요.",
       });
-      return;
+      return false;
     }
     if (!phone.trim()) {
       Swal.fire({
         icon: "warning",
         text: "휴대전화 번호를 입력해 주세요.",
       });
-      return;
+      return false;
     }
     if (!selectedPayment) {
       Swal.fire({
         icon: "warning",
         text: "결제수단을 선택해 주세요.",
       });
-      return;
+      return false;
     }
     if (!agreement) {
       Swal.fire({
         icon: "warning",
         text: "결제 동의에 체크해 주세요.",
       });
-      return;
+      return false;
     }
+    return true;
+  };
+
+  const handlePayment = async () => {
+    if (!validatePaymentInfo()) return;
 
     if (selectedPayment === "3") {
       // 카카오페이 결제
@@ -125,16 +131,13 @@ const PaymentPage = () => {
           menuPkArray,
         );
 
-        console.log("받아온 order_pk:", order_pk); // order_pk 확인용 로그
-
         if (order_pk) {
           Swal.fire({
             icon: "success",
             text: "결제 완료: " + order_pk,
           });
 
-          // 결제 성공 후 이동
-          navigate(`/mypage/order/${order_pk}`); // 주문 ID를 사용하여 이동
+          navigate(`/mypage/order/${order_pk}`);
 
           // 결제 성공 후 세션 저장소 데이터 삭제
           sessionStorage.removeItem(`selectedMenuItems_${id}`);
@@ -147,24 +150,23 @@ const PaymentPage = () => {
           icon: "error",
           text: "결제 실패: " + error.message,
         });
-        console.error("결제 오류:", error);
       }
       return;
     }
 
     const data = {
       order_res_pk: id,
-      order_request: request, // 상태에서 요청사항 가져오기
-      payment_method: selectedPayment, // 상태에서 결제수단 가져오기
+      order_request: request,
+      payment_method: selectedPayment,
       order_phone: phone,
-      order_address: `${addressDetail1} ${addressDetail}`, // 주소 합치기
-      menu: order.map(item => ({
+      order_address: `${addressDetail1} ${addressDetail}`,
+      menu: filteredMenuItems.map(item => ({
         menu_pk: item.menu_pk,
         menu_count: item.quantity,
         menu_option_pk: item.menu_option_pk || [],
-      })), // 메뉴 데이터 구조 변경
-      use_mileage: 0, // 마일리지 0으로 하드코딩
-      coupon: null, // 쿠폰 값은 null로 설정
+      })),
+      use_mileage: 0,
+      coupon: null,
     };
 
     try {
@@ -178,14 +180,13 @@ const PaymentPage = () => {
         sessionStorage.removeItem(`selectedMenuItems_${id}`);
         sessionStorage.removeItem("restaurantName");
 
-        // `order_pk` 값을 사용하여 경로 설정
         const orderPk = res.data.resultData.order_pk;
 
         Swal.fire({
           icon: "success",
           text: res.data.resultMsg,
         });
-        navigate(`/mypage/order/${orderPk}`); // orderPk를 사용하여 이동
+        navigate(`/mypage/order/${orderPk}`);
       } else {
         Swal.fire({
           icon: "warning",
@@ -195,15 +196,15 @@ const PaymentPage = () => {
     } catch (error) {
       Swal.fire({
         icon: "error",
-        text: "결제에 실패했습니다. 다시 시도해주세요.",
+        text: error.response
+          ? error.response.data.message
+          : "결제에 실패했습니다. 다시 시도해주세요.",
       });
-      console.log(error);
     }
   };
 
   // 휴대전화 번호 형식 적용 함수
   const formatPhoneNumber = value => {
-    // 숫자만 추출
     const cleaned = ("" + value).replace(/\D/g, "");
     const match = cleaned.match(/^(\d{3})(\d{3,4})(\d{4})$/);
     if (match) {
@@ -214,7 +215,6 @@ const PaymentPage = () => {
 
   const handleChange = e => {
     const value = e.target.value;
-    // 숫자만 입력 가능하도록 설정
     const onlyNums = value.replace(/[^0-9]/g, "");
     setPhone(formatPhoneNumber(onlyNums));
   };
@@ -222,6 +222,9 @@ const PaymentPage = () => {
   const formatPrice = price => {
     return price.toLocaleString();
   };
+
+  const isPaymentDisabled =
+    !addressDetail.trim() || !phone.trim() || !selectedPayment || !agreement;
 
   return (
     <div className="payment-page">
@@ -238,7 +241,7 @@ const PaymentPage = () => {
                     type="text"
                     id="address"
                     className="payment-page__input"
-                    value={addressDetail1 || locationData.geocodeAddress} // 조건에 따라 주소 표시
+                    value={addressDetail1 || locationData.geocodeAddress}
                     readOnly
                   />
                 </div>
@@ -250,7 +253,7 @@ const PaymentPage = () => {
                     className="payment-page__input"
                     placeholder="(필수) 상세주소 입력"
                     value={addressDetail}
-                    onChange={e => setAddressDetail(e.target.value)} // 상세주소 상태 업데이트
+                    onChange={e => setAddressDetail2(e.target.value)}
                   />
                 </div>
                 <div>
@@ -275,12 +278,11 @@ const PaymentPage = () => {
                   placeholder="요청사항을 남겨주세요."
                   className="payment-page__textarea"
                   value={request}
-                  onChange={e => setRequest(e.target.value)} // 요청사항 상태 업데이트
+                  onChange={e => setRequest(e.target.value)}
                 ></textarea>
               </div>
             </div>
             <PaymentSelect onPaymentSelect={setSelectedPayment} />
-            {/* 결제수단 선택 전달 */}
             <div className="payment-page__input-wrap">
               <h3 className="payment-page__subtitle">할인방법 선택</h3>
               <div className="payment-page__coupon">
@@ -306,7 +308,7 @@ const PaymentPage = () => {
         <div className="payment-page__warp-border">
           <h3 className="payment-page__restaurant-name">{restaurantName}</h3>
           <ul>
-            {order.map((item, index) => (
+            {filteredMenuItems.map((item, index) => (
               <li key={index} className="payment-page__order-item">
                 <p>
                   {item.menu_name}
@@ -341,7 +343,6 @@ const PaymentPage = () => {
             ))}
           </ul>
 
-          {/* 결제 */}
           <div className="payment-page__total-amount">
             <p>총 결제 금액</p>
             <p>{formatPrice(totalAmount)}원</p>
@@ -365,6 +366,7 @@ const PaymentPage = () => {
           className="payment-page__button payment-btn"
           onClick={handlePayment}
           type="submit"
+          disabled={isPaymentDisabled}
         >
           결제하기
         </button>
