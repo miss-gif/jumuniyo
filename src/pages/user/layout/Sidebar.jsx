@@ -22,6 +22,11 @@ const Sidebar = ({
         >
           {isLoggedIn ? (
             <ul className="sidebar__nav">
+              <li className="sidebar__logo">
+                <Link to={"/"}>
+                  <img src="/images/logo.png" alt="Logo" />
+                </Link>
+              </li>
               <li className="sidebar__nav-item">
                 <div>
                   <Link to="/mypage" onClick={toggleSidebar}>
@@ -70,6 +75,11 @@ const Sidebar = ({
             </ul>
           ) : (
             <ul className="sidebar__nav">
+              <li className="sidebar__logo">
+                <Link to={"/"}>
+                  <img src="/images/logo.png" alt="Logo" />
+                </Link>
+              </li>
               <li className="sidebar__nav-item">
                 <Link to="/login">로그인</Link>
               </li>

@@ -1,13 +1,13 @@
 import axios from "axios";
-import { useEffect, useState, useRef, memo } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import { IoIosHeartEmpty } from "react-icons/io";
 import { MdNavigateBefore, MdNavigateNext } from "react-icons/md";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router";
 import "swiper/css";
 import { Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "./MainPage.scss";
-import { useNavigate } from "react-router";
 
 const SwiperCarousel = memo(
   ({ title, data, loading, error, onPrev, onNext, swiperRef }) => {
@@ -109,7 +109,6 @@ const MainPage = () => {
     recentOrders: useRef(null),
     heartStores: useRef(null),
   };
-  const dispatch = useDispatch();
   const { locationData } = useSelector(state => state.user);
   const [coupons, setCoupons] = useState([]);
   const [newStores, setNewStores] = useState([]);
@@ -199,7 +198,7 @@ const MainPage = () => {
       />
     </div>
   ) : (
-    <>비로그인 출력화면</>
+    <div className="대기화면">비로그인 출력화면</div>
   );
 };
 

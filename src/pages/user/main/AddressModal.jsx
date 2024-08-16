@@ -110,7 +110,7 @@ const AddressModal = ({ isOpen, onRequestClose }) => {
               )}
             </ul>
           ) : (
-            <div>최근 사용한 주소 목록</div>
+            <div>최근에 사용한 주소가 없습니다.</div>
           )}
         </div>
         <button className="modal__content-close">

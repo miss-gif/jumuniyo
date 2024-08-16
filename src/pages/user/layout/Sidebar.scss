@@ -18,6 +18,16 @@
   pointer-events: auto;
 }
 
+.sidebar__logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+  img {
+    width: 150px;
+  }
+}
+
 .sidebar {
   display: flex;
   flex-direction: column;

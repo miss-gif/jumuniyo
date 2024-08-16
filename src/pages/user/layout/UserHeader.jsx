@@ -14,6 +14,7 @@ import SidebarCoupon from "./SidebarCoupon";
 import SidebarHeart from "./SidebarHeart";
 import UserActions from "./UserActions";
 import "./UserHeader.scss";
+import { Logo } from "../../../components/common/Logo";
 
 const UserHeader = () => {
   const navigate = useNavigate();
@@ -127,13 +128,25 @@ const UserHeader = () => {
     navigate("/restaurant/category_id=0");
   };
 
+  const handleSearch = () => {
+    navigate("/restaurant/category_id=0");
+  };
+
+  const handleKeyPress = e => {
+    if (e.key === "Enter") {
+      handleSearch();
+    }
+  };
+
   return (
     <div className="user-header">
       <button className="user-header__menu-btn" onClick={toggleSidebar}>
         <IoIosMenu fontSize={32} />
       </button>
       <div className="user-header__logo">
-        <Link to={"/"}>주문이요</Link>
+        <Link to={"/"}>
+          <img src="/images/logo.png" alt="Logo" />
+        </Link>
       </div>
       <nav className="user-header__nav">
         <LocationSelector
@@ -149,8 +162,9 @@ const UserHeader = () => {
             placeholder="검색창"
             value={searchRestaurantValue}
             onChange={handleInputChange}
+            onKeyPress={handleKeyPress}
           />
-          <button type="submit" onClick={clickSearch}>
+          <button type="submit" onClick={handleSearch}>
             검색
           </button>
         </div>
