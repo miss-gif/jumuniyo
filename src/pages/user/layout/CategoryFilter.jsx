@@ -95,7 +95,7 @@ const CategoryFilter = () => {
                     onClick={onClickLink(category.categoryPk)}
                   >
                     <img
-                      src={category.categoryPic}
+                      src={`/pic${category.categoryPic}`}
                       alt={category.categoryName}
                     />
                     {category.categoryName}
