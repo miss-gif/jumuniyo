@@ -3,6 +3,7 @@ import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/es/storage/session";
 import userReducer from "./userSlice";
 import cartReducer from "./cartSlice";
+import couponReducer from "./couponSlice";
 
 const persistConfig = {
   key: "root",
@@ -15,6 +16,7 @@ const store = configureStore({
   reducer: {
     user: persistedReducer,
     cart: cartReducer,
+    coupon: couponReducer,
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
