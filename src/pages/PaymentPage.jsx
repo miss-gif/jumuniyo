@@ -27,6 +27,15 @@ const PaymentPage = () => {
   const navigate = useNavigate();
   const restaurantName = sessionStorage.getItem("restaurantName");
 
+  useEffect(() => {
+    console.log(selectedMenuItems);
+  }, [selectedMenuItems]);
+
+  // menu_res_pk 값이 useParams로 얻은 id 값과 일치하는 객체들만 필터링
+  const filteredMenuItems = selectedMenuItems.filter(
+    item => item.menu_res_pk === parseInt(id, 10), // id와 item.menu_res_pk를 비교
+  );
+
   // 리덕스에서 가져온 값을 필터링하여 order 상태로 설정
   useEffect(() => {
     const filteredMenuItems = selectedMenuItems.filter(
@@ -54,6 +63,19 @@ const PaymentPage = () => {
   const calculateTotalPrice = item => {
     return item.menu_price * item.quantity;
   };
+
+  const totalAmount = filteredMenuItems.reduce(
+    (sum, item) =>
+      sum +
+      item.menu_price * item.quantity +
+      (item.selectedOptions
+        ? Object.values(item.selectedOptions).reduce(
+            (optionSum, option) => optionSum + option.optionPrice,
+            0,
+          ) * item.quantity
+        : 0),
+    0,
+  );
 
   const calculateTotalOrderPrice = () => {
     return order.reduce((total, item) => total + calculateTotalPrice(item), 0);
@@ -197,6 +219,10 @@ const PaymentPage = () => {
     setPhone(formatPhoneNumber(onlyNums));
   };
 
+  const formatPrice = price => {
+    return price.toLocaleString();
+  };
+
   return (
     <div className="payment-page">
       <div className="payment-page__section">
@@ -283,9 +309,34 @@ const PaymentPage = () => {
             {order.map((item, index) => (
               <li key={index} className="payment-page__order-item">
                 <p>
-                  {item.menu_name} <span>x {item.quantity}개</span>
+                  {item.menu_name}
+                  {item.selectedOptions && (
+                    <div className="order-summary__options">
+                      {Object.entries(item.selectedOptions).map(
+                        ([optionPk, option]) => (
+                          <div key={optionPk}>
+                            {option.optionName}: +
+                            {formatPrice(option.optionPrice)}원
+                          </div>
+                        ),
+                      )}
+                    </div>
+                  )}
+                  <span>x {item.quantity}개</span>
                 </p>
-                <p>{calculateTotalPrice(item)}원</p>
+                <p>
+                  {formatPrice(
+                    item.menu_price +
+                      (item.selectedOptions
+                        ? Object.values(item.selectedOptions).reduce(
+                            (optionSum, option) =>
+                              optionSum + option.optionPrice,
+                            0,
+                          )
+                        : 0),
+                  )}
+                  원
+                </p>
               </li>
             ))}
           </ul>
@@ -293,7 +344,7 @@ const PaymentPage = () => {
           {/* 결제 */}
           <div className="payment-page__total-amount">
             <p>총 결제 금액</p>
-            <p>{calculateTotalOrderPrice()}원</p>
+            <p>{formatPrice(totalAmount)}원</p>
           </div>
         </div>
         <p className="payment-page__terms">
