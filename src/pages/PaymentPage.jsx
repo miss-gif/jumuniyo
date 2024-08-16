@@ -6,6 +6,7 @@ import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { initiateKakaoPay } from "../utils/kakaopayUtils";
 import Swal from "sweetalert2";
+import CouponModal from "./user/paymentPage/CouponModal";
 
 const PaymentPage = () => {
   const userPhone = useSelector(state => state.user.userPhone) || "";
@@ -14,7 +15,8 @@ const PaymentPage = () => {
   const accessToken = useSelector(state => state.user.accessToken) || "";
   const selectedMenuItems = useSelector(state => state.cart.items) || [];
   const { id } = useParams();
-
+  const [isModal, setIsModal] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(null);
   const [request, setRequest] = useState(""); // 요청사항 상태
   const [selectedPayment, setSelectedPayment] = useState(""); // 결제수단 상태
   const [addressDetail1, setAddressDetail1] = useState(""); // 주소 상태
@@ -24,6 +26,18 @@ const PaymentPage = () => {
 
   const navigate = useNavigate();
   const restaurantName = sessionStorage.getItem("restaurantName");
+
+  const openModal = item => {
+    setSelectedItem(item);
+    setIsModal(true);
+    document.documentElement.style.overflow = "hidden";
+  };
+
+  const closeModal = () => {
+    setIsModal(false);
+    setSelectedItem(null);
+    document.documentElement.style.overflow = "auto";
+  };
 
   // 메뉴 필터링
   const filteredMenuItems = useMemo(() => {
@@ -292,6 +306,9 @@ const PaymentPage = () => {
                     type="text"
                     id="coupon"
                     className="payment-page__input"
+                    onClick={() => {
+                      openModal();
+                    }}
                   />
                   <button className="payment-page__coupon-btn btn--default">
                     적용
@@ -302,7 +319,6 @@ const PaymentPage = () => {
           </form>
         </div>
       </div>
-
       <div className="payment-page__order-summary">
         <h2 className="payment-page__title">주문내역</h2>
         <div className="payment-page__warp-border">
@@ -371,6 +387,7 @@ const PaymentPage = () => {
           결제하기
         </button>
       </div>
+      <CouponModal isOpen={isModal} onRequestClose={closeModal} />{" "}
     </div>
   );
 };

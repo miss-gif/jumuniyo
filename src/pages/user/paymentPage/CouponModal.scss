@@ -1,0 +1,77 @@
+.react-modal {
+  position: absolute;
+  top: 35%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: var(--container-color);
+  color: #333;
+  animation: slide-top 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+
+@keyframes slide-top {
+  0% {
+    transform: translate(-50%, -50%) translateY(20px);
+  }
+  100% {
+    transform: translate(-50%, -50%) translateY(0);
+  }
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal__content {
+  min-width: 500px;
+  min-height: 500px;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.modal__title {
+  font-size: 24px;
+}
+
+.modal__content-close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #333;
+}
+
+.coupon-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.coupon-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.coupon-details {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.coupon-toggle label {
+  font-size: 16px;
+}
