@@ -12,6 +12,7 @@ const PaymentPage = () => {
   const locationData = useSelector(state => state.user.locationData) || "";
   const userAddress = useSelector(state => state.user.userAddress) || "";
   const accessToken = useSelector(state => state.user.accessToken) || "";
+  const selectedMenuItems = useSelector(state => state.cart.items) || [];
   const { id } = useParams();
 
   const [request, setRequest] = useState(""); // 요청사항 상태
@@ -26,15 +27,18 @@ const PaymentPage = () => {
   const navigate = useNavigate();
   const restaurantName = sessionStorage.getItem("restaurantName");
 
+  // 리덕스에서 가져온 값을 필터링하여 order 상태로 설정
   useEffect(() => {
-    const selectedMenuItems =
-      JSON.parse(sessionStorage.getItem(`selectedMenuItems_${id}`)) || [];
-    setOrder(selectedMenuItems);
-    const menuPkArray = selectedMenuItems.flatMap(item =>
+    const filteredMenuItems = selectedMenuItems.filter(
+      item => item.menu_res_pk === parseInt(id, 10),
+    );
+    setOrder(filteredMenuItems);
+
+    const menuPkArray = filteredMenuItems.flatMap(item =>
       Array(item.quantity).fill(item.menu_pk),
     );
     setMenuPkArray(menuPkArray);
-  }, [id]);
+  }, [selectedMenuItems, id]);
 
   // 주소 변경 시 userAddress.addr1 또는 addr2 값 업데이트
   useEffect(() => {

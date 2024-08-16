@@ -20,12 +20,14 @@ const OrderSummary = ({
   restaurantState,
 }) => {
   const [open, setOpen] = useState(false);
-  const { id } = useParams();
+  const { id } = useParams(); // useParams로 얻은 id 값
 
-  console.log(id);
-  console.log(selectedMenuItems.menu_res_pk);
+  // menu_res_pk 값이 useParams로 얻은 id 값과 일치하는 객체들만 필터링
+  const filteredMenuItems = selectedMenuItems.filter(
+    item => item.menu_res_pk === parseInt(id, 10), // id와 item.menu_res_pk를 비교
+  );
 
-  const totalAmount = selectedMenuItems.reduce(
+  const totalAmount = filteredMenuItems.reduce(
     (sum, item) =>
       sum +
       item.menu_price * item.quantity +
@@ -39,14 +41,14 @@ const OrderSummary = ({
   );
 
   const emptyMessageStyle = {
-    padding: selectedMenuItems.length === 0 ? "20px" : "0",
+    padding: filteredMenuItems.length === 0 ? "20px" : "0",
     textAlign: "center",
   };
 
   const submitButtonStyle = {
-    backgroundColor: selectedMenuItems.length > 0 ? "#333" : "#eee",
-    color: selectedMenuItems.length > 0 ? "#eee" : "#aaa",
-    cursor: selectedMenuItems.length > 0 ? "pointer" : "default",
+    backgroundColor: filteredMenuItems.length > 0 ? "#333" : "#eee",
+    color: filteredMenuItems.length > 0 ? "#eee" : "#aaa",
+    cursor: filteredMenuItems.length > 0 ? "pointer" : "default",
   };
 
   const formatPrice = price => {
@@ -55,9 +57,8 @@ const OrderSummary = ({
 
   const handleOrderClick = () => {
     if (restaurantState === 2) {
-      // 준비중일 때
       setOpen(true);
-      document.body.style.overflow = "hidden"; // 스크롤 잠금
+      document.body.style.overflow = "hidden";
     } else {
       onOrder(restaurantName);
     }
@@ -65,7 +66,7 @@ const OrderSummary = ({
 
   const handleClose = () => {
     setOpen(false);
-    document.body.style.overflow = "auto"; // 스크롤 해제
+    document.body.style.overflow = "auto";
   };
 
   useEffect(() => {
@@ -84,7 +85,7 @@ const OrderSummary = ({
           </div>
         </div>
         <div className="order-summary__content-wrapper">
-          {selectedMenuItems.length === 0 ? (
+          {filteredMenuItems.length === 0 ? (
             <div
               className="order-summary__empty-message"
               style={emptyMessageStyle}
@@ -92,7 +93,7 @@ const OrderSummary = ({
               선택된 메뉴가 없습니다.
             </div>
           ) : (
-            selectedMenuItems.map((item, index) => (
+            filteredMenuItems.map((item, index) => (
               <div key={index}>
                 <div className="order-summary__content">
                   {item.menu_name}: {item.menu_content}
@@ -147,7 +148,7 @@ const OrderSummary = ({
               </div>
             ))
           )}
-          {selectedMenuItems.length > 0 && (
+          {filteredMenuItems.length > 0 && (
             <div className="order-summary__total-amount">
               <p>총 결제 금액</p>
               <p>{formatPrice(totalAmount)}원</p>
@@ -159,7 +160,7 @@ const OrderSummary = ({
         className="order-summary__submit-button"
         style={submitButtonStyle}
         onClick={handleOrderClick}
-        disabled={selectedMenuItems.length === 0}
+        disabled={filteredMenuItems.length === 0}
       >
         주문하기
       </button>
