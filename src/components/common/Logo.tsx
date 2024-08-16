@@ -9,7 +9,7 @@ interface LogoProps {
 export const Logo: React.FC<LogoProps> = ({ style }) => {
   return (
     <StyledLink to="/">
-      <img src={process.env.PUBLIC_URL + "/images/logo.png"} alt="Logo" />
+      <img src="/images/logo.png" alt="Logo" />
     </StyledLink>
   );
 };
