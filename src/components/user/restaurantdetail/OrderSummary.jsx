@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import DeleteIcon from "@mui/icons-material/Delete";
+import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import Button from "@mui/material/Button";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
 const OrderSummary = ({
   selectedMenuItems,
@@ -19,6 +20,10 @@ const OrderSummary = ({
   restaurantState,
 }) => {
   const [open, setOpen] = useState(false);
+  const { id } = useParams();
+
+  console.log(id);
+  console.log(selectedMenuItems.menu_res_pk);
 
   const totalAmount = selectedMenuItems.reduce(
     (sum, item) =>
@@ -90,7 +95,7 @@ const OrderSummary = ({
             selectedMenuItems.map((item, index) => (
               <div key={index}>
                 <div className="order-summary__content">
-                  {item.menu_name}: {item.menu_content} (수량: {item.quantity})
+                  {item.menu_name}: {item.menu_content}
                   {item.selectedOptions && (
                     <div className="order-summary__options">
                       {Object.entries(item.selectedOptions).map(
