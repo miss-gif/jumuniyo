@@ -14,7 +14,7 @@ import SidebarCoupon from "./SidebarCoupon";
 import SidebarHeart from "./SidebarHeart";
 import UserActions from "./UserActions";
 import "./UserHeader.scss";
-import { Logo } from "../../../components/common/Logo";
+import { MdClear } from "react-icons/md";
 
 const UserHeader = () => {
   const navigate = useNavigate();
@@ -164,7 +164,15 @@ const UserHeader = () => {
             onChange={handleInputChange}
             onKeyPress={handleKeyPress}
           />
-          <button type="submit" onClick={handleSearch}>
+          {searchRestaurantValue && (
+            <button
+              className="search__clear-btn"
+              onClick={() => dispatch(searchRestaurant(""))}
+            >
+              <MdClear />
+            </button>
+          )}
+          <button className="search__btn" type="submit" onClick={handleSearch}>
             검색
           </button>
         </div>

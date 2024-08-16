@@ -46,6 +46,25 @@
       outline: none;
       flex-grow: 1;
     }
+    .search__clear-btn {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 8px;
+      border-radius: 50%;
+      &:hover {
+        background-color: #333;
+        color: #fff;
+      }
+    }
+    .search__btn {
+      padding: 4px 8px;
+      margin-left: 8px;
+      background-color: #333;
+      color: #fff;
+      font-weight: 500;
+      border-radius: 4px;
+    }
   }
 
   &__auth {

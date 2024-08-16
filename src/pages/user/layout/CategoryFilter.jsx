@@ -92,6 +92,7 @@ const CategoryFilter = () => {
                 isActive={activeCategory === category.categoryPk}
                 onClick={onClickLink(category.categoryPk)}
               >
+                <img src={category.categoryPic} alt={category.categoryName} />
                 {category.categoryName}
               </ListItem>
             ))}
@@ -127,6 +128,7 @@ const CategoryFilter = () => {
                   isActive={activeCategory === category.categoryPk}
                   onClick={onClickLink(category.categoryPk)}
                 >
+                  <img src={category.categoryPic} alt={category.categoryName} />
                   {category.categoryName}
                 </ListItem>
               ))}
