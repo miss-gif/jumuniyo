@@ -74,6 +74,12 @@ const UserHeader = () => {
     }
   }, [sidebarState, isTransitioning]);
 
+  useEffect(() => {
+    if (!sidebarState.isOpen) {
+      document.documentElement.style.overflow = "auto";
+    }
+  }, [sidebarState.isOpen]);
+
   // useCallback을 사용한 리렌더링 최적화
   const toggleSidebar = useCallback(() => {
     setSidebarState(prevState => ({ ...prevState, isOpen: !prevState.isOpen }));
@@ -122,10 +128,6 @@ const UserHeader = () => {
     setIsModal(false);
     setSelectedItem(null);
     document.documentElement.style.overflow = "auto";
-  };
-
-  const clickSearch = () => {
-    navigate("/restaurant/category_id=0");
   };
 
   const handleSearch = () => {
@@ -189,6 +191,7 @@ const UserHeader = () => {
         toggleSidebar={toggleSidebar}
         handleLogoutClick={handleLogoutClick}
         userNickname={userNickname}
+        closeModal={closeModal}
       />
       <SidebarCart
         isSidebarCart={sidebarState.isCartOpen}
