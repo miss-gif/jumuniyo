@@ -5,7 +5,7 @@ import { IoIosClose } from "react-icons/io";
 import { IoLocationOutline } from "react-icons/io5";
 import Modal from "react-modal";
 import { useDispatch, useSelector } from "react-redux";
-import { setSearchTerm } from "../../../app/userSlice";
+import { setLocationData, setSearchTerm } from "../../../app/userSlice";
 import "./AddressModal.scss";
 import NewLocationSearch from "./NewLocationSearch";
 
@@ -41,17 +41,41 @@ const AddressModal = ({ isOpen, onRequestClose }) => {
     setActiveTab(tab);
   };
 
-  const onClickSearch = address => {
+  const onClickSearch = async address => {
     dispatch(setSearchTerm(address.addr1));
+
+    try {
+      // Geocoding API를 사용해 주소로 위경도 얻기
+      const response = await axios.get(
+        `https://maps.googleapis.com/maps/api/geocode/json`,
+        {
+          params: {
+            address: address.addr1,
+            key: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
+          },
+        },
+      );
+
+      if (response.data.status === "OK") {
+        const location = response.data.results[0].geometry.location;
+        dispatch(
+          setLocationData({ latitude: location.lat, longitude: location.lng }),
+        );
+      } else {
+        console.error("Geocoding failed:", response.data.status);
+      }
+    } catch (error) {
+      console.error("Geocoding error:", error);
+    }
   };
 
-  // 현재 검색위치 확인
-  useEffect(() => {
-    console.log("리덕스 위치 : ", searchTerm);
-    console.log("리덕스 위경도 :", locationData);
-    console.log("리덕스 latitude :", locationData.latitude);
-    console.log("리덕스 longitude :", locationData.longitude);
-  }, [searchTerm, locationData]);
+  // // 현재 검색위치 확인
+  // useEffect(() => {
+  //   console.log("리덕스 위치 : ", searchTerm);
+  //   console.log("리덕스 위경도 :", locationData);
+  //   console.log("리덕스 latitude :", locationData.latitude);
+  //   console.log("리덕스 longitude :", locationData.longitude);
+  // }, [searchTerm, locationData]);
 
   return (
     <Modal
@@ -91,7 +115,6 @@ const AddressModal = ({ isOpen, onRequestClose }) => {
                     onClick={() => {
                       onClickSearch(address);
                       onRequestClose();
-                      console.log("주소가 클릭됨:", address.addr1); // addr1 로그 출력
                     }}
                   >
                     <div>

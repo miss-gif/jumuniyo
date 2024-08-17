@@ -55,13 +55,13 @@ export default function GoogleMaps({ onRequestClose }) {
     [],
   );
 
-  // 현재 검색위치 확인
-  useEffect(() => {
-    console.log("리덕스 위치 : ", searchTerm);
-    console.log("리덕스 위경도 :", locationData);
-    console.log("리덕스 latitude :", locationData.latitude);
-    console.log("리덕스 longitude :", locationData.longitude);
-  }, [searchTerm, locationData]);
+  // // 현재 검색위치 확인
+  // useEffect(() => {
+  //   console.log("리덕스 위치 : ", searchTerm);
+  //   console.log("리덕스 위경도 :", locationData);
+  //   console.log("리덕스 latitude :", locationData.latitude);
+  //   console.log("리덕스 longitude :", locationData.longitude);
+  // }, [searchTerm, locationData]);
 
   useEffect(() => {
     let active = true;
