@@ -1,13 +1,13 @@
 import axios from "axios";
-import { useEffect, useState, useRef, memo } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import { IoIosHeartEmpty } from "react-icons/io";
 import { MdNavigateBefore, MdNavigateNext } from "react-icons/md";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router";
 import "swiper/css";
 import { Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "./MainPage.scss";
-import { useNavigate } from "react-router";
 
 const SwiperCarousel = memo(
   ({ title, data, loading, error, onPrev, onNext, swiperRef }) => {
@@ -22,7 +22,7 @@ const SwiperCarousel = memo(
         <div className="carousel-header">
           <h3 className="carousel-header__title">{title}</h3>
           <div className="carousel-header__controller">
-            <div className="carousel-header__controller-all">See all</div>
+            {/* <div className="carousel-header__controller-all">See all</div> */}
             <div className="carousel-header__controller-btns">
               <button
                 className="carousel-header__controller-prev"
@@ -109,7 +109,6 @@ const MainPage = () => {
     recentOrders: useRef(null),
     heartStores: useRef(null),
   };
-  const dispatch = useDispatch();
   const { locationData } = useSelector(state => state.user);
   const [coupons, setCoupons] = useState([]);
   const [newStores, setNewStores] = useState([]);
@@ -142,7 +141,7 @@ const MainPage = () => {
     const addrX = locationData?.longitude || 0;
     const addrY = locationData?.latitude || 0;
 
-    if (isLoggedIn) {
+    if (locationData) {
       fetchData(
         `/api/restaurant/coupon?addrX=${addrY}&addrY=${addrX}`,
         setCoupons,
@@ -151,18 +150,21 @@ const MainPage = () => {
         `/api/restaurant/new10?addrX=${addrY}&addrY=${addrX}`,
         setNewStores,
       );
+    }
+
+    if (isLoggedIn) {
       fetchData(
         `/api/restaurant/recent?addrX=${addrY}&addrY=${addrX}`,
         setRecentOrders,
       );
       fetchData(`/api/restaurant/followed`, setHeartStores);
     }
-  }, [locationData]);
+  }, [isLoggedIn, locationData]);
 
-  return isLoggedIn ? (
+  return !locationData.latitude == 0 ? (
     <div className="main-page">
       <SwiperCarousel
-        title="쿠폰 이벤트 진행중"
+        title="쿠폰 이벤트 진행 중인 상점"
         data={coupons}
         loading={loading}
         error={error}
@@ -179,27 +181,33 @@ const MainPage = () => {
         onNext={() => swiperRefs.newStores.current?.slideNext()}
         swiperRef={swiperRefs.newStores}
       />
-      <SwiperCarousel
-        title="최근 주문한 상점"
-        data={recentOrders}
-        loading={loading}
-        error={error}
-        onPrev={() => swiperRefs.recentOrders.current?.slidePrev()}
-        onNext={() => swiperRefs.recentOrders.current?.slideNext()}
-        swiperRef={swiperRefs.recentOrders}
-      />
-      <SwiperCarousel
-        title="찜한 상점"
-        data={heartStores}
-        loading={loading}
-        error={error}
-        onPrev={() => swiperRefs.heartStores.current?.slidePrev()}
-        onNext={() => swiperRefs.heartStores.current?.slideNext()}
-        swiperRef={swiperRefs.heartStores}
-      />
+      {isLoggedIn ? (
+        <>
+          <SwiperCarousel
+            title="최근 주문한 상점"
+            data={recentOrders}
+            loading={loading}
+            error={error}
+            onPrev={() => swiperRefs.recentOrders.current?.slidePrev()}
+            onNext={() => swiperRefs.recentOrders.current?.slideNext()}
+            swiperRef={swiperRefs.recentOrders}
+          />
+          <SwiperCarousel
+            title="찜한 상점"
+            data={heartStores}
+            loading={loading}
+            error={error}
+            onPrev={() => swiperRefs.heartStores.current?.slidePrev()}
+            onNext={() => swiperRefs.heartStores.current?.slideNext()}
+            swiperRef={swiperRefs.heartStores}
+          />
+        </>
+      ) : (
+        <></>
+      )}
     </div>
   ) : (
-    <>비로그인 출력화면</>
+    <div className="대기화면">주소를 입력해주세요.</div>
   );
 };
 

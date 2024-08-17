@@ -14,6 +14,7 @@ import SidebarCoupon from "./SidebarCoupon";
 import SidebarHeart from "./SidebarHeart";
 import UserActions from "./UserActions";
 import "./UserHeader.scss";
+import { MdClear } from "react-icons/md";
 
 const UserHeader = () => {
   const navigate = useNavigate();
@@ -73,6 +74,12 @@ const UserHeader = () => {
     }
   }, [sidebarState, isTransitioning]);
 
+  useEffect(() => {
+    if (!sidebarState.isOpen) {
+      document.documentElement.style.overflow = "auto";
+    }
+  }, [sidebarState.isOpen]);
+
   // useCallback을 사용한 리렌더링 최적화
   const toggleSidebar = useCallback(() => {
     setSidebarState(prevState => ({ ...prevState, isOpen: !prevState.isOpen }));
@@ -123,21 +130,25 @@ const UserHeader = () => {
     document.documentElement.style.overflow = "auto";
   };
 
-  const clickSearch = () => {
+  const handleSearch = () => {
     navigate("/restaurant/category_id=0");
+  };
+
+  const handleKeyPress = e => {
+    if (e.key === "Enter") {
+      handleSearch();
+    }
   };
 
   return (
     <div className="user-header">
-      {isLoggedIn && (
-        <>
-          <button className="user-header__menu-btn" onClick={toggleSidebar}>
-            <IoIosMenu fontSize={32} />
-          </button>
-        </>
-      )}
+      <button className="user-header__menu-btn" onClick={toggleSidebar}>
+        <IoIosMenu fontSize={32} />
+      </button>
       <div className="user-header__logo">
-        <Link to={"/"}>주문이요</Link>
+        <Link to={"/"}>
+          <img src="/images/logo.png" alt="Logo" />
+        </Link>
       </div>
       <nav className="user-header__nav">
         <LocationSelector
@@ -153,18 +164,25 @@ const UserHeader = () => {
             placeholder="검색창"
             value={searchRestaurantValue}
             onChange={handleInputChange}
+            onKeyPress={handleKeyPress}
           />
-          <button type="submit" onClick={clickSearch}>
+          {searchRestaurantValue && (
+            <button
+              className="search__clear-btn"
+              onClick={() => dispatch(searchRestaurant(""))}
+            >
+              <MdClear />
+            </button>
+          )}
+          <button className="search__btn" type="submit" onClick={handleSearch}>
             검색
           </button>
         </div>
-        {isLoggedIn && (
-          <UserActions
-            toggleSidebarCart={toggleSidebarCart}
-            toggleSidebarCoupon={toggleSidebarCoupon}
-            toggleSidebarHeart={toggleSidebarHeart}
-          />
-        )}
+        <UserActions
+          toggleSidebarCart={toggleSidebarCart}
+          toggleSidebarCoupon={toggleSidebarCoupon}
+          toggleSidebarHeart={toggleSidebarHeart}
+        />
       </nav>
       {!isLoggedIn && <AuthLinks closeModal={closeModal} />}
 
@@ -173,6 +191,7 @@ const UserHeader = () => {
         toggleSidebar={toggleSidebar}
         handleLogoutClick={handleLogoutClick}
         userNickname={userNickname}
+        closeModal={closeModal}
       />
       <SidebarCart
         isSidebarCart={sidebarState.isCartOpen}
