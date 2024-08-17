@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useSelector } from "react-redux";
 import {
   BarChart,
   Bar,
@@ -22,18 +23,12 @@ const Statistics = () => {
   const [selectedMonth, setSelectedMonth] = useState(new Date());
   const [view, setView] = useState("month");
 
+  // Redux Store에서 accessToken 가져오기
+  const accessToken = useSelector(state => state.user.accessToken);
+
   useEffect(() => {
     const fetchMonthData = async () => {
       try {
-        const getCookie = name => {
-          const value = `; ${document.cookie}`;
-          const parts = value.split(`; ${name}=`);
-          if (parts.length === 2) return parts.pop().split(";").shift();
-          return null;
-        };
-
-        const accessToken = getCookie("accessToken");
-
         if (!accessToken) {
           // Handle no access token case
           return;
@@ -79,10 +74,10 @@ const Statistics = () => {
 
           setMonthSalesData(combinedMonthData);
         } else {
-          // console.log(
-          //   "Month Order Response Data:",
-          //   monthOrderResponse.data.resultData,
-          // );
+          console.log(
+            "Month Order Response Data:",
+            monthOrderResponse.data.resultData,
+          );
         }
       } catch (error) {
         setError("데이터를 가져오는 중 에러가 발생했습니다.");
@@ -92,15 +87,6 @@ const Statistics = () => {
 
     const fetchDailyData = async () => {
       try {
-        const getCookie = name => {
-          const value = `; ${document.cookie}`;
-          const parts = value.split(`; ${name}=`);
-          if (parts.length === 2) return parts.pop().split(";").shift();
-          return null;
-        };
-
-        const accessToken = getCookie("accessToken");
-
         if (!accessToken) {
           // Handle no access token case
           return;
@@ -126,8 +112,8 @@ const Statistics = () => {
           },
         );
 
-        //console.log("Daily Sales Response: ", dailySalesResponse.data);
-        //console.log("Daily Order Response: ", dailyOrderResponse.data);
+        console.log("Daily Sales Response: ", dailySalesResponse.data);
+        console.log("Daily Order Response: ", dailyOrderResponse.data);
 
         if (
           Array.isArray(dailySalesResponse.data.resultData) &&
@@ -148,22 +134,22 @@ const Statistics = () => {
             };
           });
 
-          //console.log("Combined Daily Data: ", combinedDailyData);
+          console.log("Combined Daily Data: ", combinedDailyData);
           setDailySalesData(combinedDailyData);
         } else {
-          // //console.error("Daily Sales or Order response is not an array");
-          // //console.log(
-          //   "Daily Sales Response Data:",
-          //   dailySalesResponse.data.resultData,
-          // );
-          // console.log(
-          //   "Daily Order Response Data:",
-          //   dailyOrderResponse.data.resultData,
-          // );
+          console.error("Daily Sales or Order response is not an array");
+          console.log(
+            "Daily Sales Response Data:",
+            dailySalesResponse.data.resultData,
+          );
+          console.log(
+            "Daily Order Response Data:",
+            dailyOrderResponse.data.resultData,
+          );
         }
       } catch (error) {
         setError("데이터를 가져오는 중 에러가 발생했습니다.");
-        //console.error("데이터 가져오기 에러:", error);
+        console.error("데이터 가져오기 에러:", error);
       }
     };
 
@@ -172,7 +158,7 @@ const Statistics = () => {
     } else if (view === "day") {
       fetchDailyData();
     }
-  }, [selectedYear, selectedMonth, view]);
+  }, [selectedYear, selectedMonth, view, accessToken]);
 
   const handleYearChange = date => {
     setSelectedYear(date);

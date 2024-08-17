@@ -52,7 +52,12 @@ import MyPageCouponPage from "./pages/MyPageCouponPage";
 import MyPageFavoriteListPage from "./pages/MyPageFavoriteListPage";
 import IntroPage from "./pages/intro/IntroPage";
 import MypageReportDetailPage from "./pages/MypageReportDetailPage";
+
+import StatisticsforAdmin from "./components/admin/StatisticsforAdmin";
+import StatisticsforCeo from "./components/ceo/StatisticsforCeo";
+
 import MypageLayout from "./components/layout/MypageLayout";
+
 
 function App() {
   return (
@@ -118,6 +123,8 @@ function App() {
             <Route path="store-management" element={<StoreManagement />} />
             <Route path="menu-management" element={<MenuManagement />} />
             <Route path="statistics" element={<Statistics />} />
+            <Route path="statisticsforCeo" element={<StatisticsforCeo />} />
+
             <Route path="withdraw" element={<CeoWithdrawal />} />
             <Route path="logins" element={<LoginPageforCEO />} />
           </Route>
@@ -126,6 +133,8 @@ function App() {
           <Route path="/admin" element={<AdminLayout />}>
             <Route index element={<AdminPage />} />
             <Route path="category-setting" element={<CategorySetting />} />
+            <Route path="statistics" element={<StatisticsforAdmin />} />
+
             <Route path="ask">
               <Route index element={<Ask />} />
               <Route path="details/:id" element={<AskDetail />} />

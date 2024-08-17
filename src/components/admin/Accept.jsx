@@ -66,40 +66,38 @@ const Accept = () => {
   if (error) return <div>{error}</div>;
 
   return (
-    <div className="restaurant-list-container">
-      <h2>승인되지 않은 음식점 목록</h2>
-      {restaurants.length === 0 ? (
-        <p>승인되지 않은 음식점이 없습니다.</p>
-      ) : (
-        <ul className="restaurant-list">
-          {restaurants.map(restaurant => (
-            <li key={restaurant.resPk} className="restaurant-card">
-              <h3 onClick={() => handleCardClick(restaurant.resPk)}>
-                {restaurant.resName}
-              </h3>
-              <p>
-                <strong>등록 번호:</strong> {restaurant.resRegiNum}
-              </p>
-              <p>
-                <strong>주소:</strong> {restaurant.resAddr}
-              </p>
-              <p>
-                <strong>설명1:</strong> {restaurant.resDescription1}
-              </p>
-              <p>
-                <strong>설명2:</strong> {restaurant.resDescription2}
-              </p>
-              <p>
-                <strong>등록 일자:</strong>{" "}
+    <div className="ask-wrap">
+      <h1>승인되지 않은 음식점 목록</h1>
+
+      <div className="tap">
+        <div className="tap-number">등록 번호</div>
+        <div className="tap-title">음식점 이름</div>
+        <div className="tap-status">주소</div>
+        <div className="tap-writeTime">등록 일자</div>
+      </div>
+      <div className="restaurantList">
+        {restaurants.length === 0 ? (
+          <p>승인되지 않은 음식점이 없습니다.</p>
+        ) : (
+          restaurants.map(restaurant => (
+            <div
+              key={restaurant.resPk}
+              className="oneRestaurant"
+              onClick={() => handleCardClick(restaurant.resPk)}
+            >
+              <div className="tap-number">{restaurant.resRegiNum}</div>
+              <div className="tap-title">{restaurant.resName}</div>
+              <div className="tap-status">{restaurant.resAddr}</div>
+              <div className="tap-writeTime">
                 {new Date(restaurant.createdAt).toLocaleString()}
-              </p>
+              </div>
               <button onClick={() => handleAccept(restaurant.resPk)}>
                 승낙하기
               </button>
-            </li>
-          ))}
-        </ul>
-      )}
+            </div>
+          ))
+        )}
+      </div>
     </div>
   );
 };
