@@ -3,6 +3,7 @@ import Mypage from "../components/join/Mypage";
 import Swal from "sweetalert2";
 import jwtAxios from "../api/user/jwtUtil";
 import { useNavigate } from "react-router-dom";
+import { Alert } from "@mui/material";
 
 interface Coupon {
   content: string;
@@ -37,6 +38,19 @@ const MyPageCouponPage = () => {
   useEffect(() => {
     console.log(couponList);
   }, [couponList]);
+
+  if (couponList.length <= 0) {
+    return (
+      <div className="mypage-wrap">
+        <Mypage />
+        <div className="mypage-box">
+          <Alert variant="outlined" severity="info">
+            보유중인 쿠폰이 없습니다.
+          </Alert>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="mypage-wrap">

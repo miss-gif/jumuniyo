@@ -1,5 +1,5 @@
 import Favorite from "@mui/icons-material/Favorite";
-import { ToggleButton } from "@mui/material";
+import { Alert, ToggleButton } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import jwtAxios from "../api/user/jwtUtil";
@@ -70,6 +70,19 @@ const MyPageFavoriteListPage: React.FC = () => {
   useEffect(() => {
     getFavoriteList();
   }, []);
+
+  if (favorite.length <= 0) {
+    return (
+      <div className="mypage-wrap">
+        <Mypage />
+        <div className="mypage-box">
+          <Alert variant="outlined" severity="info">
+            즐겨찾기한 가게가 없습니다.
+          </Alert>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="mypage-wrap">

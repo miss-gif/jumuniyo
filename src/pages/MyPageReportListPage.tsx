@@ -4,6 +4,7 @@ import ReportListHeader from "../components/user/mypage/ReportListHeader";
 import Swal from "sweetalert2";
 import jwtAxios from "../api/user/jwtUtil";
 import { useNavigate } from "react-router-dom";
+import { Alert } from "@mui/material";
 
 interface Report {
   inquiryPk: number;
@@ -64,6 +65,19 @@ const MypageReportPage: React.FC = () => {
     navgate(`../../mypage/reportdetail/${doneOrderPk}`);
   };
 
+  if (report.length <= 0) {
+    return (
+      <div className="mypage-wrap">
+        <Mypage />
+        <div className="mypage-box">
+          <Alert variant="outlined" severity="info">
+            문의하신 내역이 없습니다.
+          </Alert>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="mypage-wrap">
       <Mypage />
@@ -101,14 +115,16 @@ const MypageReportPage: React.FC = () => {
                         문의 상세보기
                       </div>
                     </div>
-                    <button
-                      className="btn"
-                      onClick={() => {
-                        deleteReport(report.inquiryPk);
-                      }}
-                    >
-                      삭제
-                    </button>
+                    {report.inquiryState === 1 ? (
+                      <button
+                        className="btn"
+                        onClick={() => {
+                          deleteReport(report.inquiryPk);
+                        }}
+                      >
+                        삭제
+                      </button>
+                    ) : null}
                   </div>
                 </div>
               </div>
