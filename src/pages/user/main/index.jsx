@@ -141,7 +141,7 @@ const MainPage = () => {
     const addrX = locationData?.longitude || 0;
     const addrY = locationData?.latitude || 0;
 
-    if (isLoggedIn) {
+    if (locationData) {
       fetchData(
         `/api/restaurant/coupon?addrX=${addrY}&addrY=${addrX}`,
         setCoupons,
@@ -150,15 +150,18 @@ const MainPage = () => {
         `/api/restaurant/new10?addrX=${addrY}&addrY=${addrX}`,
         setNewStores,
       );
+    }
+
+    if (isLoggedIn) {
       fetchData(
         `/api/restaurant/recent?addrX=${addrY}&addrY=${addrX}`,
         setRecentOrders,
       );
       fetchData(`/api/restaurant/followed`, setHeartStores);
     }
-  }, [locationData]);
+  }, [isLoggedIn, locationData]);
 
-  return isLoggedIn ? (
+  return !locationData.latitude == 0 ? (
     <div className="main-page">
       <SwiperCarousel
         title="쿠폰 이벤트 진행 중인 상점"
@@ -178,27 +181,33 @@ const MainPage = () => {
         onNext={() => swiperRefs.newStores.current?.slideNext()}
         swiperRef={swiperRefs.newStores}
       />
-      <SwiperCarousel
-        title="최근 주문한 상점"
-        data={recentOrders}
-        loading={loading}
-        error={error}
-        onPrev={() => swiperRefs.recentOrders.current?.slidePrev()}
-        onNext={() => swiperRefs.recentOrders.current?.slideNext()}
-        swiperRef={swiperRefs.recentOrders}
-      />
-      <SwiperCarousel
-        title="찜한 상점"
-        data={heartStores}
-        loading={loading}
-        error={error}
-        onPrev={() => swiperRefs.heartStores.current?.slidePrev()}
-        onNext={() => swiperRefs.heartStores.current?.slideNext()}
-        swiperRef={swiperRefs.heartStores}
-      />
+      {isLoggedIn ? (
+        <>
+          <SwiperCarousel
+            title="최근 주문한 상점"
+            data={recentOrders}
+            loading={loading}
+            error={error}
+            onPrev={() => swiperRefs.recentOrders.current?.slidePrev()}
+            onNext={() => swiperRefs.recentOrders.current?.slideNext()}
+            swiperRef={swiperRefs.recentOrders}
+          />
+          <SwiperCarousel
+            title="찜한 상점"
+            data={heartStores}
+            loading={loading}
+            error={error}
+            onPrev={() => swiperRefs.heartStores.current?.slidePrev()}
+            onNext={() => swiperRefs.heartStores.current?.slideNext()}
+            swiperRef={swiperRefs.heartStores}
+          />
+        </>
+      ) : (
+        <></>
+      )}
     </div>
   ) : (
-    <div className="대기화면">비로그인 출력화면</div>
+    <div className="대기화면">주소를 입력해주세요.</div>
   );
 };
 
