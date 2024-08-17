@@ -52,6 +52,7 @@ import MyPageCouponPage from "./pages/MyPageCouponPage";
 import MyPageFavoriteListPage from "./pages/MyPageFavoriteListPage";
 import IntroPage from "./pages/intro/IntroPage";
 import MypageReportDetailPage from "./pages/MypageReportDetailPage";
+import MypageLayout from "./components/layout/MypageLayout";
 
 function App() {
   return (
@@ -74,6 +75,12 @@ function App() {
             <Route path="cart" element={<CartPage />} />
             <Route path="checkout" element={<CheckoutPage />} />
             <Route path="profile" element={<ProfilePage />} />
+            <Route path="payment/:id" element={<PaymentPage />} />
+            <Route path="projectinfo" element={<ProjectInfo />} />
+          </Route>
+
+          {/* 마이페이지 */}
+          <Route path="/" element={<MypageLayout />}>
             <Route path="mypage">
               <Route index element={<MyPage />} />
               <Route path="order/:id" element={<MyPageOrderPage />} />
@@ -94,8 +101,6 @@ function App() {
               <Route path="coupon" element={<MyPageCouponPage />} />
               <Route path="favorite" element={<MyPageFavoriteListPage />} />
             </Route>
-            <Route path="payment/:id" element={<PaymentPage />} />
-            <Route path="projectinfo" element={<ProjectInfo />} />
           </Route>
 
           {/* 사업자 */}

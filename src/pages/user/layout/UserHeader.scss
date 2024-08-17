@@ -2,7 +2,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 8px;
+  gap: 16px;
   padding: 0 40px;
   height: 64px;
   background-color: #fff;
@@ -16,13 +16,14 @@
     align-items: center;
   }
   &__logo {
+    width: 150px;
   }
   &__nav {
     width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 8px;
+    gap: 16px;
   }
   &__location {
     display: flex;
@@ -45,13 +46,32 @@
       outline: none;
       flex-grow: 1;
     }
+    .search__clear-btn {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 8px;
+      border-radius: 50%;
+      &:hover {
+        background-color: #333;
+        color: #fff;
+      }
+    }
+    .search__btn {
+      padding: 4px 8px;
+      margin-left: 8px;
+      background-color: #333;
+      color: #fff;
+      font-weight: 500;
+      border-radius: 4px;
+    }
   }
 
   &__auth {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 8px;
+    gap: 16px;
   }
   &__auth.column {
     flex-direction: column;
