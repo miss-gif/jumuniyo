@@ -2,19 +2,34 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-const getCookie = name => {
+interface MenuInfoDto {
+  menuName: string;
+  menuPrice: number;
+}
+
+interface Order {
+  doneOrderPk: number;
+  createdAt: string;
+  doneOrderState: number;
+  menuInfoDtos: MenuInfoDto[];
+  orderPrice: number;
+}
+
+const getCookie = (name: string): string | undefined => {
   const value = `; ${document.cookie}`;
   const parts = value.split(`; ${name}=`);
-  if (parts.length === 2) return parts.pop().split(";").shift();
+  if (parts.length === 2) return parts.pop()?.split(";").shift();
 };
 
-const OrdersHistory = () => {
-  const [selectedTab, setSelectedTab] = useState("all");
-  const [acceptedOrders, setAcceptedOrders] = useState([]);
-  const [refusedOrders, setRefusedOrders] = useState([]);
-  const [allOrders, setAllOrders] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [maxPage, setMaxPage] = useState(1);
+const OrdersHistory: React.FC = () => {
+  const [selectedTab, setSelectedTab] = useState<
+    "all" | "accepted" | "refused"
+  >("all");
+  const [acceptedOrders, setAcceptedOrders] = useState<Order[]>([]);
+  const [refusedOrders, setRefusedOrders] = useState<Order[]>([]);
+  const [allOrders, setAllOrders] = useState<Order[]>([]);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [maxPage, setMaxPage] = useState<number>(1);
 
   useEffect(() => {
     if (selectedTab === "accepted") {
@@ -26,11 +41,11 @@ const OrdersHistory = () => {
     }
   }, [selectedTab, currentPage]);
 
-  const getAcceptedOrders = async page => {
+  const getAcceptedOrders = async (page: number) => {
     try {
       const accessToken = getCookie("accessToken");
       const response = await axios.get(
-        `/api/done/owner/done/list?page=${page}`,
+        `/api/done/owner/done/list?page=${page - 1}`,
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,
@@ -49,11 +64,11 @@ const OrdersHistory = () => {
     }
   };
 
-  const getRefusedOrders = async page => {
+  const getRefusedOrders = async (page: number) => {
     try {
       const accessToken = getCookie("accessToken");
       const response = await axios.get(
-        `/api/done/owner/cancel/list?page=${page}`,
+        `/api/done/owner/cancel/list?page=${page - 1}`,
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,
@@ -72,16 +87,16 @@ const OrdersHistory = () => {
     }
   };
 
-  const getAllOrders = async page => {
+  const getAllOrders = async (page: number) => {
     try {
       const accessToken = getCookie("accessToken");
       const [acceptedResponse, refusedResponse] = await Promise.all([
-        axios.get(`/api/done/owner/done/list?size=10&page=${page}`, {
+        axios.get(`/api/done/owner/done/list?size=10&page=${page - 1}`, {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
         }),
-        axios.get(`/api/done/owner/cancel/list?size=10&page=${page}`, {
+        axios.get(`/api/done/owner/cancel/list?size=10&page=${page - 1}`, {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
@@ -91,7 +106,7 @@ const OrdersHistory = () => {
       const acceptedData = acceptedResponse.data;
       const refusedData = refusedResponse.data;
 
-      let allData = [];
+      let allData: Order[] = [];
       if (
         (acceptedData.statusCode === 1 || acceptedData.statusCode === 2) &&
         (refusedData.statusCode === 1 || refusedData.statusCode === 2)
@@ -109,7 +124,10 @@ const OrdersHistory = () => {
         allData = refusedData.resultData.contents;
       }
 
-      allData.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      allData.sort(
+        (a, b) =>
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+      );
       setAllOrders(allData);
       setMaxPage(
         Math.max(
@@ -122,11 +140,11 @@ const OrdersHistory = () => {
     }
   };
 
-  const formatPrice = price => {
+  const formatPrice = (price: number) => {
     return price.toLocaleString();
   };
 
-  const renderOrders = (orders, emptyMessage) => {
+  const renderOrders = (orders: Order[], emptyMessage: JSX.Element) => {
     return orders.length > 0 ? (
       orders.map(order => (
         <div className="ceo-orderList" key={order.doneOrderPk}>
@@ -147,9 +165,14 @@ const OrdersHistory = () => {
                     {order.menuInfoDtos.length > 0 && (
                       <span>
                         {order.menuInfoDtos[0].menuName}{" "}
-                        {formatPrice(order.menuInfoDtos[0].menuPrice)}원 외{" "}
-                        {order.menuInfoDtos.length - 1}개 총{" "}
-                        {formatPrice(order.orderPrice)}원
+                        {formatPrice(order.menuInfoDtos[0].menuPrice)}원
+                        {order.menuInfoDtos.length > 1 && (
+                          <>
+                            {" "}
+                            외 {order.menuInfoDtos.length - 1}개 총{" "}
+                            {formatPrice(order.orderPrice)}원
+                          </>
+                        )}
                       </span>
                     )}
                   </div>
@@ -172,7 +195,7 @@ const OrdersHistory = () => {
     );
   };
 
-  const handlePageChange = newPage => {
+  const handlePageChange = (newPage: number) => {
     if (newPage >= 1 && newPage <= maxPage) {
       setCurrentPage(newPage);
     }

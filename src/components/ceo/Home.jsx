@@ -168,6 +168,23 @@ const Home = () => {
 
     checkLogin();
     loadOrders();
+
+    // 실시간 통신
+    // const eventSource = new EventSource("/sse");
+
+    // eventSource.onmessage = event => {
+    //   const newOrder = JSON.parse(event.data);
+    //   setOrders(prevOrders => [newOrder, ...prevOrders]);
+    // };
+
+    // eventSource.onerror = err => {
+    //   console.error("EventSource failed:", err);
+    //   eventSource.close();
+    // };
+
+    // return () => {
+    //   eventSource.close();
+    // };
   }, [navigate]);
 
   useEffect(() => {

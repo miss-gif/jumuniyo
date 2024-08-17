@@ -4,6 +4,7 @@ import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
+import { useNavigate } from "react-router-dom";
 
 const modalStyle = {
   position: "absolute",
@@ -18,6 +19,8 @@ const modalStyle = {
 };
 
 const LoginModal = ({ onClose }) => {
+  const navigate = useNavigate();
+
   return (
     <Modal
       open={true}
@@ -30,8 +33,16 @@ const LoginModal = ({ onClose }) => {
           로그인을 해주세요!
         </Typography>
         <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-          주문을 하려면 로그인이 필요합니다.
+          아직 회원이 아니신가요?
         </Typography>
+        <Typography
+          id="modal-modal-description"
+          sx={{ mt: 2, color: "red", cursor: "pointer" }}
+          onClick={() => navigate("/auth")}
+        >
+          회원가입하기
+        </Typography>
+        <br />
         <button className="btn" onClick={onClose}>
           닫기
         </button>

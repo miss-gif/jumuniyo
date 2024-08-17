@@ -47,10 +47,24 @@ const MenuManagement = () => {
     optionPrice: "",
   });
 
-  //모달
+  // 모달 상태 추가
   const [isOptionModalOpen, setIsOptionModalOpen] = useState(false);
   const [selectedMenuOptions, setSelectedMenuOptions] = useState([]);
   const [selectedMenuPk, setSelectedMenuPk] = useState(null);
+
+  const [optionActionMessage, setOptionActionMessage] = useState(null);
+  const [isActionModalOpen, setIsActionModalOpen] = useState(false);
+
+  // 모달 열기/닫기 함수
+  const handleOpenActionModal = message => {
+    setOptionActionMessage(message);
+    setIsActionModalOpen(true);
+  };
+
+  const handleCloseActionModal = () => {
+    setIsActionModalOpen(false);
+    setOptionActionMessage(null);
+  };
 
   const handleOpenOptionModal = async menu_pk => {
     setSelectedMenuPk(menu_pk);
@@ -213,7 +227,7 @@ const MenuManagement = () => {
 
         setCategories(prevCategories => {
           return prevCategories
-            .filter(category => category.menu_category !== null) // null이 아닌 항목만 필터링
+            .filter(category => category.menu_category !== null)
             .map(category => {
               if (
                 category.menu_category.menu_cat_pk === newMenuItem.menu_cat_pk
@@ -227,11 +241,8 @@ const MenuManagement = () => {
             });
         });
 
-        setMenuData(
-          prevMenuData =>
-            [...prevMenuData, newMenu].filter(
-              menu => menu.menu_cat_pk !== null,
-            ), // null이 아닌 항목만 필터링
+        setMenuData(prevMenuData =>
+          [...prevMenuData, newMenu].filter(menu => menu.menu_cat_pk !== null),
         );
         handleCloseModal();
       } else {
@@ -396,7 +407,7 @@ const MenuManagement = () => {
       if (response.data.statusCode === 1) {
         setCategories(prevCategories =>
           prevCategories
-            .filter(category => category.menu_category !== null) // null이 아닌 항목만 필터링
+            .filter(category => category.menu_category !== null)
             .map(category =>
               category.menu_category.menu_cat_pk ===
               editCategoryItem.menu_category.menu_cat_pk
@@ -433,7 +444,7 @@ const MenuManagement = () => {
       if (response.data.statusCode === 1) {
         setCategories(prevCategories =>
           prevCategories
-            .filter(category => category.menu_category !== null) // null이 아닌 항목만 필터링
+            .filter(category => category.menu_category !== null)
             .filter(
               category => category.menu_category.menu_cat_pk !== menu_cat_pk,
             ),
@@ -489,19 +500,6 @@ const MenuManagement = () => {
     }
   };
 
-  if (loading)
-    return (
-      <p>
-        <LoadingSpinner />
-      </p>
-    );
-  if (error) return <p>Error: {error}</p>;
-
-  const validCategories = categories.filter(
-    category => category.menu_category !== null,
-  );
-
-  // 카테고리 순서 바꾸 기
   const handleReorderCategory = async (menu_cat_pk, position) => {
     const accessToken = getCookie("accessToken");
 
@@ -521,16 +519,13 @@ const MenuManagement = () => {
 
       if (response.data.statusCode === 1) {
         setCategories(prevCategories => {
-          // 순서 변경 로직 적용
           const updatedCategories = [...prevCategories];
           const movedCategory = updatedCategories.find(
             category => category.menu_category.menu_cat_pk === menu_cat_pk,
           );
 
-          // 기존 위치에서 제거
           updatedCategories.splice(updatedCategories.indexOf(movedCategory), 1);
 
-          // 새로운 위치에 삽입
           updatedCategories.splice(position - 1, 0, movedCategory);
 
           return updatedCategories;
@@ -585,7 +580,6 @@ const MenuManagement = () => {
       );
 
       if (response.data.statusCode === 1) {
-        // 성공적으로 추가된 옵션을 상태에 반영
         setMenuOptions(prevOptions => ({
           ...prevOptions,
           [menu_pk]: [
@@ -593,8 +587,9 @@ const MenuManagement = () => {
             response.data.resultData,
           ],
         }));
-        // 옵션 입력 필드 초기화
         setNewOption({ optionName: "", optionPrice: "" });
+        handleCloseOptionModal(); // 옵션 모달을 먼저 닫음
+        handleOpenActionModal("옵션 추가 완료"); // 액션 모달을 연다
       } else {
         throw new Error(response.data.resultMsg || "Unknown error");
       }
@@ -603,7 +598,6 @@ const MenuManagement = () => {
     }
   };
 
-  // 옵션 수정 함수
   const handleEditOption = option => {
     setEditOption({
       optionPk: option.optionPk,
@@ -640,6 +634,8 @@ const MenuManagement = () => {
           ),
         }));
         setEditOption({ optionPk: null, optionName: "", optionPrice: "" });
+        handleCloseOptionModal(); // 옵션 모달을 먼저 닫음
+        handleOpenActionModal("옵션 수정 완료"); // 액션 모달을 연다
       } else {
         throw new Error(response.data.resultMsg || "Unknown error");
       }
@@ -648,7 +644,6 @@ const MenuManagement = () => {
     }
   };
 
-  // 옵션 삭제 함수
   const handleDeleteOption = async (optionPk, menu_pk) => {
     const accessToken = getCookie("accessToken");
 
@@ -669,6 +664,8 @@ const MenuManagement = () => {
             option => option.optionPk !== optionPk,
           ),
         }));
+        handleCloseOptionModal(); // 옵션 모달을 먼저 닫음
+        handleOpenActionModal("옵션 삭제 완료"); // 액션 모달을 연다
       } else {
         throw new Error(response.data.resultMsg || "Unknown error");
       }
@@ -676,6 +673,7 @@ const MenuManagement = () => {
       setError(err.message);
     }
   };
+
   return (
     <>
       <div className="menu-management">
@@ -723,6 +721,7 @@ const MenuManagement = () => {
                           )
                         }
                         disabled={index === categories.length - 1}
+                        style={{ backgroundColor: "red" }}
                       >
                         ▼
                       </button>
@@ -1017,11 +1016,13 @@ const MenuManagement = () => {
                         }
                       />
                       <button
+                        className="btn"
                         onClick={() => handleUpdateOption(selectedMenuPk)}
                       >
                         저장
                       </button>
                       <button
+                        className="btn--cancel"
                         onClick={() =>
                           setEditOption({
                             optionPk: null,
@@ -1036,10 +1037,14 @@ const MenuManagement = () => {
                   ) : (
                     <div>
                       {option.optionName} - {option.optionPrice}원
-                      <button onClick={() => handleEditOption(option)}>
+                      <button
+                        className="btn"
+                        onClick={() => handleEditOption(option)}
+                      >
                         수정
                       </button>
                       <button
+                        className="btn--cancel"
                         onClick={() =>
                           handleDeleteOption(option.optionPk, selectedMenuPk)
                         }
@@ -1078,6 +1083,20 @@ const MenuManagement = () => {
                 옵션 추가
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {isActionModalOpen && (
+        <div className="modal">
+          <div className="modal-content">
+            <span className="close-button" onClick={handleCloseActionModal}>
+              &times;
+            </span>
+            <h2>{optionActionMessage}</h2>
+            <button className="btn" onClick={handleCloseActionModal}>
+              확인
+            </button>
           </div>
         </div>
       )}

@@ -30,6 +30,7 @@ const AdminLayout = () => {
     { path: "/admin/category-setting", label: "카테고리 설정" },
     { path: "/admin/ask", label: "고객문의" },
     { path: "/admin/report", label: "고객신고" },
+    { path: "/admin/statistics", label: "통계" },
   ];
 
   return (

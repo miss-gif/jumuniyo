@@ -261,28 +261,35 @@ const Reviews = () => {
   };
 
   const renderStars = rating => {
-    if (!rating || rating <= 0) {
-      return <span className="star">☆☆☆☆☆</span>;
+    // rating 값이 0에서 5 사이인지 확인하고 범위를 벗어나면 조정
+    if (typeof rating !== "number" || rating < 0) {
+      rating = 0;
+    } else if (rating > 5) {
+      rating = 5;
     }
 
     const fullStars = Math.floor(rating);
     const halfStar = rating % 1 >= 0.5 ? 1 : 0;
     const emptyStars = 5 - fullStars - halfStar;
 
+    const safeFullStars = Math.max(0, fullStars);
+    const safeHalfStar = Math.max(0, halfStar);
+    const safeEmptyStars = Math.max(0, emptyStars);
+
     return (
       <>
-        {Array(fullStars)
+        {Array(safeFullStars)
           .fill()
           .map((_, index) => (
             <span key={index} className="star">
               ★
             </span>
           ))}
-        {halfStar === 1 && <span className="star">☆</span>}
-        {Array(emptyStars)
+        {safeHalfStar === 1 && <span className="star">☆</span>}
+        {Array(safeEmptyStars)
           .fill()
           .map((_, index) => (
-            <span key={index + fullStars + halfStar} className="star">
+            <span key={index + safeFullStars + safeHalfStar} className="star">
               ☆
             </span>
           ))}
@@ -328,9 +335,15 @@ const Reviews = () => {
           <div className="review-content">
             <div className="rating-section">
               <div className="overall-score">
-                <p className="overall-score__value">{averageRating}</p>
+                {isNaN(averageRating) ? (
+                  <p className="overall-score__value">아직 리뷰가 없습니다.</p>
+                ) : (
+                  <p className="overall-score__value">{averageRating}</p>
+                )}
                 <span className="overall-score__icon">
-                  {renderStars(averageRating)}
+                  {isNaN(averageRating)
+                    ? renderStars(0)
+                    : renderStars(averageRating)}
                 </span>
               </div>
             </div>
