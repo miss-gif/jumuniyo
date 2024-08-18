@@ -25,7 +25,7 @@ import AuthUserPage from "./pages/AuthUserPage.tsx";
 import CartPage from "./pages/CartPage.jsx";
 import CeoPage from "./pages/CeoPage.jsx";
 import CheckoutPage from "./pages/CheckoutPage.jsx";
-import HomePage from "./pages/HomePage.jsx";
+import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage.tsx";
 import MyPage from "./pages/MyPage.tsx";
 import MyPageAddress from "./pages/MyPageAddress";
