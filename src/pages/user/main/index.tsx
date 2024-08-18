@@ -163,10 +163,10 @@ const MainPage: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (locationData?.longitude === 0) {
+    if (locationData?.longitude == 0) {
       navigate("/intro");
     }
-  }, [locationData, navigate]);
+  }, [locationData]);
 
   useEffect(() => {
     const fetchData = async (

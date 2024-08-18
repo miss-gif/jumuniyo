@@ -7,6 +7,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 
 const OrderSummary = ({
@@ -21,11 +22,22 @@ const OrderSummary = ({
 }) => {
   const [open, setOpen] = useState(false);
   const { id } = useParams(); // useParams로 얻은 id 값
+  const items = useSelector(state => state.cart.items); // Redux에서 items 가져오기
+
+  console.log("selectedMenuItems", selectedMenuItems);
 
   // menu_res_pk 값이 useParams로 얻은 id 값과 일치하는 객체들만 필터링
   const filteredMenuItems = selectedMenuItems.filter(
     item => item.menu_res_pk === parseInt(id, 10), // id와 item.menu_res_pk를 비교
   );
+
+  const 필터링 = items.filter(
+    item => item.menu_res_pk === parseInt(id, 10), // id와 item.menu_res_pk를 비교
+  );
+
+  console.log("items", items);
+
+  console.log("필터링", 필터링);
 
   const totalAmount = filteredMenuItems.reduce(
     (sum, item) =>
