@@ -5,7 +5,8 @@ import Footer from "./Footer";
 import CategoryFilter from "../../pages/user/layout/CategoryFilter";
 import UserHeader from "../../pages/user/layout/UserHeader";
 
-function RootLayout() {
+// RootLayout 컴포넌트의 타입을 명시적으로 지정
+const RootLayout: React.FC = () => {
   return (
     <>
       <ToTop />
@@ -17,10 +18,9 @@ function RootLayout() {
           <Outlet />
         </div>
       </main>
-
       <Footer />
     </>
   );
-}
+};
 
 export default RootLayout;

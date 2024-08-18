@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { MdArrowUpward } from "react-icons/md";
 
-const ToTop = () => {
-  const [isVisible, setIsVisible] = useState(false);
+const ToTop: React.FC = () => {
+  const [isVisible, setIsVisible] = useState<boolean>(false);
 
-  const handleScroll = () => {
+  const handleScroll = (): void => {
     const scrollPosition = window.pageYOffset;
     setIsVisible(scrollPosition > 0);
   };
 
-  const clickTop = () => {
+  const clickTop = (): void => {
     window.scrollTo({
       top: 0,
       behavior: "smooth",
@@ -23,12 +23,14 @@ const ToTop = () => {
     };
   }, []);
 
+  if (!isVisible) {
+    return null;
+  }
+
   return (
-    isVisible && (
-      <div className="to-top" onClick={clickTop}>
-        <MdArrowUpward />
-      </div>
-    )
+    <div className="to-top" onClick={clickTop}>
+      <MdArrowUpward />
+    </div>
   );
 };
 
