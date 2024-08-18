@@ -183,11 +183,12 @@ const AddressModal = ({ isOpen, onRequestClose }) => {
           ) : (
             <div className="recent-searches">
               {recentSearches.length > 0 ? (
-                <ul>
+                <ul className="address-list">
                   {recentSearches.map((search, index) => (
                     <li
                       key={index}
                       onClick={() => onClickSearch({ addr1: search })}
+                      className="address-item"
                     >
                       {search}
                     </li>
