@@ -22,8 +22,8 @@
   display: flex;
   flex-direction: column;
   background: white;
-  width: 250px;
-  height: 100%;
+  width: 300px;
+  height: 100vh;
   padding: 20px;
   box-shadow: -1px 0 10px rgba(0, 0, 0, 0.1);
   transform: translateX(100%);
@@ -35,15 +35,7 @@
 }
 
 .nav__item {
-  list-style: none;
-  margin-bottom: 15px;
-}
-
-.nav__item img {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  margin-right: 10px;
+  padding: 10px 0;
 }
 
 .nav__item div {
@@ -51,28 +43,18 @@
   align-items: center;
 }
 
-.nav__item button {
-  background: none;
-  border: none;
-  font-size: 16px;
-  color: #333;
-  cursor: pointer;
-}
-
-.nav__item button:hover {
-  color: #007bff;
-}
-
 // 출력 리스트 수정
 
 .sidebar-right {
   .restaurants-page__list {
+    width: 100%;
     display: flex;
     flex-direction: column;
+    gap: 10px;
   }
   .restaurant-item {
     display: flex;
-    padding: 8px;
+    gap: 8px;
     background-color: #ececec;
   }
   .img-cover {
