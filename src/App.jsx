@@ -58,7 +58,6 @@ import StatisticsforCeo from "./components/ceo/StatisticsforCeo";
 
 import MypageLayout from "./components/layout/MypageLayout";
 
-
 function App() {
   return (
     <OrderProvider>
@@ -153,7 +152,7 @@ function App() {
           <Route path="*" element={<NotFound />} />
           <Route path="/toastTest" element={<Test />} />
           <Route path="/paymentTest" element={<Test3 />} />
-          <Route path="/1" element={<IntroPage />} />
+          <Route path="/intro" element={<IntroPage />} />
         </Routes>
       </div>
     </OrderProvider>

@@ -133,7 +133,9 @@ export default function GoogleMaps({ onRequestClose }) {
     }
 
     // 검색 결과를 선택한 후 드롭다운을 닫기 위해 onRequestClose 호출
-    onRequestClose();
+    if (typeof onRequestClose === "function") {
+      onRequestClose();
+    }
   };
 
   return (

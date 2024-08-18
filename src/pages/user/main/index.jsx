@@ -117,8 +117,14 @@ const MainPage = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const isLoggedIn = useSelector(state => state.user.isLoggedIn);
-
   const accessToken = useSelector(state => state.user.accessToken);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (locationData?.longitude === "") {
+      navigate("/intro");
+    }
+  }, []);
 
   useEffect(() => {
     const fetchData = async (url, setData) => {
