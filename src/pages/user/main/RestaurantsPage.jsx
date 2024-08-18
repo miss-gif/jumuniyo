@@ -10,11 +10,11 @@ import useDebounce from "../../../hooks/useDebounce";
 
 const StatusListItem = styled.li`
   position: relative;
-  opacity: ${props => (props.isclosed ? ".4" : "1")};
-  cursor: ${props => (props.isclosed ? "auto" : "pointer")};
+  opacity: ${props => (props.isclosed === "true" ? ".4" : "1")};
+  cursor: ${props => (props.isclosed === "true" ? "auto" : "pointer")};
 
   &:before {
-    content: ${props => (props.isclosed ? '"준비중"' : "")};
+    content: ${props => (props.isclosed === "true" ? '"준비중"' : "")};
     position: absolute;
     top: 10px;
     right: 10px;
@@ -127,7 +127,7 @@ const RestaurantsPage = () => {
                 <StatusListItem
                   className="restaurant-item"
                   key={restaurant.restaurantPk}
-                  isclosed={restaurant.restaurantState === 2}
+                  isclosed={restaurant.restaurantState === 2 ? "true" : "false"}
                   onClick={() => {
                     if (restaurant.restaurantState !== 2) {
                       navigate(`/restaurants/${restaurant.restaurantPk}`);
