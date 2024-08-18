@@ -1,8 +1,10 @@
 import { useCallback, useEffect, useState } from "react";
 import { IoIosMenu } from "react-icons/io";
 import { IoSearch } from "react-icons/io5";
-import { useDispatch, useSelector } from "react-redux";
+import { MdClear } from "react-icons/md";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
+import { createSelector } from "reselect";
 import { searchRestaurant } from "../../../app/userSlice";
 import { handleLogout } from "../../../utils/authUtils";
 import AddressModal from "../main/AddressModal";
@@ -14,7 +16,34 @@ import SidebarCoupon from "./SidebarCoupon";
 import SidebarHeart from "./SidebarHeart";
 import UserActions from "./UserActions";
 import "./UserHeader.scss";
-import { MdClear } from "react-icons/md";
+
+// Redux 선택자 메모이제이션
+const selectUserState = state => state.user;
+
+const selectIsLoggedIn = createSelector(
+  [selectUserState],
+  userState => userState.isLoggedIn,
+);
+
+const selectAccessToken = createSelector(
+  [selectUserState],
+  userState => userState.accessToken,
+);
+
+const selectUserData = createSelector(
+  [selectUserState],
+  userState => userState.userData,
+);
+
+const selectSearchTerm = createSelector(
+  [selectUserState],
+  userState => userState.searchTerm,
+);
+
+const selectSearchRestaurant = createSelector(
+  [selectUserState],
+  userState => userState.searchRestaurant,
+);
 
 const UserHeader = () => {
   const navigate = useNavigate();
@@ -34,19 +63,11 @@ const UserHeader = () => {
   const [selectedItem, setSelectedItem] = useState(null);
 
   // Redux 상태 통합
-  const {
-    isLoggedIn,
-    accessToken,
-    userData,
-    searchTerm,
-    searchRestaurant: searchRestaurantValue,
-  } = useSelector(state => ({
-    isLoggedIn: state.user.isLoggedIn,
-    accessToken: state.user.accessToken,
-    userData: state.user.userData,
-    searchTerm: state.user.searchTerm,
-    searchRestaurant: state.user.searchRestaurant,
-  }));
+  const isLoggedIn = useSelector(selectIsLoggedIn);
+  const accessToken = useSelector(selectAccessToken);
+  const userData = useSelector(selectUserData, shallowEqual);
+  const searchTerm = useSelector(selectSearchTerm);
+  const searchRestaurantValue = useSelector(selectSearchRestaurant);
 
   const userNickname = userData ? userData.userNickname : "Guest";
 
