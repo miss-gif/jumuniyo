@@ -93,8 +93,9 @@ const AddressModal = ({ isOpen, onRequestClose }) => {
 
       if (response.data.status === "OK") {
         const location = response.data.results[0].geometry.location;
+        // Switch latitude and longitude here
         dispatch(
-          setLocationData({ latitude: location.lat, longitude: location.lng }),
+          setLocationData({ latitude: location.lng, longitude: location.lat }),
         );
 
         saveRecentAddress(address);

@@ -159,7 +159,7 @@ const MainPage = () => {
       );
       fetchData(`/api/restaurant/followed`, setHeartStores);
     }
-  }, [isLoggedIn, locationData]);
+  }, [isLoggedIn, locationData.longitude]);
 
   return !locationData.latitude == 0 ? (
     <div className="main-page">
