@@ -151,7 +151,7 @@ const OrdersHistory: React.FC = () => {
           <div className="ceo-order-header">
             <div className="order-header-left">
               <div className="order-header-title">
-                {new Date(order.createdAt).toLocaleDateString()} -{" "}
+                {new Date(order.createdAt).toLocaleDateString()} -
                 <span>
                   {order.doneOrderState === 1 ? "주문완료" : "주문취소"}
                 </span>
@@ -164,12 +164,11 @@ const OrdersHistory: React.FC = () => {
                   <div className="order-header-left-content-text">
                     {order.menuInfoDtos.length > 0 && (
                       <span>
-                        {order.menuInfoDtos[0].menuName}{" "}
+                        {order.menuInfoDtos[0].menuName}
                         {formatPrice(order.menuInfoDtos[0].menuPrice)}원
                         {order.menuInfoDtos.length > 1 && (
                           <>
-                            {" "}
-                            외 {order.menuInfoDtos.length - 1}개 총{" "}
+                            외 {order.menuInfoDtos.length - 1}개 총
                             {formatPrice(order.orderPrice)}원
                           </>
                         )}

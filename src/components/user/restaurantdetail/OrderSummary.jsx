@@ -129,7 +129,7 @@ const OrderSummary = ({
                               )
                             : 0),
                       )}
-                      원{" "}
+                      원
                     </div>
                   </div>
                   <div className="quantity-count">

@@ -65,7 +65,7 @@ const RestaurantDetailCleanReview = ({ resPk, restaurantData }) => {
               리뷰 <span>{Array.isArray(reviews) ? reviews.length : 0}</span>개
             </p>
             <p>
-              사장님댓글{" "}
+              사장님댓글
               <span>
                 {Array.isArray(reviews)
                   ? reviews.filter(review => review.reply).length

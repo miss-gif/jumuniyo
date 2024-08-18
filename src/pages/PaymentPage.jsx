@@ -387,7 +387,7 @@ const PaymentPage = () => {
           결제하기
         </button>
       </div>
-      <CouponModal isOpen={isModal} onRequestClose={closeModal} />{" "}
+      <CouponModal isOpen={isModal} onRequestClose={closeModal} />
     </div>
   );
 };

@@ -545,7 +545,6 @@ const LoginPage: React.FC = () => {
                   <Dialog open={open} onClose={handleClose} sx={{ zIndex: 1 }}>
                     <span className="find-text">아이디 찾기</span>
                     <DialogContent sx={{ width: "100%" }}>
-                      {" "}
                       {/* DialogContent에 공통된 너비를 적용 */}
                       <TextField
                         autoFocus
@@ -602,7 +601,6 @@ const LoginPage: React.FC = () => {
                   >
                     <span className="find-text">비밀번호 찾기</span>
                     <DialogContent sx={{ width: "100%" }}>
-                      {" "}
                       {/* DialogContent에 동일한 너비 적용 */}
                       <TextField
                         autoFocus
