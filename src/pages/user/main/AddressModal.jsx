@@ -44,6 +44,7 @@ const AddressModal = ({ isOpen, onRequestClose }) => {
           },
         });
         setAddresses(response.data.resultData);
+        console.log("주소 목록을 불러왔습니다.", response.data.resultData);
       } catch (error) {
         console.error("주소 목록을 불러오는 데 실패했습니다.", error);
       }

@@ -14,6 +14,7 @@ const PaymentPage = () => {
   const userAddress = useSelector(state => state.user.userAddress) || "";
   const accessToken = useSelector(state => state.user.accessToken) || "";
   const selectedMenuItems = useSelector(state => state.cart.items) || [];
+  const searchTerm = useSelector(state => state.user.searchTerm) || "";
   const { id } = useParams();
   const [isModal, setIsModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
@@ -71,21 +72,15 @@ const PaymentPage = () => {
 
   // 주소 변경 시 userAddress.addr1 또는 addr2 값 업데이트
   useEffect(() => {
-    if (
-      locationData.latitude === userAddress.addrCoorX &&
-      locationData.longitude === userAddress.addrCoorY
-    ) {
-      setAddressDetail1(userAddress.addr1);
+    console.log("searchTerm", searchTerm);
+    console.log("userAddress.addr1", userAddress.addr1);
+
+    if (searchTerm === userAddress.addr1) {
       setAddressDetail2(userAddress.addr2);
+    } else {
+      setAddressDetail2("");
     }
-  }, [
-    locationData.latitude,
-    locationData.longitude,
-    userAddress.addrCoorX,
-    userAddress.addrCoorY,
-    userAddress.addr1,
-    userAddress.addr2,
-  ]);
+  }, [searchTerm]);
 
   // 총 주문 금액 계산
   const calculateTotalOrderPrice = () => {
@@ -173,7 +168,7 @@ const PaymentPage = () => {
       order_request: request,
       payment_method: selectedPayment,
       order_phone: phone,
-      order_address: `${addressDetail1} ${addressDetail}`,
+      order_address: `${searchTerm} ${addressDetail}`,
       menu: filteredMenuItems.map(item => ({
         menu_pk: item.menu_pk,
         menu_count: item.quantity,
@@ -255,7 +250,7 @@ const PaymentPage = () => {
                     type="text"
                     id="address"
                     className="payment-page__input"
-                    value={addressDetail1 || locationData.geocodeAddress}
+                    value={searchTerm}
                     readOnly
                   />
                 </div>
