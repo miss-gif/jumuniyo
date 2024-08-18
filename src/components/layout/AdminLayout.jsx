@@ -26,7 +26,6 @@ const AdminLayout = () => {
 
   const navItems = [
     { path: "/admin/accept", label: "사업자 승낙" },
-    { path: "/admin/accept/details", label: "사업자 승낙 상세" },
     { path: "/admin/category-setting", label: "카테고리 설정" },
     { path: "/admin/ask", label: "고객문의" },
     { path: "/admin/report", label: "고객신고" },

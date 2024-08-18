@@ -29,6 +29,12 @@ const StoreManagement = () => {
   const location = useLocation();
 
   useEffect(() => {
+    const savedTab = localStorage.getItem("activeTab");
+    if (savedTab) {
+      setActiveTab(savedTab);
+      // 새로고침 후에 탭이 유지되도록 localStorage에서 제거
+      localStorage.removeItem("activeTab");
+    }
     const fetchData = async () => {
       try {
         const getCookie = name => {

@@ -220,31 +220,10 @@ const MenuManagement = () => {
       });
 
       if (response.data.statusCode === 1) {
-        const newMenu = {
-          ...response.data.resultData,
-          menu_pic: `/${response.data.resultData.menu_pic}`,
-        };
-
-        setCategories(prevCategories => {
-          return prevCategories
-            .filter(category => category.menu_category !== null)
-            .map(category => {
-              if (
-                category.menu_category.menu_cat_pk === newMenuItem.menu_cat_pk
-              ) {
-                return {
-                  ...category,
-                  menu: [...category.menu, newMenu],
-                };
-              }
-              return category;
-            });
-        });
-
-        setMenuData(prevMenuData =>
-          [...prevMenuData, newMenu].filter(menu => menu.menu_cat_pk !== null),
-        );
-        handleCloseModal();
+        // 로컬 스토리지에 activeTab 저장
+        localStorage.setItem("activeTab", "menuManagement");
+        // 메뉴 추가 후 새로고침
+        window.location.reload();
       } else {
         throw new Error(response.data.resultMsg || "Unknown error");
       }
@@ -271,7 +250,6 @@ const MenuManagement = () => {
     if (newMenuItem.img) {
       formData.append("pic", newMenuItem.img);
     }
-
     try {
       const response = await axios.put("/api/owner/menu", formData, {
         headers: {
@@ -281,18 +259,10 @@ const MenuManagement = () => {
       });
 
       if (response.data.statusCode === 1) {
-        setMenuData(prevMenuData =>
-          prevMenuData.map(menu =>
-            menu.menu_pk === editMenuItem.menu_pk
-              ? {
-                  ...menu,
-                  ...response.data.resultData,
-                  menu_pic: `/${response.data.resultData.menu_pic}`,
-                }
-              : menu,
-          ),
-        );
-        handleCloseModal();
+        // 로컬 스토리지에 activeTab 저장
+        localStorage.setItem("activeTab", "menuManagement");
+        // 메뉴 수정 후 새로고침
+        window.location.reload();
       } else {
         throw new Error(response.data.resultMsg || "Unknown error");
       }
@@ -330,13 +300,10 @@ const MenuManagement = () => {
       });
 
       if (response.data.statusCode === 1) {
-        setMenuData(prevMenuData =>
-          prevMenuData.map(item =>
-            item.menu_pk === menu.menu_pk
-              ? { ...item, menu_state: newStatus }
-              : item,
-          ),
-        );
+        // 로컬 스토리지에 activeTab 저장
+        localStorage.setItem("activeTab", "menuManagement");
+        // 메뉴 상태 변경 후 새로고침
+        window.location.reload();
       } else {
         throw new Error(response.data.resultMsg || "Unknown error");
       }
@@ -491,7 +458,12 @@ const MenuManagement = () => {
         };
 
         setCategories(prevCategories => [...prevCategories, newCategoryData]);
-        handleCloseCategoryModal();
+
+        // activeTab을 로컬 스토리지에 저장
+        localStorage.setItem("activeTab", "menuManagement");
+
+        // 카테고리 추가 후 새로고침
+        window.location.reload();
       } else {
         throw new Error(response.data.resultMsg || "Unknown error");
       }
