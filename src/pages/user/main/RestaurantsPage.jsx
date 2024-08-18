@@ -7,6 +7,7 @@ import axios from "axios";
 import styled from "styled-components";
 import LoadingSpinner from "../../../components/common/LoadingSpinner";
 import useDebounce from "../../../hooks/useDebounce";
+import { FaHeart, FaRegHeart } from "react-icons/fa";
 
 const StatusListItem = styled.li`
   position: relative;
@@ -144,6 +145,9 @@ const RestaurantsPage = () => {
                       alt={`${restaurant.restaurantName} 이미지`}
                       className="restaurant-item__image"
                     />
+                    <div className="main-page__toggle-heart">
+                      {/* {restaurant.isFollow ? <FaHeart /> : <FaRegHeart />} */}
+                    </div>
                   </div>
                   <div className="restaurant-item__info">
                     <div className="restaurant-item__top">

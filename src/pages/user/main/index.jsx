@@ -1,6 +1,6 @@
 import axios from "axios";
 import { memo, useEffect, useRef, useState } from "react";
-import { IoIosHeartEmpty } from "react-icons/io";
+import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { MdNavigateBefore, MdNavigateNext } from "react-icons/md";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
@@ -72,7 +72,7 @@ const SwiperCarousel = memo(
                     />
                   </div>
                   <div className="main-page__toggle-heart">
-                    <IoIosHeartEmpty />
+                    {item.isFollow ? <FaHeart /> : <FaRegHeart />}
                   </div>
                 </div>
                 <div className="main-page__store-info">
