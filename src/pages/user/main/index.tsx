@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from "axios";
 import { memo, useEffect, useRef, useState } from "react";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
@@ -9,12 +10,53 @@ import { Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "./MainPage.scss";
 
-const SwiperCarousel = memo(
-  ({ title, data, loading, error, onPrev, onNext, swiperRef }) => {
-    const navigate = useNavigate(); // useHistory 훅 사용
+// RootState 인터페이스를 정의하여 Redux 상태 타입을 명확히 합니다.
+interface RootState {
+  user: {
+    locationData: {
+      latitude: number;
+      longitude: number;
+    };
+    isLoggedIn: boolean;
+    accessToken: string;
+  };
+}
 
-    const handleClick = restaurantPk => {
-      navigate(`/restaurants/${restaurantPk}`); // 해당 경로로 이동
+// API로 받아올 데이터의 타입을 정의합니다.
+interface Restaurant {
+  restaurantPk: number;
+  restaurantName: string;
+  restaurantPic: string;
+  reviewAvgScore: number;
+  reviewTotalElements: number;
+  isFollow: boolean;
+}
+
+// SwiperCarousel 컴포넌트의 props 타입을 정의합니다.
+interface SwiperCarouselProps {
+  title: string;
+  data: Restaurant[];
+  loading: boolean;
+  error: string | null;
+  onPrev: () => void;
+  onNext: () => void;
+  swiperRef: React.MutableRefObject<any>;
+}
+
+const SwiperCarousel = memo(
+  ({
+    title,
+    data,
+    loading,
+    error,
+    onPrev,
+    onNext,
+    swiperRef,
+  }: SwiperCarouselProps) => {
+    const navigate = useNavigate();
+
+    const handleClick = (restaurantPk: number) => {
+      navigate(`/restaurants/${restaurantPk}`);
     };
 
     return (
@@ -22,7 +64,6 @@ const SwiperCarousel = memo(
         <div className="carousel-header">
           <h3 className="carousel-header__title">{title}</h3>
           <div className="carousel-header__controller">
-            {/* <div className="carousel-header__controller-all">See all</div> */}
             <div className="carousel-header__controller-btns">
               <button
                 className="carousel-header__controller-prev"
@@ -45,7 +86,7 @@ const SwiperCarousel = memo(
           <div>Error: {error}</div>
         ) : data.length > 0 ? (
           <Swiper
-            onBeforeInit={swiper => {
+            onBeforeInit={(swiper: typeof Swiper) => {
               swiperRef.current = swiper;
             }}
             slidesPerView={4}
@@ -102,32 +143,36 @@ const SwiperCarousel = memo(
 
 SwiperCarousel.displayName = "SwiperCarousel";
 
-const MainPage = () => {
+const MainPage: React.FC = () => {
   const swiperRefs = {
-    coupons: useRef(null),
-    newStores: useRef(null),
-    recentOrders: useRef(null),
-    heartStores: useRef(null),
+    coupons: useRef<any>(null),
+    newStores: useRef<any>(null),
+    recentOrders: useRef<any>(null),
+    heartStores: useRef<any>(null),
   };
-  const { locationData } = useSelector(state => state.user);
-  const [coupons, setCoupons] = useState([]);
-  const [newStores, setNewStores] = useState([]);
-  const [recentOrders, setRecentOrders] = useState([]);
-  const [heartStores, setHeartStores] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const isLoggedIn = useSelector(state => state.user.isLoggedIn);
-  const accessToken = useSelector(state => state.user.accessToken);
+
+  const { locationData } = useSelector((state: RootState) => state.user);
+  const [coupons, setCoupons] = useState<Restaurant[]>([]);
+  const [newStores, setNewStores] = useState<Restaurant[]>([]);
+  const [recentOrders, setRecentOrders] = useState<Restaurant[]>([]);
+  const [heartStores, setHeartStores] = useState<Restaurant[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+  const isLoggedIn = useSelector((state: RootState) => state.user.isLoggedIn);
+  const accessToken = useSelector((state: RootState) => state.user.accessToken);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (locationData?.longitude === "") {
+    if (locationData?.longitude === 0) {
       navigate("/intro");
     }
-  }, []);
+  }, [locationData, navigate]);
 
   useEffect(() => {
-    const fetchData = async (url, setData) => {
+    const fetchData = async (
+      url: string,
+      setData: React.Dispatch<React.SetStateAction<Restaurant[]>>,
+    ) => {
       setLoading(true);
       try {
         const response = await axios.get(url, {
@@ -135,10 +180,10 @@ const MainPage = () => {
             Authorization: `Bearer ${accessToken}`,
           },
         });
-        const list = response.data?.resultData?.list || [];
+        const list: Restaurant[] = response.data?.resultData?.list || [];
         setData(list);
       } catch (err) {
-        setError(err.message);
+        setError((err: any) => err.message);
       } finally {
         setLoading(false);
       }
@@ -165,9 +210,11 @@ const MainPage = () => {
       );
       fetchData(`/api/restaurant/followed`, setHeartStores);
     }
-  }, [isLoggedIn, locationData.longitude]);
+  }, [isLoggedIn, locationData, accessToken]);
 
-  return !locationData.latitude == 0 ? (
+  return !locationData.latitude ? (
+    <div className="대기화면">주소를 입력해주세요.</div>
+  ) : (
     <div className="main-page">
       <SwiperCarousel
         title="쿠폰 이벤트 진행 중인 상점"
@@ -187,7 +234,7 @@ const MainPage = () => {
         onNext={() => swiperRefs.newStores.current?.slideNext()}
         swiperRef={swiperRefs.newStores}
       />
-      {isLoggedIn ? (
+      {isLoggedIn && (
         <>
           <SwiperCarousel
             title="최근 주문한 상점"
@@ -208,12 +255,8 @@ const MainPage = () => {
             swiperRef={swiperRefs.heartStores}
           />
         </>
-      ) : (
-        <></>
       )}
     </div>
-  ) : (
-    <div className="대기화면">주소를 입력해주세요.</div>
   );
 };
 
