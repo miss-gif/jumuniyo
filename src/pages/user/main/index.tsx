@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import styled from "@emotion/styled";
 import axios from "axios";
 import { memo, useEffect, useRef, useState } from "react";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
@@ -9,6 +10,10 @@ import "swiper/css";
 import { Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "./MainPage.scss";
+
+const Button = styled.button<{ disabled: boolean }>`
+  color: ${props => (props.disabled ? "#fff" : "#6c757d")};
+`;
 
 // RootState 인터페이스를 정의하여 Redux 상태 타입을 명확히 합니다.
 interface RootState {
@@ -43,6 +48,7 @@ interface SwiperCarouselProps {
   swiperRef: React.MutableRefObject<any>;
 }
 
+// SwiperCarousel 컴포넌트 내부
 const SwiperCarousel = memo(
   ({
     title,
@@ -55,6 +61,20 @@ const SwiperCarousel = memo(
   }: SwiperCarouselProps) => {
     const navigate = useNavigate();
 
+    // isBeginning과 isEnd 상태를 관리
+    const [isBeginning, setIsBeginning] = useState(true);
+    const [isEnd, setIsEnd] = useState(false);
+
+    // Swiper 초기화 및 상태 업데이트
+    useEffect(() => {
+      if (swiperRef.current) {
+        swiperRef.current.on("slideChange", () => {
+          setIsBeginning(swiperRef.current.isBeginning);
+          setIsEnd(swiperRef.current.isEnd);
+        });
+      }
+    }, [swiperRef]);
+
     const handleClick = (restaurantPk: number) => {
       navigate(`/restaurants/${restaurantPk}`);
     };
@@ -65,18 +85,20 @@ const SwiperCarousel = memo(
           <h3 className="carousel-header__title">{title}</h3>
           <div className="carousel-header__controller">
             <div className="carousel-header__controller-btns">
-              <button
+              <Button
                 className="carousel-header__controller-prev"
                 onClick={onPrev}
+                disabled={isBeginning} // 맨 앞일 때 비활성화
               >
                 <MdNavigateBefore />
-              </button>
-              <button
+              </Button>
+              <Button
                 className="carousel-header__controller-next"
                 onClick={onNext}
+                disabled={isEnd} // 맨 끝일 때 비활성화
               >
                 <MdNavigateNext />
-              </button>
+              </Button>
             </div>
           </div>
         </div>
@@ -89,6 +111,10 @@ const SwiperCarousel = memo(
             onBeforeInit={(swiper: typeof Swiper) => {
               swiperRef.current = swiper;
             }}
+            onSlideChange={() => {
+              setIsBeginning(swiperRef.current?.isBeginning || false);
+              setIsEnd(swiperRef.current?.isEnd || false);
+            }}
             slidesPerView={4}
             spaceBetween={10}
             modules={[Navigation]}
@@ -98,9 +124,7 @@ const SwiperCarousel = memo(
               <SwiperSlide key={item.restaurantPk} className="main-page__item">
                 <div
                   className="main-page__image main-page__image--background"
-                  onClick={() => {
-                    handleClick(item.restaurantPk);
-                  }}
+                  onClick={() => handleClick(item.restaurantPk)}
                 >
                   <div className="main-page__store-img__cover">
                     <img
