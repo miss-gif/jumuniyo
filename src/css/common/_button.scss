@@ -5,6 +5,7 @@
   transition: background-color 0.3s ease; /* 호버 효과에 애니메이션을 추가할 경우 */
   &:hover {
     background-color: darken($mainColor, 10%);
+    color: $white;
   }
 }
 

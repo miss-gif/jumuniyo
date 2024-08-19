@@ -307,12 +307,12 @@ const PaymentPage = () => {
                           openModal();
                         }}
                       />
-                      <button
+                      <div
                         className="payment-page__coupon-btn btn--default"
                         onClick={openModal} // 쿠폰 적용 함수 호출
                       >
                         적용
-                      </button>
+                      </div>
                     </>
                   ) : (
                     <div className="payment-page__applied-coupon">
