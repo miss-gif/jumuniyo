@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 
 const Report = () => {
   const [reportItems, setReportItems] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
   const navigate = useNavigate();
   const [filter, setFilter] = useState("all");
 
@@ -13,11 +15,18 @@ const Report = () => {
     if (parts.length === 2) return parts.pop().split(";").shift();
   };
 
-  const fetchData = async url => {
+  const fetchData = async (page, filter) => {
     const accessToken = getCookie("accessToken");
     if (!accessToken) {
       console.error("토큰을 찾을 수 없습니다.");
       return;
+    }
+
+    let url = `/api/admin/report/report_list/${page}`;
+    if (filter === "unfinished") {
+      url = `/api/admin/report/report_list_unfinished/${page}`;
+    } else if (filter === "finished") {
+      url = `/api/admin/report/report_list_finished/${page}`;
     }
 
     try {
@@ -29,7 +38,7 @@ const Report = () => {
       });
 
       if (response.data.statusCode === 1) {
-        const formattedData = response.data.resultData.map(item => ({
+        const formattedData = response.data.resultData.result.map(item => ({
           pk: item.reportPk,
           title: item.reportTitle,
           status: item.reportState === 1 ? "처리완료" : "미완료",
@@ -38,6 +47,7 @@ const Report = () => {
           writeTime: new Date(item.createdAt).toLocaleDateString(),
         }));
         setReportItems(formattedData);
+        setTotalPages(response.data.resultData.totalPage);
       } else {
         console.error("데이터 불러오기 실패:", response.data.resultMsg);
       }
@@ -47,17 +57,22 @@ const Report = () => {
   };
 
   useEffect(() => {
-    let url = "/api/admin/report/report_list";
-    if (filter === "unfinished") {
-      url = "/api/admin/report/report_list_unfinished";
-    } else if (filter === "finished") {
-      url = "/api/admin/report/report_list_finished";
-    }
-    fetchData(url);
-  }, [filter]);
+    fetchData(currentPage, filter);
+  }, [currentPage, filter]);
 
   const handleClick = pk => {
     navigate(`/admin/report/details/${pk}`);
+  };
+
+  const handleFilterClick = newFilter => {
+    setFilter(newFilter);
+    setCurrentPage(1); // 필터를 변경하면 첫 페이지로 이동
+  };
+
+  const handlePageChange = newPage => {
+    if (newPage > 0 && newPage <= totalPages) {
+      setCurrentPage(newPage);
+    }
   };
 
   return (
@@ -66,21 +81,21 @@ const Report = () => {
       <div className="filter-buttons" style={{ marginBottom: "20px" }}>
         <button
           className="btn"
-          onClick={() => setFilter("all")}
+          onClick={() => handleFilterClick("all")}
           style={{ marginRight: "10px" }}
         >
           전체보기
         </button>
         <button
           className="btn"
-          onClick={() => setFilter("unfinished")}
+          onClick={() => handleFilterClick("unfinished")}
           style={{ marginRight: "10px" }}
         >
           미완료만 보기
         </button>
         <button
           className="btn"
-          onClick={() => setFilter("finished")}
+          onClick={() => handleFilterClick("finished")}
           style={{ marginRight: "10px" }}
         >
           처리완료만 보기
@@ -95,21 +110,44 @@ const Report = () => {
         <div className="tap-writeTime">작성날짜</div>
       </div>
       <div className="askList">
-        {reportItems.map(ask => (
-          <div
-            key={ask.pk}
-            className="oneAsk"
-            onClick={() => handleClick(ask.pk)}
-          >
-            <div className="tap-number">{ask.pk}</div>
-            <div className="tap-title">{ask.title}</div>
-            <div className="tap-status">{ask.status}</div>
-            <div className="tap-completeTime">{ask.completeTime}</div>
-            <div className="tap-writer">{ask.writer}</div>
-            <div className="tap-writeTime">{ask.writeTime}</div>
-          </div>
-        ))}
+        {reportItems.length > 0 ? (
+          reportItems.map(ask => (
+            <div
+              key={ask.pk}
+              className="oneAsk"
+              onClick={() => handleClick(ask.pk)}
+            >
+              <div className="tap-number">{ask.pk}</div>
+              <div className="tap-title">{ask.title}</div>
+              <div className="tap-status">{ask.status}</div>
+              <div className="tap-completeTime">{ask.completeTime}</div>
+              <div className="tap-writer">{ask.writer}</div>
+              <div className="tap-writeTime">{ask.writeTime}</div>
+            </div>
+          ))
+        ) : (
+          <div className="no-reports">아직 신고가 없습니다</div>
+        )}
       </div>
+      {reportItems.length > 0 && (
+        <div className="pagination">
+          <button
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage === 1}
+          >
+            이전
+          </button>
+          <span>
+            {currentPage} / {totalPages}
+          </span>
+          <button
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={currentPage === totalPages}
+          >
+            다음
+          </button>
+        </div>
+      )}
     </div>
   );
 };
