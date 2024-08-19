@@ -5,6 +5,13 @@ import {
   fetchRestaurantData,
   fetchReviewData,
 } from "../../api/restaurantdetail/restaurantDetail";
+import {
+  addItem,
+  clearCart,
+  decreaseQuantity,
+  increaseQuantity,
+  removeItem,
+} from "../../app/cartSlice";
 import LoadingSpinner from "../../components/common/LoadingSpinner";
 import LoginModal from "../../components/user/restaurantdetail/LoginModal";
 import OrderSummary from "../../components/user/restaurantdetail/OrderSummary";
@@ -13,13 +20,6 @@ import RestaurantDetailHeader from "../../components/user/restaurantdetail/Resta
 import RestaurantDetailInfo from "../../components/user/restaurantdetail/RestaurantDetailInfo";
 import RestaurantDetailMenuContent from "../../components/user/restaurantdetail/RestaurantDetailMenuContent";
 import RestaurantDetailTabInfo from "../../components/user/restaurantdetail/RestaurantDetailTabInfo";
-import {
-  addItem,
-  clearCart,
-  decreaseQuantity,
-  increaseQuantity,
-  removeItem,
-} from "../../app/cartSlice";
 
 const RestaurantDetailPage = () => {
   const [activeTab, setActiveTab] = useState("menu");
