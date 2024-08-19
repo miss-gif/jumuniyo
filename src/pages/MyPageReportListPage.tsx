@@ -5,6 +5,7 @@ import Swal from "sweetalert2";
 import jwtAxios from "../api/user/jwtUtil";
 import { useNavigate } from "react-router-dom";
 import { Alert } from "@mui/material";
+import LoadingSpinner from "../components/common/LoadingSpinner";
 
 interface Report {
   inquiryPk: number;
@@ -16,10 +17,12 @@ interface Report {
 
 const MypageReportPage: React.FC = () => {
   const [report, setReport] = useState<Report[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const navgate = useNavigate();
 
   const getReportList = async () => {
+    setIsLoading(true);
     try {
       const res = await jwtAxios.get("/api/user/inquiry/inquiry_list");
       setReport(res.data.resultData);
@@ -28,6 +31,8 @@ const MypageReportPage: React.FC = () => {
         icon: "error",
         text: "서버에러입니다.",
       });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -65,11 +70,21 @@ const MypageReportPage: React.FC = () => {
     navgate(`../../mypage/reportdetail/${doneOrderPk}`);
   };
 
+  if (isLoading) {
+    return (
+      <div className="mypage-wrap">
+        <Mypage />
+        <LoadingSpinner />
+      </div>
+    );
+  }
+
   if (report.length <= 0) {
     return (
       <div className="mypage-wrap">
         <Mypage />
         <div className="mypage-box">
+          <ReportListHeader />
           <Alert variant="outlined" severity="info">
             문의하신 내역이 없습니다.
           </Alert>

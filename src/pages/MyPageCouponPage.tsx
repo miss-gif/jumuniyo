@@ -4,6 +4,7 @@ import Swal from "sweetalert2";
 import jwtAxios from "../api/user/jwtUtil";
 import { useNavigate } from "react-router-dom";
 import { Alert } from "@mui/material";
+import LoadingSpinner from "../components/common/LoadingSpinner";
 
 interface Coupon {
   content: string;
@@ -18,8 +19,10 @@ interface Coupon {
 const MyPageCouponPage = () => {
   const [couponList, setCouponList] = useState<Coupon[]>([]);
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const getCoupon = async () => {
+    setIsLoading(true);
     try {
       const res = await jwtAxios.get("/api/coupons/user");
       setCouponList(res.data.resultData);
@@ -28,6 +31,8 @@ const MyPageCouponPage = () => {
         icon: "error",
         text: "서버에러입니다.",
       });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -39,11 +44,21 @@ const MyPageCouponPage = () => {
     console.log(couponList);
   }, [couponList]);
 
+  if (isLoading) {
+    return (
+      <div className="mypage-wrap">
+        <Mypage />
+        <LoadingSpinner />
+      </div>
+    );
+  }
+
   if (couponList.length <= 0) {
     return (
       <div className="mypage-wrap">
         <Mypage />
         <div className="mypage-box">
+          <h3>보유중인 쿠폰 리스트</h3>
           <Alert variant="outlined" severity="info">
             보유중인 쿠폰이 없습니다.
           </Alert>
