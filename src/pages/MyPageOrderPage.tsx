@@ -6,9 +6,18 @@ import Swal from "sweetalert2";
 import { useSelector } from "react-redux";
 import { RootState } from "./MyPage";
 
+interface MenuOption {
+  option_pk: number;
+  option_menu_pk: number;
+  option_name: string;
+  option_price: number;
+}
+
 interface MenuInfo {
-  menuName: string;
-  menuPrice: number;
+  order_menu_name: string;
+  order_menu_price: number;
+  order_menu_count: number;
+  menu_options: MenuOption[];
 }
 
 interface OrderData {
@@ -20,7 +29,7 @@ interface OrderData {
   orderAddress: string;
   orderRequest: string;
   paymentMethod: string;
-  menuInfoList: MenuInfo[];
+  menus: MenuInfo[];
   orderPrice: number;
 }
 
@@ -29,6 +38,12 @@ const MyPageOrderPage: React.FC = () => {
   const [orderData, setOrderData] = useState<OrderData | null>(null);
   const accessToken = useSelector((state: RootState) => state.user.accessToken);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    console.log("orderData", orderData);
+
+    return () => {};
+  }, []);
 
   useEffect(() => {
     const fetchOrderData = async () => {
@@ -41,9 +56,19 @@ const MyPageOrderPage: React.FC = () => {
         const data = response.data;
         if (data.statusCode === 1) {
           setOrderData(data.resultData);
+          console.log("orderData", data.resultData);
+        } else {
+          Swal.fire({
+            icon: "warning",
+            text: "주문 정보를 불러오는 데 실패했습니다.",
+          });
         }
       } catch (error) {
         console.error("Error fetching order data", error);
+        Swal.fire({
+          icon: "warning",
+          text: "주문 정보를 불러오는 데 실패했습니다.",
+        });
       }
     };
 
@@ -63,7 +88,6 @@ const MyPageOrderPage: React.FC = () => {
           icon: "success",
           text: "주문 취소되었습니다.",
         });
-        // 필요한 경우 상태를 업데이트하거나 리디렉션 처리
         setOrderData(null);
         navigate("/mypage/orderclose");
       } else {
@@ -139,7 +163,9 @@ const MyPageOrderPage: React.FC = () => {
             </div>
             <div className="mypage-order__detail">
               <p className="mypage-order__label">가게 요청사항</p>
-              <p className="mypage-order__value">{orderData.orderRequest}</p>
+              <p className="mypage-order__value">
+                {orderData.orderRequest || "없음"}
+              </p>
             </div>
             <div className="mypage-order__detail none">
               <p className="mypage-order__label">라이더 요청사항</p>
@@ -147,23 +173,40 @@ const MyPageOrderPage: React.FC = () => {
             </div>
             <div className="mypage-order__detail">
               <p className="mypage-order__label">결제수단</p>
-              <p className="mypage-order__value">{orderData.paymentMethod}</p>
+              <p className="mypage-order__value">
+                {orderData.paymentMethod || "없음"}
+              </p>
             </div>
           </div>
 
           <div className="mypage-order__section">
             <div className="mypage-order__section-title">주문내역</div>
             <ul className="mypage-order__item">
-              {orderData.menuInfoList.map((menu, index) => (
-                <li key={index}>
-                  <p className="mypage-order__item-name">
-                    {menu.menuName} <span>x 1개</span>
-                  </p>
-                  <p className="mypage-order__item-price">
-                    {menu.menuPrice.toLocaleString()}원
-                  </p>
-                </li>
-              ))}
+              {orderData.menus && orderData.menus.length > 0 ? (
+                orderData.menus.map((menu, index) => (
+                  <li key={index}>
+                    <p className="mypage-order__item-name">
+                      {menu.order_menu_name}{" "}
+                      <span>x {menu.order_menu_count}개</span>
+                    </p>
+                    {menu.menu_options.length > 0 && (
+                      <ul>
+                        {menu.menu_options.map(option => (
+                          <li key={option.option_pk}>
+                            {option.option_name} (+
+                            {option.option_price.toLocaleString()}원)
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                    <p className="mypage-order__item-price">
+                      {menu.order_menu_price.toLocaleString()}원
+                    </p>
+                  </li>
+                ))
+              ) : (
+                <li>주문내역이 없습니다.</li>
+              )}
             </ul>
           </div>
           <div className="mypage-order__total">

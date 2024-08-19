@@ -1,14 +1,16 @@
 import { Checkbox } from "@mui/material";
 import axios from "axios";
 import { useEffect, useMemo, useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
 import { initiateKakaoPay } from "../utils/kakaopayUtils";
 import PaymentSelect from "./user/PaymentSelect";
 import CouponModal from "./user/paymentPage/CouponModal";
+import { clearCoupon } from "../app/couponSlice";
 
 const PaymentPage = () => {
+  const dispatch = useDispatch();
   const userPhone = useSelector(state => state.user.userPhone) || "";
   const locationData = useSelector(state => state.user.locationData) || "";
   const userAddress = useSelector(state => state.user.userAddress) || "";
@@ -23,6 +25,7 @@ const PaymentPage = () => {
   const [addressDetail, setAddressDetail2] = useState(""); // 상세주소 상태
   const [phone, setPhone] = useState(userPhone); // 휴대전화 상태
   const [agreement, setAgreement] = useState(false); // 결제 동의 체크 상태
+  const appliedCoupon = useSelector(state => state.coupon.appliedCoupon);
 
   const navigate = useNavigate();
   const restaurantName = sessionStorage.getItem("restaurantName");
@@ -30,6 +33,11 @@ const PaymentPage = () => {
   const items = useSelector(state => state.cart.items);
 
   console.log("items", items);
+
+  // 첫 렌더링 시 쿠폰 값 초기화
+  useEffect(() => {
+    dispatch(clearCoupon()); // 쿠폰 초기화 액션 호출
+  }, [dispatch]);
 
   const openModal = item => {
     setSelectedItem(item);
@@ -161,7 +169,9 @@ const PaymentPage = () => {
       menu: items.map(item => ({
         menu_pk: item.menu_pk,
         menu_count: item.quantity,
-        menu_option_pk: item.menu_option_pk || [],
+        menu_option_pk: item.selectedOptions
+          ? Object.keys(item.selectedOptions).map(optionPk => Number(optionPk)) // 옵션의 pk를 추출하여 배열로 할당
+          : [],
       })),
       use_mileage: 0,
       coupon: null,
@@ -286,17 +296,36 @@ const PaymentPage = () => {
               <div className="payment-page__coupon">
                 <label htmlFor="coupon">쿠폰</label>
                 <div className="payment-page__coupon-wrap">
-                  <input
-                    type="text"
-                    id="coupon"
-                    className="payment-page__input"
-                    onClick={() => {
-                      openModal();
-                    }}
-                  />
-                  <button className="payment-page__coupon-btn btn--default">
-                    적용
-                  </button>
+                  {!appliedCoupon ? (
+                    <>
+                      <input
+                        type="text"
+                        id="coupon"
+                        placeholder="쿠폰을 선택하세요"
+                        className="payment-page__input"
+                        onClick={() => {
+                          openModal();
+                        }}
+                      />
+                      <button
+                        className="payment-page__coupon-btn btn--default"
+                        onClick={openModal} // 쿠폰 적용 함수 호출
+                      >
+                        적용
+                      </button>
+                    </>
+                  ) : (
+                    <div className="payment-page__applied-coupon">
+                      <h3>적용된 쿠폰: {appliedCoupon.name}</h3>
+                      <p>할인 금액: {appliedCoupon.price}원</p>
+                      <div
+                        className="payment-page__coupon-cancel btn--danger"
+                        onClick={openModal} // 쿠폰 취소 함수 호출
+                      >
+                        쿠폰 변경
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
