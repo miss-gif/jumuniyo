@@ -161,7 +161,9 @@ const PaymentPage = () => {
       menu: items.map(item => ({
         menu_pk: item.menu_pk,
         menu_count: item.quantity,
-        menu_option_pk: item.menu_option_pk || [],
+        menu_option_pk: item.selectedOptions
+          ? Object.keys(item.selectedOptions).map(optionPk => Number(optionPk)) // 옵션의 pk를 추출하여 배열로 할당
+          : [],
       })),
       use_mileage: 0,
       coupon: null,
