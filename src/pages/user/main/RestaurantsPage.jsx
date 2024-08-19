@@ -78,7 +78,7 @@ const RestaurantsPage = () => {
     orderType,
     locationData.latitude,
     debouncedSearchTerm,
-    fetchRestaurants,
+    // fetchRestaurants,
   ]);
 
   const handleScroll = useCallback(() => {
