@@ -5,6 +5,13 @@ import {
   fetchRestaurantData,
   fetchReviewData,
 } from "../../api/restaurantdetail/restaurantDetail";
+import {
+  addItem,
+  clearCart,
+  decreaseQuantity,
+  increaseQuantity,
+  removeItem,
+} from "../../app/cartSlice";
 import LoadingSpinner from "../../components/common/LoadingSpinner";
 import LoginModal from "../../components/user/restaurantdetail/LoginModal";
 import OrderSummary from "../../components/user/restaurantdetail/OrderSummary";
@@ -13,13 +20,6 @@ import RestaurantDetailHeader from "../../components/user/restaurantdetail/Resta
 import RestaurantDetailInfo from "../../components/user/restaurantdetail/RestaurantDetailInfo";
 import RestaurantDetailMenuContent from "../../components/user/restaurantdetail/RestaurantDetailMenuContent";
 import RestaurantDetailTabInfo from "../../components/user/restaurantdetail/RestaurantDetailTabInfo";
-import {
-  addItem,
-  clearCart,
-  decreaseQuantity,
-  increaseQuantity,
-  removeItem,
-} from "../../app/cartSlice";
 
 const RestaurantDetailPage = () => {
   const [activeTab, setActiveTab] = useState("menu");
@@ -41,6 +41,8 @@ const RestaurantDetailPage = () => {
     const getData = async () => {
       try {
         const restaurant = await fetchRestaurantData(id);
+        console.log("restaurant: ", restaurant.restaurantPk);
+        console.log("restaurant: ", restaurant.restaurantName);
         const menu = restaurant.menuList || [];
         const reviews = (await fetchReviewData(id)) || [];
         setRestaurantData(restaurant);
@@ -68,7 +70,15 @@ const RestaurantDetailPage = () => {
   const reviewCount = reviewData ? reviewData.length : 0;
 
   const handleSelectMenuItem = item => {
-    dispatch(addItem(item));
+    dispatch(
+      addItem({
+        item,
+        restaurant: {
+          restaurantPk: restaurantData.restaurantPk,
+          restaurantName: restaurantData.restaurantName,
+        },
+      }),
+    );
   };
 
   const handleIncreaseQuantity = menu_pk => {

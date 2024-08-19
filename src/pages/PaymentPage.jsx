@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useMemo } from "react";
-import { useSelector } from "react-redux";
-import PaymentSelect from "./user/PaymentSelect";
 import { Checkbox } from "@mui/material";
 import axios from "axios";
+import { useEffect, useMemo, useState } from "react";
+import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { initiateKakaoPay } from "../utils/kakaopayUtils";
 import Swal from "sweetalert2";
+import { initiateKakaoPay } from "../utils/kakaopayUtils";
+import PaymentSelect from "./user/PaymentSelect";
 import CouponModal from "./user/paymentPage/CouponModal";
 
 const PaymentPage = () => {
@@ -13,7 +13,6 @@ const PaymentPage = () => {
   const locationData = useSelector(state => state.user.locationData) || "";
   const userAddress = useSelector(state => state.user.userAddress) || "";
   const accessToken = useSelector(state => state.user.accessToken) || "";
-  const selectedMenuItems = useSelector(state => state.cart.items) || [];
   const searchTerm = useSelector(state => state.user.searchTerm) || "";
   const { id } = useParams();
   const [isModal, setIsModal] = useState(false);
@@ -28,6 +27,10 @@ const PaymentPage = () => {
   const navigate = useNavigate();
   const restaurantName = sessionStorage.getItem("restaurantName");
 
+  const items = useSelector(state => state.cart.items);
+
+  console.log("items", items);
+
   const openModal = item => {
     setSelectedItem(item);
     setIsModal(true);
@@ -40,23 +43,9 @@ const PaymentPage = () => {
     document.documentElement.style.overflow = "auto";
   };
 
-  // 메뉴 필터링
-  const filteredMenuItems = useMemo(() => {
-    return selectedMenuItems.filter(
-      item => item.menu_res_pk === parseInt(id, 10),
-    );
-  }, [selectedMenuItems, id]);
-
-  // 메뉴 PK 배열 생성
-  const menuPkArray = useMemo(() => {
-    return filteredMenuItems.flatMap(item =>
-      Array(item.quantity).fill(item.menu_pk),
-    );
-  }, [filteredMenuItems]);
-
   // 총 금액 계산
   const totalAmount = useMemo(() => {
-    return filteredMenuItems.reduce(
+    return items.reduce(
       (sum, item) =>
         sum +
         item.menu_price * item.quantity +
@@ -68,7 +57,7 @@ const PaymentPage = () => {
           : 0),
       0,
     );
-  }, [filteredMenuItems]);
+  }, [items]);
 
   // 주소 변경 시 userAddress.addr1 또는 addr2 값 업데이트
   useEffect(() => {
@@ -84,7 +73,7 @@ const PaymentPage = () => {
 
   // 총 주문 금액 계산
   const calculateTotalOrderPrice = () => {
-    return filteredMenuItems.reduce(
+    return items.reduce(
       (total, item) => total + item.menu_price * item.quantity,
       0,
     );
@@ -137,7 +126,7 @@ const PaymentPage = () => {
           request,
           locationData,
           addressDetail,
-          menuPkArray,
+          // menuPkArray,
         );
 
         if (order_pk) {
@@ -169,7 +158,7 @@ const PaymentPage = () => {
       payment_method: selectedPayment,
       order_phone: phone,
       order_address: `${searchTerm} ${addressDetail}`,
-      menu: filteredMenuItems.map(item => ({
+      menu: items.map(item => ({
         menu_pk: item.menu_pk,
         menu_count: item.quantity,
         menu_option_pk: item.menu_option_pk || [],
@@ -319,7 +308,7 @@ const PaymentPage = () => {
         <div className="payment-page__warp-border">
           <h3 className="payment-page__restaurant-name">{restaurantName}</h3>
           <ul>
-            {filteredMenuItems.map((item, index) => (
+            {items.map((item, index) => (
               <li key={index} className="payment-page__order-item">
                 <p>
                   {item.menu_name}
