@@ -71,18 +71,25 @@ const TestModule = () => {
 
       const orderPK = orderResponse.data.resultData.order_pk;
 
-      // 후불 결제 (paymentMethod가 빈 문자열인 경우)
       if (!paymentMethod) {
-        // SSE로 갱신 요청 전송 (구현은 서버와의 통신에 따라 다름)
-        // 예: SSE 초기화 및 메시지 전송
-        const eventSource = new EventSource("/api/sse-update");
+        // SSE로 갱신 요청 전송
+        const eventSource = new EventSource("/sse");
+
         eventSource.onopen = () => {
           console.log("SSE 연결됨.");
-          // 예: 전송 로직 (실제 API에 맞게 수정)
+          // SSE 연결이 성공적으로 열렸을 때, 서버로부터 이벤트를 받기 시작합니다.
         };
+
+        eventSource.onmessage = event => {
+          // 서버로부터 이벤트 수신 시 처리
+          console.log("서버 메시지:", event.data);
+        };
+
         eventSource.onerror = err => {
           console.error("SSE 연결 오류:", err);
+          eventSource.close(); // 오류 발생 시 연결 종료
         };
+
         return; // 후불 결제의 경우 결제 프로세스 종료
       }
 
