@@ -81,7 +81,7 @@ const MyLineSaleChart = () => {
               onClick={() => handleDataChange("year")}
             >
               연별 매출
-            </button>{" "}
+            </button>
           </li>
           <li>
             <button
@@ -89,7 +89,7 @@ const MyLineSaleChart = () => {
               onClick={() => handleDataChange("month")}
             >
               월별 매출
-            </button>{" "}
+            </button>
           </li>
           <li>
             <button
@@ -97,7 +97,7 @@ const MyLineSaleChart = () => {
               onClick={() => handleDataChange("day")}
             >
               일별 매출
-            </button>{" "}
+            </button>
           </li>
         </ul>
       </div>

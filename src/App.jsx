@@ -25,7 +25,7 @@ import AuthUserPage from "./pages/AuthUserPage.tsx";
 import CartPage from "./pages/CartPage.jsx";
 import CeoPage from "./pages/CeoPage.jsx";
 import CheckoutPage from "./pages/CheckoutPage.jsx";
-import HomePage from "./pages/HomePage.jsx";
+import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage.tsx";
 import MyPage from "./pages/MyPage.tsx";
 import MyPageAddress from "./pages/MyPageAddress";
@@ -57,7 +57,6 @@ import StatisticsforAdmin from "./components/admin/StatisticsforAdmin";
 import StatisticsforCeo from "./components/ceo/StatisticsforCeo";
 
 import MypageLayout from "./components/layout/MypageLayout";
-
 
 function App() {
   return (
@@ -153,7 +152,7 @@ function App() {
           <Route path="*" element={<NotFound />} />
           <Route path="/toastTest" element={<Test />} />
           <Route path="/paymentTest" element={<Test3 />} />
-          <Route path="/1" element={<IntroPage />} />
+          <Route path="/intro" element={<IntroPage />} />
         </Routes>
       </div>
     </OrderProvider>

@@ -52,7 +52,7 @@ const AdminLayout = () => {
                   ? "영업중"
                   : "준비중"
                 : "상태"}
-            </div>*/}{" "}
+            </div>*/}
             <div className="owner-nav__wrap">
               <ul className="owner-nav__list">
                 {navItems.map(({ path, label }) => (

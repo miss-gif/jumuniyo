@@ -106,7 +106,7 @@ const MypageReportPage: React.FC = () => {
                   <div className="order-date">
                     <div className="flex-between-real-box">
                       <h2>
-                        {new Date(report.createdAt).toLocaleDateString("ko-KR")}{" "}
+                        {new Date(report.createdAt).toLocaleDateString("ko-KR")}
                       </h2>
 
                       <div>

@@ -63,7 +63,6 @@ const AcceptDetail = () => {
 
   return (
     <>
-      {" "}
       <div className="restaurant-detail-container">
         <h2>{restaurant.resName}</h2>
         <p>
@@ -79,7 +78,7 @@ const AcceptDetail = () => {
           <strong>설명2:</strong> {restaurant.resDescription2}
         </p>
         <p>
-          <strong>등록 일자:</strong>{" "}
+          <strong>등록 일자:</strong>
           {new Date(restaurant.createdAt).toLocaleString()}
         </p>
         <button onClick={handleAccept} className="accept-button">

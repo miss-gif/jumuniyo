@@ -274,7 +274,7 @@ const Home = () => {
                           <div className="orderedMenuInf" key={index}>
                             <div className="menuName">{menu.menuName}</div>
                             <div className="menuAmount">
-                              {1}{" "}
+                              {1}
                               {/* 주문 수량이 정보에 없으므로 임의로 1로 설정 */}
                             </div>
                             <div className="menuPrice">

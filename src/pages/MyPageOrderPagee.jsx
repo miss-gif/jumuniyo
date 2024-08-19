@@ -135,8 +135,8 @@ const MyPageOrderPage = () => {
                   <div className="order-list">
                     <div className="order-date">
                       <div>
-                        {new Date(order.createdAt).toLocaleDateString("ko-KR")}{" "}
-                        - {order.orderState === 1 ? "주문 중" : "조리 중"}
+                        {new Date(order.createdAt).toLocaleDateString("ko-KR")}-{" "}
+                        {order.orderState === 1 ? "주문 중" : "조리 중"}
                       </div>
                       <div
                         className="order-detail-text"

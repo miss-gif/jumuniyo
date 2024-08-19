@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
 import styled from "@emotion/styled";
-import { Navigate, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
 import axios from "axios";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import "./SidebarRight.scss";
 
 const StatusListItem = styled.li`

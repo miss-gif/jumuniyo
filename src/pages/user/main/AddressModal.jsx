@@ -44,6 +44,7 @@ const AddressModal = ({ isOpen, onRequestClose }) => {
           },
         });
         setAddresses(response.data.resultData);
+        console.log("주소 목록을 불러왔습니다.", response.data.resultData);
       } catch (error) {
         console.error("주소 목록을 불러오는 데 실패했습니다.", error);
       }
@@ -93,8 +94,9 @@ const AddressModal = ({ isOpen, onRequestClose }) => {
 
       if (response.data.status === "OK") {
         const location = response.data.results[0].geometry.location;
+        // Switch latitude and longitude here
         dispatch(
-          setLocationData({ latitude: location.lat, longitude: location.lng }),
+          setLocationData({ latitude: location.lng, longitude: location.lat }),
         );
 
         saveRecentAddress(address);
@@ -181,11 +183,12 @@ const AddressModal = ({ isOpen, onRequestClose }) => {
           ) : (
             <div className="recent-searches">
               {recentSearches.length > 0 ? (
-                <ul>
+                <ul className="address-list">
                   {recentSearches.map((search, index) => (
                     <li
                       key={index}
                       onClick={() => onClickSearch({ addr1: search })}
+                      className="address-item"
                     >
                       {search}
                     </li>
