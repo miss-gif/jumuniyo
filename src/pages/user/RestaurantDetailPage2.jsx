@@ -34,6 +34,7 @@ const RestaurantDetailPage = () => {
 
   const dispatch = useDispatch();
   const selectedMenuItems = useSelector(state => state.cart.items);
+  const restaurantItems = useSelector(state => state.cart.restaurant);
   const accessToken = useSelector(state => state.user.accessToken);
   const isLoggedIn = !!accessToken;
 
@@ -41,8 +42,18 @@ const RestaurantDetailPage = () => {
     const getData = async () => {
       try {
         const restaurant = await fetchRestaurantData(id);
-        console.log("restaurant: ", restaurant.restaurantPk);
-        console.log("restaurant: ", restaurant.restaurantName);
+        // console.log("restaurant: ", restaurant.restaurantName);
+        // console.log("restaurant: ", restaurant.restaurantPk);
+        // console.log("장바구니 아이템: ", selectedMenuItems);
+        // console.log("장바구니 상점명: ", restaurantItems);
+
+        if (
+          restaurantItems &&
+          restaurant.restaurantPk === restaurantItems.restaurantPk
+        ) {
+          console.log("같음");
+        }
+
         const menu = restaurant.menuList || [];
         const reviews = (await fetchReviewData(id)) || [];
         setRestaurantData(restaurant);
@@ -59,7 +70,8 @@ const RestaurantDetailPage = () => {
   }, [id]);
 
   useEffect(() => {
-    console.log(selectedMenuItems);
+    console.log("장바구니 아이템: ", selectedMenuItems);
+    console.log("장바구니 상점명: ", restaurantItems);
   }, [selectedMenuItems]);
 
   if (loading) return <LoadingSpinner />;
@@ -161,8 +173,8 @@ const RestaurantDetailPage = () => {
             onRemoveItem={handleRemoveItem}
             onClearAll={handleClearAll}
             onOrder={handleOrder}
-            restaurantName={restaurantData.restaurantName}
-            restaurantState={restaurantData.restaurantState}
+            restaurantName={restaurantData?.restaurantName}
+            restaurantState={restaurantData?.restaurantState}
           />
         </div>
       </div>

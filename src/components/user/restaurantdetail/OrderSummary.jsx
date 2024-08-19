@@ -8,10 +8,8 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
 
 const OrderSummary = ({
-  selectedMenuItems,
   onIncreaseQuantity,
   onDecreaseQuantity,
   onRemoveItem,
@@ -21,20 +19,21 @@ const OrderSummary = ({
   restaurantState,
 }) => {
   const [open, setOpen] = useState(false);
-  const { id } = useParams(); // useParams로 얻은 id 값
-  const items = useSelector(state => state.cart.items); // Redux에서 items 가져오기
-  const restaurant = useSelector(state => state.cart.restaurant); // Redux에서 items 가져오기
+  const items = useSelector(state => state.cart.items);
+  const restaurant = useSelector(state => state.cart.restaurant);
+  const [store, setStore] = useState([]);
 
-  // console.log("selectedMenuItems", selectedMenuItems);
+  useEffect(() => {
+    if (
+      restaurantName &&
+      restaurant?.restaurantName &&
+      restaurantName === restaurant.restaurantName
+    ) {
+      setStore(items);
+    }
+  }, [items, restaurantName, restaurant]);
 
-  console.log("items", items); // 상점이름과 상점 pk도 담겨야함
-  console.log("restaurant", restaurant); // 상점이름과 상점 pk도 담겨야함
-  // console.log("restaurant", restaurant.restaurantName); // 상점이름과 상점 pk도 담겨야함
-  // console.log("restaurant", restaurant.restaurantPk); // 상점이름과 상점 pk도 담겨야함
-
-  // console.log("필터링", 필터링);
-
-  const totalAmount = items.reduce(
+  const totalAmount = store.reduce(
     (sum, item) =>
       sum +
       item.menu_price * item.quantity +
@@ -47,20 +46,7 @@ const OrderSummary = ({
     0,
   );
 
-  const emptyMessageStyle = {
-    padding: items.length === 0 ? "20px" : "0",
-    textAlign: "center",
-  };
-
-  const submitButtonStyle = {
-    backgroundColor: items.length > 0 ? "#333" : "#eee",
-    color: items.length > 0 ? "#eee" : "#aaa",
-    cursor: items.length > 0 ? "pointer" : "default",
-  };
-
-  const formatPrice = price => {
-    return price.toLocaleString();
-  };
+  const formatPrice = price => price.toLocaleString();
 
   const handleOrderClick = () => {
     if (restaurantState === 2) {
@@ -76,12 +62,6 @@ const OrderSummary = ({
     document.body.style.overflow = "auto";
   };
 
-  useEffect(() => {
-    return () => {
-      document.body.style.overflow = "auto";
-    };
-  }, []);
-
   return (
     <div className="order-summary">
       <div className="order-summary-content">
@@ -92,16 +72,16 @@ const OrderSummary = ({
           </div>
         </div>
         <div className="order-summary__content-wrapper">
-          {items.length === 0 ? (
+          {store.length === 0 ? (
             <div
               className="order-summary__empty-message"
-              style={emptyMessageStyle}
+              style={{ padding: "20px", textAlign: "center" }}
             >
               선택된 메뉴가 없습니다.
             </div>
           ) : (
-            items.map((item, index) => (
-              <div key={index}>
+            store.map((item, index) => (
+              <div key={index} className="order-summary__item">
                 <div className="order-summary__content">
                   {item.menu_name}: {item.menu_content}
                   {item.selectedOptions && (
@@ -155,7 +135,7 @@ const OrderSummary = ({
               </div>
             ))
           )}
-          {items.length > 0 && (
+          {store.length > 0 && (
             <div className="order-summary__total-amount">
               <p>총 결제 금액</p>
               <p>{formatPrice(totalAmount)}원</p>
@@ -165,19 +145,15 @@ const OrderSummary = ({
       </div>
       <button
         className="order-summary__submit-button"
-        style={submitButtonStyle}
+        style={{
+          backgroundColor: store.length > 0 ? "#333" : "#eee",
+          color: store.length > 0 ? "#eee" : "#aaa",
+          cursor: store.length > 0 ? "pointer" : "default",
+        }}
         onClick={handleOrderClick}
-        disabled={items.length === 0}
+        disabled={store.length === 0}
       >
         주문하기
-      </button>
-      <button
-        className="order-summary__submit-buttonforphone"
-        style={submitButtonStyle}
-        onClick={handleOrderClick}
-        disabled={totalAmount === 0}
-      >
-        {totalAmount > 0 ? `${totalAmount}원 주문하기` : "음식을 담아주세요!"}
       </button>
 
       {/* 준비중입니다 모달 */}
