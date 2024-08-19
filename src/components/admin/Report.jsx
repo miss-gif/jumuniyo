@@ -62,11 +62,29 @@ const Report = () => {
 
   return (
     <div className="ask-wrap">
-      <h1>신고 목록</h1>
-      <div className="filter-buttons">
-        <button onClick={() => setFilter("all")}>전체보기</button>
-        <button onClick={() => setFilter("unfinished")}>미완료만 보기</button>
-        <button onClick={() => setFilter("finished")}>처리완료만 보기</button>
+      <h1 style={{ fontSize: "20px", marginBottom: "20px" }}>신고 목록</h1>
+      <div className="filter-buttons" style={{ marginBottom: "20px" }}>
+        <button
+          className="btn"
+          onClick={() => setFilter("all")}
+          style={{ marginRight: "10px" }}
+        >
+          전체보기
+        </button>
+        <button
+          className="btn"
+          onClick={() => setFilter("unfinished")}
+          style={{ marginRight: "10px" }}
+        >
+          미완료만 보기
+        </button>
+        <button
+          className="btn"
+          onClick={() => setFilter("finished")}
+          style={{ marginRight: "10px" }}
+        >
+          처리완료만 보기
+        </button>
       </div>
       <div className="tap">
         <div className="tap-number">문의 번호</div>

@@ -70,13 +70,27 @@ const Ask: React.FC = () => {
 
   return (
     <div className="ask-wrap">
-      <h1>문의 목록</h1>
-      <div className="filter-buttons">
-        <button onClick={() => handleFilterClick("all")}>전체보기</button>
-        <button onClick={() => handleFilterClick("unfinished")}>
+      <h1 style={{ fontSize: "20px", marginBottom: "20px" }}>문의 목록</h1>
+      <div className="filter-buttons" style={{ marginBottom: "20px" }}>
+        <button
+          className="btn"
+          onClick={() => handleFilterClick("all")}
+          style={{ marginRight: "10px" }}
+        >
+          전체보기
+        </button>
+        <button
+          className="btn"
+          onClick={() => handleFilterClick("unfinished")}
+          style={{ marginRight: "10px" }}
+        >
           미답변만 보기
         </button>
-        <button onClick={() => handleFilterClick("finished")}>
+        <button
+          className="btn"
+          onClick={() => handleFilterClick("finished")}
+          style={{ marginRight: "10px" }}
+        >
           답변만 보기
         </button>
       </div>
