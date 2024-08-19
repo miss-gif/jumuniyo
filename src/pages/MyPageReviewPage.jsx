@@ -114,6 +114,7 @@ const MyPageReviewPage = () => {
         <LoadingSpinner />
       ) : reviewItems.length === 0 ? (
         <div className="mypage-box">
+          <h3>나의 리뷰내역</h3>
           <Alert variant="outlined" severity="info">
             리뷰내역이 없습니다.
           </Alert>

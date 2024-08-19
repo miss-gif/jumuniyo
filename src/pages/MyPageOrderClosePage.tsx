@@ -124,11 +124,9 @@ const MyPageOrderClosePage: React.FC = () => {
             );
           })
         ) : (
-          <div className="mypage-box">
-            <Alert variant="outlined" severity="info">
-              주문내역이 없습니다.
-            </Alert>
-          </div>
+          <Alert variant="outlined" severity="info">
+            주문내역이 없습니다.
+          </Alert>
         )}
       </div>
     </div>

@@ -5,6 +5,7 @@ import Swal from "sweetalert2";
 import jwtAxios from "../api/user/jwtUtil";
 import Mypage from "../components/join/Mypage";
 import { useNavigate } from "react-router-dom";
+import LoadingSpinner from "../components/common/LoadingSpinner";
 
 interface Favorite {
   restaurantPk: number;
@@ -22,10 +23,12 @@ const MyPageFavoriteListPage: React.FC = () => {
   const [selectedItems, setSelectedItems] = useState<Record<number, boolean>>(
     {},
   );
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const navigate = useNavigate();
 
   const getFavoriteList = async () => {
+    setIsLoading(true);
     try {
       const res = await jwtAxios.get("/api/restaurant/followed?page=1");
       const list = res.data.resultData.list;
@@ -48,6 +51,8 @@ const MyPageFavoriteListPage: React.FC = () => {
         icon: "error",
         text: "서버에러입니다.",
       });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -70,6 +75,15 @@ const MyPageFavoriteListPage: React.FC = () => {
   useEffect(() => {
     getFavoriteList();
   }, []);
+
+  if (isLoading) {
+    return (
+      <div className="mypage-wrap">
+        <Mypage />
+        <LoadingSpinner />
+      </div>
+    );
+  }
 
   if (favorite.length <= 0) {
     return (

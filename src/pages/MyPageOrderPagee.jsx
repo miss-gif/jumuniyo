@@ -9,24 +9,24 @@ import OrderListHeader from "../components/user/mypage/OrderListHeader";
 import { getCookie } from "../utils/cookie";
 import Swal from "sweetalert2";
 
-const MyPageOrderPagee = () => {
+const MyPageOrderPage = () => {
   const [reviewOpen, setReviewOpen] = useState(false);
   const [orders, setOrders] = useState([]);
   const [selectedOrderPk, setSelectedOrderPk] = useState(null);
   const [doneOrderPk, setDoneOrderPk] = useState("");
   const [resPk, setResPk] = useState("");
   const [isLogin, setIsLogin] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true); // 초기에는 로딩 중으로 설정
   const [orderNow, setOrderNow] = useState(null);
-  const navgate = useNavigate();
 
-  const navigate = useNavigate();
+  const navigate = useNavigate(); // 중복된 navigate 변수 제거
 
   const isOlderThanThreeDays = date => {
     const orderDate = new Date(date);
     const currentDate = new Date();
-    const threeDaysAgo = new Date();
-    threeDaysAgo.setDate(currentDate.getDate() - 3);
+    const threeDaysAgo = new Date(
+      currentDate.setDate(currentDate.getDate() - 3),
+    );
     return orderDate < threeDaysAgo;
   };
 
@@ -46,11 +46,7 @@ const MyPageOrderPagee = () => {
     setIsLoading(true);
     try {
       const res = await jwtAxios.get("/api/done/user/list");
-      if (res.data.statusCode !== -7) {
-        setOrders(res.data.resultData.contents);
-      } else {
-        setOrders([]);
-      }
+      setOrders(res.data.statusCode !== -7 ? res.data.resultData.contents : []);
     } catch (error) {
       setOrders([]);
     } finally {
@@ -93,16 +89,25 @@ const MyPageOrderPagee = () => {
   };
 
   useEffect(() => {
-    getOrderNow();
     const accessToken = getCookie("accessToken");
-    if (!accessToken) {
-      setIsLogin(false);
-      setIsLoading(false);
-      return;
+    setIsLogin(!!accessToken);
+
+    if (accessToken) {
+      getOrderNow();
+      getOrderList();
     } else {
-      setIsLogin(true);
+      setIsLoading(false);
     }
   }, []);
+
+  if (isLoading) {
+    return (
+      <div className="mypage-wrap">
+        <Mypage />
+        <LoadingSpinner />
+      </div>
+    );
+  }
 
   if (!isLogin) {
     return (
@@ -113,27 +118,19 @@ const MyPageOrderPagee = () => {
     );
   }
 
-  if (isLoading) {
-    return (
-      <div className="mypage-wrap">
-        <Mypage />
-        <LoadingSpinner />
-      </div>
-    );
-  }
   const orderDetails = doneOrderPk => {
-    navgate(`../../mypage/order/${doneOrderPk}`);
+    navigate(`../../mypage/order/${doneOrderPk}`);
   };
 
   return (
     <div className="mypage-wrap">
       <Mypage />
-      {orders.length > 0 || orderNow ? (
+      {orders.length > 0 ? (
         <div className="mypage-box">
           <OrderListHeader />
-          {orderNow && orderNow.length > 0 ? (
+          {orderNow && orderNow.length > 0 && (
             <div className="order-list-gap">
-              {orderNow?.map(order => (
+              {orderNow.map(order => (
                 <div key={order.doneOrderPk}>
                   <div className="order-list">
                     <div className="order-date">
@@ -143,28 +140,17 @@ const MyPageOrderPagee = () => {
                       </div>
                       <div
                         className="order-detail-text"
-                        onClick={() => {
-                          orderDetails(order.orderPk);
-                        }}
+                        onClick={() => orderDetails(order.orderPk)}
                       >
                         주문상세
                       </div>
                     </div>
                     <div className="order-main">
-                      {!order.resPic ? (
-                        <img
-                          src={"/images/defaultRes.png"}
-                          className="order-logo"
-                          alt="Order Logo"
-                        />
-                      ) : (
-                        <img
-                          src={`${order.resPic}`}
-                          className="order-logo"
-                          alt="Order Logo"
-                        />
-                      )}
-
+                      <img
+                        src={order.resPic || "/images/defaultRes.png"}
+                        className="order-logo"
+                        alt="Order Logo"
+                      />
                       <div className="order-detail-box">
                         <div>
                           <div>{order.resName}</div>
@@ -175,13 +161,10 @@ const MyPageOrderPagee = () => {
                             {order.orderPrice.toLocaleString("ko-KR")}원
                           </div>
                         </div>
-
                         {order.orderState === 1 ? (
                           <button
                             className="btn"
-                            onClick={() => {
-                              orderCancel(order.orderPk);
-                            }}
+                            onClick={() => orderCancel(order.orderPk)}
                           >
                             취소하기
                           </button>
@@ -194,14 +177,11 @@ const MyPageOrderPagee = () => {
                 </div>
               ))}
             </div>
-          ) : (
-            <Alert variant="outlined" severity="info">
-              주문 진행중인 리스트가 없습니다.
-            </Alert>
           )}
         </div>
       ) : (
         <div className="mypage-box">
+          <OrderListHeader />
           <Alert variant="outlined" severity="info">
             주문내역이 없습니다.
           </Alert>
@@ -211,4 +191,4 @@ const MyPageOrderPagee = () => {
   );
 };
 
-export default MyPageOrderPagee;
+export default MyPageOrderPage;

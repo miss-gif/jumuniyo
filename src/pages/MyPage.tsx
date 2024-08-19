@@ -43,6 +43,7 @@ const MyPage: React.FC = () => {
     useSelector((state: RootState) => state.user.accessToken) || "";
 
   const getUserInfo = async () => {
+    setIsLoading(true);
     try {
       const res = await jwtAxios.get("/api/user-info");
       setImgUrl(res.data.resultData.userPic);
@@ -56,6 +57,8 @@ const MyPage: React.FC = () => {
         icon: "error",
         text: "서버에러입니다.",
       });
+    } finally {
+      setIsLoading(false);
     }
   };
 
