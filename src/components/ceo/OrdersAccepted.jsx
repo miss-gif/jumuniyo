@@ -267,9 +267,8 @@ const OrdersAccepted = () => {
                     </div>
                     <div className="orderedMenu">
                       <h2>주문내역</h2>
-                      {orderDetail.menuList &&
-                      orderDetail.menuList.length > 0 ? (
-                        orderDetail.menuList.map((menu, index) => (
+                      {orderDetail.menus && orderDetail.menus.length > 0 ? (
+                        orderDetail.menus.map((menu, index) => (
                           <div className="orderedMenuInf" key={index}>
                             <div className="menuName">
                               {menu.order_menu_name}

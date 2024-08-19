@@ -32,7 +32,7 @@ const MenuManagement = () => {
     img: null,
   });
   const [newCategory, setNewCategory] = useState("");
-  const [editCategoryItem, setEditCategoryItem] = useState(null); // 카테고리 수정
+  const [editCategoryItem, setEditCategoryItem] = useState(null);
 
   const [menuOptions, setMenuOptions] = useState({});
 
@@ -47,7 +47,6 @@ const MenuManagement = () => {
     optionPrice: "",
   });
 
-  // 모달 상태 추가
   const [isOptionModalOpen, setIsOptionModalOpen] = useState(false);
   const [selectedMenuOptions, setSelectedMenuOptions] = useState([]);
   const [selectedMenuPk, setSelectedMenuPk] = useState(null);
@@ -55,7 +54,6 @@ const MenuManagement = () => {
   const [optionActionMessage, setOptionActionMessage] = useState(null);
   const [isActionModalOpen, setIsActionModalOpen] = useState(false);
 
-  // 모달 열기/닫기 함수
   const handleOpenActionModal = message => {
     setOptionActionMessage(message);
     setIsActionModalOpen(true);
@@ -167,7 +165,7 @@ const MenuManagement = () => {
       menu_content: menu.menu_content,
       menu_price: menu.menu_price,
       menu_state: menu.menu_state,
-      menu_cat_pk: menu.menu_cat_pk,
+      menu_cat_pk: menu.menu_cat_pk, // 이 부분 추가
       img: null,
     });
     setIsEditMode(true);
@@ -220,9 +218,7 @@ const MenuManagement = () => {
       });
 
       if (response.data.statusCode === 1) {
-        // 로컬 스토리지에 activeTab 저장
         localStorage.setItem("activeTab", "menuManagement");
-        // 메뉴 추가 후 새로고침
         window.location.reload();
       } else {
         throw new Error(response.data.resultMsg || "Unknown error");
@@ -233,6 +229,11 @@ const MenuManagement = () => {
   };
 
   const handleEditMenuItem = async () => {
+    if (editMenuItem.menu_cat_pk !== newMenuItem.menu_cat_pk) {
+      // 카테고리 변경이 있을 경우
+      await handleEditMenuCategory();
+    }
+
     const accessToken = getCookie("accessToken");
 
     const formData = new FormData();
@@ -259,9 +260,35 @@ const MenuManagement = () => {
       });
 
       if (response.data.statusCode === 1) {
-        // 로컬 스토리지에 activeTab 저장
         localStorage.setItem("activeTab", "menuManagement");
-        // 메뉴 수정 후 새로고침
+        window.location.reload();
+      } else {
+        throw new Error(response.data.resultMsg || "Unknown error");
+      }
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+  const handleEditMenuCategory = async () => {
+    const accessToken = getCookie("accessToken");
+
+    try {
+      const response = await axios.patch(
+        "/api/owner/menu/patch-category",
+        {
+          menu_pk: editMenuItem.menu_pk,
+          menu_cat_pk: newMenuItem.menu_cat_pk,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        },
+      );
+
+      if (response.data.statusCode === 1) {
+        localStorage.setItem("activeTab", "menuManagement");
         window.location.reload();
       } else {
         throw new Error(response.data.resultMsg || "Unknown error");
@@ -300,9 +327,7 @@ const MenuManagement = () => {
       });
 
       if (response.data.statusCode === 1) {
-        // 로컬 스토리지에 activeTab 저장
         localStorage.setItem("activeTab", "menuManagement");
-        // 메뉴 상태 변경 후 새로고침
         window.location.reload();
       } else {
         throw new Error(response.data.resultMsg || "Unknown error");
@@ -346,14 +371,12 @@ const MenuManagement = () => {
     }
   };
 
-  // 카테고리 수정 모달 열기
   const handleOpenEditCategoryModal = category => {
     setEditCategoryItem(category);
     setNewCategory(category.menu_category.menu_cat_name);
     setIsCategoryModalOpen(true);
   };
 
-  // 카테고리 수정 처리
   const handleEditCategory = async () => {
     const accessToken = getCookie("accessToken");
 
@@ -397,7 +420,6 @@ const MenuManagement = () => {
     }
   };
 
-  // 카테고리 삭제 처리
   const handleDeleteCategory = async menu_cat_pk => {
     const accessToken = getCookie("accessToken");
 
@@ -425,8 +447,8 @@ const MenuManagement = () => {
   };
 
   const handleOpenCategoryModal = () => {
-    setEditCategoryItem(null); // 새 카테고리 추가 시 수정 모드 해제
-    setNewCategory(""); // 새 카테고리 이름 초기화
+    setEditCategoryItem(null);
+    setNewCategory("");
     setIsCategoryModalOpen(true);
   };
 
@@ -459,10 +481,8 @@ const MenuManagement = () => {
 
         setCategories(prevCategories => [...prevCategories, newCategoryData]);
 
-        // activeTab을 로컬 스토리지에 저장
         localStorage.setItem("activeTab", "menuManagement");
 
-        // 카테고리 추가 후 새로고침
         window.location.reload();
       } else {
         throw new Error(response.data.resultMsg || "Unknown error");
@@ -560,8 +580,8 @@ const MenuManagement = () => {
           ],
         }));
         setNewOption({ optionName: "", optionPrice: "" });
-        handleCloseOptionModal(); // 옵션 모달을 먼저 닫음
-        handleOpenActionModal("옵션 추가 완료"); // 액션 모달을 연다
+        handleCloseOptionModal();
+        handleOpenActionModal("옵션 추가 완료");
       } else {
         throw new Error(response.data.resultMsg || "Unknown error");
       }
@@ -606,8 +626,8 @@ const MenuManagement = () => {
           ),
         }));
         setEditOption({ optionPk: null, optionName: "", optionPrice: "" });
-        handleCloseOptionModal(); // 옵션 모달을 먼저 닫음
-        handleOpenActionModal("옵션 수정 완료"); // 액션 모달을 연다
+        handleCloseOptionModal();
+        handleOpenActionModal("옵션 수정 완료");
       } else {
         throw new Error(response.data.resultMsg || "Unknown error");
       }
@@ -636,8 +656,8 @@ const MenuManagement = () => {
             option => option.optionPk !== optionPk,
           ),
         }));
-        handleCloseOptionModal(); // 옵션 모달을 먼저 닫음
-        handleOpenActionModal("옵션 삭제 완료"); // 액션 모달을 연다
+        handleCloseOptionModal();
+        handleOpenActionModal("옵션 삭제 완료");
       } else {
         throw new Error(response.data.resultMsg || "Unknown error");
       }
