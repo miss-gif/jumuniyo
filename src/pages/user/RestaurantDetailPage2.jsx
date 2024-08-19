@@ -41,6 +41,8 @@ const RestaurantDetailPage = () => {
     const getData = async () => {
       try {
         const restaurant = await fetchRestaurantData(id);
+        console.log("restaurant: ", restaurant.restaurantPk);
+        console.log("restaurant: ", restaurant.restaurantName);
         const menu = restaurant.menuList || [];
         const reviews = (await fetchReviewData(id)) || [];
         setRestaurantData(restaurant);
@@ -68,7 +70,15 @@ const RestaurantDetailPage = () => {
   const reviewCount = reviewData ? reviewData.length : 0;
 
   const handleSelectMenuItem = item => {
-    dispatch(addItem(item));
+    dispatch(
+      addItem({
+        item,
+        restaurant: {
+          restaurantPk: restaurantData.restaurantPk,
+          restaurantName: restaurantData.restaurantName,
+        },
+      }),
+    );
   };
 
   const handleIncreaseQuantity = menu_pk => {

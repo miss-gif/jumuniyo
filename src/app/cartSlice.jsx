@@ -4,16 +4,24 @@ const cartSlice = createSlice({
   name: "cart",
   initialState: {
     items: [],
+    restaurant: "", // Add restaurant details to the state
   },
   reducers: {
     addItem: (state, action) => {
-      const item = action.payload;
+      const { item, restaurant } = action.payload;
+
+      // Check if restaurant information is already set
+      if (!state.restaurant) {
+        state.restaurant = restaurant;
+      }
+
       const existingItem = state.items.find(
         menuItem =>
           menuItem.menu_pk === item.menu_pk &&
           JSON.stringify(menuItem.selectedOptions) ===
             JSON.stringify(item.selectedOptions),
       );
+
       if (existingItem) {
         existingItem.quantity += 1;
       } else {
@@ -40,6 +48,7 @@ const cartSlice = createSlice({
     },
     clearCart: state => {
       state.items = [];
+      state.restaurant = null; // Clear restaurant data when cart is cleared
     },
   },
 });
