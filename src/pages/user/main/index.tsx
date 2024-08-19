@@ -134,7 +134,7 @@ const SwiperCarousel = memo(
             ))}
           </Swiper>
         ) : (
-          <div>No data available</div>
+          <div className="no-data">죄송합니다, 일치하는 데이터가 없습니다.</div>
         )}
       </div>
     );

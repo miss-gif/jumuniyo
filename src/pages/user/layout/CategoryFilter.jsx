@@ -13,9 +13,28 @@ const ListItem = styled.li`
   padding: 8px;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  background-color: ${props => (props.isActive ? "#00c4bd" : "transparent")};
-  color: ${props => (props.isActive ? "white" : "black")};
   border-radius: 4px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  img {
+    padding: 4px;
+    background-color: ${props => (props.isActive ? "#00c4bd" : "transparent")};
+    color: ${props => (props.isActive ? "white" : "black")};
+  }
+  p {
+    padding: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    border-radius: 4px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: ${props => (props.isActive ? "#00c4bd" : "transparent")};
+    color: ${props => (props.isActive ? "white" : "black")};
+  }
 `;
 
 const CategoryFilter = () => {
@@ -75,24 +94,24 @@ const CategoryFilter = () => {
             </button>
 
             {/* Swiper 적용 */}
+            <ListItem
+              isActive={activeCategory === 0}
+              onClick={onClickLink(0)}
+              className="filters__list-item all"
+            >
+              <p>전체보기</p>
+            </ListItem>
             <Swiper
               spaceBetween={0}
               slidesPerView={10}
               className="filters__list"
             >
-              <SwiperSlide>
-                <ListItem
-                  isActive={activeCategory === 0}
-                  onClick={onClickLink(0)}
-                >
-                  전체보기
-                </ListItem>
-              </SwiperSlide>
               {categories.map(category => (
                 <SwiperSlide key={category.categoryPk}>
                   <ListItem
                     isActive={activeCategory === category.categoryPk}
                     onClick={onClickLink(category.categoryPk)}
+                    className="filters__list-item"
                   >
                     <img
                       src={`${category.categoryPic}`}

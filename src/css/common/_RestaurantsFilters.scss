@@ -1,11 +1,37 @@
+.filters__list-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.filters__list-item.all {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  padding: 20px;
+}
+
+.swiper-wrapper {
+  display: flex;
+  align-items: center;
+}
+
 .restaurants-page {
   $gap: $gap-6;
   &__filters {
     position: relative;
     display: flex;
     align-items: center;
-    gap: $gap;
     padding: $padding-2 0;
+    img {
+      border-radius: 50%;
+      width: 64px;
+      height: 64px;
+    }
+    // height: 50px;
 
     .search-btn {
       position: relative;
@@ -18,7 +44,7 @@
       font-size: 14px;
       display: flex;
       align-items: center;
-      // gap: $gap;
+      justify-content: center;
       gap: 8px;
     }
     .filters__item {
