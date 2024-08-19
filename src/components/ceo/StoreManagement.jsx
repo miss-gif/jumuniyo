@@ -32,7 +32,6 @@ const StoreManagement = () => {
     const savedTab = localStorage.getItem("activeTab");
     if (savedTab) {
       setActiveTab(savedTab);
-      // 새로고침 후에 탭이 유지되도록 localStorage에서 제거
       localStorage.removeItem("activeTab");
     }
     const fetchData = async () => {
@@ -99,7 +98,6 @@ const StoreManagement = () => {
         restaurantState: newStatus,
       }));
 
-      // 모달 메시지 설정 및 모달 표시
       setModalMessage(
         newStatus === 1 ? "영업시작되었습니다." : "영업종료되었습니다.",
       );

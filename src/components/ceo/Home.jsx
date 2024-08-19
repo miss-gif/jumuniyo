@@ -169,22 +169,25 @@ const Home = () => {
     checkLogin();
     loadOrders();
 
-    // 실시간 통신
-    // const eventSource = new EventSource("/sse");
+    // SSE 설정
+    const eventSource = new EventSource(`https://zumuniyo.shop/sse`);
 
-    // eventSource.onmessage = event => {
-    //   const newOrder = JSON.parse(event.data);
-    //   setOrders(prevOrders => [newOrder, ...prevOrders]);
-    // };
+    eventSource.onmessage = event => {
+      const parsedData = JSON.parse(event.data);
 
-    // eventSource.onerror = err => {
-    //   console.error("EventSource failed:", err);
-    //   eventSource.close();
-    // };
+      if (parsedData.event === "OrderRequest") {
+        loadOrders(); // 새로운 주문이 있을 경우, 주문 목록을 다시 불러옴
+      }
+    };
 
-    // return () => {
-    //   eventSource.close();
-    // };
+    eventSource.onerror = () => {
+      setError("SSE 연결에 문제가 발생했습니다.");
+      eventSource.close();
+    };
+
+    return () => {
+      eventSource.close(); // 컴포넌트 언마운트 시 SSE 연결 해제
+    };
   }, [navigate]);
 
   useEffect(() => {
@@ -233,7 +236,7 @@ const Home = () => {
                   <div className="one-order-left">
                     <div className="order-number">No. {order.orderPk}</div>
                     <div className="order-menus-number">
-                      {order.orderPrice}원
+                      {formatNumber(order.orderPrice)}원
                     </div>
                   </div>
                   <div className="one-order-right">
@@ -267,19 +270,32 @@ const Home = () => {
                     </div>
                     <div className="orderedMenu">
                       <h2>주문내역</h2>
-                      {orderDetail &&
-                      orderDetail.menuInfoList &&
-                      orderDetail.menuInfoList.length > 0 ? (
-                        orderDetail.menuInfoList.map((menu, index) => (
+                      {orderDetail.menus && orderDetail.menus.length > 0 ? (
+                        orderDetail.menus.map((menu, index) => (
                           <div className="orderedMenuInf" key={index}>
-                            <div className="menuName">{menu.menuName}</div>
+                            <div className="menuName">
+                              {menu.order_menu_name}
+                            </div>
                             <div className="menuAmount">
-                              {1}
-                              {/* 주문 수량이 정보에 없으므로 임의로 1로 설정 */}
+                              {menu.order_menu_count}
                             </div>
                             <div className="menuPrice">
-                              {formatNumber(menu.menuPrice)}
+                              {formatNumber(menu.order_menu_price)}
                             </div>
+                            {menu.menu_options &&
+                              menu.menu_options.length > 0 && (
+                                <div className="menuOptions">
+                                  <h4>옵션:</h4>
+                                  {menu.menu_options.map((option, idx) => (
+                                    <div key={idx} className="optionItem">
+                                      <span>{option.option_name}</span>
+                                      <span>
+                                        {formatNumber(option.option_price)}원
+                                      </span>
+                                    </div>
+                                  ))}
+                                </div>
+                              )}
                           </div>
                         ))
                       ) : (
@@ -288,7 +304,7 @@ const Home = () => {
                       <div className="allOrderedMenuInf">
                         <div className="title">총주문</div>
                         <div className="allMenuAmount">
-                          {orderDetail.menuInfoList.length}
+                          {orderDetail.menus.length}
                         </div>
                         <div className="allMenuPrice">
                           {formatNumber(orderDetail.orderPrice)}
