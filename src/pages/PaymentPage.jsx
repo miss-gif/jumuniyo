@@ -1,13 +1,14 @@
 import { Checkbox } from "@mui/material";
 import axios from "axios";
 import { useEffect, useMemo, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
+import { clearCoupon } from "../app/couponSlice";
 import { initiateKakaoPay } from "../utils/kakaopayUtils";
 import PaymentSelect from "./user/PaymentSelect";
+import TestModule from "./user/TestModule.jsx";
 import CouponModal from "./user/paymentPage/CouponModal";
-import { clearCoupon } from "../app/couponSlice";
 
 const PaymentPage = () => {
   const dispatch = useDispatch();
@@ -290,6 +291,8 @@ const PaymentPage = () => {
                 ></textarea>
               </div>
             </div>
+
+            <TestModule />
             <PaymentSelect onPaymentSelect={setSelectedPayment} />
             <div className="payment-page__input-wrap">
               <h3 className="payment-page__subtitle">할인방법 선택</h3>
@@ -307,12 +310,12 @@ const PaymentPage = () => {
                           openModal();
                         }}
                       />
-                      <button
+                      <div
                         className="payment-page__coupon-btn btn--default"
                         onClick={openModal} // 쿠폰 적용 함수 호출
                       >
                         적용
-                      </button>
+                      </div>
                     </>
                   ) : (
                     <div className="payment-page__applied-coupon">
