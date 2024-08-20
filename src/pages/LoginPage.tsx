@@ -10,7 +10,7 @@ import {
   styled,
 } from "@mui/material";
 import axios from "axios";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
@@ -85,6 +85,12 @@ const LoginPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [emailSuccess, setEmailSuccess] = useState(false);
   const [emailCheckOpen, setEmailCheckOpen] = useState(false);
+  const [redirectUrl, setRedirectUrl] = useState("");
+
+  useEffect(() => {
+    const host = window.location.origin;
+    setRedirectUrl(`${host}/oauth/redirect`);
+  }, []);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -465,7 +471,10 @@ const LoginPage: React.FC = () => {
                     </Divider>
 
                     <div className="소셜로그인">
-                      <div className="로그인">
+                      <a
+                        className="로그인"
+                        href={`https://zumuniyo.shop/oauth/authorization/google?redirect_uri=https://zumuniyo.shop/oauth/redirect`}
+                      >
                         <div className="아이콘">
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -491,8 +500,11 @@ const LoginPage: React.FC = () => {
                           </svg>
                         </div>
                         <div className="텍스트">카카오로 시작하기</div>
-                      </div>
-                      <div className="로그인">
+                      </a>
+                      <a
+                        className="로그인"
+                        href={`https://zumuniyo.shop/oauth/authorization/naver?redirect_uri=${redirectUrl}`}
+                      >
                         <div className="아이콘">
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -508,8 +520,11 @@ const LoginPage: React.FC = () => {
                           </svg>
                         </div>
                         <div className="텍스트">네이버로 시작하기</div>
-                      </div>
-                      <div className="로그인">
+                      </a>
+                      <a
+                        href={`https://zumuniyo.shop/oauth/authorization/google?redirect_uri=${redirectUrl}`}
+                        className="로그인"
+                      >
                         <div className="아이콘">
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -537,7 +552,7 @@ const LoginPage: React.FC = () => {
                           </svg>
                         </div>
                         <div className="텍스트">구글로 시작하기</div>
-                      </div>
+                      </a>
                     </div>
 
                     {/*  */}

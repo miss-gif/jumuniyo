@@ -57,6 +57,7 @@ import StatisticsforAdmin from "./components/admin/StatisticsforAdmin";
 import StatisticsforCeo from "./components/ceo/StatisticsforCeo";
 
 import MypageLayout from "./components/layout/MypageLayout";
+import SnsLoginPage from "./pages/SnsLoginPage";
 
 function App() {
   return (
@@ -70,6 +71,7 @@ function App() {
             <Route path="user" element={<AuthUserPage />} />
             <Route path="ceo" element={<AuthCeoPage />} />
           </Route>
+          <Route path="/oauth/redirect" element={<SnsLoginPage />} />
 
           {/* 유저 */}
           <Route path="/" element={<RootLayout />}>
