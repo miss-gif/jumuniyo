@@ -83,7 +83,7 @@ const SidebarCart = ({ isSidebarCart, toggleSidebarCart }) => {
                   )}
                   <p>수량: {item.quantity}</p>
                   <p>
-                    가격:{" "}
+                    가격:
                     {formatPrice(
                       item.menu_price +
                         (item.selectedOptions
