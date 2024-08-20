@@ -24,8 +24,8 @@ const MypageReportPage: React.FC = () => {
   const getReportList = async () => {
     setIsLoading(true);
     try {
-      const res = await jwtAxios.get("/api/user/inquiry/inquiry_list");
-      setReport(res.data.resultData);
+      const res = await jwtAxios.get("/api/user/inquiry/inquiry_list/1");
+      setReport(res.data.resultData.result);
     } catch (error) {
       Swal.fire({
         icon: "error",

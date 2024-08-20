@@ -9,6 +9,7 @@ import NotLogin from "../components/common/mypage/NotLogin";
 import Mypage from "../components/join/Mypage";
 import { getCookie } from "../utils/cookie";
 import { setLocationData, setUserAddress } from "../app/userSlice";
+import store from "../app/store";
 
 const MyPageAddress = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
