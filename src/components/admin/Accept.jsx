@@ -66,7 +66,7 @@ const Accept = () => {
   if (error) return <div>{error}</div>;
 
   return (
-    <div className="ask-wrap">
+    <div className="accept-wrap">
       <h1 style={{ fontSize: "20px", marginBottom: "20px" }}>
         승인되지 않은 음식점 목록
       </h1>
@@ -76,24 +76,24 @@ const Accept = () => {
         <div className="tap-title">음식점 이름</div>
         <div className="tap-status">주소</div>
         <div className="tap-writeTime">등록 일자</div>
+        <div></div>
       </div>
-      <div className="restaurantList">
+      <div className="askList">
         {restaurants.length === 0 ? (
           <p>승인되지 않은 음식점이 없습니다.</p>
         ) : (
           restaurants.map(restaurant => (
-            <div
-              key={restaurant.resPk}
-              className="oneRestaurant"
-              onClick={() => handleCardClick(restaurant.resPk)}
-            >
+            <div key={restaurant.resPk} className="oneAsk">
               <div className="tap-number">{restaurant.resRegiNum}</div>
               <div className="tap-title">{restaurant.resName}</div>
               <div className="tap-status">{restaurant.resAddr}</div>
               <div className="tap-writeTime">
                 {new Date(restaurant.createdAt).toLocaleString()}
               </div>
-              <button onClick={() => handleAccept(restaurant.resPk)}>
+              <button
+                className="btn"
+                onClick={() => handleAccept(restaurant.resPk)}
+              >
                 승낙하기
               </button>
             </div>

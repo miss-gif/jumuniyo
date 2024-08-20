@@ -78,10 +78,6 @@ const Home = () => {
   const [modalOrderPk, setModalOrderPk] = useState(null);
   const [modalMessage, setModalMessage] = useState("");
 
-  const formatNumber = num => {
-    return num.toLocaleString();
-  };
-
   const loadOrders = async () => {
     try {
       const data = await fetchOrders();
@@ -96,7 +92,6 @@ const Home = () => {
       setError(error);
     }
   };
-
   const loadOrderDetail = async orderPk => {
     try {
       const data = await fetchOrderDetail(orderPk);
@@ -207,6 +202,10 @@ const Home = () => {
     return <div>Error: {error.message}</div>;
   }
 
+  const formatNumber = num => {
+    return num.toLocaleString();
+  };
+
   return (
     <>
       <div className="ceo-home">
@@ -267,28 +266,45 @@ const Home = () => {
                     </div>
                     <div className="orderedMenu">
                       <h2>주문내역</h2>
-                      {orderDetail &&
-                      orderDetail.menus &&
-                      orderDetail.menus.length > 0 ? (
+                      {orderDetail.menus && orderDetail.menus.length > 0 ? (
                         orderDetail.menus.map((menu, index) => (
-                          <div className="orderedMenuInf" key={index}>
-                            <div className="menuName">{menu.menuName}</div>
-                            <div className="menuAmount">
-                              {1}{" "}
-                              {/* 주문 수량이 정보에 없으므로 임의로 1로 설정 */}
+                          <div className="orderedMenuInfandOption" key={index}>
+                            <div className="orderedMenuInf">
+                              <div className="menuName">
+                                {menu.order_menu_name}
+                              </div>
+                              <div className="menuAmount">
+                                {menu.order_menu_count}
+                              </div>
+                              <div className="menuPrice">
+                                {formatNumber(menu.order_menu_price)}
+                              </div>
                             </div>
-                            <div className="menuPrice">
-                              {formatNumber(menu.menuPrice)}
-                            </div>
+                            {menu.menu_options &&
+                              menu.menu_options.length > 0 && (
+                                <div className="menuOptions">
+                                  {menu.menu_options.map((option, optIndex) => (
+                                    <div key={optIndex} className="menuOption">
+                                      <div className="optionName">
+                                        <h3>+</h3>
+                                        {option.option_name}
+                                      </div>
+                                      <div className="optionPrice">
+                                        {formatNumber(option.option_price)}
+                                      </div>
+                                    </div>
+                                  ))}
+                                </div>
+                              )}
                           </div>
                         ))
                       ) : (
-                        <div>주문 내역이 없습니다.</div>
+                        <div>메뉴 정보가 없습니다.</div>
                       )}
                       <div className="allOrderedMenuInf">
                         <div className="title">총주문</div>
                         <div className="allMenuAmount">
-                          {orderDetail.menuInfoList.length}
+                          {orderDetail.menuInfoList?.length || 0}
                         </div>
                         <div className="allMenuPrice">
                           {formatNumber(orderDetail.orderPrice)}

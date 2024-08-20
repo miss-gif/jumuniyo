@@ -63,7 +63,7 @@ const RestaurantDetailPage = () => {
   }, [items, restaurant]);
 
   if (loading) return <LoadingSpinner />;
-  if (error) return <p>에러: {error.message}</p>;
+  if (error) return navigate(`*`);
   if (!restaurantData) return <p>없는 페이지 입니다.</p>;
 
   const menuCount = menuData ? menuData.length : 0;

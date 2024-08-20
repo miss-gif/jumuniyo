@@ -64,7 +64,7 @@ const InfoManagement = ({ info, setInfo, setLoading, setError }) => {
         const formData = new FormData();
         formData.append("file", selectedFile);
 
-        await axios.post("/api/owner/restaurant", formData, {
+        await axios.post("/api/owner/restaurant/pic", formData, {
           headers: {
             Authorization: `Bearer ${accessToken}`,
             "Content-Type": "multipart/form-data",
