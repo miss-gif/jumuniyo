@@ -33,8 +33,8 @@ const RestaurantDetailPage = () => {
   const [showLoginModal, setShowLoginModal] = useState(false);
 
   const dispatch = useDispatch();
-  const selectedMenuItems = useSelector(state => state.cart.items);
-  const restaurantItems = useSelector(state => state.cart.restaurant);
+  const items = useSelector(state => state.cart.items);
+  const restaurant = useSelector(state => state.cart.restaurant);
   const accessToken = useSelector(state => state.user.accessToken);
   const isLoggedIn = !!accessToken;
 
@@ -42,18 +42,6 @@ const RestaurantDetailPage = () => {
     const getData = async () => {
       try {
         const restaurant = await fetchRestaurantData(id);
-        // console.log("restaurant: ", restaurant.restaurantName);
-        // console.log("restaurant: ", restaurant.restaurantPk);
-        // console.log("장바구니 아이템: ", selectedMenuItems);
-        // console.log("장바구니 상점명: ", restaurantItems);
-
-        if (
-          restaurantItems &&
-          restaurant.restaurantPk === restaurantItems.restaurantPk
-        ) {
-          console.log("같음");
-        }
-
         const menu = restaurant.menuList || [];
         const reviews = (await fetchReviewData(id)) || [];
         setRestaurantData(restaurant);
@@ -70,9 +58,9 @@ const RestaurantDetailPage = () => {
   }, [id]);
 
   useEffect(() => {
-    console.log("장바구니 아이템: ", selectedMenuItems);
-    console.log("장바구니 상점명: ", restaurantItems);
-  }, [selectedMenuItems]);
+    console.log("장바구니 아이템: ", items);
+    console.log("장바구니 상점명: ", restaurant);
+  }, [items, restaurant]);
 
   if (loading) return <LoadingSpinner />;
   if (error) return <p>에러: {error.message}</p>;
@@ -118,7 +106,7 @@ const RestaurantDetailPage = () => {
     sessionStorage.setItem("restaurantName", restaurantName);
 
     navigate(`/payment/${id}`, {
-      state: { orderItems: selectedMenuItems, id },
+      state: { orderItems: items, id },
     });
   };
 
@@ -167,7 +155,7 @@ const RestaurantDetailPage = () => {
 
         <div className="restaurant-detail-page__right">
           <OrderSummary
-            selectedMenuItems={selectedMenuItems}
+            selectedMenuItems={items}
             onIncreaseQuantity={handleIncreaseQuantity}
             onDecreaseQuantity={handleDecreaseQuantity}
             onRemoveItem={handleRemoveItem}
