@@ -51,7 +51,7 @@ const SidebarHeart = ({ isSidebarHeart, toggleSidebarHeart }) => {
     if (isLoggedIn) {
       fetchFollowedRestaurants();
     }
-  }, [accessToken, restaurants]);
+  }, [accessToken]);
 
   return (
     <div

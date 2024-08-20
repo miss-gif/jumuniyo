@@ -47,7 +47,7 @@ const SidebarCoupon = ({ isSidebarCoupon, toggleSidebarCoupon }) => {
     if (isLoggedIn) {
       fetchCoupons();
     }
-  }, [isLoggedIn, accessToken, coupons]);
+  }, [isLoggedIn, accessToken]);
 
   return (
     <div
