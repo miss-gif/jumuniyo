@@ -92,6 +92,7 @@ const Home = () => {
       setError(error);
     }
   };
+
   const loadOrderDetail = async orderPk => {
     try {
       const data = await fetchOrderDetail(orderPk);
@@ -164,22 +165,34 @@ const Home = () => {
     checkLogin();
     loadOrders();
 
-    // 실시간 통신
-    // const eventSource = new EventSource("/sse");
+    const accessToken = getCookie("accessToken");
+    const eventSource = new EventSource(
+      `https://34.64.63.109/sse?token=${accessToken}`,
+    );
 
-    // eventSource.onmessage = event => {
-    //   const newOrder = JSON.parse(event.data);
-    //   setOrders(prevOrders => [newOrder, ...prevOrders]);
-    // };
+    eventSource.onopen = () => {
+      console.log("SSE connection opened");
+    };
 
-    // eventSource.onerror = err => {
-    //   console.error("EventSource failed:", err);
-    //   eventSource.close();
-    // };
+    eventSource.onmessage = event => {
+      try {
+        const newOrder = event.data;
+        console.log("New event received:", newOrder);
+        setOrders(prevOrders => [newOrder, ...prevOrders]);
+      } catch (err) {
+        console.error("Failed to parse SSE event data:", err, event.data);
+      }
+    };
 
-    // return () => {
-    //   eventSource.close();
-    // };
+    eventSource.onerror = err => {
+      console.error("EventSource failed:", err);
+      eventSource.close();
+    };
+
+    return () => {
+      console.log("SSE connection closed");
+      eventSource.close();
+    };
   }, [navigate]);
 
   useEffect(() => {
@@ -304,7 +317,7 @@ const Home = () => {
                       <div className="allOrderedMenuInf">
                         <div className="title">총주문</div>
                         <div className="allMenuAmount">
-                          {orderDetail.menuInfoList?.length || 0}
+                          {orderDetail.menus?.length || 0}
                         </div>
                         <div className="allMenuPrice">
                           {formatNumber(orderDetail.orderPrice)}

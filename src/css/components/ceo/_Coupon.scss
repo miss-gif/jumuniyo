@@ -94,18 +94,12 @@
 
     .btn {
       display: inline-block;
-      padding: 10px 20px;
-      background-color: #4caf50;
       color: white;
       border: none;
       border-radius: 5px;
       cursor: pointer;
       margin-bottom: 20px;
       transition: background-color 0.3s ease;
-
-      &:hover {
-        background-color: #45a049;
-      }
     }
 
     .add-coupon-form {
@@ -181,10 +175,6 @@
 
         h2 {
           margin-bottom: 20px;
-        }
-
-        .btn {
-          background-color: #4caf50;
         }
       }
     }

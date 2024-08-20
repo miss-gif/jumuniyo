@@ -203,7 +203,10 @@ const CouponManagement = () => {
                 <td>{new Date(coupon.createdAt).toLocaleString()}</td>
                 <td>{coupon.minOrderAmount || "N/A"}</td>
                 <td>
-                  <button onClick={() => handleDeleteCoupon(coupon.id)}>
+                  <button
+                    className="btn"
+                    onClick={() => handleDeleteCoupon(coupon.id)}
+                  >
                     삭제
                   </button>
                 </td>

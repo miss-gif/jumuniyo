@@ -77,5 +77,5 @@
     "eslint-plugin-react": "^7.34.3",
     "prettier": "^3.3.2"
   },
-  "proxy": "https://zumuniyo.shop"
+  "proxy": "https://34.64.63.109"
 }
