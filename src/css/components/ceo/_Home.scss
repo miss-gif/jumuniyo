@@ -88,19 +88,32 @@
               border: 1px solid #ccc;
               padding: $padding-2;
               margin: 8px 8px 0px 0px;
-              .orderedMenuInf {
-                display: flex;
-                gap: 3vw;
-                justify-content: space-between;
+              .orderedMenuInfandOption {
                 padding-bottom: 10px;
                 margin-bottom: 10px;
-                .menuName {
-                  width: 100px;
+                .menuOptions {
+                  .menuOption {
+                    display: flex;
+                    gap: 3vw;
+                    justify-content: space-between;
+                    .optionName {
+                      display: flex;
+                    }
+                  }
                 }
-                .menuAmount {
-                }
-                .menuPrice {
-                  padding-left: 10px;
+                .orderedMenuInf {
+                  display: flex;
+                  gap: 3vw;
+                  justify-content: space-between;
+
+                  .menuName {
+                    width: 100px;
+                  }
+                  .menuAmount {
+                  }
+                  .menuPrice {
+                    padding-left: 10px;
+                  }
                 }
               }
 

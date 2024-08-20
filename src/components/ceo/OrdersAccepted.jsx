@@ -269,23 +269,25 @@ const OrdersAccepted = () => {
                       <h2>주문내역</h2>
                       {orderDetail.menus && orderDetail.menus.length > 0 ? (
                         orderDetail.menus.map((menu, index) => (
-                          <div className="orderedMenuInf" key={index}>
-                            <div className="menuName">
-                              {menu.order_menu_name}
-                            </div>
-                            <div className="menuAmount">
-                              {menu.order_menu_count}
-                            </div>
-                            <div className="menuPrice">
-                              {formatNumber(menu.order_menu_price)}
+                          <div className="orderedMenuInfandOption" key={index}>
+                            <div className="orderedMenuInf">
+                              <div className="menuName">
+                                {menu.order_menu_name}
+                              </div>
+                              <div className="menuAmount">
+                                {menu.order_menu_count}
+                              </div>
+                              <div className="menuPrice">
+                                {formatNumber(menu.order_menu_price)}
+                              </div>
                             </div>
                             {menu.menu_options &&
                               menu.menu_options.length > 0 && (
                                 <div className="menuOptions">
-                                  <h3>옵션</h3>
                                   {menu.menu_options.map((option, optIndex) => (
                                     <div key={optIndex} className="menuOption">
                                       <div className="optionName">
+                                        <h3>+</h3>
                                         {option.option_name}
                                       </div>
                                       <div className="optionPrice">
