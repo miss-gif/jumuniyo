@@ -148,7 +148,7 @@ const MyPageOrderPage = () => {
                     <div className="order-date">
                       <div>
                         {new Date(order.createdAt).toLocaleDateString("ko-KR")}{" "}
-                        - {order.orderState === 1 ? "주문 중" : "조리 중"}
+                        - {order.orderState === 2 ? "주문 중" : "조리 중"}
                       </div>
                       <div
                         className="order-detail-text"
@@ -175,7 +175,7 @@ const MyPageOrderPage = () => {
                             {order.orderPrice.toLocaleString("ko-KR")}원
                           </div>
                         </div>
-                        {order.orderState === 1 ? (
+                        {order.orderState === 2 ? (
                           <button
                             className="btn"
                             onClick={() => orderCancel(order.orderPk)}
