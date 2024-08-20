@@ -73,7 +73,11 @@ const TestModule = () => {
 
       if (!paymentMethod) {
         // SSE로 갱신 요청 전송
-        const eventSource = new EventSource("/sse");
+
+        // const eventSource = new EventSource("/sse");
+        const eventSource = new EventSource(
+          `https://34.64.63.109/sse?token=${accessToken}`,
+        );
 
         eventSource.onopen = () => {
           console.log("SSE 연결됨.");
@@ -109,7 +113,7 @@ const TestModule = () => {
         customData: JSON.stringify({ orderPK }), // 주문 고유 PK 첨부
         redirectUrl: "http://localhost:8080/", // 결제 완료 후 리다이렉트 URL
       });
-      console.log(paymentResponse);
+      console.log("paymentResponse:", paymentResponse);
     } catch (error) {
       console.error("결제 요청 중 오류 발생:", error);
     }
