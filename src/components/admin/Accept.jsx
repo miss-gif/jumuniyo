@@ -67,7 +67,9 @@ const Accept = () => {
 
   return (
     <div className="ask-wrap">
-      <h1>승인되지 않은 음식점 목록</h1>
+      <h1 style={{ fontSize: "20px", marginBottom: "20px" }}>
+        승인되지 않은 음식점 목록
+      </h1>
 
       <div className="tap">
         <div className="tap-number">등록 번호</div>

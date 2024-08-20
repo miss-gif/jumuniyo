@@ -154,7 +154,7 @@ const StatisticsforAdmin = () => {
   }, [year]);
 
   return (
-    <div>
+    <div style={{ padding: "120px" }}>
       <h2>{showMonthly ? "월별" : "일별"} 회원 가입 및 탈퇴 통계</h2>
       <select value={year} onChange={handleYearChange}>
         {[...Array(10).keys()].map(offset => {
@@ -179,9 +179,14 @@ const StatisticsforAdmin = () => {
           })}
         </select>
       )}
-
-      <button onClick={handleShowMonthly}>월별 통계 보기</button>
-      <button onClick={handleShowDaily}>일별 통계 보기</button>
+      <div className="buttonforstatistics">
+        <button className="btn" onClick={handleShowMonthly}>
+          월별 통계 보기
+        </button>
+        <button className="btn" onClick={handleShowDaily}>
+          일별 통계 보기
+        </button>
+      </div>
 
       <ResponsiveContainer width="100%" height={400}>
         <BarChart data={data}>

@@ -79,7 +79,7 @@ const CategorySetting = () => {
     <>
       <div className="categorySetting-wrap">
         <section className="category-header">
-          <h1>카테고리 설정</h1>
+          <h1 style={{ fontSize: "20px" }}>카테고리 설정</h1>
           <div className="category-button">
             <button className="btn category-add" onClick={handleOpenModal}>
               카테고리 추가

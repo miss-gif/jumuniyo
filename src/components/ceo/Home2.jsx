@@ -268,9 +268,9 @@ const Home = () => {
                     <div className="orderedMenu">
                       <h2>주문내역</h2>
                       {orderDetail &&
-                      orderDetail.menus &&
-                      orderDetail.menus.length > 0 ? (
-                        orderDetail.menus.map((menu, index) => (
+                      orderDetail.menuInfoList &&
+                      orderDetail.menuInfoList.length > 0 ? (
+                        orderDetail.menuInfoList.map((menu, index) => (
                           <div className="orderedMenuInf" key={index}>
                             <div className="menuName">{menu.menuName}</div>
                             <div className="menuAmount">
