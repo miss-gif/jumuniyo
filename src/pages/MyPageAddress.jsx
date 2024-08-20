@@ -80,7 +80,6 @@ const MyPageAddress = () => {
         setIsFirstUser(true);
       }
     } catch (error) {
-      console.log("ㅎㅇ?");
       Swal.fire({
         icon: "error",
         text: "서버에러입니다.",

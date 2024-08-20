@@ -59,7 +59,10 @@ const MyPageOrderPage = () => {
       const res = await jwtAxios.get("/api/order/user/list");
       setOrderNow(res.data.resultData);
     } catch (error) {
-      console.log(error);
+      Swal.fire({
+        icon: "error",
+        text: "서버 오류",
+      });
     }
   };
 
@@ -128,6 +131,12 @@ const MyPageOrderPage = () => {
       {orders.length > 0 ? (
         <div className="mypage-box">
           <OrderListHeader />
+          {orders.length <= 0 && (
+            <Alert variant="outlined" severity="info">
+              리뷰내역이 없습니다.
+            </Alert>
+          )}
+
           {orderNow && orderNow.length > 0 && (
             <div className="order-list-gap">
               {orderNow.map(order => (
@@ -155,9 +164,11 @@ const MyPageOrderPage = () => {
                         <div>
                           <div>{order.resName}</div>
                           <div className="order-date">
-                            {order.menuName && order.menuName.length > 0
-                              ? `${order.menuName[0]} 외 ${order.menuName.length - 1}개`
-                              : "메뉴가 없습니다"}
+                            {order.menus[0].order_menu_name}
+                            {order.menus.length <= 1
+                              ? null
+                              : ` 외${order.menus.length - 1}개`}
+                            <br />
                             {order.orderPrice.toLocaleString("ko-KR")}원
                           </div>
                         </div>
