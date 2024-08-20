@@ -40,17 +40,17 @@
 
   & a {
     width: 100%;
+    min-width: 180px;
+    max-width: 550px;
     height: 100%;
     display: flex;
     gap: 20px;
     flex-direction: column;
+    padding: 20px 0;
     border: 2px solid #dbdbdb;
     box-shadow: $shadow-1;
     cursor: pointer;
     border-radius: 8px;
-    min-width: 180px;
-    max-width: 550px;
-    padding: 20px 0;
   }
 
   & p {
@@ -103,19 +103,20 @@
 /* 소셜 로그인 */
 .소셜로그인 {
   display: flex;
-  flex-direction: column;
-  align-items: center;
   gap: 8px;
+  align-items: center;
+  flex-direction: column;
 }
 
 .로그인 {
+  width: 100%;
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   padding: 12px;
   background-color: #e5e5e5;
-  border-radius: 8px;
   font-size: 14px;
+  border-radius: 8px;
   // background-color: orange;
 }
 
@@ -124,13 +125,13 @@
   height: 30px !important;
   // background-color: #ddd;
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
 }
 
 .텍스트 {
-  max-width: 110px !important;
   width: 100%;
+  max-width: 110px !important;
   display: flex;
   // background-color: orange;
   // justify-content: center;

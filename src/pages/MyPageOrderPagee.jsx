@@ -131,21 +131,24 @@ const MyPageOrderPage = () => {
       {orders.length > 0 ? (
         <div className="mypage-box">
           <OrderListHeader />
+
           {orders.length <= 0 && (
             <Alert variant="outlined" severity="info">
-              리뷰내역이 없습니다.
+              주문내역이 없습니다.
             </Alert>
           )}
 
           {orderNow && orderNow.length > 0 && (
             <div className="order-list-gap">
               {orderNow.map(order => (
-                <div key={order.doneOrderPk}>
+                <div key={order.orderPk}>
+                  {" "}
+                  {/* 여기에 고유한 key 추가 */}
                   <div className="order-list">
                     <div className="order-date">
                       <div>
-                        {new Date(order.createdAt).toLocaleDateString("ko-KR")}-{" "}
-                        {order.orderState === 1 ? "주문 중" : "조리 중"}
+                        {new Date(order.createdAt).toLocaleDateString("ko-KR")}{" "}
+                        - {order.orderState === 1 ? "주문 중" : "조리 중"}
                       </div>
                       <div
                         className="order-detail-text"
@@ -164,10 +167,10 @@ const MyPageOrderPage = () => {
                         <div>
                           <div>{order.resName}</div>
                           <div className="order-date">
-                            {order.menus[0].order_menu_name}
+                            {order.menus[0]?.order_menu_name}
                             {order.menus.length <= 1
                               ? null
-                              : ` 외${order.menus.length - 1}개`}
+                              : ` 외 ${order.menus.length - 1}개`}
                             <br />
                             {order.orderPrice.toLocaleString("ko-KR")}원
                           </div>
