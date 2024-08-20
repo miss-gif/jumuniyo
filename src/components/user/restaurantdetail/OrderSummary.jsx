@@ -31,7 +31,7 @@ const OrderSummary = ({
     ) {
       setStore(items);
     }
-  }, [items, restaurantName, restaurant]);
+  }, [items, restaurant]);
 
   const totalAmount = store.reduce(
     (sum, item) =>
