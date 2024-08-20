@@ -40,10 +40,6 @@ const MyPageCouponPage = () => {
     getCoupon();
   }, []);
 
-  useEffect(() => {
-    console.log(couponList);
-  }, [couponList]);
-
   if (isLoading) {
     return (
       <div className="mypage-wrap">

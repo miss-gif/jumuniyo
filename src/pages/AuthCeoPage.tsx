@@ -88,10 +88,7 @@ const AuthUserPage: React.FC = () => {
   const [newAddress, setNewAddress] = useState<string>("");
   const [newAddressDetail, setNewAddressDetail] = useState<string>("");
 
-  useEffect(() => {
-    console.log("이건 X값", newXValue);
-    console.log("이건 Y값", newYValue);
-  }, [newXValue]);
+  useEffect(() => {}, [newXValue]);
 
   // 복수 선택 상태
   const [state, setState] = useState<State>({

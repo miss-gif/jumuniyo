@@ -169,7 +169,10 @@ const LoginPage: React.FC = () => {
         icon: "error",
         text: "서버 오류",
       });
-      console.log(error);
+      Swal.fire({
+        icon: "error",
+        text: "서버 오류",
+      });
     } finally {
       setIsLoading(false);
     }
@@ -221,8 +224,6 @@ const LoginPage: React.FC = () => {
       setIsLoading(false);
     }
 
-    console.log(`입력된 이름: ${name}`);
-    console.log(`입력된 이메일: ${email}`);
     setOpen(false);
   };
 

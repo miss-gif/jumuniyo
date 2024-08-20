@@ -106,8 +106,6 @@ export default function MyMap({ setNewYValue, setNewXValue, setNewAddress }) {
         { placeId: newValue.place_id },
         (place, status) => {
           if (status === window.google.maps.places.PlacesServiceStatus.OK) {
-            console.log("Latitude:", place.geometry.location.lat());
-            console.log("Longitude:", place.geometry.location.lng());
             setNewXValue(place.geometry.location.lng());
             setNewYValue(place.geometry.location.lat());
           }
