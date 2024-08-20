@@ -305,7 +305,7 @@ const OrdersAccepted = () => {
                       <div className="allOrderedMenuInf">
                         <div className="title">총주문</div>
                         <div className="allMenuAmount">
-                          {orderDetail.menuInfoList?.length || 0}
+                          {orderDetail.menus?.length || 0}
                         </div>
                         <div className="allMenuPrice">
                           {formatNumber(orderDetail.orderPrice)}
