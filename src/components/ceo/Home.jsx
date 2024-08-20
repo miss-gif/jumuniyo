@@ -178,6 +178,8 @@ const Home = () => {
       try {
         const newOrder = event.data;
         console.log("New event received:", newOrder);
+        loadOrders();
+
         setOrders(prevOrders => [newOrder, ...prevOrders]);
       } catch (err) {
         console.error("Failed to parse SSE event data:", err, event.data);
@@ -224,9 +226,9 @@ const Home = () => {
       <div className="ceo-home">
         <div className="left">
           <h1>신규 주문</h1>
-          <button className="btn refresh-btn" onClick={loadOrders}>
+          {/* <button className="btn refresh-btn" onClick={loadOrders}>
             새로고침
-          </button>
+          </button> */}
           <div className="waiting-orders">
             {noOrders ? (
               <div className="noOrdersMessages">새 주문이 없습니다.</div>
