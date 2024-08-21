@@ -30,8 +30,10 @@ const OrderSummary = ({
       restaurantName === restaurant.restaurantName
     ) {
       setStore(items);
+    } else {
+      setStore([]); // 일치하지 않는 경우 store를 빈 배열로 설정
     }
-  }, [items, restaurant]);
+  }, [items, restaurant, restaurantName]); // restaurantName 추가
 
   const totalAmount = store.reduce(
     (sum, item) =>
