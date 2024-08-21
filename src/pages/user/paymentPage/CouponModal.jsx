@@ -44,7 +44,7 @@ const CouponModal = ({ isOpen, onRequestClose }) => {
     if (isLoggedIn) {
       fetchCoupons();
     }
-  }, [isLoggedIn, accessToken, restaurant.restaurantPk]);
+  }, [isLoggedIn, accessToken, restaurant]);
 
   const handleSelectCoupon = event => {
     setSelectedCoupon(event.target.value);
