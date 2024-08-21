@@ -23,7 +23,7 @@ const PaymentSelect = ({ onPaymentSelect }) => {
               className={`payment-page__button ${selectedPayment === "3" ? "btn--active" : "btn--default"}`}
               onClick={event => handlePaymentSelect(event, "3")}
             >
-              카카오페이
+              통합모듈 결제
             </button>
           </div>
         </div>

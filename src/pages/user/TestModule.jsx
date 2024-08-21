@@ -96,21 +96,10 @@ const TestModule = () => {
   return (
     <div>
       <select onChange={e => setPaymentMethod(e.target.value)}>
-        <option value="" data-int="1">
-          후불 현금결제
-        </option>
-        <option value="" data-int="2">
-          후불 신용카드 결제
-        </option>
         <option value="CARD" data-int="3">
           통합모듈
         </option>
-        <option value="TRANSFER" data-int="4">
-          실시간 계좌이체
-        </option>
-        <option value="VIRTUAL_ACCOUNT" data-int="5">
-          가상계좌
-        </option>
+
         <option value="MOBILE" data-int="6">
           휴대폰 소액결제
         </option>

@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
 import { clearCoupon } from "../app/couponSlice";
-import { initiateKakaoPay } from "../utils/kakaopayUtils";
 import PaymentSelect from "./user/PaymentSelect";
 import TestModule from "./user/TestModule.jsx";
 import CouponModal from "./user/paymentPage/CouponModal";
@@ -124,43 +123,6 @@ const PaymentPage = () => {
   const handlePayment = async () => {
     if (!validatePaymentInfo()) return;
 
-    if (selectedPayment === "3") {
-      // 카카오페이 결제
-      try {
-        const order_pk = await initiateKakaoPay(
-          calculateTotalOrderPrice(),
-          phone,
-          id, // 주문 ID
-          accessToken, // 인증 토큰
-          request,
-          locationData,
-          addressDetail,
-          // menuPkArray,
-        );
-
-        if (order_pk) {
-          Swal.fire({
-            icon: "success",
-            text: "결제 완료: " + order_pk,
-          });
-
-          navigate(`/mypage/order/${order_pk}`);
-
-          // 결제 성공 후 세션 저장소 데이터 삭제
-          sessionStorage.removeItem(`selectedMenuItems_${id}`);
-          sessionStorage.removeItem("restaurantName");
-        } else {
-          throw new Error("결제 완료 후 order_pk를 받지 못했습니다.");
-        }
-      } catch (error) {
-        Swal.fire({
-          icon: "error",
-          text: "결제 실패: " + error.message,
-        });
-      }
-      return;
-    }
-
     const data = {
       order_res_pk: id,
       order_request: request,
@@ -234,6 +196,12 @@ const PaymentPage = () => {
 
   const isPaymentDisabled =
     !addressDetail.trim() || !phone.trim() || !selectedPayment || !agreement;
+
+  // 총 결제 금액 계산
+  const totalPaymentAmount = useMemo(() => {
+    const discount = appliedCoupon ? appliedCoupon.price : 0;
+    return totalAmount - discount;
+  }, [totalAmount, appliedCoupon]);
 
   return (
     <div className="payment-page">
@@ -375,9 +343,18 @@ const PaymentPage = () => {
             ))}
           </ul>
 
+          {/* 할인 금액 추가 */}
+          {appliedCoupon && (
+            <div className="payment-page__discount-amount">
+              <p>할인 금액</p>
+              <p>-{formatPrice(appliedCoupon.price)}원</p>
+            </div>
+          )}
+
+          {/* 총 결제 금액 */}
           <div className="payment-page__total-amount">
             <p>총 결제 금액</p>
-            <p>{formatPrice(totalAmount)}원</p>
+            <p>{formatPrice(totalPaymentAmount)}원</p>
           </div>
         </div>
         <p className="payment-page__terms">
