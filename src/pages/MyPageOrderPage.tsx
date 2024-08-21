@@ -20,6 +20,12 @@ interface MenuInfo {
   menu_options: MenuOption[];
 }
 
+interface OrderCoupon {
+  couponName: string;
+  couponPk: number;
+  couponPrice: number;
+}
+
 interface OrderData {
   resName: string;
   orderPk: string;
@@ -31,6 +37,7 @@ interface OrderData {
   paymentMethod: string;
   menus: MenuInfo[];
   orderPrice: number;
+  orderCoupon?: OrderCoupon; // 쿠폰 정보 추가
 }
 
 const MyPageOrderPage: React.FC = () => {
@@ -73,6 +80,17 @@ const MyPageOrderPage: React.FC = () => {
 
     fetchOrderData();
   }, [id, accessToken]);
+
+  const calculateTotalPrice = (): number => {
+    if (!orderData) return 0;
+    const { orderPrice, orderCoupon } = orderData;
+    const couponDiscount = orderCoupon?.couponPrice || 0;
+    return orderPrice - couponDiscount;
+  };
+
+  if (!orderData) {
+    return <LoadingSpinner />;
+  }
 
   const onCancelOrder = async () => {
     try {
@@ -187,7 +205,7 @@ const MyPageOrderPage: React.FC = () => {
                 orderData.menus.map((menu, index) => (
                   <li key={index}>
                     <p className="mypage-order__item-name">
-                      {menu.order_menu_name}{" "}
+                      {menu.order_menu_name}
                       <span>x {menu.order_menu_count}개</span>
                     </p>
                     {menu.menu_options.length > 0 && (
@@ -210,10 +228,18 @@ const MyPageOrderPage: React.FC = () => {
               )}
             </ul>
           </div>
+          <div className="mypage-order__section-title">할인내역</div>
+          <div className="mypage-order__detail">
+            <p className="mypage-order__label">할인쿠폰</p>
+            <p>
+              {orderData.orderCoupon?.couponName || "없음"}
+              {orderData.orderCoupon?.couponPrice || "없음"}
+            </p>
+          </div>
           <div className="mypage-order__total">
             <p className="mypage-order__total-label">총 결제금액</p>
             <p className="mypage-order__total-price">
-              {orderData.orderPrice.toLocaleString()}원
+              {calculateTotalPrice().toLocaleString()}원
             </p>
           </div>
         </div>
