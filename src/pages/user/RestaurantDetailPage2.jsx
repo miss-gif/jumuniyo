@@ -21,8 +21,12 @@ import RestaurantDetailInfo from "../../components/user/restaurantdetail/Restaur
 import RestaurantDetailMenuContent from "../../components/user/restaurantdetail/RestaurantDetailMenuContent";
 import RestaurantDetailTabInfo from "../../components/user/restaurantdetail/RestaurantDetailTabInfo";
 
+const TAB_MENU = "menu";
+const TAB_REVIEW = "review";
+const TAB_INFO = "info";
+
 const RestaurantDetailPage = () => {
-  const [activeTab, setActiveTab] = useState("menu");
+  const [activeTab, setActiveTab] = useState(TAB_MENU);
   const { id } = useParams();
   const navigate = useNavigate();
   const [restaurantData, setRestaurantData] = useState(null);
@@ -47,9 +51,9 @@ const RestaurantDetailPage = () => {
         setRestaurantData(restaurant);
         setMenuData(menu);
         setReviewData(reviews);
-        setLoading(false);
       } catch (err) {
         setError(err);
+      } finally {
         setLoading(false);
       }
     };
@@ -63,11 +67,11 @@ const RestaurantDetailPage = () => {
   }, [items, restaurant]);
 
   if (loading) return <LoadingSpinner />;
-  if (error) return navigate(`*`);
+  if (error) return <p>문제가 발생했습니다. 잠시 후 다시 시도해주세요.</p>;
   if (!restaurantData) return <p>없는 페이지 입니다.</p>;
 
-  const menuCount = menuData ? menuData.length : 0;
-  const reviewCount = reviewData ? reviewData.length : 0;
+  const menuCount = menuData.length;
+  const reviewCount = reviewData.length;
 
   const handleSelectMenuItem = item => {
     dispatch(
@@ -112,21 +116,21 @@ const RestaurantDetailPage = () => {
 
   const renderContent = () => {
     switch (activeTab) {
-      case "menu":
+      case TAB_MENU:
         return (
           <RestaurantDetailMenuContent
             menuData={menuData}
             onSelectMenuItem={handleSelectMenuItem}
           />
         );
-      case "review":
+      case TAB_REVIEW:
         return (
           <RestaurantDetailCleanReview
             resPk={id}
             restaurantData={restaurantData}
           />
         );
-      case "info":
+      case TAB_INFO:
         return <RestaurantDetailTabInfo restaurantData={restaurantData} />;
       default:
         return null;
@@ -141,7 +145,6 @@ const RestaurantDetailPage = () => {
             restaurantData={restaurantData}
             onShowLoginModal={() => setShowLoginModal(true)}
           />
-
           <div className="restaurant-detail-page__menu">
             <RestaurantDetailHeader
               activeTab={activeTab}
