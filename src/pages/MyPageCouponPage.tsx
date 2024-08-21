@@ -14,6 +14,7 @@ interface Coupon {
   name: string;
   price: number;
   resName: string;
+  resPk: number;
 }
 
 const MyPageCouponPage = () => {
@@ -86,7 +87,7 @@ const MyPageCouponPage = () => {
                         className="btn"
                         onClick={() => {
                           //수정해야함
-                          navigate(`/restaurants/1`);
+                          navigate(`/restaurants/${couponList.resPk}`);
                         }}
                       >
                         주문하러 가기
