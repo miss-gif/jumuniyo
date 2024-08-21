@@ -47,7 +47,7 @@ const MyPageOrderList = ({ reviewOpenModal, order, isOldOrder }) => {
               </div>
             </div>
             {!isOldOrder &&
-            order.reviewState === 1 &&
+            order.reviewState === 0 &&
             order.doneOrderState === 1 ? (
               <button
                 className="btn"
