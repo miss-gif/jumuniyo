@@ -67,7 +67,7 @@ const Review = ({ review }) => {
           {pics.map((pic, index) => (
             <img
               key={index}
-              src={`/${pic}`}
+              src={`${pic}`}
               alt={`review pic ${index + 1}`}
               className="review__image"
               style={{ width: "200px", height: "100px", cursor: "pointer" }}

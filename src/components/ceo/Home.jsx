@@ -154,6 +154,11 @@ const Home = () => {
     closeModal();
   };
 
+  // const playNewOrderSound = () => {
+  //   const audio = new Audio("/sound/ordered.mp3");
+  //   audio.play();
+  // };
+
   useEffect(() => {
     const checkLogin = () => {
       const accessToken = getCookie("accessToken");
@@ -164,7 +169,7 @@ const Home = () => {
 
     checkLogin();
     loadOrders();
-
+    // playNewOrderSound();
     const accessToken = getCookie("accessToken");
     const eventSource = new EventSource(
       `https://34.64.63.109/sse?token=${accessToken}`,
