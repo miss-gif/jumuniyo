@@ -6,8 +6,8 @@ import LoadingSpinner from "../components/common/LoadingSpinner";
 import NotLogin from "../components/common/mypage/NotLogin";
 import Mypage from "../components/join/Mypage";
 import OrderListHeader from "../components/user/mypage/OrderListHeader";
-import { getCookie } from "../utils/cookie";
 import Swal from "sweetalert2";
+import { useSelector } from "react-redux";
 
 const MyPageOrderPage = () => {
   const [reviewOpen, setReviewOpen] = useState(false);
@@ -16,10 +16,11 @@ const MyPageOrderPage = () => {
   const [doneOrderPk, setDoneOrderPk] = useState("");
   const [resPk, setResPk] = useState("");
   const [isLogin, setIsLogin] = useState(false);
-  const [isLoading, setIsLoading] = useState(true); // 초기에는 로딩 중으로 설정
+  const [isLoading, setIsLoading] = useState(false);
   const [orderNow, setOrderNow] = useState(null);
+  const { accessToken } = useSelector(state => state.user);
 
-  const navigate = useNavigate(); // 중복된 navigate 변수 제거
+  const navigate = useNavigate();
 
   const isOlderThanThreeDays = date => {
     const orderDate = new Date(date);
@@ -40,18 +41,6 @@ const MyPageOrderPage = () => {
   const reviewNo = () => {
     setReviewOpen(false);
     setSelectedOrderPk(null);
-  };
-
-  const getOrderList = async () => {
-    setIsLoading(true);
-    try {
-      const res = await jwtAxios.get("/api/done/user/list");
-      setOrders(res.data.statusCode !== -7 ? res.data.resultData.contents : []);
-    } catch (error) {
-      setOrders([]);
-    } finally {
-      setIsLoading(false);
-    }
   };
 
   const getOrderNow = async () => {
@@ -82,7 +71,6 @@ const MyPageOrderPage = () => {
         navigate("/mypage/orderclose");
       }
       getOrderNow();
-      getOrderList();
     } catch (error) {
       Swal.fire({
         icon: "error",
@@ -92,16 +80,13 @@ const MyPageOrderPage = () => {
   };
 
   useEffect(() => {
-    const accessToken = getCookie("accessToken");
-    setIsLogin(!!accessToken);
-
     if (accessToken) {
+      setIsLogin(true);
       getOrderNow();
-      getOrderList();
     } else {
       setIsLoading(false);
     }
-  }, []);
+  }, [accessToken]);
 
   if (isLoading) {
     return (
@@ -128,22 +113,20 @@ const MyPageOrderPage = () => {
   return (
     <div className="mypage-wrap">
       <Mypage />
-      {orders.length > 0 ? (
+      {orderNow?.length > 0 ? (
         <div className="mypage-box">
           <OrderListHeader />
 
-          {orders.length <= 0 && (
+          {orderNow.length <= 0 && (
             <Alert variant="outlined" severity="info">
               주문내역이 없습니다.
             </Alert>
           )}
 
-          {orderNow && orderNow.length > 0 && (
+          {orderNow.length > 0 && (
             <div className="order-list-gap">
               {orderNow.map(order => (
                 <div key={order.orderPk}>
-                  {" "}
-                  {/* 여기에 고유한 key 추가 */}
                   <div className="order-list">
                     <div className="order-date">
                       <div>
@@ -170,7 +153,7 @@ const MyPageOrderPage = () => {
                             {order.menus[0]?.order_menu_name}
                             {order.menus.length <= 1
                               ? null
-                              : ` 외 ${order.menus.length - 1}개`}
+                              : ` 외... ${order.menus.length - 1}개`}
                             <br />
                             {order.orderPrice.toLocaleString("ko-KR")}원
                           </div>
@@ -197,7 +180,7 @@ const MyPageOrderPage = () => {
         <div className="mypage-box">
           <OrderListHeader />
           <Alert variant="outlined" severity="info">
-            주문내역이 없습니다.
+            현재 진행중인 주문내역이 없습니다.
           </Alert>
         </div>
       )}

@@ -1,12 +1,11 @@
 import { Box, TextField } from "@mui/material";
+import axios from "axios";
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import jwtAxios from "../api/user/jwtUtil";
 import { setAccessToken, setLocationData } from "../app/userSlice";
 import { Logo } from "../components/common/Logo";
-import axios from "axios";
 import { setCookie } from "../utils/cookie";
 const SnsLoginPage = () => {
   const navigate = useNavigate();
@@ -15,6 +14,7 @@ const SnsLoginPage = () => {
   const [userName, setUserName] = useState<string>("");
   const [userPhone, setUserPhone] = useState<string>("");
   const [useToken, setUseToken] = useState<string>("");
+
   useEffect(() => {
     const myUrl = new URL(window.location.href); //브라우저 주소창 내용을 가져와서 URL 객체화
     const token = myUrl.searchParams.get("access_token");
@@ -25,8 +25,6 @@ const SnsLoginPage = () => {
     const userPic = myUrl.searchParams.get("pic");
     setNewUser(myUrl.searchParams.get("needs_additional_info") || "");
     if (newUser === "false") {
-      dispatch(setAccessToken(useToken || ""));
-      setCookie("accessToken", useToken);
       handleButtonClick();
     }
   }, [newUser]);
@@ -72,7 +70,7 @@ const SnsLoginPage = () => {
         });
         dispatch(setAccessToken(useToken || ""));
 
-        navigate("/");
+        navigate("/mypage/address");
       } else {
         Swal.fire({
           icon: "warning",
@@ -88,24 +86,32 @@ const SnsLoginPage = () => {
   };
 
   const handleButtonClick = async () => {
-    if (newUser == "false") {
-      try {
-        const res = await axios.get("/api/address/main-address", {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${useToken}`,
-          },
-        });
+    dispatch(setAccessToken(useToken || ""));
+    setCookie("accessToken", useToken);
 
-        if (res.data.resultData) {
-          navigate("/");
-        } else {
-          navigate("/mypage/address");
-        }
-        return res;
-      } catch (error) {
-        console.log(error);
+    try {
+      const res = await axios.get("/api/address/main-address", {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${useToken}`,
+        },
+      });
+
+      if (res.data.resultData) {
+        dispatch(
+          setLocationData({
+            latitude: res.data.resultData.addrCoorX || 0,
+            longitude: res.data.resultData.addrCoorY || 0,
+            geocodeAddress: "",
+          }),
+        );
+        navigate("/");
+      } else {
+        navigate("/mypage/address");
       }
+      return res;
+    } catch (error) {
+      console.log(error);
     }
   };
 

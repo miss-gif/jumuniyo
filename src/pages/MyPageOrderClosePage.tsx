@@ -8,7 +8,8 @@ import MypageReviewWrite from "../components/common/mypage/MypageReviewWrite";
 import NotLogin from "../components/common/mypage/NotLogin";
 import Mypage from "../components/join/Mypage";
 import OrderListHeader from "../components/user/mypage/OrderListHeader";
-import { getCookie } from "../utils/cookie";
+import { useSelector } from "react-redux";
+import { RootState } from "./MyPage";
 
 // 주문 데이터 타입 정의
 interface Order {
@@ -35,6 +36,7 @@ const MyPageOrderClosePage: React.FC = () => {
   const [isLogin, setIsLogin] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const navigate = useNavigate();
+  const { accessToken } = useSelector((state: RootState) => state.user);
 
   const isOlderThanThreeDays = (date: string): boolean => {
     const orderDate = new Date(date);
@@ -68,15 +70,14 @@ const MyPageOrderClosePage: React.FC = () => {
   };
 
   useEffect(() => {
-    const accessToken = getCookie("accessToken");
-    if (!accessToken) {
-      setIsLogin(false);
-      setIsLoading(false);
-    } else {
+    if (accessToken) {
       setIsLogin(true);
       fetchOrders("/api/done/user/list");
+    } else {
+      setIsLogin(false);
+      setIsLoading(false);
     }
-  }, []);
+  }, [accessToken]); // 의존성 배열에 accessToken 추가
 
   if (!isLogin) {
     return (
@@ -125,7 +126,7 @@ const MyPageOrderClosePage: React.FC = () => {
           })
         ) : (
           <Alert variant="outlined" severity="info">
-            주문내역이 없습니다.
+            완료된 주문내역이 없습니다.
           </Alert>
         )}
       </div>

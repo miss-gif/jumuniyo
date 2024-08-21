@@ -1,15 +1,13 @@
 import { Alert } from "@mui/material";
 import { useCallback, useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
 import jwtAxios from "../api/user/jwtUtil";
 import LoadingSpinner from "../components/common/LoadingSpinner";
 import MypageModal from "../components/common/mypage/MypageModal";
 import NotLogin from "../components/common/mypage/NotLogin";
 import Mypage from "../components/join/Mypage";
-import { getCookie } from "../utils/cookie";
 import { setLocationData, setUserAddress } from "../app/userSlice";
-import store from "../app/store";
 
 const MyPageAddress = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -25,24 +23,23 @@ const MyPageAddress = () => {
   const [isFirstUser, setIsFirstUser] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [reviewSubmitted, setReviewSubmitted] = useState(false);
   const [addresses, setAddresses] = useState([]);
   const [addModalOpen, setAddModalOpen] = useState(false);
   const [addressName, setAddressName] = useState("");
-  const [refreshKey, setRefreshKey] = useState(0);
-  const [selectAddrPk, setSelectAddrPk] = useState("");
+  const { accessToken } = useSelector(state => state.user);
+  const [newToken, setNewToken] = useState("");
 
   const dispatch = useDispatch();
 
   const showSwal = () => {
     Swal.fire({
       title: "확실합니까?",
-      text: "되돌릴수 없다는걸 알아두세요 복구 못합니다.",
+      text: "되돌릴 수 없다는 걸 알아두세요. 복구 못합니다.",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "네 삭제할래요",
+      confirmButtonText: "네, 삭제할래요",
       cancelButtonText: "아니요",
     }).then(result => {
       if (result.isConfirmed) {
@@ -60,7 +57,7 @@ const MyPageAddress = () => {
     } catch (error) {
       Swal.fire({
         icon: "error",
-        text: "서버에러입니다.",
+        text: "서버 에러입니다.",
       });
     }
   }, []);
@@ -83,7 +80,7 @@ const MyPageAddress = () => {
     } catch (error) {
       Swal.fire({
         icon: "error",
-        text: "서버에러입니다.",
+        text: "서버 에러입니다.",
       });
     } finally {
       setIsLoading(false);
@@ -109,24 +106,31 @@ const MyPageAddress = () => {
     } catch (error) {
       Swal.fire({
         icon: "error",
-        text: "서버에러입니다.",
+        text: "서버 에러입니다.",
       });
     }
   };
 
   useEffect(() => {
-    const accessToken = getCookie("accessToken");
-    if (!accessToken) {
+    // 새로운 토큰을 설정하는 부분을 useEffect로 이동
+    if (accessToken && accessToken !== newToken) {
+      setNewToken(accessToken);
+    }
+  }, [accessToken, newToken]);
+
+  useEffect(() => {
+    if (!newToken) {
       setIsLogin(false);
       setAddress("로그인 후 이용해주세요");
       setAddressDetail("로그인 후 이용해주세요");
       setIsLoading(false);
       return;
     }
+
     setIsLogin(true);
     fetchUserAddressList();
     fetchUserAddress();
-  }, []);
+  }, [newToken]);
 
   const handleAddressSubmit = async () => {
     try {
@@ -156,7 +160,7 @@ const MyPageAddress = () => {
       if (res.data.statusCode === 1) {
         Swal.fire({
           icon: "success",
-          text: "주소등록 완료.",
+          text: "주소 등록 완료.",
         });
         dispatch(setUserAddress(newAddress));
         dispatch(
@@ -172,15 +176,11 @@ const MyPageAddress = () => {
           text: res.data.resultMsg,
         });
       }
-
-      setReviewSubmitted(true);
-      fetchUserAddressList();
-      return;
     } catch (error) {
       console.error("서버 오류:", error); // 오류 메시지 출력
       Swal.fire({
         icon: "error",
-        text: "서버에러입니다.",
+        text: "서버 에러입니다.",
       });
     }
   };
@@ -230,9 +230,10 @@ const MyPageAddress = () => {
   }
 
   return (
-    <div className="mypage-wrap" key={refreshKey}>
+    <div className="mypage-wrap">
       <Mypage />
       <div className="mypage-box">
+        <h3>내 주소 리스트</h3>
         {isFirstUser ? null : (
           <div className="flex-between-box">
             <div className="select-container">
@@ -262,7 +263,7 @@ const MyPageAddress = () => {
 
         {isFirstUser ? (
           <Alert variant="outlined" severity="info">
-            등록된 주소가 없습니다 주소를 등록해주세요.
+            등록된 주소가 없습니다. 주소를 등록해주세요.
           </Alert>
         ) : (
           <>

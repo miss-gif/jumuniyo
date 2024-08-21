@@ -7,6 +7,7 @@ import NotLogin from "../components/common/mypage/NotLogin";
 import Mypage from "../components/join/Mypage";
 import { getCookie } from "../utils/cookie";
 import MypageReviewWrite from "../components/common/mypage/MypageReviewWrite";
+import { useSelector } from "react-redux";
 
 const MyPageReviewPage = () => {
   const [reviewItems, setReviewItems] = useState([]);
@@ -14,6 +15,24 @@ const MyPageReviewPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [reviewOpen, setReviewOpen] = useState(false);
   const [selectedOrderPk, setSelectedOrderPk] = useState("");
+  const { accessToken } = useSelector(state => state.user);
+  const [newToken, setNewToken] = useState("");
+
+  useEffect(() => {
+    if (accessToken !== newToken) {
+      setNewToken(accessToken);
+    }
+  }, [accessToken, newToken]);
+
+  useEffect(() => {
+    if (!newToken) {
+      setIsLogin(false);
+      return;
+    } else {
+      setIsLogin(true);
+    }
+    updatedReviewItems().then(setReviewItems);
+  }, [newToken]);
 
   const getReview = async () => {
     setIsLoading(true);
@@ -94,17 +113,6 @@ const MyPageReviewPage = () => {
     }
   };
 
-  useEffect(() => {
-    const accessToken = getCookie("accessToken");
-    if (!accessToken) {
-      setIsLogin(false);
-      return;
-    } else {
-      setIsLogin(true);
-    }
-    updatedReviewItems().then(setReviewItems);
-  }, []);
-
   return (
     <div className="mypage-wrap">
       <Mypage />
@@ -127,7 +135,7 @@ const MyPageReviewPage = () => {
                 <div className="review-header">
                   <span className="review-user">{item.resName}</span>
                   <span className="review-date">
-                    {item.createdAt.split(" ")[0]}
+                    {/* {item.createdAt.split(" ")[0]} */}
                   </span>
                   <Rating name="read-only" value={item.reviewRating} readOnly />
                 </div>
@@ -159,14 +167,14 @@ const MyPageReviewPage = () => {
                       </div>
                     ) : null}
                     <div className="mypage-button-box">
-                      <button
+                      {/* <button
                         className="btn"
                         onClick={e => {
                           editReview(item.reviewPk);
                         }}
                       >
                         수정
-                      </button>
+                      </button> */}
                       <button
                         className="btn"
                         onClick={e => {
