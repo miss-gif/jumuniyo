@@ -98,24 +98,61 @@ const AskDetail = () => {
   }
 
   return (
-    <div className="askDetail-wrap">
-      <h1>No. {id}</h1>
-      <div className="ask">
-        <div className="askTitle">{askDetail.inquiryTitle}</div>
-        <div className="askWriter">
-          <div className="askWriter-tab">작성자</div>
-          <div className="askWriter-value">{askDetail.inquiryNickName}</div>
-        </div>
-        <div className="askTime">
-          <div className="askTime-tab">작성날짜</div>
-          <div className="askTime-value">
-            {new Date(askDetail.createdAt).toLocaleString()}
+    <>
+      <div className="askDetail-wrap">
+        <h1>No. {id}</h1>
+
+        <div
+          className="askDetail"
+          style={{ border: "1px solid black", padding: "0px" }}
+        >
+          {" "}
+          <div
+            className="title"
+            style={{ borderBottom: "1px solid #ccc", padding: "20px" }}
+          >
+            [질문] {askDetail.inquiryTitle}
+          </div>
+          <div
+            className="idandDate"
+            style={{
+              borderBottom: "1px solid #ccc",
+              padding: "20px",
+              display: "flex",
+              justifyContent: "space-between",
+            }}
+          >
+            <div
+              className="id"
+              style={{
+                paddingRight: "20px",
+              }}
+            >
+              작성자: {askDetail.inquiryNickName}
+            </div>
+            <div className="Date">
+              {" "}
+              작성날짜: {new Date(askDetail.createdAt).toLocaleString()}
+            </div>
+          </div>
+          <div
+            className="content"
+            style={{
+              padding: "20px",
+              display: "flex",
+            }}
+          >
+            {askDetail.inquiryContent}
           </div>
         </div>
-      </div>
-      <div className="content">
-        <div className="askContent">{askDetail.inquiryContent}</div>
-        <div className="answerContent">
+        <div
+          className="answerContent"
+          style={{
+            marginTop: "20px",
+            padding: "20px",
+            border: "1px solid black",
+          }}
+        >
           {isEditing ? (
             <textarea
               value={responseText}
@@ -126,19 +163,19 @@ const AskDetail = () => {
             askDetail.inquiryResponse || "답변이 아직 없습니다."
           )}
         </div>
+        <div className="responseSection" style={{ marginTop: "10px" }}>
+          {isEditing ? (
+            <button className="btn" onClick={handleResponseSubmit}>
+              답변 저장하기
+            </button>
+          ) : (
+            <button className="btn" onClick={handleEditClick}>
+              {askDetail.inquiryResponse ? "답변 수정하기" : "답변 남기기"}
+            </button>
+          )}
+        </div>
       </div>
-      <div className="responseSection">
-        {isEditing ? (
-          <button className="btn" onClick={handleResponseSubmit}>
-            답변 저장하기
-          </button>
-        ) : (
-          <button className="btn" onClick={handleEditClick}>
-            {askDetail.inquiryResponse ? "답변 수정하기" : "답변 남기기"}
-          </button>
-        )}
-      </div>
-    </div>
+    </>
   );
 };
 

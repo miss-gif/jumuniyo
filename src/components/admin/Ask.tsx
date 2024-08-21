@@ -129,17 +129,22 @@ const Ask: React.FC = () => {
           </div>
         ))}
       </div>
-      <div className="pagination">
+      <div
+        className="pagination"
+        style={{ display: "flex", justifyContent: "center", marginTop: "20px" }}
+      >
         <button
+          className="btn"
           onClick={() => handlePageChange(currentPage - 1)}
           disabled={currentPage === 1}
         >
           이전
         </button>
-        <span>
+        <span style={{ display: "flex", alignItems: "center" }}>
           {currentPage} / {totalPages}
         </span>
         <button
+          className="btn"
           onClick={() => handlePageChange(currentPage + 1)}
           disabled={currentPage === totalPages}
         >

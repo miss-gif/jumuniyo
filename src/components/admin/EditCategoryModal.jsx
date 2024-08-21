@@ -57,8 +57,12 @@ const EditCategoryModal = ({ category, onClose, onCategoryUpdated }) => {
           type="file"
           onChange={e => setCategoryImage(e.target.files[0])}
         />
-        <button onClick={handleEditCategory}>수정</button>
-        <button onClick={onClose}>취소</button>
+        <button className="btn" onClick={handleEditCategory}>
+          수정
+        </button>
+        <button className="btn" onClick={onClose}>
+          취소
+        </button>
       </div>
     </div>
   );

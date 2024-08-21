@@ -132,7 +132,7 @@ function App() {
 
           {/* 관리자 */}
           <Route path="/admin" element={<AdminLayout />}>
-            <Route index element={<AdminPage />} />
+            <Route index element={<Accept />} />
             <Route path="category-setting" element={<CategorySetting />} />
             <Route path="statistics" element={<StatisticsforAdmin />} />
 

@@ -55,11 +55,25 @@ const AddCategoryModal = ({ onClose, onCategoryAdded }) => {
           placeholder="카테고리 이름"
         />
         <input
+          className="btn btnforimg"
           type="file"
+          id="fileInput"
+          style={{ display: "none" }}
           onChange={e => setCategoryImage(e.target.files[0])}
         />
-        <button onClick={handleAddCategory}>추가</button>
-        <button onClick={onClose}>취소</button>
+        <label
+          htmlFor="fileInput"
+          className="btn btnforimg"
+          style={{ marginRight: "20px" }}
+        >
+          이미지 선택
+        </label>
+        <button className="btn" onClick={handleAddCategory}>
+          추가
+        </button>
+        <button className="btn--cancel" onClick={onClose}>
+          취소
+        </button>
       </div>
 
       {/* 성공 모달 */}
