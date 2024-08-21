@@ -1,12 +1,13 @@
 import { Checkbox } from "@mui/material";
 import axios from "axios";
 import { useEffect, useMemo, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
-import { clearCoupon } from "../app/couponSlice";
+import { initiateKakaoPay } from "../utils/kakaopayUtils";
 import PaymentSelect from "./user/PaymentSelect";
 import CouponModal from "./user/paymentPage/CouponModal";
+import { clearCoupon } from "../app/couponSlice";
 
 const PaymentPage = () => {
   const dispatch = useDispatch();
@@ -78,6 +79,14 @@ const PaymentPage = () => {
     }
   }, [searchTerm]);
 
+  // 총 주문 금액 계산
+  const calculateTotalOrderPrice = () => {
+    return items.reduce(
+      (total, item) => total + item.menu_price * item.quantity,
+      0,
+    );
+  };
+
   // 결제 정보 검증 함수
   const validatePaymentInfo = () => {
     if (!addressDetail.trim()) {
@@ -114,6 +123,43 @@ const PaymentPage = () => {
   const handlePayment = async () => {
     if (!validatePaymentInfo()) return;
 
+    if (selectedPayment === "3") {
+      // 카카오페이 결제
+      try {
+        const order_pk = await initiateKakaoPay(
+          calculateTotalOrderPrice(),
+          phone,
+          id, // 주문 ID
+          accessToken, // 인증 토큰
+          request,
+          locationData,
+          addressDetail,
+          // menuPkArray,
+        );
+
+        if (order_pk) {
+          Swal.fire({
+            icon: "success",
+            text: "결제 완료: " + order_pk,
+          });
+
+          navigate(`/mypage/order/${order_pk}`);
+
+          // 결제 성공 후 세션 저장소 데이터 삭제
+          sessionStorage.removeItem(`selectedMenuItems_${id}`);
+          sessionStorage.removeItem("restaurantName");
+        } else {
+          throw new Error("결제 완료 후 order_pk를 받지 못했습니다.");
+        }
+      } catch (error) {
+        Swal.fire({
+          icon: "error",
+          text: "결제 실패: " + error.message,
+        });
+      }
+      return;
+    }
+
     const data = {
       order_res_pk: id,
       order_request: request,
@@ -132,38 +178,23 @@ const PaymentPage = () => {
     };
 
     try {
-      const orderResponse = await axios.post("/api/order/", data, {
+      const res = await axios.post("/api/order/", data, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
       });
 
-      if (orderResponse.data.statusCode !== 1) {
-        throw new Error(orderResponse.data.resultMsg || "주문 생성 실패");
-      }
-
-      const orderPK = orderResponse.data.resultData.order_pk;
-      let paymentResult;
-
-      // Handle different payment methods
-      if (
-        selectedPayment === "VIRTUAL_ACCOUNT" ||
-        selectedPayment === "MOBILE"
-      ) {
-        paymentResult = await handleNewPaymentModules(orderPK);
-      } else {
-        paymentResult = await handleExistingPaymentModules(orderPK);
-      }
-
-      if (paymentResult.success) {
+      if (res.data.statusCode === 1) {
         sessionStorage.removeItem(`selectedMenuItems_${id}`);
         sessionStorage.removeItem("restaurantName");
 
+        const orderPk = res.data.resultData.order_pk;
+
         Swal.fire({
           icon: "success",
-          text: "결제가 완료되었습니다.",
+          text: res.data.resultMsg,
         });
-        navigate(`/mypage/order/${orderPK}`);
+        navigate(`/mypage/order/${orderPk}`);
       } else {
         Swal.fire({
           icon: "warning",
@@ -178,61 +209,6 @@ const PaymentPage = () => {
           : "결제에 실패했습니다. 다시 시도해주세요.",
       });
     }
-  };
-
-  const handleNewPaymentModules = async orderPK => {
-    let pay;
-    switch (selectedPayment) {
-      case "VIRTUAL_ACCOUNT":
-        pay = { virtualAccount: { accountExpiry: { validHours: 1 } } };
-        break;
-      case "MOBILE":
-        pay = { productType: "DIGITAL" };
-        break;
-      default:
-        pay = {};
-        break;
-    }
-
-    if (!window.PortOne) {
-      console.error("PortOne SDK가 아직 로드되지 않았습니다.");
-      return { success: false };
-    }
-
-    try {
-      const paymentResponse = await window.PortOne.requestPayment({
-        storeId: "store-fea01fbe-7f7a-4c41-9ab7-7ca7249ebc2a",
-        channelKey: "channel-key-fb10d184-0d73-441a-98cf-b354125c63f4",
-        paymentId: `payment-${crypto.randomUUID()}`,
-        orderName: "모듈에서 뜨는 상품명",
-        totalAmount: totalPaymentAmount,
-        currency: "CURRENCY_KRW",
-        payMethod: selectedPayment,
-        ...pay,
-        customer: {
-          customerId: "customer-id-from-jwt",
-        },
-        customData: JSON.stringify({ orderPK }),
-        redirectUrl: "http://localhost:8080/",
-      });
-
-      // 결제 성공 여부를 구체적으로 확인합니다.
-      if (paymentResponse.success) {
-        return { success: true };
-      } else {
-        console.error("결제 실패:", paymentResponse.message);
-        return { success: false };
-      }
-    } catch (error) {
-      console.error("결제 요청 중 오류 발생:", error);
-      return { success: false };
-    }
-  };
-
-  const handleExistingPaymentModules = async orderPK => {
-    // Existing payment module logic here
-    // Assuming the existing payment flow is handled here.
-    return { success: true };
   };
 
   // 휴대전화 번호 형식 적용 함수
@@ -320,9 +296,7 @@ const PaymentPage = () => {
                 ></textarea>
               </div>
             </div>
-
             <PaymentSelect onPaymentSelect={setSelectedPayment} />
-
             <div className="payment-page__input-wrap">
               <h3 className="payment-page__subtitle">할인방법 선택</h3>
               <div className="payment-page__coupon">
