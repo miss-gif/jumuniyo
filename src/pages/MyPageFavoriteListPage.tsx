@@ -90,6 +90,7 @@ const MyPageFavoriteListPage: React.FC = () => {
       <div className="mypage-wrap">
         <Mypage />
         <div className="mypage-box">
+          <h3>내가 즐겨찾기 한 리스트</h3>
           <Alert variant="outlined" severity="info">
             즐겨찾기한 가게가 없습니다.
           </Alert>

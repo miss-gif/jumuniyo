@@ -472,7 +472,7 @@ const LoginPage: React.FC = () => {
 
                     <div className="소셜로그인">
                       <a
-                        className="로그인"
+                        className="카카오로그인"
                         href={`https://zumuniyo.shop/oauth/authorization/kakao?redirect_uri=http://localhost:3000/oauth/redirect`}
                       >
                         <div className="아이콘">
@@ -499,10 +499,10 @@ const LoginPage: React.FC = () => {
                             </defs>
                           </svg>
                         </div>
-                        <div className="텍스트">카카오로 시작하기</div>
+                        {/* <div className="텍스트">카카오로 시작하기</div> */}
                       </a>
                       <a
-                        className="로그인"
+                        className="네이버로그인"
                         href={`https://zumuniyo.shop/oauth/authorization/naver?redirect_uri=http://localhost:3000/oauth/redirect`}
                       >
                         <div className="아이콘">
@@ -519,11 +519,11 @@ const LoginPage: React.FC = () => {
                             />
                           </svg>
                         </div>
-                        <div className="텍스트">네이버로 시작하기</div>
+                        {/* <div className="텍스트">네이버로 시작하기</div> */}
                       </a>
                       <a
                         href={`https://zumuniyo.shop/oauth/authorization/google?redirect_uri=http://localhost:3000/oauth/redirect`}
-                        className="로그인"
+                        className="구글로그인"
                       >
                         <div className="아이콘">
                           <svg
@@ -551,7 +551,7 @@ const LoginPage: React.FC = () => {
                             />
                           </svg>
                         </div>
-                        <div className="텍스트">구글로 시작하기</div>
+                        {/* <div className="텍스트">구글로 시작하기</div> */}
                       </a>
                     </div>
 

@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { getCookie } from "../../utils/cookie";
+import { useSelector } from "react-redux";
 
 const Mypage = () => {
   const [isLogin, setIsLogin] = useState(false);
+  const { accessToken } = useSelector(state => state.user);
   const navigate = useNavigate();
   const location = useLocation();
 
   useEffect(() => {
-    const isLogin = getCookie("accessToken");
+    const isLogin = accessToken;
     if (!isLogin) {
       setIsLogin(false);
       return;

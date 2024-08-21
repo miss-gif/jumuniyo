@@ -6,6 +6,7 @@ import { fetchRestaurantInfo, fetchUserInfo } from "../../api/ceo/ceo";
 import { getCookie } from "../../utils/cookie"; // 쿠키 가져오기 함수 추가
 import ModalForOk from "../ceo/ModalForOk";
 import FooterMini from "./FooterMini";
+import { useSelector } from "react-redux";
 
 const NavButton = ({ path, label, currentPath }) => {
   const navigate = useNavigate();
@@ -29,10 +30,11 @@ const CeoLayout = () => {
   const location = useLocation();
   const currentPath = location.pathname;
   const navigate = useNavigate();
+  const { accessToken } = useSelector(state => state.user);
 
   useEffect(() => {
     const checkLoginStatus = () => {
-      const token = getCookie("accessToken");
+      const token = accessToken;
       if (!token) {
         navigate("/login");
       }

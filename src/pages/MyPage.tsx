@@ -8,8 +8,8 @@ import ImageImport from "../components/layout/ImageImport";
 import { getCookie } from "../utils/cookie";
 import NotLogin from "../components/common/mypage/NotLogin";
 import LoadingSpinner from "../components/common/LoadingSpinner";
-import { useSelector } from "react-redux";
 import Swal from "sweetalert2";
+import { useSelector } from "react-redux";
 
 export interface UserState {
   accessToken: string;
@@ -35,12 +35,10 @@ const MyPage: React.FC = () => {
   const [newImgFile, setNewImgFile] = useState("");
   const [isLogIn, setIsLogIn] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const { accessToken } = useSelector((state: RootState) => state.user);
 
   const [nickName, setNickName] = useState("");
   const [passWord, setPassWord] = useState("");
-
-  const accessToken =
-    useSelector((state: RootState) => state.user.accessToken) || "";
 
   const getUserInfo = async () => {
     setIsLoading(true);
@@ -66,7 +64,7 @@ const MyPage: React.FC = () => {
     const fetchUserInfo = async () => {
       await getUserInfo();
     };
-    const isLogin = getCookie("accessToken");
+    const isLogin = accessToken;
 
     if (!isLogin) {
       setUserId("로그인 후 이용해주세요");
@@ -158,9 +156,9 @@ const MyPage: React.FC = () => {
                 {!isEditImg ? (
                   <>
                     {imgUrl ? (
-                      <img src={`/${imgUrl}`} alt="profile-img" />
+                      <img src={`${imgUrl}`} alt="profile-img" />
                     ) : (
-                      <img src={`/default.png`} alt="profile-img" />
+                      <img src="/images/defaultuser.jpg" alt="profile-img" />
                     )}
                     <button className="btn" onClick={() => editMode("img")}>
                       변경
