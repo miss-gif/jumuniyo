@@ -83,9 +83,9 @@ const PaymentSelect = ({ onPaymentSelect }) => {
         payMethod: paymentMethod,
         ...pay,
         customer: {
-          customerId: "customer-id-from-jwt",
+          customerId: accessToken,
         },
-        customData: JSON.stringify({ orderPK }),
+        customData: orderPK,
         redirectUrl: redirectUrl,
       });
 
