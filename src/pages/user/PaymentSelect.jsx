@@ -1,16 +1,14 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import PaymentButton from "./paymentPage/PaymentButton";
 
 const PaymentSelect = ({ onPaymentSelect }) => {
   const [selectedPayment, setSelectedPayment] = useState("");
-  const [paymentMethod, setPaymentMethod] = useState("");
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("");
   const accessToken = useSelector(state => state.user.accessToken);
-  const navigate = useNavigate();
 
   useEffect(() => {
-    // PortOne SDK 로드
     const loadPortOne = () => {
       if (!window.PortOne) {
         const script = document.createElement("script");
@@ -27,11 +25,19 @@ const PaymentSelect = ({ onPaymentSelect }) => {
     event.preventDefault();
     setSelectedPayment(method);
     onPaymentSelect(method);
+    setSelectedPaymentMethod(method);
+  };
+
+  const handlePaymentMethod = (event, method) => {
+    event.preventDefault();
+    setSelectedPaymentMethod(method);
+    setSelectedPayment(method);
+    onPaymentSelect(method);
   };
 
   const handlePayment = async () => {
     let pay;
-    switch (paymentMethod) {
+    switch (selectedPaymentMethod) {
       case "VIRTUAL_ACCOUNT":
         pay = { virtualAccount: { accountExpiry: { validHours: 1 } } };
         break;
@@ -54,7 +60,8 @@ const PaymentSelect = ({ onPaymentSelect }) => {
         {
           order_res_pk: 1163,
           order_request: "주문",
-          payment_method: paymentMethod === "VIRTUAL_ACCOUNT" ? "5" : "1",
+          payment_method:
+            selectedPaymentMethod === "VIRTUAL_ACCOUNT" ? "5" : "1",
           order_phone: "010-0000-0000",
           order_address: "Seoul, Korea",
           menu: [{ menu_pk: 217852, menu_count: 1, menu_option_pk: [] }],
@@ -82,7 +89,7 @@ const PaymentSelect = ({ onPaymentSelect }) => {
         orderName: "주문이요 - 웹 결제",
         totalAmount: orderResponse.data.resultData.total_price,
         currency: "CURRENCY_KRW",
-        payMethod: paymentMethod,
+        payMethod: selectedPaymentMethod,
         ...pay,
         customer: {
           customerId: accessToken,
@@ -90,50 +97,42 @@ const PaymentSelect = ({ onPaymentSelect }) => {
         customData: orderPK,
         redirectUrl: redirectUrl,
       });
-
-      navigate(`/mypage/order/${orderPK}`);
     } catch (error) {
       console.error("결제 요청 중 오류 발생:", error);
-      // 사용자에게 오류를 알려주는 방법을 고려합니다.
     }
   };
 
-  const getButtonClass = method =>
-    `payment-page__button ${selectedPayment === method ? "btn--active" : "btn--default"}`;
+  const getButtonClass = (method, isPaymentMethod = false) => {
+    if (isPaymentMethod) {
+      return `payment-page__button ${selectedPaymentMethod === method ? "btn--active" : "btn--default"}`;
+    }
+    return `payment-page__button ${selectedPayment === method ? "btn--active" : "btn--default"}`;
+  };
 
   return (
     <div className="payment-page__input-wrap">
-      <div
-        onClick={handlePayment}
-        style={{ marginTop: "20px", cursor: "pointer" }}
-      >
+      <PaymentButton onClick={handlePayment} style={{ marginTop: "20px" }}>
         결제하기
-      </div>
+      </PaymentButton>
       <h3 className="payment-page__subtitle">결제수단 선택</h3>
       <div className="payment-page__payment-method">
         <div className="payment-wrap">
           <h4>
             주문이요<span>웹에서 미리 결제</span>
           </h4>
-          <div className="payment-page__mobile-payment">
+          <div className="payment-page__onsite-payment">
             <button
-              className={getButtonClass("3")}
-              onClick={event => handlePaymentSelect(event, "3")}
+              className={getButtonClass("CARD", true)}
+              onClick={event => handlePaymentMethod(event, "CARD")}
             >
-              일반 결제
+              통합모듈 결제
             </button>
-            <div
-              className={getButtonClass("CARD")}
-              onClick={() => setPaymentMethod("CARD")}
+            <button
+              className={getButtonClass("MOBILE", true)}
+              onClick={event => handlePaymentMethod(event, "MOBILE")}
             >
-              추가 통합모듈 결제
-            </div>
-            <div
-              className={getButtonClass("MOBILE")}
-              onClick={() => setPaymentMethod("MOBILE")}
-            >
-              추가 휴대폰 소액결제
-            </div>
+              휴대폰 소액결제
+            </button>
           </div>
         </div>
         <div className="payment-wrap">
