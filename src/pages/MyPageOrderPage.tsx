@@ -230,11 +230,10 @@ const MyPageOrderPage: React.FC = () => {
           </div>
           <div className="mypage-order__section-title">할인내역</div>
           <div className="mypage-order__detail">
-            <p className="mypage-order__label">할인쿠폰</p>
-            <p>
-              {orderData.orderCoupon?.couponName || "없음"}
-              {orderData.orderCoupon?.couponPrice || "없음"}
+            <p className="mypage-order__label">
+              {orderData.orderCoupon?.couponName || ""}
             </p>
+            <p>{orderData.orderCoupon?.couponPrice || ""}원</p>
           </div>
           <div className="mypage-order__total">
             <p className="mypage-order__total-label">총 결제금액</p>
