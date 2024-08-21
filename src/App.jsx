@@ -18,13 +18,10 @@ import AdminLayout from "./components/layout/AdminLayout";
 import CeoLayout from "./components/layout/CeoLayout";
 import RootLayout from "./components/layout/RootLayout";
 import MyPageOrderCloseDetail from "./components/user/mypage/MyPageOrderCloseDetail";
-import AdminPage from "./pages/AdminPage";
 import AuthCeoPage from "./pages/AuthCeoPage.tsx";
 import AuthPage from "./pages/AuthPage.tsx";
 import AuthUserPage from "./pages/AuthUserPage.tsx";
-import CartPage from "./pages/CartPage.jsx";
 import CeoPage from "./pages/CeoPage.jsx";
-import CheckoutPage from "./pages/CheckoutPage.jsx";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage.tsx";
 import MyPage from "./pages/MyPage.tsx";
@@ -37,27 +34,24 @@ import MypageReportPage from "./pages/MypageReportPage";
 import MypageUserWithdrawal from "./pages/MypageUserWithdrawal";
 import NotFound from "./pages/NotFound.jsx";
 import PaymentPage from "./pages/PaymentPage.jsx";
-import ProfilePage from "./pages/ProfilePage.jsx";
 import ProjectInfo from "./pages/ProjectInfo.jsx";
 // import RestaurantsPage from "./pages/RestaurantsPage.jsx";
-import RestaurantsPage from "./pages/user/main/RestaurantsPage";
-import Test from "./pages/Test";
-import Test3 from "./pages/Test3";
-import { OrderProvider } from "./pages/user/OrderContext";
-import RestaurantDetailPage2 from "./pages/user/RestaurantDetailPage2";
+import StatisticsforAdmin from "./components/admin/StatisticsforAdmin";
 import CeoWithdrawal from "./components/ceo/CeoWithdrawal";
 import MenuManagement from "./components/ceo/MenuManagement";
-import MyPageReportListPage from "./pages/MyPageReportListPage";
+import StatisticsforCeo from "./components/ceo/StatisticsforCeo";
+import MypageLayout from "./components/layout/MypageLayout";
 import MyPageCouponPage from "./pages/MyPageCouponPage";
 import MyPageFavoriteListPage from "./pages/MyPageFavoriteListPage";
-import IntroPage from "./pages/intro/IntroPage";
+import MyPageReportListPage from "./pages/MyPageReportListPage";
 import MypageReportDetailPage from "./pages/MypageReportDetailPage";
-
-import StatisticsforAdmin from "./components/admin/StatisticsforAdmin";
-import StatisticsforCeo from "./components/ceo/StatisticsforCeo";
-
-import MypageLayout from "./components/layout/MypageLayout";
 import SnsLoginPage from "./pages/SnsLoginPage";
+import Test from "./pages/Test";
+import Test3 from "./pages/Test3";
+import IntroPage from "./pages/intro/IntroPage";
+import { OrderProvider } from "./pages/user/OrderContext";
+import RestaurantDetailPage2 from "./pages/user/RestaurantDetailPage2";
+import RestaurantsPage from "./pages/user/main/RestaurantsPage";
 
 function App() {
   return (
@@ -78,9 +72,6 @@ function App() {
             <Route index element={<HomePage />} />
             <Route path="restaurant/:id" element={<RestaurantsPage />} />
             <Route path="restaurants/:id" element={<RestaurantDetailPage2 />} />
-            <Route path="cart" element={<CartPage />} />
-            <Route path="checkout" element={<CheckoutPage />} />
-            <Route path="profile" element={<ProfilePage />} />
             <Route path="payment/:id" element={<PaymentPage />} />
             <Route path="projectinfo" element={<ProjectInfo />} />
           </Route>
