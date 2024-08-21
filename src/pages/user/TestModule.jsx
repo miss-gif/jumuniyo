@@ -71,32 +71,6 @@ const TestModule = () => {
 
       const orderPK = orderResponse.data.resultData.order_pk;
 
-      if (!paymentMethod) {
-        // SSE로 갱신 요청 전송
-
-        // const eventSource = new EventSource("/sse");
-        const eventSource = new EventSource(
-          `https://34.64.63.109/sse?token=${accessToken}`,
-        );
-
-        eventSource.onopen = () => {
-          console.log("SSE 연결됨.");
-          // SSE 연결이 성공적으로 열렸을 때, 서버로부터 이벤트를 받기 시작합니다.
-        };
-
-        eventSource.onmessage = event => {
-          // 서버로부터 이벤트 수신 시 처리
-          console.log("서버 메시지:", event.data);
-        };
-
-        eventSource.onerror = err => {
-          console.error("SSE 연결 오류:", err);
-          eventSource.close(); // 오류 발생 시 연결 종료
-        };
-
-        return; // 후불 결제의 경우 결제 프로세스 종료
-      }
-
       // 결제 요청
       const paymentResponse = await window.PortOne.requestPayment({
         storeId: "store-fea01fbe-7f7a-4c41-9ab7-7ca7249ebc2a",
