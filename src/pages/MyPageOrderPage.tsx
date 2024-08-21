@@ -41,7 +41,6 @@ const MyPageOrderPage: React.FC = () => {
 
   useEffect(() => {
     console.log("orderData", orderData);
-
     return () => {};
   }, []);
 
@@ -83,13 +82,15 @@ const MyPageOrderPage: React.FC = () => {
         },
       });
       const data = response.data;
+      console.log("cancel order", data);
+
       if (data.statusCode === 1) {
         Swal.fire({
           icon: "success",
           text: "주문 취소되었습니다.",
         });
         setOrderData(null);
-        navigate("/mypage/orderclose");
+        navigate(`/mypage/orderclose/${data.resultData}`);
       } else {
         Swal.fire({
           icon: "warning",
