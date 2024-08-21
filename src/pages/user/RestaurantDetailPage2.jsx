@@ -85,16 +85,16 @@ const RestaurantDetailPage = () => {
     );
   };
 
-  const handleIncreaseQuantity = menu_pk => {
-    dispatch(increaseQuantity(menu_pk));
+  const handleIncreaseQuantity = (menu_pk, selectedOptions) => {
+    dispatch(increaseQuantity({ menu_pk, selectedOptions }));
   };
 
-  const handleDecreaseQuantity = menu_pk => {
-    dispatch(decreaseQuantity(menu_pk));
+  const handleDecreaseQuantity = (menu_pk, selectedOptions) => {
+    dispatch(decreaseQuantity({ menu_pk, selectedOptions }));
   };
 
-  const handleRemoveItem = menu_pk => {
-    dispatch(removeItem(menu_pk));
+  const handleRemoveItem = (menu_pk, selectedOptions) => {
+    dispatch(removeItem({ menu_pk, selectedOptions }));
   };
 
   const handleClearAll = () => {

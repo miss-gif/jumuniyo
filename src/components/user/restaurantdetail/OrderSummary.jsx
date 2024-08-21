@@ -9,6 +9,9 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
+const generateItemKey = item =>
+  `${item.menu_pk}-${JSON.stringify(item.selectedOptions)}`;
+
 const OrderSummary = ({
   onIncreaseQuantity,
   onDecreaseQuantity,
@@ -33,7 +36,7 @@ const OrderSummary = ({
     } else {
       setStore([]); // 일치하지 않는 경우 store를 빈 배열로 설정
     }
-  }, [items, restaurant, restaurantName]); // restaurantName 추가
+  }, [items, restaurant, restaurantName]);
 
   const totalAmount = store.reduce(
     (sum, item) =>
@@ -82,8 +85,8 @@ const OrderSummary = ({
               선택된 메뉴가 없습니다.
             </div>
           ) : (
-            store.map((item, index) => (
-              <div key={index} className="order-summary__item">
+            store.map(item => (
+              <div key={generateItemKey(item)} className="order-summary__item">
                 <div className="order-summary__content">
                   {item.menu_name}: {item.menu_content}
                   {item.selectedOptions && (
@@ -103,7 +106,9 @@ const OrderSummary = ({
                   <div className="order-summary__wrap">
                     <div
                       className="order-summary__delete-button"
-                      onClick={() => onRemoveItem(item.menu_pk)}
+                      onClick={() =>
+                        onRemoveItem(item.menu_pk, item.selectedOptions)
+                      }
                     >
                       <CloseIcon />
                     </div>
@@ -123,13 +128,19 @@ const OrderSummary = ({
                   </div>
                   <div className="quantity-count">
                     <button
-                      onClick={() => onDecreaseQuantity(item.menu_pk)}
+                      onClick={() =>
+                        onDecreaseQuantity(item.menu_pk, item.selectedOptions)
+                      }
                       disabled={item.quantity <= 1}
                     >
                       -
                     </button>
                     <span>{item.quantity}</span>
-                    <button onClick={() => onIncreaseQuantity(item.menu_pk)}>
+                    <button
+                      onClick={() =>
+                        onIncreaseQuantity(item.menu_pk, item.selectedOptions)
+                      }
+                    >
                       +
                     </button>
                   </div>

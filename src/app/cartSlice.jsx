@@ -1,34 +1,37 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+// 헬퍼 함수: 레스토랑 변경 시 장바구니 초기화
+const resetCartForNewRestaurant = (state, restaurant) => {
+  state.items = [];
+  state.restaurant = restaurant;
+};
+
+// 헬퍼 함수: 고유 아이템 키 생성
+const generateItemKey = item =>
+  `${item.menu_pk}-${JSON.stringify(item.selectedOptions)}`;
+
 const cartSlice = createSlice({
   name: "cart",
   initialState: {
     items: [],
-    restaurant: null, // 레스토랑 정보를 저장
+    restaurant: null,
   },
   reducers: {
     addItem: (state, action) => {
       const { item, restaurant } = action.payload;
 
-      // 다른 레스토랑의 아이템이 추가되려는 경우, 장바구니 초기화
       if (
         state.restaurant &&
         state.restaurant.restaurantPk !== restaurant.restaurantPk
       ) {
-        state.items = [];
+        resetCartForNewRestaurant(state, restaurant);
+      } else if (!state.restaurant) {
         state.restaurant = restaurant;
       }
 
-      // 처음으로 레스토랑 정보가 설정되는 경우
-      if (!state.restaurant) {
-        state.restaurant = restaurant;
-      }
-
+      const itemKey = generateItemKey(item);
       const existingItem = state.items.find(
-        menuItem =>
-          menuItem.menu_pk === item.menu_pk &&
-          JSON.stringify(menuItem.selectedOptions) ===
-            JSON.stringify(item.selectedOptions),
+        menuItem => generateItemKey(menuItem) === itemKey,
       );
 
       if (existingItem) {
@@ -38,29 +41,34 @@ const cartSlice = createSlice({
       }
     },
     increaseQuantity: (state, action) => {
-      const menu_pk = action.payload;
-      const item = state.items.find(item => item.menu_pk === menu_pk);
+      const { menu_pk, selectedOptions } = action.payload;
+      const itemKey = `${menu_pk}-${JSON.stringify(selectedOptions)}`;
+      const item = state.items.find(item => generateItemKey(item) === itemKey);
       if (item) {
         item.quantity += 1;
       }
     },
     decreaseQuantity: (state, action) => {
-      const menu_pk = action.payload;
-      const item = state.items.find(item => item.menu_pk === menu_pk);
+      const { menu_pk, selectedOptions } = action.payload;
+      const itemKey = `${menu_pk}-${JSON.stringify(selectedOptions)}`;
+      const item = state.items.find(item => generateItemKey(item) === itemKey);
       if (item && item.quantity > 1) {
         item.quantity -= 1;
       }
     },
     removeItem: (state, action) => {
-      const menu_pk = action.payload;
-      state.items = state.items.filter(item => item.menu_pk !== menu_pk);
+      const { menu_pk, selectedOptions } = action.payload;
+      const itemKey = `${menu_pk}-${JSON.stringify(selectedOptions)}`;
+      state.items = state.items.filter(
+        item => generateItemKey(item) !== itemKey,
+      );
       if (state.items.length === 0) {
-        state.restaurant = null; // 마지막 아이템이 제거되면 레스토랑 정보도 초기화
+        state.restaurant = null;
       }
     },
     clearCart: state => {
       state.items = [];
-      state.restaurant = null; // 장바구니를 비울 때 레스토랑 정보도 초기화
+      state.restaurant = null;
     },
   },
 });
