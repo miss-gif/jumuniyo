@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const PaymentSelect = ({ onPaymentSelect }) => {
   const [selectedPayment, setSelectedPayment] = useState("");
   const [paymentMethod, setPaymentMethod] = useState("");
   const accessToken = useSelector(state => state.user.accessToken);
+  const navigate = useNavigate();
 
   useEffect(() => {
     // PortOne SDK 로드
@@ -89,8 +91,7 @@ const PaymentSelect = ({ onPaymentSelect }) => {
         redirectUrl: redirectUrl,
       });
 
-      console.log("orderPK:", orderPK);
-      console.log("paymentResponse:", paymentResponse);
+      navigate(`/mypage/order/${orderPK}`);
     } catch (error) {
       console.error("결제 요청 중 오류 발생:", error);
       // 사용자에게 오류를 알려주는 방법을 고려합니다.
