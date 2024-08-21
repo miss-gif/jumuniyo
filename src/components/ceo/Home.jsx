@@ -178,6 +178,7 @@ const Home = () => {
       try {
         const newOrder = event.data;
         console.log("New event received:", newOrder);
+        loadOrders();
         setOrders(prevOrders => [newOrder, ...prevOrders]);
       } catch (err) {
         console.error("Failed to parse SSE event data:", err, event.data);

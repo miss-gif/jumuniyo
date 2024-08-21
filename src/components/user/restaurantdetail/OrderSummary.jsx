@@ -156,6 +156,19 @@ const OrderSummary = ({
         주문하기
       </button>
 
+      <button
+        className="order-summary__submit-buttonforphone"
+        style={{
+          backgroundColor: store.length > 0 ? "#333" : "#eee",
+          color: store.length > 0 ? "#eee" : "#aaa",
+          cursor: store.length > 0 ? "pointer" : "default",
+        }}
+        onClick={handleOrderClick}
+        disabled={store.length === 0}
+      >
+        {formatPrice(totalAmount)}원 주문하기
+      </button>
+
       {/* 준비중입니다 모달 */}
       <Dialog
         open={open}
