@@ -69,14 +69,14 @@ const SidebarCoupon = ({ isSidebarCoupon, toggleSidebarCoupon }) => {
                       key={coupon.id}
                       onClick={() => {
                         // 쿠폰 사용 시 관련 페이지로 이동
-                        navigate(`/restaurants/${coupon.couponId}`);
+                        navigate(`/restaurants/${coupon.resPk}`);
                       }}
                     >
-                      <h3 className="coupon-item__title">{coupon.name}</h3>
-                      <p>{coupon.content}</p>
+                      <h3 className="coupon-item__title">{coupon.resName}</h3>
+                      {/* <p>{coupon.name}</p> */}
+                      {/* <p>{coupon.content}</p> */}
                       <p>할인 금액: {coupon.price}원</p>
                       <p>최소 주문 금액: {coupon.minOrderAmount}원</p>
-                      <p>상점 이름: {coupon.resName}</p>
                     </CouponListItem>
                   ))}
                 </ul>
