@@ -45,7 +45,7 @@ const Reviews = () => {
       if (data.statusCode === 1 || data.statusCode === 2) {
         const updatedReviewItems = data.resultData.reviewList.map(item => {
           const reviewImgs =
-            item.pics.length > 0 ? item.pics.map(pic => `/${pic}`) : [];
+            item.pics.length > 0 ? item.pics.map(pic => `${pic}`) : [];
           return {
             ...item,
             reviewImgs: reviewImgs,

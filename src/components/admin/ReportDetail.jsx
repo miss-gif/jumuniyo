@@ -183,34 +183,27 @@ const ReportDetail = () => {
         </div>
       </div>
 
-      <div className="report-detail">
-        <h1>신고 상세보기</h1>
-        <div>제목: {reportDetail.reportTitle}</div>
-        <div>내용: {reportDetail.reportContent}</div>
-        <div>작성자: {reportDetail.reportNickName}</div>
-        <div>
-          작성일: {new Date(reportDetail.reportCreatedAt).toLocaleString()}
-        </div>
-        <div>리뷰 작성자: {reportDetail.reviewNickName}</div>
-        <div>리뷰 내용: {reportDetail.reviewContents}</div>
-        <div>
-          리뷰 작성일: {new Date(reportDetail.reviewCreatedAt).toLocaleString()}
-        </div>
-      </div>
-
       {showModal && (
         <div className="modal">
           <div className="modal-content">
             <h2>유저 정지</h2>
-            <label>정지 기한 설정 (일)</label>
-            <input
-              type="number"
-              placeholder="정지일수"
-              value={blockDuration}
-              onChange={e => setBlockDuration(Number(e.target.value))}
-            />
-            <button onClick={handleBlockUser}>확인</button>
-            <button onClick={() => setShowModal(false)}>취소</button>
+            <label>
+              정지 기한 설정
+              <input
+                type="number"
+                placeholder="정지일수"
+                value={blockDuration || ""}
+                onChange={e => setBlockDuration(Number(e.target.value))}
+                style={{ border: "1px solid black" }}
+              />
+              (일)
+            </label>
+            <button className="btn--cancel" onClick={handleBlockUser}>
+              확인
+            </button>
+            <button className="btn" onClick={() => setShowModal(false)}>
+              취소
+            </button>
           </div>
         </div>
       )}

@@ -158,6 +158,7 @@ const AskDetail = () => {
               value={responseText}
               onChange={e => setResponseText(e.target.value)}
               placeholder="답변을 입력하세요"
+              style={{ resize: "none", width: "50vw" }}
             />
           ) : (
             askDetail.inquiryResponse || "답변이 아직 없습니다."

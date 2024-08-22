@@ -15,6 +15,7 @@ const Review = ({ review }) => {
     createdAt,
     reply,
     reviewPk,
+    reviewReportState, // 새로운 속성 추가
   } = review;
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -51,6 +52,61 @@ const Review = ({ review }) => {
   };
 
   const roundedRating = Math.round(reviewRating * 100) / 100;
+
+  if (reviewReportState === 0) {
+    // 리뷰가 신고된 경우
+    return (
+      <li className="review">
+        <div className="review__header">
+          <div className="review__user-info">
+            <p className="user-info__id">{nickName}님</p>
+            <p className="user-info__time">{createdAt}</p>
+          </div>
+          <div
+            className="review__report"
+            onClick={openReportModal}
+            style={{ cursor: "pointer" }}
+          >
+            <div className="review__content" style={{ pointerEvents: "none" }}>
+              이미신고된 리뷰입니다.
+            </div>
+          </div>
+        </div>
+        <div className="review__rating">
+          <div className="rating__stars">
+            {"★".repeat(Math.round(roundedRating))} {roundedRating}
+          </div>
+        </div>
+        {pics.length > 0 && (
+          <div
+            className="review__images"
+            style={{ display: "flex", gap: "10px" }}
+          >
+            {pics.map((pic, index) => (
+              <img
+                key={index}
+                src={`${pic}`}
+                alt={`review pic ${index + 1}`}
+                className="review__image"
+                style={{ width: "200px", height: "100px", cursor: "pointer" }}
+                onClick={() => openModal(pic)}
+              />
+            ))}
+          </div>
+        )}
+        <div className="review__content">{reviewContents}</div>
+        {reply && <OwnerComment reply={reply} />}
+
+        <ModalforReview isOpen={isModalOpen} onClose={closeModal}>
+          <img
+            src={`${selectedImage}`}
+            alt="Original"
+            style={{ width: "500px", height: "100%" }}
+          />
+        </ModalforReview>
+      </li>
+    );
+  }
 
   return (
     <li className="review">
@@ -94,7 +150,7 @@ const Review = ({ review }) => {
 
       <ModalforReview isOpen={isModalOpen} onClose={closeModal}>
         <img
-          src={`/${selectedImage}`}
+          src={`${selectedImage}`}
           alt="Original"
           style={{ width: "500px", height: "100%" }}
         />
