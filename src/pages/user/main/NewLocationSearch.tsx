@@ -1,7 +1,7 @@
 import { IoSearchSharp } from "react-icons/io5";
 import GoogleMaps from "../../../components/common/GoogleMaps";
 
-const NewLocationSearch = ({ onRequestClose }) => {
+const NewLocationSearch = ({ onRequestClose }: { onRequestClose: boolean }) => {
   return (
     <div>
       <div className="새로운서치">

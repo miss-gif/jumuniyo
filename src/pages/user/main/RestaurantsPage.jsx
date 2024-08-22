@@ -1,11 +1,10 @@
-import React, { useEffect, useState, useCallback } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
 import axios from "axios";
+import { useCallback, useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import LoadingSpinner from "../../../components/common/LoadingSpinner";
 import useDebounce from "../../../hooks/useDebounce";
-import { FaHeart, FaRegHeart } from "react-icons/fa";
 
 const StatusListItem = styled.li`
   position: relative;
