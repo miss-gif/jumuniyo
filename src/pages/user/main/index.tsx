@@ -187,7 +187,11 @@ const MainPage: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (locationData?.longitude == 0) {
+    if (isLoggedIn && locationData?.longitude == 0) {
+      navigate("/");
+    }
+
+    if (!isLoggedIn && locationData?.longitude == 0) {
       navigate("/intro");
     }
   }, [locationData]);

@@ -3,9 +3,9 @@ import React from "react";
 
 const PaymentButton = ({ onClick, style, children }) => {
   return (
-    <div onClick={onClick} style={{ ...style, cursor: "pointer" }}>
+    <button onClick={onClick} className="payment-page__button payment-btn">
       {children}
-    </div>
+    </button>
   );
 };
 

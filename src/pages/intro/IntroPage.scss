@@ -11,6 +11,9 @@
   height: 60px;
   font-weight: 700;
   color: #000;
+  &-logo {
+    font-size: 24px;
+  }
   &-buttons {
     display: flex;
     gap: 8px;
