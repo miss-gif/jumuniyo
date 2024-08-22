@@ -8,11 +8,14 @@ const RestaurantDetailInfo = ({ restaurantData, onShowLoginModal }) => {
   const [isFavorited, setIsFavorited] = useState(false);
   const [showNotLoginAlert, setShowNotLoginAlert] = useState(false);
   const [coupons, setCoupons] = useState([]);
-  const [receivedCoupons, setReceivedCoupons] = useState([]); // 유저가 가진 쿠폰 ID를 저장
+  const [receivedCoupons, setReceivedCoupons] = useState([]); // 유저가 받은 쿠폰 ID를 저장
+  const [usedCoupons, setUsedCoupons] = useState([]); // 유저가 사용한 쿠폰 ID를 저장
   const accessToken = useSelector(state => state.user.accessToken);
   const isLoggedIn = !!accessToken;
 
   useEffect(() => {
+    if (!isLoggedIn) return;
+
     // 찜하기 상태 초기화
     const fetchFavoriteStatus = async () => {
       try {
@@ -30,13 +33,7 @@ const RestaurantDetailInfo = ({ restaurantData, onShowLoginModal }) => {
       }
     };
 
-    if (isLoggedIn) {
-      fetchFavoriteStatus();
-    }
-  }, [isLoggedIn, restaurantData.restaurantPk, accessToken]);
-
-  useEffect(() => {
-    // 유저가 가진 쿠폰 목록 가져오기
+    // 유저가 받은 쿠폰 목록 가져오기
     const fetchUserCoupons = async () => {
       try {
         const response = await axios.get(`/api/coupons/user`, {
@@ -55,10 +52,29 @@ const RestaurantDetailInfo = ({ restaurantData, onShowLoginModal }) => {
       }
     };
 
-    if (isLoggedIn) {
-      fetchUserCoupons();
-    }
-  }, [isLoggedIn, accessToken]);
+    // 유저가 사용한 쿠폰 목록 가져오기
+    const fetchUsedCoupons = async () => {
+      try {
+        const response = await axios.get(`/api/coupons/use`, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+        if (response.data.statusCode === 1) {
+          const usedCouponIds = response.data.resultData.map(
+            coupon => coupon.couponId,
+          );
+          setUsedCoupons(usedCouponIds); // 사용된 쿠폰 ID를 저장
+        }
+      } catch (err) {
+        console.error("Failed to fetch used coupons:", err);
+      }
+    };
+
+    fetchFavoriteStatus();
+    fetchUserCoupons();
+    fetchUsedCoupons();
+  }, [isLoggedIn, restaurantData.restaurantPk, accessToken]);
 
   useEffect(() => {
     // 쿠폰 데이터 가져오기
@@ -200,20 +216,29 @@ const RestaurantDetailInfo = ({ restaurantData, onShowLoginModal }) => {
           {coupons.map(coupon => (
             <div
               key={coupon.id}
-              className={`oneCoupon ${receivedCoupons.includes(coupon.id) ? "disabled" : ""}`}
+              className={`oneCoupon ${receivedCoupons.includes(coupon.id) || usedCoupons.includes(coupon.id) ? "disabled" : ""}`}
               onClick={() => handleCouponClick(coupon.id)}
               style={{
-                pointerEvents: receivedCoupons.includes(coupon.id)
-                  ? "none"
-                  : "auto",
-                opacity: receivedCoupons.includes(coupon.id) ? 0.5 : 1,
+                pointerEvents:
+                  receivedCoupons.includes(coupon.id) ||
+                  usedCoupons.includes(coupon.id)
+                    ? "none"
+                    : "auto",
+                opacity:
+                  receivedCoupons.includes(coupon.id) ||
+                  usedCoupons.includes(coupon.id)
+                    ? 0.5
+                    : 1,
                 position: "relative",
-                cursor: receivedCoupons.includes(coupon.id)
-                  ? "default"
-                  : "pointer",
+                cursor:
+                  receivedCoupons.includes(coupon.id) ||
+                  usedCoupons.includes(coupon.id)
+                    ? "default"
+                    : "pointer",
               }}
             >
-              {receivedCoupons.includes(coupon.id) && (
+              {(receivedCoupons.includes(coupon.id) ||
+                usedCoupons.includes(coupon.id)) && (
                 <div
                   style={{
                     position: "absolute",
@@ -228,7 +253,9 @@ const RestaurantDetailInfo = ({ restaurantData, onShowLoginModal }) => {
                     fontSize: "0.9em",
                   }}
                 >
-                  이미 받으신 쿠폰입니다.
+                  {usedCoupons.includes(coupon.id)
+                    ? "이미 사용한 쿠폰입니다."
+                    : "이미 받으신 쿠폰입니다."}
                 </div>
               )}
               <div className="couponTitle">{coupon.name}</div>

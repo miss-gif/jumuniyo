@@ -41,7 +41,7 @@ const Report = () => {
         const formattedData = response.data.resultData.result.map(item => ({
           pk: item.reportPk,
           title: item.reportTitle,
-          status: item.reportState === 1 ? "처리완료" : "미완료",
+          status: item.reportState === 1 ? "미완료" : "처리완료",
           completeTime: new Date(item.updatedAt).toLocaleTimeString(),
           writer: item.reportUserNickName,
           writeTime: new Date(item.createdAt).toLocaleDateString(),
@@ -130,17 +130,26 @@ const Report = () => {
         )}
       </div>
       {reportItems.length > 0 && (
-        <div className="pagination">
+        <div
+          className="pagination"
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            marginTop: "20px",
+          }}
+        >
           <button
+            className="btn"
             onClick={() => handlePageChange(currentPage - 1)}
             disabled={currentPage === 1}
           >
             이전
           </button>
-          <span>
+          <span style={{ display: "flex", alignItems: "center" }}>
             {currentPage} / {totalPages}
           </span>
           <button
+            className="btn"
             onClick={() => handlePageChange(currentPage + 1)}
             disabled={currentPage === totalPages}
           >

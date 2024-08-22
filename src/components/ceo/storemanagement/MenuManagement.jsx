@@ -110,7 +110,7 @@ const MenuManagement = () => {
             menu: category.menu.map(menu => ({
               ...menu,
               menu_pic: menu.menu_pic
-                ? `/${menu.menu_pic}`
+                ? `${menu.menu_pic}`
                 : "default_image_url",
             })),
           }));
@@ -713,7 +713,7 @@ const MenuManagement = () => {
                           )
                         }
                         disabled={index === categories.length - 1}
-                        style={{ backgroundColor: "red" }}
+                        style={{ backgroundColor: "red", marginRight: "20px" }}
                       >
                         ▼
                       </button>
@@ -755,9 +755,9 @@ const MenuManagement = () => {
                               <div className="menu-list-oneMenu-tablePic">
                                 <img
                                   src={
-                                    menu.menu_pic
-                                      ? `/pic${menu.menu_pic}`
-                                      : "default_image_url"
+                                    menu.menu_pic === "default_image_url"
+                                      ? "/images/ham2.png"
+                                      : menu.menu_pic
                                   }
                                   alt={menu.menu_name}
                                 />
