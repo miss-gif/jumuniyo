@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from "react";
 import FormControl from "@mui/material/FormControl";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormLabel from "@mui/material/FormLabel";
@@ -6,7 +7,6 @@ import RadioGroup from "@mui/material/RadioGroup";
 import Button from "@mui/material/Button";
 import axios from "axios";
 import PropTypes from "prop-types";
-import { useEffect, useState } from "react";
 import { IoIosClose } from "react-icons/io";
 import Modal from "react-modal";
 import { useDispatch, useSelector } from "react-redux";
@@ -18,9 +18,9 @@ const CouponModal = ({ isOpen, onRequestClose }) => {
   const dispatch = useDispatch();
   const isLoggedIn = useSelector(state => state.user.isLoggedIn);
   const [coupons, setCoupons] = useState([]);
-  const [selectedCoupon, setSelectedCoupon] = useState(""); // 선택된 쿠폰 상태
-
+  const [selectedCoupon, setSelectedCoupon] = useState("");
   const appliedCoupon = useSelector(state => state.coupon.appliedCoupon);
+  const restaurant = useSelector(state => state.cart.restaurant);
 
   useEffect(() => {
     const fetchCoupons = async () => {
@@ -30,7 +30,12 @@ const CouponModal = ({ isOpen, onRequestClose }) => {
             Authorization: `Bearer ${accessToken}`,
           },
         });
-        setCoupons(response.data.resultData);
+
+        const filteredCoupons = response.data.resultData.filter(
+          coupon => coupon.resPk === restaurant.restaurantPk,
+        );
+
+        setCoupons(filteredCoupons);
       } catch (error) {
         console.error("쿠폰 목록을 불러오는 데 실패했습니다.", error);
       }
@@ -39,7 +44,7 @@ const CouponModal = ({ isOpen, onRequestClose }) => {
     if (isLoggedIn) {
       fetchCoupons();
     }
-  }, [isLoggedIn, accessToken]);
+  }, [isLoggedIn, accessToken, restaurant]);
 
   const handleSelectCoupon = event => {
     setSelectedCoupon(event.target.value);
@@ -47,15 +52,19 @@ const CouponModal = ({ isOpen, onRequestClose }) => {
 
   const handleApplyCoupon = () => {
     if (selectedCoupon) {
-      // 선택된 쿠폰을 리덕스에 저장
       const coupon = coupons.find(
         coupon => coupon.id.toString() === selectedCoupon,
       );
-      dispatch(applyCoupon(coupon)); // 쿠폰 적용
-      onRequestClose(); // 모달 닫기
+      dispatch(applyCoupon(coupon));
+      onRequestClose();
     } else {
       alert("쿠폰을 선택해 주세요.");
     }
+  };
+
+  const handleClearCoupon = () => {
+    dispatch(clearCoupon());
+    setSelectedCoupon("");
   };
 
   return (
@@ -72,31 +81,35 @@ const CouponModal = ({ isOpen, onRequestClose }) => {
         </button>
 
         <div className="coupon-list">
-          <FormControl component="fieldset">
-            <FormLabel component="legend">쿠폰 선택</FormLabel>
-            <RadioGroup
-              aria-label="coupon"
-              name="coupons"
-              value={selectedCoupon}
-              onChange={handleSelectCoupon}
-            >
-              {coupons.map(coupon => (
-                <FormControlLabel
-                  key={coupon.id}
-                  value={coupon.id.toString()}
-                  control={<Radio />}
-                  label={
-                    <div className="coupon-details">
-                      <h3>{coupon.name}</h3>
-                      <p>할인 가격: {coupon.price}원</p>
-                      <p>최소 주문 금액: {coupon.minOrderAmount}원</p>
-                      <p>상점 이름: {coupon.resName}</p>
-                    </div>
-                  }
-                />
-              ))}
-            </RadioGroup>
-          </FormControl>
+          {coupons.length > 0 ? (
+            <FormControl component="fieldset">
+              <FormLabel component="legend">쿠폰 선택</FormLabel>
+              <RadioGroup
+                aria-label="coupon"
+                name="coupons"
+                value={selectedCoupon}
+                onChange={handleSelectCoupon}
+              >
+                {coupons.map(coupon => (
+                  <FormControlLabel
+                    key={coupon.id}
+                    value={coupon.id.toString()}
+                    control={<Radio />}
+                    label={
+                      <div className="coupon-details">
+                        <h3>{coupon.name}</h3>
+                        <p>할인 가격: {coupon.price}원</p>
+                        <p>최소 주문 금액: {coupon.minOrderAmount}원</p>
+                        <p>상점 이름: {coupon.resName}</p>
+                      </div>
+                    }
+                  />
+                ))}
+              </RadioGroup>
+            </FormControl>
+          ) : (
+            <p>사용 가능한 쿠폰이 없습니다.</p>
+          )}
         </div>
 
         <div className="적용된 쿠폰">
@@ -104,18 +117,24 @@ const CouponModal = ({ isOpen, onRequestClose }) => {
             <div>
               <h3>적용된 쿠폰: {appliedCoupon.name}</h3>
               <p>할인 금액: {appliedCoupon.price}원</p>
+              <Button
+                variant="outlined"
+                color="secondary"
+                onClick={handleClearCoupon}
+              >
+                쿠폰 적용 해제
+              </Button>
             </div>
           ) : (
             <p>적용된 쿠폰이 없습니다.</p>
           )}
         </div>
 
-        {/* 쿠폰 적용 버튼 */}
         <Button
           variant="contained"
           color="primary"
           onClick={handleApplyCoupon}
-          disabled={!selectedCoupon} // 선택된 쿠폰이 없으면 비활성화
+          disabled={!selectedCoupon}
         >
           쿠폰 적용
         </Button>

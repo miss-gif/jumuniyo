@@ -1,14 +1,13 @@
 import { Checkbox } from "@mui/material";
 import axios from "axios";
 import { useEffect, useMemo, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
-import { clearCoupon } from "../app/couponSlice";
 import { initiateKakaoPay } from "../utils/kakaopayUtils";
 import PaymentSelect from "./user/PaymentSelect";
-import TestModule from "./user/TestModule.jsx";
 import CouponModal from "./user/paymentPage/CouponModal";
+import { clearCoupon } from "../app/couponSlice";
 
 const PaymentPage = () => {
   const dispatch = useDispatch();
@@ -164,18 +163,18 @@ const PaymentPage = () => {
     const data = {
       order_res_pk: id,
       order_request: request,
-      payment_method: selectedPayment,
+      payment_method: selectedPayment, // This will now handle all payment types
       order_phone: phone,
       order_address: `${searchTerm} ${addressDetail}`,
       menu: items.map(item => ({
         menu_pk: item.menu_pk,
         menu_count: item.quantity,
         menu_option_pk: item.selectedOptions
-          ? Object.keys(item.selectedOptions).map(optionPk => Number(optionPk)) // 옵션의 pk를 추출하여 배열로 할당
+          ? Object.keys(item.selectedOptions).map(optionPk => Number(optionPk))
           : [],
       })),
       use_mileage: 0,
-      coupon: null,
+      coupon: appliedCoupon ? appliedCoupon.id : null, // Coupon data handling
     };
 
     try {
@@ -235,6 +234,12 @@ const PaymentPage = () => {
   const isPaymentDisabled =
     !addressDetail.trim() || !phone.trim() || !selectedPayment || !agreement;
 
+  // 총 결제 금액 계산
+  const totalPaymentAmount = useMemo(() => {
+    const discount = appliedCoupon ? appliedCoupon.price : 0;
+    return totalAmount - discount;
+  }, [totalAmount, appliedCoupon]);
+
   return (
     <div className="payment-page">
       <div className="payment-page__section">
@@ -291,8 +296,6 @@ const PaymentPage = () => {
                 ></textarea>
               </div>
             </div>
-
-            <TestModule />
             <PaymentSelect onPaymentSelect={setSelectedPayment} />
             <div className="payment-page__input-wrap">
               <h3 className="payment-page__subtitle">할인방법 선택</h3>
@@ -375,9 +378,18 @@ const PaymentPage = () => {
             ))}
           </ul>
 
+          {/* 할인 금액 추가 */}
+          {appliedCoupon && (
+            <div className="payment-page__discount-amount">
+              <p>할인 금액</p>
+              <p>-{formatPrice(appliedCoupon.price)}원</p>
+            </div>
+          )}
+
+          {/* 총 결제 금액 */}
           <div className="payment-page__total-amount">
             <p>총 결제 금액</p>
-            <p>{formatPrice(totalAmount)}원</p>
+            <p>{formatPrice(totalPaymentAmount)}원</p>
           </div>
         </div>
         <p className="payment-page__terms">

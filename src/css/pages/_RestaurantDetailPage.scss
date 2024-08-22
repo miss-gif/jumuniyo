@@ -8,7 +8,11 @@
     width: 65%;
   }
   &__right {
+    position: sticky;
+    top: 80px;
     width: 35%;
+    min-height: 1vh;
+    height: 100%;
   }
 }
 

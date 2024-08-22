@@ -20,6 +20,12 @@ interface MenuInfo {
   menu_options: MenuOption[];
 }
 
+interface OrderCoupon {
+  couponName: string;
+  couponPk: number;
+  couponPrice: number;
+}
+
 interface OrderData {
   resName: string;
   orderPk: string;
@@ -31,6 +37,7 @@ interface OrderData {
   paymentMethod: string;
   menus: MenuInfo[];
   orderPrice: number;
+  orderCoupon?: OrderCoupon; // 쿠폰 정보 추가
 }
 
 const MyPageOrderPage: React.FC = () => {
@@ -41,7 +48,6 @@ const MyPageOrderPage: React.FC = () => {
 
   useEffect(() => {
     console.log("orderData", orderData);
-
     return () => {};
   }, []);
 
@@ -75,6 +81,17 @@ const MyPageOrderPage: React.FC = () => {
     fetchOrderData();
   }, [id, accessToken]);
 
+  const calculateTotalPrice = (): number => {
+    if (!orderData) return 0;
+    const { orderPrice, orderCoupon } = orderData;
+    const couponDiscount = orderCoupon?.couponPrice || 0;
+    return orderPrice - couponDiscount;
+  };
+
+  if (!orderData) {
+    return <LoadingSpinner />;
+  }
+
   const onCancelOrder = async () => {
     try {
       const response = await axios.put(`/api/order/cancel/list/${id}`, null, {
@@ -83,13 +100,15 @@ const MyPageOrderPage: React.FC = () => {
         },
       });
       const data = response.data;
+      console.log("cancel order", data);
+
       if (data.statusCode === 1) {
         Swal.fire({
           icon: "success",
           text: "주문 취소되었습니다.",
         });
         setOrderData(null);
-        navigate("/mypage/orderclose");
+        navigate(`/mypage/orderclose/${data.resultData}`);
       } else {
         Swal.fire({
           icon: "warning",
@@ -186,7 +205,7 @@ const MyPageOrderPage: React.FC = () => {
                 orderData.menus.map((menu, index) => (
                   <li key={index}>
                     <p className="mypage-order__item-name">
-                      {menu.order_menu_name}{" "}
+                      {menu.order_menu_name}
                       <span>x {menu.order_menu_count}개</span>
                     </p>
                     {menu.menu_options.length > 0 && (
@@ -209,10 +228,17 @@ const MyPageOrderPage: React.FC = () => {
               )}
             </ul>
           </div>
+          <div className="mypage-order__section-title">할인내역</div>
+          <div className="mypage-order__detail">
+            <p className="mypage-order__label">
+              {orderData.orderCoupon?.couponName || ""}
+            </p>
+            <p>{orderData.orderCoupon?.couponPrice || ""}원</p>
+          </div>
           <div className="mypage-order__total">
             <p className="mypage-order__total-label">총 결제금액</p>
             <p className="mypage-order__total-price">
-              {orderData.orderPrice.toLocaleString()}원
+              {calculateTotalPrice().toLocaleString()}원
             </p>
           </div>
         </div>
