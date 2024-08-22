@@ -27,6 +27,16 @@ const OptionModal = ({ open, onClose, menuItem, onConfirm }) => {
       const response = await axios.get(`/api/menu/option/${menu_pk}`);
       const resultData = response.data.resultData;
       setOptions(resultData);
+
+      // 첫 번째 옵션을 기본 선택으로 설정
+      if (resultData.length > 0) {
+        setSelectedOption({
+          [resultData[0].optionPk]: {
+            optionName: resultData[0].optionName,
+            optionPrice: resultData[0].optionPrice,
+          },
+        });
+      }
     } catch (error) {
       console.error("옵션 데이터를 불러오는 데 실패했습니다.", error);
     }

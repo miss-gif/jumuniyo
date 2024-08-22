@@ -19,11 +19,19 @@ export const fetchMenuData = async id => {
   }
 };
 
-export const fetchReviewData = async (resPk, page = 1) => {
+export const fetchReviewData = async (resPk, page = 1, accessToken = null) => {
   try {
-    const response = await axios.get(`/api/rev/noauth`, {
+    const config = {
       params: { resPk, page },
-    });
+    };
+
+    if (accessToken) {
+      config.headers = {
+        Authorization: `Bearer ${accessToken}`,
+      };
+    }
+
+    const response = await axios.get(`/api/rev/noauth`, config);
     return response.data.resultData;
   } catch (error) {
     throw new Error(

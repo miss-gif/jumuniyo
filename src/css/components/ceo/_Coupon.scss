@@ -109,18 +109,17 @@
         font-size: 16px;
       }
 
-      button {
+      btn {
         align-self: flex-end;
         padding: 10px 20px;
-        background-color: #008cba;
         color: white;
         border: none;
         border-radius: 5px;
         cursor: pointer;
         transition: background-color 0.3s ease;
-
+        display: flex;
+        justify-content: center;
         &:hover {
-          background-color: #007bb5;
         }
       }
     }
