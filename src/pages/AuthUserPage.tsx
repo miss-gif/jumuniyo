@@ -59,7 +59,9 @@ const AuthUserPage: React.FC = () => {
 
   // 정규 표현식 조건
   const idRegex = /^.{8,}$/;
-  const passRegex = /^(?=.*[!@#$%^&*(),.?":{}|<>]).{8,}$/;
+  const passRegex =
+    /^(?=.*[0-9])(?=.*[!@#$%^&*()\-_=+\\|[\]{};:'",<.>?/]).{8,}$/;
+
   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   const phoneRegex = /^\d{3}-\d{4}-\d{4}$/;
   const imageRegex = /^[\w,\s-]+\.(jpg|jpeg|png|gif|bmp)$/;
@@ -278,7 +280,7 @@ const AuthUserPage: React.FC = () => {
     if (isCheckPass === false) {
       Swal.fire({
         icon: "warning",
-        text: "비밀번호는 8자 이상, 특수문자 사용해야합니다.",
+        text: "비밀번호는 8자 이상, 숫자와 특수문자 사용해야합니다.",
       });
       setUserPwComplete(false);
       return;
@@ -474,7 +476,7 @@ const AuthUserPage: React.FC = () => {
                         error={!userPwComplete}
                         label="비밀번호"
                         type="password"
-                        placeholder="비밀번호는 8자 이상, 특수문자 사용해야합니다."
+                        placeholder="비밀번호는 8자 이상, 숫자와 특수문자 사용해야합니다."
                         onChange={e => {
                           setUserPw(e.target.value);
                         }}
