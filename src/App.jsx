@@ -32,7 +32,7 @@ import MyPageOrderPagee from "./pages/MyPageOrderPagee";
 import MyPageReviewPage from "./pages/MyPageReviewPage";
 import MypageReportPage from "./pages/MypageReportPage";
 import MypageUserWithdrawal from "./pages/MypageUserWithdrawal";
-import NotFound from "./pages/NotFound.jsx";
+import NotFound from "./pages/NotFound";
 import PaymentPage from "./pages/PaymentPage.jsx";
 import ProjectInfo from "./pages/ProjectInfo.jsx";
 // import RestaurantsPage from "./pages/RestaurantsPage.jsx";
