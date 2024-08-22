@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import {
-  BarChart,
-  Bar,
+  LineChart,
+  Line,
   XAxis,
   YAxis,
   Tooltip,
@@ -13,9 +13,10 @@ import { useSelector } from "react-redux";
 
 const StatisticsforAdmin = () => {
   const [year, setYear] = useState(new Date().getFullYear());
-  const [month, setMonth] = useState(new Date().getMonth() + 1); // 1월이 0이므로 +1
+  const [month, setMonth] = useState(new Date().getMonth() + 1);
   const [data, setData] = useState([]);
-  const [showMonthly, setShowMonthly] = useState(true); // 월별 통계를 기본으로 표시
+  const [showMonthly, setShowMonthly] = useState(true);
+  const [showSales, setShowSales] = useState(false);
 
   const accessToken = useSelector(state => state.user.accessToken);
 
@@ -53,7 +54,6 @@ const StatisticsforAdmin = () => {
           monthSignOutCount: parseInt(item.monthSignOutCount, 10),
         }));
 
-        // 가입 수와 탈퇴 수 데이터를 합치기
         const combinedData = signUpData.map(item => {
           const signOutItem = signOutData.find(
             outItem => outItem.createdAt === item.createdAt,
@@ -75,7 +75,7 @@ const StatisticsforAdmin = () => {
 
   const fetchDailyData = async (year, month) => {
     try {
-      const formattedMonth = month < 10 ? `0${month}` : month; // 두 자릿수로 만들기
+      const formattedMonth = month < 10 ? `0${month}` : month;
       const date = `${year}-${formattedMonth}`;
 
       const responseSignUp = await axios.get(
@@ -102,15 +102,14 @@ const StatisticsforAdmin = () => {
       ) {
         const signUpData = responseSignUp.data.resultData.map(item => ({
           date: item.createdAt,
-          daySignUpCount: parseInt(item.dailySignUpCount, 10), // 여기에서 숫자형으로 변환
+          daySignUpCount: parseInt(item.dailySignUpCount, 10),
         }));
 
         const signOutData = responseSignOut.data.resultData.map(item => ({
           date: item.createdAt,
-          daySignOutCount: parseInt(item.dailySignOutCount, 10), // 이 부분도 변환 필요
+          daySignOutCount: parseInt(item.dailySignOutCount, 10),
         }));
 
-        // 가입 수와 탈퇴 수 데이터를 합치기
         const combinedData = signUpData.map(item => {
           const signOutItem = signOutData.find(
             outItem => outItem.date === item.date,
@@ -130,6 +129,115 @@ const StatisticsforAdmin = () => {
     }
   };
 
+  const fetchMonthlySalesData = async year => {
+    try {
+      const responseSales = await axios.get(
+        `/api/admin/stat/month_sales?date=${year}`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        },
+      );
+
+      const responseOrders = await axios.get(
+        `/api/admin/stat/month_order_count?date=${year}`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        },
+      );
+
+      if (
+        responseSales.data.statusCode === 1 &&
+        responseOrders.data.statusCode === 1
+      ) {
+        const salesData = responseSales.data.resultData.map(item => ({
+          createdAt: item.createdAt,
+          monthSales: parseFloat(item.monthSales),
+        }));
+
+        const ordersData = responseOrders.data.resultData.map(item => ({
+          createdAt: item.createdAt,
+          monthOrders: parseInt(item.monthOrderCount, 10),
+        }));
+
+        const combinedData = salesData.map(item => {
+          const orderItem = ordersData.find(
+            ordItem => ordItem.createdAt === item.createdAt,
+          );
+          return {
+            ...item,
+            monthOrders: orderItem ? orderItem.monthOrders : 0,
+          };
+        });
+
+        setData(combinedData);
+      } else {
+        console.error("API Error: ", responseSales.data.resultMsg);
+      }
+    } catch (error) {
+      console.error("Fetching data failed: ", error);
+    }
+  };
+
+  const fetchDailySalesData = async (year, month) => {
+    try {
+      const formattedMonth = month < 10 ? `0${month}` : month;
+      const date = `${year}-${formattedMonth}`;
+
+      const responseSales = await axios.get(
+        `/api/admin/stat/daily_sales?date=${date}`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        },
+      );
+
+      const responseOrders = await axios.get(
+        `/api/admin/stat/daily_order_count?date=${date}`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        },
+      );
+
+      if (
+        responseSales.data.statusCode === 1 &&
+        responseOrders.data.statusCode === 1
+      ) {
+        const salesData = responseSales.data.resultData.map(item => ({
+          date: item.createdAt,
+          daySales: parseFloat(item.dailySales),
+        }));
+
+        const ordersData = responseOrders.data.resultData.map(item => ({
+          date: item.createdAt,
+          dayOrders: parseInt(item.dailyOrderCount, 10),
+        }));
+
+        const combinedData = salesData.map(item => {
+          const orderItem = ordersData.find(
+            ordItem => ordItem.date === item.date,
+          );
+          return {
+            ...item,
+            dayOrders: orderItem ? orderItem.dayOrders : 0,
+          };
+        });
+
+        setData(combinedData);
+      } else {
+        console.error("API Error: ", responseSales.data.resultMsg);
+      }
+    } catch (error) {
+      console.error("Fetching data failed: ", error);
+    }
+  };
+
   const handleYearChange = event => {
     setYear(event.target.value);
   };
@@ -140,22 +248,43 @@ const StatisticsforAdmin = () => {
 
   const handleShowMonthly = () => {
     setShowMonthly(true);
-    fetchMonthlyData(year); // 월별 데이터를 가져옴
+    setShowSales(false);
+    fetchMonthlyData(year);
   };
 
   const handleShowDaily = () => {
     setShowMonthly(false);
-    fetchDailyData(year, month); // 일별 데이터를 가져옴
+    setShowSales(false);
+    fetchDailyData(year, month);
+  };
+
+  const handleShowMonthlySales = () => {
+    setShowMonthly(true);
+    setShowSales(true);
+    fetchMonthlySalesData(year);
+  };
+
+  const handleShowDailySales = () => {
+    setShowMonthly(false);
+    setShowSales(true);
+    fetchDailySalesData(year, month);
   };
 
   useEffect(() => {
-    // 기본적으로 월별 데이터를 표시
     fetchMonthlyData(year);
   }, [year]);
 
   return (
     <div style={{ padding: "120px" }}>
-      <h2>{showMonthly ? "월별" : "일별"} 회원 가입 및 탈퇴 통계</h2>
+      <h2>
+        {showSales
+          ? showMonthly
+            ? "월별 매출 및 주문 통계"
+            : "일별 매출 및 주문 통계"
+          : showMonthly
+            ? "월별 회원 가입 및 탈퇴 통계"
+            : "일별 회원 가입 및 탈퇴 통계"}
+      </h2>
       <select value={year} onChange={handleYearChange}>
         {[...Array(10).keys()].map(offset => {
           const displayYear = new Date().getFullYear() - offset;
@@ -179,32 +308,94 @@ const StatisticsforAdmin = () => {
           })}
         </select>
       )}
-      <div className="buttonforstatistics">
-        <button className="btn" onClick={handleShowMonthly}>
-          월별 통계 보기
+      <div
+        className="buttonforstatistics"
+        style={{ display: "flex", justifyContent: "center" }}
+      >
+        <button
+          className="btn"
+          onClick={handleShowMonthly}
+          style={{ margin: "0px 10px" }}
+        >
+          월별 회원 통계 보기
         </button>
-        <button className="btn" onClick={handleShowDaily}>
-          일별 통계 보기
+        <button
+          className="btn"
+          onClick={handleShowDaily}
+          style={{ margin: "0px 10px" }}
+        >
+          일별 회원 통계 보기
+        </button>
+        <button
+          className="btn"
+          onClick={handleShowMonthlySales}
+          style={{ margin: "0px 10px" }}
+        >
+          월별 매출 통계 보기
+        </button>
+        <button
+          className="btn"
+          onClick={handleShowDailySales}
+          style={{ margin: "0px 10px" }}
+        >
+          일별 매출 통계 보기
         </button>
       </div>
 
       <ResponsiveContainer width="100%" height={400}>
-        <BarChart data={data}>
+        <LineChart data={data}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey={showMonthly ? "createdAt" : "date"} />
-          <YAxis />
+          <YAxis yAxisId="left" orientation="left" />
+          <YAxis yAxisId="right" orientation="right" />
           <Tooltip />
-          <Bar
-            dataKey={showMonthly ? "monthSignUpCount" : "daySignUpCount"}
-            fill="#8884d8"
-            name={showMonthly ? "월별 가입 수" : "일별 가입 수"}
+          <Line
+            yAxisId="left"
+            type="monotone"
+            dataKey={
+              showSales
+                ? showMonthly
+                  ? "monthSales"
+                  : "daySales"
+                : showMonthly
+                  ? "monthSignUpCount"
+                  : "daySignUpCount"
+            }
+            stroke="#8884d8"
+            name={
+              showSales
+                ? showMonthly
+                  ? "월별 매출"
+                  : "일별 매출"
+                : showMonthly
+                  ? "월별 가입 수"
+                  : "일별 가입 수"
+            }
           />
-          <Bar
-            dataKey={showMonthly ? "monthSignOutCount" : "daySignOutCount"}
-            fill="#82ca9d"
-            name={showMonthly ? "월별 탈퇴 수" : "일별 탈퇴 수"}
+          <Line
+            yAxisId="right"
+            type="monotone"
+            dataKey={
+              showSales
+                ? showMonthly
+                  ? "monthOrders"
+                  : "dayOrders"
+                : showMonthly
+                  ? "monthSignOutCount"
+                  : "daySignOutCount"
+            }
+            stroke="#82ca9d"
+            name={
+              showSales
+                ? showMonthly
+                  ? "월별 주문 수"
+                  : "일별 주문 수"
+                : showMonthly
+                  ? "월별 탈퇴 수"
+                  : "일별 탈퇴 수"
+            }
           />
-        </BarChart>
+        </LineChart>
       </ResponsiveContainer>
     </div>
   );

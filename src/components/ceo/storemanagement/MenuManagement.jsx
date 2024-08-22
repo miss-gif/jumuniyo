@@ -981,7 +981,7 @@ const MenuManagement = () => {
             <span className="close-button" onClick={handleCloseOptionModal}>
               &times;
             </span>
-            <h2>옵션 관리</h2>
+            <h2 style={{ marginBottom: "30px" }}>옵션 관리</h2>
             <ul>
               {selectedMenuOptions.map(option => (
                 <li key={option.optionPk}>
@@ -1027,8 +1027,10 @@ const MenuManagement = () => {
                       </button>
                     </div>
                   ) : (
-                    <div>
-                      {option.optionName} - {option.optionPrice}원
+                    <div style={{ marginBottom: "30px" }}>
+                      <div style={{ marginBottom: "30px" }}>
+                        {option.optionName} - {option.optionPrice}원
+                      </div>
                       <button
                         className="btn"
                         onClick={() => handleEditOption(option)}
@@ -1059,6 +1061,7 @@ const MenuManagement = () => {
                     optionName: e.target.value,
                   }))
                 }
+                style={{ border: "1px solid black", marginRight: "10px" }}
               />
               <input
                 type="number"
@@ -1070,8 +1073,12 @@ const MenuManagement = () => {
                     optionPrice: e.target.value,
                   }))
                 }
+                style={{ border: "1px solid black", marginRight: "10px" }}
               />
-              <button onClick={() => handleAddOption(selectedMenuPk)}>
+              <button
+                className="btn"
+                onClick={() => handleAddOption(selectedMenuPk)}
+              >
                 옵션 추가
               </button>
             </div>
