@@ -1,8 +1,10 @@
 /* eslint-disable react/prop-types */
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import OwnerComment from "./OwnerComment";
 import ModalforReview from "./ModalForReview";
 import ReportModal from "./ReportModal";
+import LoginModal from "../user/restaurantdetail/LoginModal";
 
 const Review = ({ review }) => {
   const {
@@ -18,6 +20,9 @@ const Review = ({ review }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false);
+
+  const isLoggedIn = useSelector(state => !!state.user.accessToken);
 
   const openModal = pic => {
     setSelectedImage(pic);
@@ -30,11 +35,19 @@ const Review = ({ review }) => {
   };
 
   const openReportModal = () => {
-    setIsReportModalOpen(true);
+    if (isLoggedIn) {
+      setIsReportModalOpen(true);
+    } else {
+      setShowLoginModal(true);
+    }
   };
 
   const closeReportModal = () => {
     setIsReportModalOpen(false);
+  };
+
+  const closeLoginModal = () => {
+    setShowLoginModal(false);
   };
 
   const roundedRating = Math.round(reviewRating * 100) / 100;
@@ -92,6 +105,8 @@ const Review = ({ review }) => {
         onClose={closeReportModal}
         reviewPk={reviewPk}
       />
+
+      {showLoginModal && <LoginModal onClose={closeLoginModal} />}
     </li>
   );
 };
