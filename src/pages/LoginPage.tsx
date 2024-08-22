@@ -149,7 +149,7 @@ const LoginPage: React.FC = () => {
       return;
     }
 
-    if (!isEmailOn) {
+    if (!emailSuccess) {
       Swal.fire({
         icon: "warning",
         text: "이메일 인증을 해주세요",
@@ -214,17 +214,17 @@ const LoginPage: React.FC = () => {
   };
 
   const handleConfirm = async () => {
-    if (email === "") {
-      Swal.fire({
-        icon: "warning",
-        text: "이메일 입력해주세요.",
-      });
-      return;
-    }
     if (name === "") {
       Swal.fire({
         icon: "warning",
         text: "이름을 입력해주세요.",
+      });
+      return;
+    }
+    if (email === "") {
+      Swal.fire({
+        icon: "warning",
+        text: "이메일 입력해주세요.",
       });
       return;
     }
@@ -238,11 +238,12 @@ const LoginPage: React.FC = () => {
     try {
       setIsLoading(true);
       const res = await axios.post("/api/find/id", data);
-      if (res.data.statusCode === -6) {
+      if (res.data.statusCode !== 1) {
         Swal.fire({
           icon: "warning",
           text: res.data.resultMsg,
         });
+        return;
       }
       if (res.data.statusCode === 1) {
         Swal.fire({
@@ -397,6 +398,12 @@ const LoginPage: React.FC = () => {
           icon: "success",
           text: res.data.resultMsg,
         });
+      } else {
+        Swal.fire({
+          icon: "warning",
+          text: res.data.resultMsg,
+        });
+        return;
       }
     } catch (error) {
       Swal.fire({
