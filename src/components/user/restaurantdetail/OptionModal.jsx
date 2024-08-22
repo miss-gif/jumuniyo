@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Modal from "@mui/material/Modal";
-import Checkbox from "@mui/material/Checkbox";
+import Radio from "@mui/material/Radio";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
@@ -8,7 +8,7 @@ import axios from "axios";
 
 const OptionModal = ({ open, onClose, menuItem, onConfirm }) => {
   const [options, setOptions] = useState([]);
-  const [selectedOptions, setSelectedOptions] = useState({});
+  const [selectedOption, setSelectedOption] = useState(null);
 
   useEffect(() => {
     if (menuItem) {
@@ -18,7 +18,7 @@ const OptionModal = ({ open, onClose, menuItem, onConfirm }) => {
 
   useEffect(() => {
     if (open) {
-      setSelectedOptions({}); // 모달이 열릴 때 선택된 옵션 초기화
+      setSelectedOption(null); // 모달이 열릴 때 선택된 옵션 초기화
     }
   }, [open]);
 
@@ -33,17 +33,13 @@ const OptionModal = ({ open, onClose, menuItem, onConfirm }) => {
   };
 
   const handleSelectOption = (optionPk, option) => {
-    setSelectedOptions(prevSelectedOptions => ({
-      ...prevSelectedOptions,
-      [optionPk]: prevSelectedOptions[optionPk] ? null : option,
-    }));
+    setSelectedOption({ [optionPk]: option });
   };
 
   const handleConfirm = () => {
-    const filteredSelectedOptions = Object.fromEntries(
-      Object.entries(selectedOptions).filter(([key, value]) => value !== null),
-    );
-    onConfirm({ ...menuItem, selectedOptions: filteredSelectedOptions });
+    if (selectedOption) {
+      onConfirm({ ...menuItem, selectedOptions: selectedOption });
+    }
     onClose();
   };
 
@@ -68,8 +64,8 @@ const OptionModal = ({ open, onClose, menuItem, onConfirm }) => {
             <FormControlLabel
               key={option.optionPk}
               control={
-                <Checkbox
-                  checked={!!selectedOptions[option.optionPk]}
+                <Radio
+                  checked={selectedOption?.[option.optionPk] != null}
                   onChange={() =>
                     handleSelectOption(option.optionPk, {
                       optionName: option.optionName,

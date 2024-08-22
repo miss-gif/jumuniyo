@@ -64,6 +64,7 @@ const ReportModal = ({ isOpen, onClose, reviewPk }) => {
             value={customReason}
             onChange={handleCustomReasonChange}
             placeholder="신고 사유를 적어주세요"
+            style={{ resize: "none" }}
           />
         )}
         <button className="btn" onClick={handleSubmit}>
