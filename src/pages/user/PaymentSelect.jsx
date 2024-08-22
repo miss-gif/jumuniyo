@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import usePortOne from "../../hooks/usePortOne";
-import usePaymentModule from "../../hooks/usePaymentModule";
 import useButtonClass from "../../hooks/useButtonClass";
-import PaymentButton from "./paymentPage/PaymentButton";
 
 const PaymentSelect = ({ onPaymentSelect }) => {
   const [selectedPayment, setSelectedPayment] = useState("");
@@ -11,11 +9,6 @@ const PaymentSelect = ({ onPaymentSelect }) => {
   const accessToken = useSelector(state => state.user.accessToken);
 
   usePortOne();
-  const paymentModule = usePaymentModule(
-    selectedPaymentMethod,
-    accessToken,
-    onPaymentSelect,
-  );
   const getButtonClass = useButtonClass(selectedPayment, selectedPaymentMethod);
 
   const handlePaymentSelect = (event, method) => {
@@ -34,9 +27,6 @@ const PaymentSelect = ({ onPaymentSelect }) => {
 
   return (
     <div className="payment-page__input-wrap">
-      <PaymentButton onClick={paymentModule} style={{ marginTop: "20px" }}>
-        결제하기
-      </PaymentButton>
       <h3 className="payment-page__subtitle">결제수단 선택</h3>
       <div className="payment-page__payment-method">
         <div className="payment-wrap">

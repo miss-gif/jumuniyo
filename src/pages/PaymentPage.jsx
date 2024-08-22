@@ -8,6 +8,9 @@ import { initiateKakaoPay } from "../utils/kakaopayUtils";
 import PaymentSelect from "./user/PaymentSelect";
 import CouponModal from "./user/paymentPage/CouponModal";
 import { clearCoupon } from "../app/couponSlice";
+import PaymentButton from "./user/paymentPage/PaymentButton";
+import usePortOne from "../hooks/usePortOne";
+import usePaymentModule from "../hooks/usePaymentModule";
 
 const PaymentPage = () => {
   const dispatch = useDispatch();
@@ -19,12 +22,12 @@ const PaymentPage = () => {
   const { id } = useParams();
   const [isModal, setIsModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
-  const [request, setRequest] = useState(""); // 요청사항 상태
-  const [selectedPayment, setSelectedPayment] = useState(""); // 결제수단 상태
-  const [addressDetail1, setAddressDetail1] = useState(""); // 주소 상태
-  const [addressDetail, setAddressDetail2] = useState(""); // 상세주소 상태
-  const [phone, setPhone] = useState(userPhone); // 휴대전화 상태
-  const [agreement, setAgreement] = useState(false); // 결제 동의 체크 상태
+  const [request, setRequest] = useState("");
+  const [selectedPayment, setSelectedPayment] = useState("");
+  const [addressDetail1, setAddressDetail1] = useState("");
+  const [addressDetail, setAddressDetail2] = useState("");
+  const [phone, setPhone] = useState(userPhone);
+  const [agreement, setAgreement] = useState(false);
   const appliedCoupon = useSelector(state => state.coupon.appliedCoupon);
 
   const navigate = useNavigate();
@@ -32,11 +35,16 @@ const PaymentPage = () => {
 
   const items = useSelector(state => state.cart.items);
 
-  console.log("items", items);
+  // 커스텀 훅 및 paymentModule 설정
+  usePortOne();
+  const paymentModule = usePaymentModule(
+    selectedPayment,
+    accessToken,
+    setSelectedPayment,
+  );
 
-  // 첫 렌더링 시 쿠폰 값 초기화
   useEffect(() => {
-    dispatch(clearCoupon()); // 쿠폰 초기화 액션 호출
+    dispatch(clearCoupon());
   }, [dispatch]);
 
   const openModal = item => {
@@ -51,7 +59,6 @@ const PaymentPage = () => {
     document.documentElement.style.overflow = "auto";
   };
 
-  // 총 금액 계산
   const totalAmount = useMemo(() => {
     return items.reduce(
       (sum, item) =>
@@ -67,11 +74,7 @@ const PaymentPage = () => {
     );
   }, [items]);
 
-  // 주소 변경 시 userAddress.addr1 또는 addr2 값 업데이트
   useEffect(() => {
-    console.log("searchTerm", searchTerm);
-    console.log("userAddress.addr1", userAddress.addr1);
-
     if (searchTerm === userAddress.addr1) {
       setAddressDetail2(userAddress.addr2);
     } else {
@@ -120,21 +123,19 @@ const PaymentPage = () => {
     return true;
   };
 
-  const handlePayment = async () => {
+  const payment = async () => {
     if (!validatePaymentInfo()) return;
 
     if (selectedPayment === "3") {
-      // 카카오페이 결제
       try {
         const order_pk = await initiateKakaoPay(
           calculateTotalOrderPrice(),
           phone,
-          id, // 주문 ID
-          accessToken, // 인증 토큰
+          id,
+          accessToken,
           request,
           locationData,
           addressDetail,
-          // menuPkArray,
         );
 
         if (order_pk) {
@@ -144,8 +145,6 @@ const PaymentPage = () => {
           });
 
           navigate(`/mypage/order/${order_pk}`);
-
-          // 결제 성공 후 세션 저장소 데이터 삭제
           sessionStorage.removeItem(`selectedMenuItems_${id}`);
           sessionStorage.removeItem("restaurantName");
         } else {
@@ -163,7 +162,7 @@ const PaymentPage = () => {
     const data = {
       order_res_pk: id,
       order_request: request,
-      payment_method: selectedPayment, // This will now handle all payment types
+      payment_method: selectedPayment,
       order_phone: phone,
       order_address: `${searchTerm} ${addressDetail}`,
       menu: items.map(item => ({
@@ -174,7 +173,7 @@ const PaymentPage = () => {
           : [],
       })),
       use_mileage: 0,
-      coupon: appliedCoupon ? appliedCoupon.id : null, // Coupon data handling
+      coupon: appliedCoupon ? appliedCoupon.id : null,
     };
 
     try {
@@ -211,7 +210,6 @@ const PaymentPage = () => {
     }
   };
 
-  // 휴대전화 번호 형식 적용 함수
   const formatPhoneNumber = value => {
     const cleaned = ("" + value).replace(/\D/g, "");
     const match = cleaned.match(/^(\d{3})(\d{3,4})(\d{4})$/);
@@ -234,7 +232,6 @@ const PaymentPage = () => {
   const isPaymentDisabled =
     !addressDetail.trim() || !phone.trim() || !selectedPayment || !agreement;
 
-  // 총 결제 금액 계산
   const totalPaymentAmount = useMemo(() => {
     const discount = appliedCoupon ? appliedCoupon.price : 0;
     return totalAmount - discount;
@@ -406,14 +403,22 @@ const PaymentPage = () => {
             />
           </label>
         </p>
-        <button
-          className="payment-page__button payment-btn"
-          onClick={handlePayment}
-          type="submit"
-          disabled={isPaymentDisabled}
-        >
-          결제하기
-        </button>
+        {(selectedPayment === "CARD" || selectedPayment === "MOBILE") && (
+          <PaymentButton onClick={paymentModule} style={{ marginTop: "20px" }}>
+            결제하기
+          </PaymentButton>
+        )}
+
+        {(selectedPayment === "1" || selectedPayment === "2") && (
+          <button
+            className="payment-page__button payment-btn"
+            onClick={payment}
+            type="submit"
+            disabled={isPaymentDisabled}
+          >
+            결제하기
+          </button>
+        )}
       </div>
       <CouponModal isOpen={isModal} onRequestClose={closeModal} />
     </div>
