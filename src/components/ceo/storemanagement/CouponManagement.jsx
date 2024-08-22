@@ -178,7 +178,9 @@ const CouponManagement = () => {
                 setNewCoupon({ ...newCoupon, minOrderAmount: e.target.value })
               }
             />
-            <button onClick={handleAddCoupon}>추가</button>
+            <button className="btn" onClick={handleAddCoupon}>
+              추가
+            </button>
           </div>
         )}
         <table>

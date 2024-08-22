@@ -3,13 +3,15 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
 
-const ReportModal = ({ isOpen, onClose, reviewPk }) => {
+const ReportModal = ({ isOpen, onClose, reviewPk, onSuccess }) => {
   const [reason, setReason] = useState("");
   const [customReason, setCustomReason] = useState("");
+  const [error, setError] = useState(""); // 에러 메시지를 위한 상태
   const accessToken = useSelector(state => state.user.accessToken);
 
   const handleReasonChange = event => {
     setReason(event.target.value);
+    setError(""); // 선택 시 에러 메시지 초기화
     if (event.target.value !== "직접 입력") {
       setCustomReason("");
     }
@@ -20,6 +22,11 @@ const ReportModal = ({ isOpen, onClose, reviewPk }) => {
   };
 
   const handleSubmit = async () => {
+    if (!reason) {
+      setError("사유를 선택해 주세요"); // 사유를 선택하지 않으면 에러 메시지 설정
+      return;
+    }
+
     const reportReason = reason === "직접 입력" ? customReason : reason;
 
     try {
@@ -36,7 +43,13 @@ const ReportModal = ({ isOpen, onClose, reviewPk }) => {
           },
         },
       );
-      onClose();
+
+      // 신고가 성공하면 부모 컴포넌트에 상태 업데이트를 요청
+      if (onSuccess) {
+        onSuccess();
+      }
+
+      onClose(); // 모달 닫기
     } catch (error) {
       console.error("신고 실패:", error);
       // 추가적으로 실패 알림을 사용자에게 보여줄 수 있습니다.
@@ -67,6 +80,8 @@ const ReportModal = ({ isOpen, onClose, reviewPk }) => {
             style={{ resize: "none" }}
           />
         )}
+        {error && <p style={{ color: "red" }}>{error}</p>}{" "}
+        {/* 에러 메시지 출력 */}
         <button className="btn" onClick={handleSubmit}>
           제출
         </button>

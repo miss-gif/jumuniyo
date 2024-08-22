@@ -121,9 +121,10 @@ const ReportDetail = () => {
       <div className="reportDetail-wrap">
         <h1>No. {report_pk}</h1>
         <div className="report">
-          <div className="reportTitle">{reportDetail.reportTitle}</div>
           <div className="reportWriter">
-            <div className="reportWriter-tab">작성자</div>
+            <div className="reportWriter-tab" style={{ marginRight: "50px" }}>
+              작성자
+            </div>
             <div className="reportWriter-value">
               {reportDetail.reportNickName}
             </div>
@@ -140,7 +141,9 @@ const ReportDetail = () => {
         </div>
         <div className="reported">
           <div className="reportedWriter">
-            <div className="reportedWriter-tab">작성자</div>
+            <div className="reportedWriter-tab" style={{ marginRight: "50px" }}>
+              작성자
+            </div>
             <div className="reportedWriter-value">
               {reportDetail.reviewNickName}
             </div>
