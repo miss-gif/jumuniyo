@@ -53,7 +53,8 @@ const usePaymentModule = (
       const orderPK = orderResponse.data.resultData.order_pk;
       const redirectUrl = `http://localhost:3000/mypage/order/${orderPK}`;
 
-      await window.PortOne.requestPayment({
+      // requestPayment 호출 후의 결과 구조에 맞게 수정
+      const response = await window.PortOne.requestPayment({
         storeId: "store-fea01fbe-7f7a-4c41-9ab7-7ca7249ebc2a",
         channelKey: "channel-key-fb10d184-0d73-441a-98cf-b354125c63f4",
         paymentId: `payment-${crypto.randomUUID()}`,
@@ -68,8 +69,17 @@ const usePaymentModule = (
         customData: orderPK,
         redirectUrl: redirectUrl,
       });
+
+      if (response.code != null) {
+        // 오류 발생
+        return alert(response.message);
+      }
+
+      // 결제 완료 후 추가 로직 수행
+      // 예를 들어, 결제 완료 페이지로 이동
+      window.location.href = redirectUrl;
     } catch (error) {
-      console.error("결제 요청 중 오류 발생:", error);
+      console.error("결제 요청 중 오류 발생:", error.message || error);
     }
   }, [selectedPaymentMethod, accessToken]);
 
