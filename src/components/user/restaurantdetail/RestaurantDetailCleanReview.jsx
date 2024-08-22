@@ -1,5 +1,5 @@
-/* eslint-disable react/prop-types */
 import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import Review from "../../common/Review";
 import { fetchReviewData } from "../../../api/restaurantdetail/restaurantDetail";
 import LoadingSpinner from "../../common/LoadingSpinner";
@@ -12,10 +12,12 @@ const RestaurantDetailCleanReview = ({ resPk, restaurantData }) => {
   const [page, setPage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
 
+  const accessToken = useSelector(state => state.user.accessToken);
+
   useEffect(() => {
     const getReviews = async () => {
       try {
-        const reviewData = await fetchReviewData(resPk, page);
+        const reviewData = await fetchReviewData(resPk, page, accessToken);
         setReviews(reviewData.reviewList || []);
         setTotalPage(reviewData.totalPage || 1);
         setLoading(false);
@@ -26,7 +28,7 @@ const RestaurantDetailCleanReview = ({ resPk, restaurantData }) => {
     };
 
     getReviews();
-  }, [resPk, page]);
+  }, [resPk, page, accessToken]);
 
   if (loading) return <LoadingSpinner />;
   if (error) return <p>에러: {error}</p>;

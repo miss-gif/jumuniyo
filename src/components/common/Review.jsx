@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import OwnerComment from "./OwnerComment";
@@ -15,16 +14,19 @@ const Review = ({ review }) => {
     createdAt,
     reply,
     reviewPk,
-    reviewReportState,
+    reviewReportState: initialReviewReportState, // Renaming for clarity
+    reviewBlind,
   } = review;
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
+  const [reviewReportState, setReviewReportState] = useState(
+    initialReviewReportState,
+  );
 
   const accessToken = useSelector(state => state.user.accessToken);
-
   const isLoggedIn = useSelector(state => !!state.user.accessToken);
 
   const openModal = pic => {
@@ -53,19 +55,15 @@ const Review = ({ review }) => {
     setShowLoginModal(false);
   };
 
+  const handleReportSuccess = () => {
+    setReviewReportState(0); // 신고 상태를 0으로 업데이트하여 UI에 반영
+    closeReportModal();
+  };
+
   const roundedRating = Math.round(reviewRating * 100) / 100;
-  console.log(
-    "리뷰 콘솔",
-    "리뷰pk",
-    review.reviewPk,
-    review.userPk,
-    "reviewReportState",
-    review.reviewReportState,
-    "reviewRating",
-    review.reviewRating,
-  );
-  if (reviewReportState === 0) {
-    // 리뷰가 신고된 경우
+
+  if (reviewBlind === 1) {
+    // 리뷰가 블라인드된 경우
     return (
       <li className="review">
         <div className="review__header">
@@ -73,11 +71,41 @@ const Review = ({ review }) => {
             <p className="user-info__id">{nickName}님</p>
             <p className="user-info__time">{createdAt}</p>
           </div>
-          <div
-            className="review__report"
-            onClick={openReportModal}
-            style={{ cursor: "pointer" }}
-          >
+        </div>
+        <div className="review__rating">
+          <div className="rating__stars">
+            {"★".repeat(Math.round(roundedRating))} {roundedRating}
+          </div>
+        </div>
+        <div
+          className="review__content"
+          style={{
+            fontSize: "20px",
+            pointerEvents: "none",
+            color: "red",
+            display: "flex",
+            justifyContent: "center",
+            marginTop: "50px",
+            marginBottom: "50px",
+          }}
+        >
+          정지된 리뷰입니다.
+        </div>
+        {reply && <OwnerComment reply={reply} />}
+      </li>
+    );
+  }
+
+  if (reviewReportState === 0) {
+    // 리뷰가 로그인된 유저에 의해 신고된 경우
+    return (
+      <li className="review">
+        <div className="review__header">
+          <div className="review__user-info">
+            <p className="user-info__id">{nickName}님</p>
+            <p className="user-info__time">{createdAt}</p>
+          </div>
+          <div className="review__report">
             <div className="review__content" style={{ pointerEvents: "none" }}>
               이미신고된 리뷰입니다.
             </div>
@@ -171,6 +199,7 @@ const Review = ({ review }) => {
         isOpen={isReportModalOpen}
         onClose={closeReportModal}
         reviewPk={reviewPk}
+        onSuccess={handleReportSuccess} // 신고 성공 시 호출할 함수 전달
       />
 
       {showLoginModal && <LoginModal onClose={closeLoginModal} />}
