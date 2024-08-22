@@ -1,14 +1,25 @@
+import React from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import "./Sidebar.scss";
+import { RootState } from "../../../app/store";
 
-const Sidebar = ({
+// Props 타입 정의
+interface SidebarProps {
+  isSidebarOpen: boolean;
+  toggleSidebar: () => void;
+  handleLogoutClick: () => void;
+  userNickname: string;
+}
+
+const Sidebar: React.FC<SidebarProps> = ({
   isSidebarOpen,
   toggleSidebar,
   handleLogoutClick,
   userNickname,
 }) => {
-  const isLoggedIn = useSelector(state => state.user.isLoggedIn);
+  // useSelector의 상태 타입을 RootState로 지정
+  const isLoggedIn = useSelector((state: RootState) => state.user.isLoggedIn);
 
   return (
     <>

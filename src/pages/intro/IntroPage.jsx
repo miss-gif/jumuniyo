@@ -1,8 +1,7 @@
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import GoogleMaps from "../../components/common/GoogleMaps";
 import "./IntroPage.scss";
-import { useSelector } from "react-redux";
-import { useEffect } from "react";
 
 const IntroPage = () => {
   const navigate = useNavigate();

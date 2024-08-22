@@ -1,10 +1,10 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import LoadingSpinner from "../components/common/LoadingSpinner";
-import Swal from "sweetalert2";
 import { useSelector } from "react-redux";
-import { RootState } from "./MyPage";
+import { useNavigate, useParams } from "react-router-dom";
+import Swal from "sweetalert2";
+import { RootState } from "../app/store";
+import LoadingSpinner from "../components/common/LoadingSpinner";
 
 interface MenuOption {
   option_pk: number;

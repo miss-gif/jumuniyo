@@ -1,9 +1,18 @@
-import PropTypes from "prop-types";
+import React from "react";
 import { IoIosArrowDown } from "react-icons/io";
 import { MdOutlineLocationOn } from "react-icons/md";
 import "./LocationSelector.scss";
 
-const LocationSelector = ({ searchTerm, openModal }) => {
+// Props 타입 정의
+interface LocationSelectorProps {
+  searchTerm: string;
+  openModal: () => void;
+}
+
+const LocationSelector: React.FC<LocationSelectorProps> = ({
+  searchTerm,
+  openModal,
+}) => {
   // 대체 텍스트 설정
   let displayText = searchTerm || "검색 위치를 입력하세요";
 
@@ -24,11 +33,6 @@ const LocationSelector = ({ searchTerm, openModal }) => {
       <IoIosArrowDown />
     </div>
   );
-};
-
-LocationSelector.propTypes = {
-  searchTerm: PropTypes.string.isRequired,
-  openModal: PropTypes.func.isRequired,
 };
 
 export default LocationSelector;

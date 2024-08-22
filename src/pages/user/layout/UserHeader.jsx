@@ -8,7 +8,7 @@ import { createSelector } from "reselect";
 import { searchRestaurant } from "../../../app/userSlice";
 import { handleLogout } from "../../../utils/authUtils";
 import AddressModal from "../main/AddressModal";
-import AuthLinks from "./AuthLinks.jsx";
+import AuthLinks from "./AuthLinks";
 import LocationSelector from "./LocationSelector";
 import Sidebar from "./Sidebar";
 import SidebarCart from "./SidebarCart";
