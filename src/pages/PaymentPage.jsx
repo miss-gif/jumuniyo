@@ -41,6 +41,12 @@ const PaymentPage = () => {
     selectedPayment,
     accessToken,
     setSelectedPayment,
+    request, // 주문 요청사항
+    phone, // 주문 전화번호
+    `${searchTerm} ${addressDetail}`, // 주문 주소
+    items, // 주문 메뉴 아이템
+    appliedCoupon, // 적용된 쿠폰
+    0, // 마일리지 사용
   );
 
   useEffect(() => {
@@ -404,9 +410,7 @@ const PaymentPage = () => {
           </label>
         </p>
         {(selectedPayment === "CARD" || selectedPayment === "MOBILE") && (
-          <PaymentButton onClick={paymentModule} style={{ marginTop: "20px" }}>
-            결제하기
-          </PaymentButton>
+          <PaymentButton onClick={paymentModule}>결제하기</PaymentButton>
         )}
 
         {(selectedPayment === "1" || selectedPayment === "2") && (

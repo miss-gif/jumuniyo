@@ -38,7 +38,7 @@ const PaymentSelect = ({ onPaymentSelect }) => {
               className={getButtonClass("CARD", true)}
               onClick={event => handlePaymentMethod(event, "CARD")}
             >
-              통합모듈 결제
+              카드결제
             </button>
             <button
               className={getButtonClass("MOBILE", true)}
