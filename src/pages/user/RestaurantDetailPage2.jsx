@@ -98,7 +98,10 @@ const RestaurantDetailPage = () => {
   };
 
   const handleClearAll = () => {
-    dispatch(clearCart());
+    const userConfirmed = confirm("장바구니를 비우시겠습니까?");
+    if (userConfirmed) {
+      dispatch(clearCart());
+    }
   };
 
   const handleOrder = restaurantName => {
