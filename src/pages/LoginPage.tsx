@@ -127,24 +127,52 @@ const LoginPage: React.FC = () => {
   };
 
   const findPw = async () => {
-    setIsLoading(true);
     if (id === "") {
       Swal.fire({
         icon: "warning",
         text: "아이디를 입력해주세요.",
       });
-    }
-    if (email === "") {
-      Swal.fire({
-        icon: "warning",
-        text: "이메일 입력해주세요.",
-      });
+      return;
     }
     if (name === "") {
       Swal.fire({
         icon: "warning",
         text: "이름을 입력해주세요.",
       });
+      return;
+    }
+    if (email === "") {
+      Swal.fire({
+        icon: "warning",
+        text: "이메일 입력해주세요.",
+      });
+      return;
+    }
+
+    if (!isEmailOn) {
+      Swal.fire({
+        icon: "warning",
+        text: "이메일 인증을 해주세요",
+      });
+      return;
+    }
+
+    if (newPw === "") {
+      Swal.fire({
+        icon: "warning",
+        text: "비밀번호를 입력해주세요.",
+      });
+      return;
+    }
+
+    if (
+      !/^(?=.*[0-9])(?=.*[!@#$%^&*()\-_=+\\|[\]{};:'",<.>?/]).{8,}$/.test(newPw)
+    ) {
+      Swal.fire({
+        icon: "warning",
+        text: "비밀번호는 8자 이상, 숫자와 특수문자 사용해야합니다.",
+      });
+      return;
     }
 
     const data = {
@@ -157,6 +185,7 @@ const LoginPage: React.FC = () => {
     };
 
     try {
+      setIsLoading(true);
       const res = await axios.post("/api/find/pw", data);
       if (res.data.statusCode === 1) {
         Swal.fire({
@@ -185,18 +214,19 @@ const LoginPage: React.FC = () => {
   };
 
   const handleConfirm = async () => {
-    setIsLoading(true);
     if (email === "") {
       Swal.fire({
         icon: "warning",
         text: "이메일 입력해주세요.",
       });
+      return;
     }
     if (name === "") {
       Swal.fire({
         icon: "warning",
         text: "이름을 입력해주세요.",
       });
+      return;
     }
 
     const data = {
@@ -206,6 +236,7 @@ const LoginPage: React.FC = () => {
     };
 
     try {
+      setIsLoading(true);
       const res = await axios.post("/api/find/id", data);
       if (res.data.statusCode === -6) {
         Swal.fire({
@@ -322,11 +353,13 @@ const LoginPage: React.FC = () => {
   const handleEmailCheck = async () => {
     setIsLoading(true);
     const data = {
+      userName: name,
       email: email,
+      userId: id,
     };
     try {
       const res = await axios.post("/api/mail/find", data);
-      if (res.data.statusCode === -6) {
+      if (res.data.statusCode !== 1) {
         Swal.fire({
           icon: "warning",
           text: res.data.resultMsg,
@@ -473,7 +506,7 @@ const LoginPage: React.FC = () => {
                     <div className="소셜로그인">
                       <a
                         className="카카오로그인"
-                        href={`https://zumuniyo.shop/oauth/authorization/kakao?redirect_uri=https://zumuniyo.shop/oauth/redirect`}
+                        href={`https://zumuniyo.shop/oauth/authorization/kakao?redirect_uri=http://localhost:3000/oauth/redirect`}
                       >
                         <div className="아이콘">
                           <svg
@@ -503,7 +536,7 @@ const LoginPage: React.FC = () => {
                       </a>
                       <a
                         className="네이버로그인"
-                        href={`https://zumuniyo.shop/oauth/authorization/naver?redirect_uri=https://zumuniyo.shop/oauth/redirect`}
+                        href={`https://zumuniyo.shop/oauth/authorization/naver?redirect_uri=http://localhost:3000/oauth/redirect`}
                       >
                         <div className="아이콘">
                           <svg
@@ -522,7 +555,7 @@ const LoginPage: React.FC = () => {
                         {/* <div className="텍스트">네이버로 시작하기</div> */}
                       </a>
                       <a
-                        href={`https://zumuniyo.shop/oauth/authorization/google?redirect_uri=https://zumuniyo.shop/oauth/redirect`}
+                        href={`https://zumuniyo.shop/oauth/authorization/google?redirect_uri=http://localhost:3000/oauth/redirect`}
                         className="구글로그인"
                       >
                         <div className="아이콘">
@@ -589,7 +622,7 @@ const LoginPage: React.FC = () => {
                           onChange={e => setCode(e.target.value)}
                         />
                       </Collapse>
-                      {!isEmailOn && (
+                      {/* {!isEmailOn && (
                         <button
                           className="btn"
                           onClick={() => {
@@ -598,7 +631,7 @@ const LoginPage: React.FC = () => {
                         >
                           인증
                         </button>
-                      )}
+                      )} */}
                     </DialogContent>
                     <DialogActions>
                       <StyledButton onClick={handleConfirm} color="primary">
@@ -663,6 +696,7 @@ const LoginPage: React.FC = () => {
                             label="새로운 비밀번호"
                             type="password"
                             fullWidth
+                            placeholder="비밀번호는 8자 이상, 숫자와 특수문자 사용해야합니다."
                             value={newPw}
                             onChange={e => setNewPw(e.target.value)}
                           />
