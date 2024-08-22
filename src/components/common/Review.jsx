@@ -15,13 +15,15 @@ const Review = ({ review }) => {
     createdAt,
     reply,
     reviewPk,
-    reviewReportState, // 새로운 속성 추가
+    reviewReportState,
   } = review;
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
+
+  const accessToken = useSelector(state => state.user.accessToken);
 
   const isLoggedIn = useSelector(state => !!state.user.accessToken);
 
@@ -52,7 +54,16 @@ const Review = ({ review }) => {
   };
 
   const roundedRating = Math.round(reviewRating * 100) / 100;
-
+  console.log(
+    "리뷰 콘솔",
+    "리뷰pk",
+    review.reviewPk,
+    review.userPk,
+    "reviewReportState",
+    review.reviewReportState,
+    "reviewRating",
+    review.reviewRating,
+  );
   if (reviewReportState === 0) {
     // 리뷰가 신고된 경우
     return (
