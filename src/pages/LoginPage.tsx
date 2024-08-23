@@ -543,7 +543,7 @@ const LoginPage: React.FC = () => {
                       </a>
                       <a
                         className="네이버로그인"
-                        href={`https://zumuniyo.shop/oauth/authorization/kakao?redirect_uri=https://zumuniyo.shop/oauth/redirect`}
+                        href={`https://zumuniyo.shop/oauth/authorization/naver?redirect_uri=https://zumuniyo.shop/oauth/redirect`}
                       >
                         <div className="아이콘">
                           <svg
@@ -562,7 +562,7 @@ const LoginPage: React.FC = () => {
                         {/* <div className="텍스트">네이버로 시작하기</div> */}
                       </a>
                       <a
-                        href={`https://zumuniyo.shop/oauth/authorization/kakao?redirect_uri=https://zumuniyo.shop/oauth/redirect`}
+                        href={`https://zumuniyo.shop/oauth/authorization/google?redirect_uri=https://zumuniyo.shop/oauth/redirect`}
                         className="구글로그인"
                       >
                         <div className="아이콘">
