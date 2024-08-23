@@ -12,6 +12,7 @@ const CartListItem = styled.li`
   position: relative;
   padding: 10px;
   border: 1px solid #ddd;
+  margin-top: 8px;
   margin-bottom: 8px;
   border-radius: 8px;
   background-color: #f9f9f9;

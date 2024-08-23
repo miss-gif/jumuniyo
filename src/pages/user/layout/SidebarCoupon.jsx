@@ -3,18 +3,23 @@ import { useNavigate } from "react-router-dom";
 import "./SidebarRight.scss";
 import useFollowedCoupons from "../../../hooks/useFollowedCoupons"; // 커스텀 훅을 불러옵니다.
 import { useEffect } from "react";
+import "./SidebarCoupon.scss";
 
 const CouponListItem = styled.li`
-  position: relative;
+  padding: 15px;
+  background-color: #ffffff; /* 항목 배경을 흰색으로 설정 */
+  border: 2px solid #00c4bd; /* 버튼과 동일한 테두리 색상 */
+  border-radius: 5px; /* 버튼과 동일한 모서리 둥글기 */
+  margin-bottom: 10px; /* 항목 사이에 여백 추가 */
+  transition:
+    background-color 0.3s ease,
+    border-color 0.3s ease;
   cursor: pointer;
-  padding: 10px;
-  border: 1px solid #ddd;
-  margin-bottom: 8px;
-  border-radius: 8px;
-  background-color: #f9f9f9;
 
   &:hover {
-    background-color: #f0f0f0;
+    background-color: #00c4bd; /* 호버 시 배경색을 오렌지로 */
+    border-color: #00c4bd; /* 호버 시 테두리 색상 유지 */
+    color: #ffffff; /* 호버 시 텍스트 색상을 흰색으로 */
   }
 `;
 
