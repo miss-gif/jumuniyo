@@ -2,6 +2,7 @@ import styled from "@emotion/styled";
 import { useNavigate } from "react-router-dom";
 import "./SidebarRight.scss";
 import useFollowedRestaurants from "../../../hooks/useFollowedRestaurants";
+import { useEffect } from "react";
 
 const StatusListItem = styled.li`
   position: relative;
@@ -22,8 +23,15 @@ const StatusListItem = styled.li`
 `;
 
 const SidebarHeart = ({ isSidebarHeart, toggleSidebarHeart }) => {
-  const { restaurants, loading } = useFollowedRestaurants(); // 커스텀 훅 사용
+  const { restaurants, loading, fetchFollowedRestaurants } =
+    useFollowedRestaurants();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isSidebarHeart) {
+      fetchFollowedRestaurants(); // 사이드바가 열릴 때만 데이터 로드
+    }
+  }, [isSidebarHeart, fetchFollowedRestaurants]);
 
   return (
     <div
