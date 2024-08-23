@@ -1,9 +1,7 @@
 import styled from "@emotion/styled";
-import axios from "axios";
-import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import "./SidebarRight.scss";
+import useFollowedRestaurants from "../../../hooks/useFollowedRestaurants";
 
 const StatusListItem = styled.li`
   position: relative;
@@ -24,34 +22,8 @@ const StatusListItem = styled.li`
 `;
 
 const SidebarHeart = ({ isSidebarHeart, toggleSidebarHeart }) => {
-  const [restaurants, setRestaurants] = useState([]);
-  const accessToken = useSelector(state => state.user.accessToken);
-  const navigate = useNavigate(); // useNavigate 훅 추가
-  const isLoggedIn = useSelector(state => state.user.isLoggedIn);
-
-  useEffect(() => {
-    const fetchFollowedRestaurants = async () => {
-      try {
-        const response = await axios.get("/api/restaurant/followed", {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        });
-
-        if (response.data.statusCode === 1) {
-          setRestaurants(response.data.resultData.list);
-        } else {
-          console.error("API 응답 오류:", response.data.resultMsg);
-        }
-      } catch (error) {
-        console.error("API 요청 실패:", error);
-      }
-    };
-
-    if (isLoggedIn) {
-      fetchFollowedRestaurants();
-    }
-  }, [isLoggedIn, accessToken]);
+  const { restaurants, loading } = useFollowedRestaurants(); // 커스텀 훅 사용
+  const navigate = useNavigate();
 
   return (
     <div
@@ -66,7 +38,9 @@ const SidebarHeart = ({ isSidebarHeart, toggleSidebarHeart }) => {
         <ul>
           <li className="nav__item" onClick={toggleSidebarHeart}>
             <>
-              {restaurants.length > 0 ? (
+              {loading ? (
+                <div className="loading">로딩 중...</div>
+              ) : restaurants.length > 0 ? (
                 <ul className="restaurants-page__list">
                   {restaurants.map(restaurant => (
                     <StatusListItem
@@ -75,7 +49,7 @@ const SidebarHeart = ({ isSidebarHeart, toggleSidebarHeart }) => {
                       isclosed={restaurant.restaurantState === 2}
                       onClick={() => {
                         if (restaurant.restaurantState !== 2) {
-                          navigate(`/restaurants/${restaurant.restaurantPk}`); // Navigate 사용
+                          navigate(`/restaurants/${restaurant.restaurantPk}`);
                         }
                       }}
                     >
