@@ -1,15 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import usePortOne from "../../hooks/usePortOne";
 import useButtonClass from "../../hooks/useButtonClass";
 
 const PaymentSelect = ({ onPaymentSelect }) => {
-  const [selectedPayment, setSelectedPayment] = useState("");
-  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("");
+  const [selectedPayment, setSelectedPayment] = useState("CARD"); // 기본값으로 "CARD" 설정
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("CARD"); // 기본값으로 "CARD" 설정
   const accessToken = useSelector(state => state.user.accessToken);
 
   usePortOne();
   const getButtonClass = useButtonClass(selectedPayment, selectedPaymentMethod);
+
+  useEffect(() => {
+    onPaymentSelect(selectedPayment); // 컴포넌트 마운트 시 디폴트 결제수단 전달
+  }, [selectedPayment, onPaymentSelect]);
 
   const handlePaymentSelect = (event, method) => {
     event.preventDefault();
