@@ -62,7 +62,7 @@ const usePaymentModule = (
       }
 
       const orderPK = orderResponse.data.resultData.order_pk;
-      const redirectUrl = `http://localhost:3000/mypage/order/${orderPK}`;
+      const redirectUrl = `https://zumuniyo.shop/mypage/order/${orderPK}`;
 
       const response = await window.PortOne.requestPayment({
         storeId: "store-fea01fbe-7f7a-4c41-9ab7-7ca7249ebc2a",

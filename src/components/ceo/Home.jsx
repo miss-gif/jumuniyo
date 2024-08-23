@@ -172,7 +172,7 @@ const Home = () => {
     // playNewOrderSound();
     const accessToken = getCookie("accessToken");
     const eventSource = new EventSource(
-      `https://34.64.63.109/sse?token=${accessToken}`,
+      `https://zumuniyo.shop/sse?token=${accessToken}`,
     );
 
     eventSource.onopen = () => {
