@@ -1,9 +1,8 @@
 import styled from "@emotion/styled";
-import axios from "axios";
-import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import "./SidebarRight.scss";
+import useFollowedCoupons from "../../../hooks/useFollowedCoupons"; // 커스텀 훅을 불러옵니다.
+import { useEffect } from "react";
 
 const CouponListItem = styled.li`
   position: relative;
@@ -20,34 +19,14 @@ const CouponListItem = styled.li`
 `;
 
 const SidebarCoupon = ({ isSidebarCoupon, toggleSidebarCoupon }) => {
-  const [coupons, setCoupons] = useState([]);
-  const accessToken = useSelector(state => state.user.accessToken);
+  const { coupons, loading, fetchFollowedCoupons } = useFollowedCoupons(); // 커스텀 훅 사용
   const navigate = useNavigate();
-  const isLoggedIn = useSelector(state => state.user.isLoggedIn);
 
   useEffect(() => {
-    const fetchCoupons = async () => {
-      try {
-        const response = await axios.get("/api/coupons/user", {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        });
-
-        if (response.data.statusCode === 1) {
-          setCoupons(response.data.resultData);
-        } else {
-          console.error("API 응답 오류:", response.data.resultMsg);
-        }
-      } catch (error) {
-        console.error("쿠폰 목록을 불러오는 데 실패했습니다.", error);
-      }
-    };
-
-    if (isLoggedIn) {
-      fetchCoupons();
+    if (isSidebarCoupon) {
+      fetchFollowedCoupons(); // 사이드바가 열릴 때만 데이터 로드
     }
-  }, [isLoggedIn, accessToken]);
+  }, [isSidebarCoupon, fetchFollowedCoupons]);
 
   return (
     <div
@@ -73,8 +52,6 @@ const SidebarCoupon = ({ isSidebarCoupon, toggleSidebarCoupon }) => {
                       }}
                     >
                       <h3 className="coupon-item__title">{coupon.resName}</h3>
-                      {/* <p>{coupon.name}</p> */}
-                      {/* <p>{coupon.content}</p> */}
                       <p>할인 금액: {coupon.price}원</p>
                       <p>최소 주문 금액: {coupon.minOrderAmount}원</p>
                     </CouponListItem>
