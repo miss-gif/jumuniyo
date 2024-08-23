@@ -46,8 +46,6 @@ import MyPageFavoriteListPage from "./pages/MyPageFavoriteListPage";
 import MyPageReportListPage from "./pages/MyPageReportListPage";
 import MypageReportDetailPage from "./pages/MypageReportDetailPage";
 import SnsLoginPage from "./pages/SnsLoginPage";
-import Test from "./pages/Test";
-import Test3 from "./pages/Test3";
 import IntroPage from "./pages/intro/IntroPage";
 import { OrderProvider } from "./pages/user/OrderContext";
 import RestaurantDetailPage2 from "./pages/user/RestaurantDetailPage2";
