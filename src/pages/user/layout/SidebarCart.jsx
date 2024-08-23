@@ -96,34 +96,20 @@ const SidebarCart = ({ isSidebarCart, toggleSidebarCart }) => {
                     )}
                     원
                   </p>
-                  <div className="cart-item__actions">
-                    <button
-                      onClick={() => dispatch(increaseQuantity(item.menu_pk))}
-                    >
-                      +
-                    </button>
-                    <button
-                      onClick={() => dispatch(decreaseQuantity(item.menu_pk))}
-                      disabled={item.quantity <= 1}
-                    >
-                      -
-                    </button>
-                    <button onClick={() => dispatch(removeItem(item.menu_pk))}>
-                      삭제
-                    </button>
-                  </div>
                 </CartListItem>
               ))}
             </ul>
             <div className="sidebar-cart__total-amount">
               <p>총 결제 금액: {formatPrice(totalAmount)}원</p>
             </div>
-            <button className="add-menu-button" onClick={handleAddMenuClick}>
-              메뉴추가하기
-            </button>
-            <button className="add-menu-button" onClick={handlePaymentLink}>
-              결제하기
-            </button>
+            <div className="버튼그룹">
+              <button className="add-menu-button" onClick={handleAddMenuClick}>
+                메뉴 추가하기
+              </button>
+              <button className="add-menu-button" onClick={handlePaymentLink}>
+                결제하기
+              </button>
+            </div>
           </>
         ) : (
           <div className="result__zero">장바구니가 비었습니다.</div>

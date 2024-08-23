@@ -63,3 +63,32 @@
     height: 60px;
   }
 }
+
+.버튼그룹 {
+  font-size: 12px;
+  display: flex;
+  gap: 12px;
+  margin-top: 15px;
+  padding: 10px;
+  border-radius: 8px;
+  justify-content: center;
+}
+
+.add-menu-button {
+  font-size: 12px;
+  padding: 10px 20px;
+  background-color: #ffffff;
+  border: 2px solid #00c4bd;
+  border-radius: 5px;
+  color: #00c4bd;
+  font-size: 16px;
+  cursor: pointer;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
+}
+
+.add-menu-button:hover {
+  background-color: #00c4bd;
+  color: #ffffff;
+}
