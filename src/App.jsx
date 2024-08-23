@@ -141,8 +141,6 @@ function App() {
 
           {/* 공통 */}
           <Route path="*" element={<NotFound />} />
-          <Route path="/toastTest" element={<Test />} />
-          <Route path="/paymentTest" element={<Test3 />} />
           <Route path="/intro" element={<IntroPage />} />
         </Routes>
       </div>
