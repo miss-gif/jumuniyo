@@ -77,6 +77,5 @@
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-react": "^7.34.3",
     "prettier": "^3.3.2"
-  },
-  "proxy": "https://34.64.63.109"
+  }
 }
