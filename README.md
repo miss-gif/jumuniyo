@@ -17,13 +17,16 @@
 
 
 https://github.com/user-attachments/assets/9158235a-d55e-48cb-bedf-b87c73d93581
-3차 사용자 기능 일부 시연
+
+프로젝트 3차 사용자 기능 일부 시연
 
 https://github.com/user-attachments/assets/4a222cb9-0f58-499b-adb2-492c35682d19
-2차 사용자 기능 일부 시연
+
+프로젝트 2차 사용자 기능 일부 시연
 
 https://github.com/user-attachments/assets/ba49c715-79c8-4318-b879-c7db31e38833
-3차 사업자 기능 일부 시연
+
+프로젝트 2차 사업자 기능 일부 시연
 
 
 ## 프로젝트 소개
