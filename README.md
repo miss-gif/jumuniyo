@@ -1,3 +1,5 @@
+![logo](https://github.com/user-attachments/assets/55948dc5-9c8c-4f74-add8-9b1bab9c5ca8)
+
 # 주문이요 : 음식 주문 플랫폼 서비스
 
 배포: [배포사이트](https://jumuniyo.gybproject.com/)
@@ -8,8 +10,21 @@
 수강생들의 노력이 담긴 프로젝트인 만큼, 많은 이해와 관심 부탁드립니다."
 
 <b>프로젝트 자료</b>
+
 피그마: [(링크)](<https://www.figma.com/design/wo9ijijb6eANcrwEzBAFQA/%EC%A3%BC%EB%AC%B8%EC%9D%B4%EC%9A%94-(%EA%B0%80%EC%B9%AD)?node-id=25-2>)
+
 캔바: [(링크)](https://www.canva.com/design/DAGOX4a8SaE/F06Qj7PFzV0Ck796fnsNLA/edit)
+
+
+https://github.com/user-attachments/assets/9158235a-d55e-48cb-bedf-b87c73d93581
+3차 사용자 기능 일부 시연
+
+https://github.com/user-attachments/assets/4a222cb9-0f58-499b-adb2-492c35682d19
+2차 사용자 기능 일부 시연
+
+https://github.com/user-attachments/assets/ba49c715-79c8-4318-b879-c7db31e38833
+3차 사업자 기능 일부 시연
+
 
 ## 프로젝트 소개
 
